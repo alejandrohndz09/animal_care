@@ -1,0 +1,153 @@
+.inputContainer {
+    position: relative;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 35px;
+  }
+  
+
+  .inputField {
+    border: 2px solid white;
+    background-color: #f8f7f7;
+    border-radius: 10px; 
+    padding: 3px 15px;
+    color: black;
+    font-weight: 500;
+    outline: none;
+    caret-color: rgb(155, 78, 255);
+    transition-duration: .3s;
+    
+  }
+  
+  .inputFieldIcon {
+    position: absolute;
+    color: rgb(155, 78, 255);
+    width: 12px;
+    top: -17px;
+    left: 5px;
+    /* opacity: 0; */
+    transition: .2s linear;
+  }
+
+
+  
+  .inputFieldLabel {
+    position: absolute;
+    top: -20px;
+    left: 25px;
+    color: black;
+    font-size: 15px;
+    font-weight: 400;
+    overflow: hidden;
+    transition: .2s linear;
+    /* opacity: 0; */
+  }
+  
+  /* .inputField:focus ~ .inputFieldLabel,
+  .inputField:valid ~ .inputFieldLabel {
+    transform: translateX(20px);
+    opacity: 1;
+  }
+  
+  .inputField:focus ~ .inputFieldIcon,
+  .inputField:valid ~ .inputFieldIcon {
+    transform: translateX(20px);
+    opacity: 1;
+  } */
+  
+  .inputField:focus{
+    background-color: #ddd;
+    transition-duration: .3s;
+  }
+  
+  /* Estilo para ocultar el icono de calendario en inputs de tipo date */
+  .inputContainer> input[type="date"]::-webkit-calendar-picker-indicator,
+  
+  .inputContainer> input[type="date"]::-webkit-clear-button {
+    display: none;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+  
+  input[type="radio"]:checked{
+    border-color: #6c36b2;
+    transform: translateZ(0px);
+    background-color: #9b4eff;
+  }
+
+  .button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px ;
+    gap: 8px;
+    height: auto;
+    width: 128px;
+    border: none;
+    border-radius:8px;
+    cursor: pointer;
+  }
+  
+  .button-pri{
+    background: rgba(101, 77, 237, 0.235);
+  }
+  .button-pri .lable{
+    color: #6067eb;
+  }
+  .button-pri .svg-icon{
+    color: #6067eb
+  }
+
+  .button> .button-sec{
+    background: #41464e27;
+  }
+  .button-sec >.lable{
+    color: #000;
+  }
+  .button-sec >.svg-icon{
+    color:  #000;
+  }
+  .lable {
+    margin-top: 1px;
+    font-size: 14px;
+    line-height: 22px;
+    
+    font-family: sans-serif;
+    letter-spacing: 1px;
+  }
+ 
+  .button-pri:hover  {
+    background-color: rgba(101, 77, 237, 0.299);; 
+  }
+  .button-sec:hover  {
+    background-color:  #41464e2c;
+    
+  }
+  
+  .button-pri:hover .svg-icon,
+  .button-sec:hover .svg-icon {
+    animation: spin 1s linear infinite;
+  }
+  
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+  
+    25% {
+      transform: rotate(-8deg);
+    }
+  
+    50% {
+      transform: rotate(0deg);
+    }
+  
+    75% {
+      transform: rotate(8deg);
+    }
+  
+    100% {
+      transform: rotate(0deg);
+    }
+  }
