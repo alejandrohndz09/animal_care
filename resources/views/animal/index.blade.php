@@ -5,7 +5,7 @@
         <main>
             <div class="container-fluid px-4 py-4">
                 <div style=" width: 100%;display: flex;align-items: center;justify-content: space-between;">
-                    <h1>Animales</h1>
+                    <h1>Animales FEOS</h1>
                     <button class="btn button-pri">
                         <i class="fas fa-plus"></i>
                         <span class="lable">Agregar nuevo registro</span>
