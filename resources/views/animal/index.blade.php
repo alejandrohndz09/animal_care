@@ -197,15 +197,14 @@
 
                                 </div>
                                 <div style="display: flex; align-items: flex-end; gap: 10px; justify-content: center">
+                                    <button  type="reset" class="button button-sec">
+                                        <i class="svg-icon fas fa-rotate-right"></i>
+                                        <span class="lable">Cancelar</span>
+                                    </button>
                                     <button type="submit" class="button button-pri">
                                         <i class="svg-icon fa-regular fa-floppy-disk"></i>
                                         <span class="lable">Guardar</span>
                                     </button>
-                                    <button  type="reset" class="button button-red">
-                                        <i class="svg-icon fas fa-rotate-right"></i>
-                                        <span class="lable">Cancelar</span>
-                                    </button>
-                                    
                                 </div>
                                 
                             </form>

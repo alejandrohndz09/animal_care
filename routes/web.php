@@ -20,6 +20,9 @@ Route::get('/', function () {
 Route::get('/home', function () {
     return view('dashboard.dashboard');
 });
+Route::get('/animal', function () {
+    return view('animal.index');
+});
 
 Route::get('/form1', function () {
     return view('formularios.form1');
