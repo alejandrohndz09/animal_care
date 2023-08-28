@@ -1,16 +1,31 @@
 @extends('layouts.master')
+@section('styles')
+  
+@endsection
+
+@section('scripts')
+  
+@endsection
+
 <link rel="stylesheet" href="<?php echo asset('css/f3.css'); ?>" type="text/css">
 @section('content')
     <div id="layoutSidenav_content">
         <main>
             <div class="container-fluid px-4 py-4">
-                <div style=" width: 100%;display: flex;align-items: center;justify-content: space-between;">
-                    <h1>Animales FEOS</h1>
-                    <button class="btn button-pri">
+                <div style="width: 100%; display: flex;align-items: center; justify-content: space-between; gap:20px">
+                    <h1>Animales </h1>
+                    
+                        <div class="inputContainer" style="margin: auto; align-items: end">
+                            <input id="searchInput" class="inputField card" style="width: 50%" 
+                            autocomplete="off" placeholder="🔍︎ Buscar" type="search">
+                        </div>
+                    
+                    {{-- <button class="btn button-pri">
                         <i class="fas fa-plus"></i>
                         <span class="lable">Agregar nuevo registro</span>
-                    </button>
+                    </button> --}}
                 </div>
+
                 <div class="row mt-3">
                     <div class="col-xl-7">
                         <table>
@@ -23,7 +38,7 @@
                                     <th>Sexo</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="tableBody">
                                 <tr>
                                     <td>
                                         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/2048px-User-avatar.svg.png"
@@ -126,6 +141,9 @@
                                 </tr>
                             </tbody>
                         </table>
+                        <div id="pagination">
+                            
+                        </div>
                     </div>
                     <div class="col-xl-5">
                         <div class="card  mb-4" style="border:none; padding-bottom: 25px !important; width: 100%">
@@ -145,7 +163,7 @@
                                     <div class="col-xl-8">
                                         <div class="inputContainer">
                                             <input required="required" id="nombre" class="inputField"
-                                                placeholder="Nombre" type="text" autocomplete="none">
+                                                placeholder="Nombre" type="text" autocomplete="off">
                                             <label class="inputFieldLabel" for="nombre">Nombre</label>
                                             <i class="inputFieldIcon fas fa-pen"></i>
                                         </div>
@@ -197,7 +215,7 @@
 
                                 </div>
                                 <div style="display: flex; align-items: flex-end; gap: 10px; justify-content: center">
-                                    <button  type="reset" class="button button-sec">
+                                    <button type="reset" class="button button-sec">
                                         <i class="svg-icon fas fa-rotate-right"></i>
                                         <span class="lable">Cancelar</span>
                                     </button>
@@ -206,15 +224,13 @@
                                         <span class="lable">Guardar</span>
                                     </button>
                                 </div>
-                                
+
                             </form>
                         </div>
                     </div>
                 </div>
-
-
-
             </div>
         </main>
     </div>
 @endsection
+
