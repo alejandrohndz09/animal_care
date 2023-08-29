@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Animal;
 
 class AnimalControlador extends Controller
 {
@@ -13,7 +14,8 @@ class AnimalControlador extends Controller
      */
     public function index()
     {
-        //
+        $animales=Animal::where('estado',1)->get();
+        return view('animal.index')->with('animales',$animales);
     }
 
     /**

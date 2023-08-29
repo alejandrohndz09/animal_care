@@ -36,6 +36,7 @@
                                     <th>Apellido</th>
                                     <th>Edad</th>
                                     <th>Sexo</th>
+                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody id="tableBody">
@@ -48,6 +49,22 @@
                                     <td>Doe</td>
                                     <td>25</td>
                                     <td>Masculino</td>
+                                    <td>
+                                        <div style="display: flex; align-items: flex-end; gap: 5px; justify-content: center">
+                                            <button type="reset" class="button button-blue">
+                                                <i class="svg-icon fas fa-pencil"></i>
+                                                <span class="lable"></span>
+                                            </button>
+                                            <button type="submit" class="button button-red">
+                                                <i class="svg-icon fas fa-trash"></i>
+                                                <span class="lable"></span>
+                                            </button>
+                                            <button type="submit" class="button button-sec">
+                                                <i class="svg-icon fas fa-ellipsis-vertical"></i>
+                                                <span class="lable"></span>
+                                            </button>
+                                        </div>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>
