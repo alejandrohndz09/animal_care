@@ -177,3 +177,20 @@
       transform: rotate(0deg);
     }
   }
+
+  #pagination {
+    display: flex;
+    text-align: center;
+    justify-content: end;
+    margin-top: 1px;
+}
+
+#pagination a {
+  color: #6067eb;
+    display: inline-block;
+    padding: 10px 20px;
+    width: auto;
+    margin: 0 5px;
+   text-decoration: none;
+    
+}
