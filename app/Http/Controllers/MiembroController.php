@@ -8,16 +8,12 @@ use Illuminate\Http\Request;
 
 class MiembroController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
-           //Pagina inicio
-           $datos = Miembro::all();
-           return view('formularios.form2', compact('datos'));
+        //Pagina inicio
+        $datos = Miembro::all();
+        return view('miembro.index')->with('datos', $datos);
     }
 
     /**
@@ -27,8 +23,8 @@ class MiembroController extends Controller
      */
     public function create()
     {
-         //Formulario donde se agrega datos
-         return view('formularios.form2');
+        //Formulario donde se agrega datos
+        return view('miembro.index');
     }
 
     /**
@@ -39,7 +35,24 @@ class MiembroController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // Obtén el último registro de la tabla para determinar el siguiente incremento
+        $ultimoRegistro = Miembro::latest('idMiembro')->first();
+
+        // Calcula el siguiente incremento
+        $siguienteIncremento = $ultimoRegistro ? (int) substr($ultimoRegistro->idMiembro, -4) + 1 : 1;
+
+        // Crea el ID personalizado concatenando "MB" y el incremento
+        $idPersonalizado = "MB" . str_pad($siguienteIncremento, 5, '0', STR_PAD_LEFT);
+
+        $miembros = new Miembro();
+        $miembros->idMiembro = $idPersonalizado;
+        $miembros->nombres = $request->post('nombres');
+        $miembros->apellidos = $request->post('apellidos');
+        $miembros->correo = $request->post('correo');
+        $miembros->estado = 0;
+        $miembros->save();
+
+        return redirect()->route("miembros.index")->with("success", "Agregado con exito!");
     }
 
     /**

@@ -1,25 +1,22 @@
 @extends('layouts.master')
 @section('styles')
-  
+    <link rel="stylesheet" href="<?php echo asset('css/f3.css'); ?>" type="text/css">
 @endsection
 
 @section('scripts')
-  
 @endsection
-
-<link rel="stylesheet" href="<?php echo asset('css/f3.css'); ?>" type="text/css">
 @section('content')
     <div id="layoutSidenav_content">
         <main>
             <div class="container-fluid px-4 py-4">
                 <div style="width: 100%; display: flex;align-items: center; justify-content: space-between; gap:20px">
                     <h1>Animales </h1>
-                    
-                        <div class="inputContainer" style="margin: auto; align-items: end">
-                            <input id="searchInput" class="inputField card" style="width: 50%" 
-                            autocomplete="off" placeholder="🔍︎ Buscar" type="search">
-                        </div>
-                    
+
+                    <div class="inputContainer" style="margin: auto; align-items: end">
+                        <input id="searchInput" class="inputField card" style="width: 50%" autocomplete="off"
+                            placeholder="🔍︎ Buscar" type="search">
+                    </div>
+
                     {{-- <button class="btn button-pri">
                         <i class="fas fa-plus"></i>
                         <span class="lable">Agregar nuevo registro</span>
@@ -50,7 +47,8 @@
                                     <td>25</td>
                                     <td>Masculino</td>
                                     <td>
-                                        <div style="display: flex; align-items: flex-end; gap: 5px; justify-content: center">
+                                        <div
+                                            style="display: flex; align-items: flex-end; gap: 5px; justify-content: center">
                                             <button type="button" class="button button-blue">
                                                 <i class="svg-icon fas fa-pencil"></i>
                                                 <span class="lable"></span>
@@ -159,7 +157,7 @@
                             </tbody>
                         </table>
                         <div id="pagination">
-                            
+
                         </div>
                     </div>
                     <div class="col-xl-5">
@@ -250,4 +248,3 @@
         </main>
     </div>
 @endsection
-
