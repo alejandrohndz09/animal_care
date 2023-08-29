@@ -24,6 +24,11 @@
                     <div class="sb-nav-link-icon"><i class="fas fa-warehouse" ></i></div>
                     Inventario
                 </a>
+
+                <a class="nav-link" href="/miembro">
+                    <div class="sb-nav-link-icon"><i class="fas fa-user" ></i></div>
+                    Miembro
+                </a>
                 
                 <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages"
                    aria-expanded="false" aria-controls="collapsePages">
