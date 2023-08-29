@@ -35,3 +35,8 @@ Route::get('/form2', function () {
 Route::get('/form3', function () {
     return view('formularios.form3');
 });
+
+
+////////////////////////////MIS RUTAS PETER////////////////////////////////////////
+Route::get('/create', [MiembroController::class, 'index'])->name('miembros.index');
+Route::post('/store', [MiembroController::class, 'store'])->name('miembros.store');
