@@ -17,28 +17,26 @@ function formatPhoneNumber(input) {
 $(document).ready(function () {
     $("#add-telefono").click(function () {
         var newTelefonoField = `
-        <div id="flavio">
-           <div class="col-xl-6">
+        <div class="row" id="campo">
+           <div class="col-xl-7">
               <div class="inputContainer">
-                   <input class="inputField form-control telefono" type="tel" maxlength="18"
+                   <input class="inputField" type="tel" maxlength="18"
                       value="+503 " name="telefonos[]" oninput="formatPhoneNumber(this)"
                        onkeydown="return restrictToNumbersAndHyphen(event)">
               </div>
             </div>
-         <div class="col-xl-6">
-              <button type="button" class="btn btn-danger remove-telefono">
-               <i class="svg-icon fas fa-circle-xmark"></i>
-              </button>
-        </div>
-     </div>
-     </div>
-                `;
+            <div class="col-xl-5">
+                <button type="button" class="btn btn-danger remove-telefono">
+                <i class="svg-icon fas fa-circle-xmark"></i>
+                </button>
+            </div>
+        </div>`;
         $("#telefono-container").append(newTelefonoField);
     });
 
     // Remover campos agregados dinámicamente
     $("#telefono-container").on("click", ".remove-telefono", function () {
-        $(this).closest("#flavio").remove();
+        $(this).closest("#campo").remove();
     });
 });
 
