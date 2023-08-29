@@ -1,12 +1,14 @@
 @extends('layouts.master')
 
 @section('scripts')
-<script src="{{ asset('js/Jsmiembro.js') }}"></script>
+    <script src="{{ asset('js/Jsmiembro.js') }}"></script>
+@endsection
+
+@section('styles')
+    <link rel="stylesheet" href="<?php echo asset('css/f3.css'); ?>" type="text/css">
 @endsection
 
 @section('content')
-    <link rel="stylesheet" href="<?php echo asset('css/f3.css'); ?>" type="text/css">
-    
     <div id="layoutSidenav_content">
         <main>
             <div class="container-fluid px-4 py-4">
@@ -16,6 +18,11 @@
                         <i class="fas fa-plus"></i>
                         <span class="lable">Agregar nuevo registro</span>
                     </button> --}}
+
+                    <div class="inputContainer" style="margin: auto; align-items: end">
+                        <input id="searchInput" class="inputField card" style="width: 50%" autocomplete="off"
+                            placeholder="🔍︎ Buscar" type="search">
+                    </div>
                 </div>
 
                 <div class="row mt-3">
@@ -23,13 +30,14 @@
                         <table>
                             <thead>
                                 <tr class="head">
-                                    <th></th>
+                                    <th></th>   
                                     <th>Nombre</th>
                                     <th>Apellido</th>
                                     <th>Correo</th>
+                                    <th></th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="tableBody">
 
                                 @foreach ($datos as $item)
                                     <tr>
@@ -40,10 +48,30 @@
                                         <td>{{ $item->nombres }}</td>
                                         <td>{{ $item->apellidos }}</td>
                                         <td>{{ $item->correo }} </td>
+                                        <td>
+                                            <div
+                                                style="display: flex; align-items: flex-end; gap: 5px; justify-content: center">
+                                                <button type="button" class="button button-blue">
+                                                    <i class="svg-icon fas fa-pencil"></i>
+                                                    <span class="lable"></span>
+                                                </button>
+                                                <button type="button" class="button button-red">
+                                                    <i class="svg-icon fas fa-trash"></i>
+                                                    <span class="lable"></span>
+                                                </button>
+                                                <button type="button" class="button button-sec">
+                                                    <i class="svg-icon fas fa-ellipsis-vertical"></i>
+                                                    <span class="lable"></span>
+                                                </button>
+                                            </div>
+                                        </td>
                                     </tr>
                                 @endforeach
                             </tbody>
                         </table>
+                        <div id="pagination">
+
+                        </div>
                     </div>
 
                     <div class="col-xl-5">
@@ -96,18 +124,17 @@
 
                                     </div>
 
-
                                     <div style="display: flex; align-items: flex-end; gap: 10px; justify-content: center">
-                                        <button type="reset" class="button button-sec">
-                                            <i class="svg-icon fas fa-rotate-right"></i>
-                                            <span class="lable">Cancelar</span>
-                                        </button>
                                         <a href="{{ route('miembros.index') }}">
                                             <button type="submit" class="button button-pri">
                                                 <i class="svg-icon fa-regular fa-floppy-disk"></i>
                                                 <span class="lable">Guardar</span>
                                             </button>
                                         </a>
+                                        <button type="reset" class="button button-red">
+                                            <i class="svg-icon fas fa-rotate-right"></i>
+                                            <span class="lable">Cancelar</span>
+                                        </button>
 
                                     </div>
                             </div>
