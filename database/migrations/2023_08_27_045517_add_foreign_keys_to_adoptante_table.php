@@ -13,10 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('password_resets', function (Blueprint $table) {
-            $table->string('email')->primary();
-            $table->string('token');
-            $table->timestamp('created_at')->nullable();
+        Schema::table('adoptante', function (Blueprint $table) {
+            $table->foreign(['idHogar'], 'fk_hgr-adp')->references(['idHogar'])->on('hogar')->onUpdate('CASCADE')->onDelete('NO ACTION');
         });
     }
 
@@ -27,6 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('password_resets');
+        Schema::table('adoptante', function (Blueprint $table) {
+            $table->dropForeign('fk_hgr-adp');
+        });
     }
 };
