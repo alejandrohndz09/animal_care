@@ -21,6 +21,7 @@ class MiembroController extends Controller
         //Formulario donde se agrega datos
         return view('miembro.index');
     }
+    
     public function store(Request $request)
     {
         // Obtén el último registro de la tabla para determinar el siguiente incremento
@@ -69,6 +70,7 @@ class MiembroController extends Controller
 
         return redirect()->route("miembros.index")->with("success", "Actualizado con exito!");
     }
+
     public function destroy($id)
     {
         //

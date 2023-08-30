@@ -40,9 +40,8 @@
                             <tbody id="tableBody">
 
                                 @foreach ($datos as $item)
-                                @if ({{}})
                                     
-                                @endif
+                            
                                     <tr>
                                         <td>
                                             <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/2048px-User-avatar.svg.png"
@@ -90,21 +89,21 @@
                                         <div class="col-xl-6">
                                             <div class="inputContainer">
                                                 <input name="nombres" class="inputField" placeholder="Nombres"
-                                                    type="text" autocomplete="false" value="{{ $miembros->nombres }}">
+                                                    type="text" autocomplete="off" value="{{ $miembros->nombres }}">
                                                 <label class="inputFieldLabel" for="nombre">Nombres del miembro</label>
                                                 <i class="inputFieldIcon fas fa-user"></i>
                                             </div>
                                         </div>
                                         <div class="col-xl-6">
                                             <div class="inputContainer">
-                                                <input name="apellidos" class="inputField" autocomplete="false"
+                                                <input name="apellidos" class="inputField" autocomplete="off"
                                                     placeholder="Apellidos" type="text" value="{{ $miembros->apellidos }}">
                                             </div>
                                         </div>
                                     </div>
 
                                     <div class="inputContainer">
-                                        <input class="inputField" name="correo" autocomplete="false" placeholder="Correo"
+                                        <input class="inputField" name="correo" autocomplete="off" placeholder="Correo"
                                             type="email" value="{{ $miembros->correo }}">
                                         <label class="inputFieldLabel" for="fecha">Correo</label>
                                         <i class="inputFieldIcon fas fa-envelope"></i>
@@ -150,21 +149,21 @@
                                         <div class="col-xl-6">
                                             <div class="inputContainer">
                                                 <input name="nombres" class="inputField" placeholder="Nombres"
-                                                    type="text" autocomplete="false">
+                                                    type="text" autocomplete="off">
                                                 <label class="inputFieldLabel" for="nombre">Nombres del miembro</label>
                                                 <i class="inputFieldIcon fas fa-user"></i>
                                             </div>
                                         </div>
                                         <div class="col-xl-6">
                                             <div class="inputContainer">
-                                                <input name="apellidos" class="inputField" autocomplete="false"
+                                                <input name="apellidos" class="inputField" autocomplete="off"
                                                     placeholder="Apellidos" type="text">
                                             </div>
                                         </div>
                                     </div>
 
                                     <div class="inputContainer">
-                                        <input class="inputField" name="correo" autocomplete="false"
+                                        <input class="inputField" name="correo" autocomplete="off"
                                             placeholder="Correo" type="email">
                                         <label class="inputFieldLabel" for="fecha">Correo</label>
                                         <i class="inputFieldIcon fas fa-envelope"></i>
