@@ -16,23 +16,11 @@ class MiembroController extends Controller
         return view('miembro.index')->with('datos', $datos);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         //Formulario donde se agrega datos
         return view('miembro.index');
     }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         // Obtén el último registro de la tabla para determinar el siguiente incremento
@@ -55,46 +43,32 @@ class MiembroController extends Controller
         return redirect()->route("miembros.index")->with("success", "Agregado con exito!");
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
-        //
+        //Obtiene un registro en especifico de una tabla
     }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
-        //
+        //Trae los datos que seran editados y los coloca en un formulario
+        $miembros = Miembro::find($id);
+        $datos = Miembro::all();
+        return view('miembro.index', [
+            'miembros' => $miembros,
+            'datos' => $datos
+        ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
-        //
-    }
+        //Actualiza los datos en la BD
+        $miembros = Miembro::find($id);
+        $miembros->nombres = $request->post('nombres');
+        $miembros->apellidos = $request->post('apellidos');
+        $miembros->correo = $request->post('correo');
+        $miembros->save();
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+        return redirect()->route("miembros.index")->with("success", "Actualizado con exito!");
+    }
     public function destroy($id)
     {
         //

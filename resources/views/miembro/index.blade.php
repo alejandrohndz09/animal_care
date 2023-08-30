@@ -13,7 +13,7 @@
         <main>
             <div class="container-fluid px-4 py-4">
                 <div style=" width: 100%;display: flex;align-items: center;justify-content: space-between;">
-                    <h1>Animales</h1>
+                    <h1>Miembros</h1>
                     {{-- <button class="btn button-pri">
                         <i class="fas fa-plus"></i>
                         <span class="lable">Agregar nuevo registro</span>
@@ -30,7 +30,7 @@
                         <table>
                             <thead>
                                 <tr class="head">
-                                    <th></th>   
+                                    <th></th>
                                     <th>Nombre</th>
                                     <th>Apellido</th>
                                     <th>Correo</th>
@@ -40,6 +40,9 @@
                             <tbody id="tableBody">
 
                                 @foreach ($datos as $item)
+                                @if ({{}})
+                                    
+                                @endif
                                     <tr>
                                         <td>
                                             <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/2048px-User-avatar.svg.png"
@@ -51,18 +54,18 @@
                                         <td>
                                             <div
                                                 style="display: flex; align-items: flex-end; gap: 5px; justify-content: center">
-                                                <button type="button" class="button button-blue">
-                                                    <i class="svg-icon fas fa-pencil"></i>
-                                                    <span class="lable"></span>
-                                                </button>
+                                                <a href="{{ route('miembros.edit', $item->idMiembro) }}"method="GET">
+                                                    <button type="button" class="button button-blue">
+                                                        <i class="svg-icon fas fa-pencil"></i>
+                                                        <span class="lable"></span>
+                                                    </button>
+                                                </a>
+
                                                 <button type="button" class="button button-red">
                                                     <i class="svg-icon fas fa-trash"></i>
                                                     <span class="lable"></span>
                                                 </button>
-                                                <button type="button" class="button button-sec">
-                                                    <i class="svg-icon fas fa-ellipsis-vertical"></i>
-                                                    <span class="lable"></span>
-                                                </button>
+
                                             </div>
                                         </td>
                                     </tr>
@@ -73,34 +76,36 @@
 
                         </div>
                     </div>
-
                     <div class="col-xl-5">
-                        <form action="{{ route('miembros.store') }}" method="POST">
-                            @csrf
-                            <div class="card  mb-4" style="border:none; padding-bottom: 25px !important; width: 100%">
-                                <h3 style="padding: -5px 0px !important;">Registro miembro</h3>
-                                <form action="post">
+                        <div class="card  mb-4" style="border:none; padding-bottom: 25px !important; width: 100%">
+
+                            @if (isset($miembros))
+                                <h3 style="padding: -5px 0px !important;">Modificar Registro</h3>
+                                <form action="{{ route('miembros.update', $miembros) }}" method="POST">
+
+                                    @csrf
+                                    @method('PUT') <!-- Utilizar el método PUT para la actualización -->
+
                                     <div class="row">
                                         <div class="col-xl-6">
                                             <div class="inputContainer">
-                                                <input required="required" name="nombres" class="inputField"
-                                                    placeholder="Nombres" type="text" autocomplete="false">
+                                                <input name="nombres" class="inputField" placeholder="Nombres"
+                                                    type="text" autocomplete="false" value="{{ $miembros->nombres }}">
                                                 <label class="inputFieldLabel" for="nombre">Nombres del miembro</label>
                                                 <i class="inputFieldIcon fas fa-user"></i>
                                             </div>
                                         </div>
                                         <div class="col-xl-6">
                                             <div class="inputContainer">
-                                                <input required="required" id="fecha" name="apellidos"
-                                                    class="inputField" autocomplete="false" placeholder="Apellidos"
-                                                    type="text">
+                                                <input name="apellidos" class="inputField" autocomplete="false"
+                                                    placeholder="Apellidos" type="text" value="{{ $miembros->apellidos }}">
                                             </div>
                                         </div>
                                     </div>
 
                                     <div class="inputContainer">
-                                        <input required="required" id="fecha" class="inputField" name="correo"
-                                            autocomplete="false" placeholder="Correo" type="email">
+                                        <input class="inputField" name="correo" autocomplete="false" placeholder="Correo"
+                                            type="email" value="{{ $miembros->correo }}">
                                         <label class="inputFieldLabel" for="fecha">Correo</label>
                                         <i class="inputFieldIcon fas fa-envelope"></i>
                                     </div>
@@ -125,20 +130,79 @@
                                     </div>
 
                                     <div style="display: flex; align-items: flex-end; gap: 10px; justify-content: center">
-                                        <a href="{{ route('miembros.index') }}">
-                                            <button type="submit" class="button button-pri">
-                                                <i class="svg-icon fa-regular fa-floppy-disk"></i>
-                                                <span class="lable">Guardar</span>
-                                            </button>
-                                        </a>
+                                        <button type="submit" class="button button-pri">
+                                            <i class="svg-icon fa-regular fa-floppy-disk"></i>
+                                            <span class="lable">Modificar</span>
+                                        </button>
                                         <button type="reset" class="button button-red">
                                             <i class="svg-icon fas fa-rotate-right"></i>
                                             <span class="lable">Cancelar</span>
                                         </button>
 
                                     </div>
-                            </div>
-                        </form>
+                                </form>
+                            @else
+                                <h3 style="padding: -5px 0px !important;">Nuevo Registro</h3>
+                                <form action="{{ route('miembros.store') }}" method="POST">
+                                    @csrf
+
+                                    <div class="row">
+                                        <div class="col-xl-6">
+                                            <div class="inputContainer">
+                                                <input name="nombres" class="inputField" placeholder="Nombres"
+                                                    type="text" autocomplete="false">
+                                                <label class="inputFieldLabel" for="nombre">Nombres del miembro</label>
+                                                <i class="inputFieldIcon fas fa-user"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-6">
+                                            <div class="inputContainer">
+                                                <input name="apellidos" class="inputField" autocomplete="false"
+                                                    placeholder="Apellidos" type="text">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="inputContainer">
+                                        <input class="inputField" name="correo" autocomplete="false"
+                                            placeholder="Correo" type="email">
+                                        <label class="inputFieldLabel" for="fecha">Correo</label>
+                                        <i class="inputFieldIcon fas fa-envelope"></i>
+                                    </div>
+
+                                    <div class="row" id="telefono-container">
+                                        <div class="col-xl-6">
+                                            <div class="inputContainer">
+                                                <input class="inputField form-control telefono" type="tel"
+                                                    maxlength="18" value="+503 " name="telefonos"
+                                                    oninput="formatPhoneNumber(this)"
+                                                    onkeydown="return restrictToNumbersAndHyphen(event)">
+                                                <label class="inputFieldLabel" for="telefono">Telefono</label>
+                                                <i class="inputFieldIcon fas fa-phone"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-6">
+                                            <button type="button" class="button button-pri" id="add-telefono">
+                                                <i class="svg-icon fas fa-plus"></i>
+                                            </button>
+                                        </div>
+
+                                    </div>
+
+                                    <div style="display: flex; align-items: flex-end; gap: 10px; justify-content: center">
+                                        <button type="submit" class="button button-pri">
+                                            <i class="svg-icon fa-regular fa-floppy-disk"></i>
+                                            <span class="lable">Guardar</span>
+                                        </button>
+                                        <button type="reset" class="button button-red">
+                                            <i class="svg-icon fas fa-rotate-right"></i>
+                                            <span class="lable">Cancelar</span>
+                                        </button>
+
+                                    </div>
+                                </form>
+                            @endif
+                        </div>
                     </div>
                 </div>
             </div>
