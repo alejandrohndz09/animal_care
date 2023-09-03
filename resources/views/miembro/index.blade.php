@@ -40,8 +40,6 @@
                             <tbody id="tableBody">
 
                                 @foreach ($datos as $item)
-                                    
-                            
                                     <tr>
                                         <td>
                                             <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/2048px-User-avatar.svg.png"
@@ -60,7 +58,12 @@
                                                     </button>
                                                 </a>
 
-                                                <button type="button" class="button button-red">
+                                                <button type="button" class="button button-red"data-bs-toggle="modal"
+                                                    data-bs-target="#exampleModalToggle" data-id="{{ $item->idMiembro }}"
+                                                    data-nombre="{{ $item->nombres }}"
+                                                    data-apellido="{{ $item->apellidos }}"
+                                                    data-correo="{{ $item->correo }}">
+
                                                     <i class="svg-icon fas fa-trash"></i>
                                                     <span class="lable"></span>
                                                 </button>
@@ -97,7 +100,8 @@
                                         <div class="col-xl-6">
                                             <div class="inputContainer">
                                                 <input name="apellidos" class="inputField" autocomplete="off"
-                                                    placeholder="Apellidos" type="text" value="{{ $miembros->apellidos }}">
+                                                    placeholder="Apellidos" type="text"
+                                                    value="{{ $miembros->apellidos }}">
                                             </div>
                                         </div>
                                     </div>
@@ -163,8 +167,8 @@
                                     </div>
 
                                     <div class="inputContainer">
-                                        <input class="inputField" name="correo" autocomplete="off"
-                                            placeholder="Correo" type="email">
+                                        <input class="inputField" name="correo" autocomplete="off" placeholder="Correo"
+                                            type="email">
                                         <label class="inputFieldLabel" for="fecha">Correo</label>
                                         <i class="inputFieldIcon fas fa-envelope"></i>
                                     </div>
@@ -205,9 +209,36 @@
                     </div>
                 </div>
             </div>
+            <!-- Modal -->
+            <form action="" id="form-edit" name="form" method="POST">
+                @csrf
+                @method('DELETE')
+                <div class="modal fade" id="exampleModalToggle" aria-hidden="true"
+                    aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+                    <div class="modal-dialog modal-dialog-centered">
 
-
-
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalToggleLabel">Desea eliminar este registro?</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <!-- Aquí puedes mostrar los detalles del registro utilizando el id -->
+                                <p>ID del registro: <span id="modalRecordId"></span></p>
+                                <!-- Otros detalles del registro -->
+                                <p>Nombres: <span id="modalRecordNombre"></span></p>
+                                <p>Apellidos: <span id="modalRecordApellido"></span></p>
+                                <p>Correo: <span id="modalRecordCorreo"></span></p>
+                            </div>
+                            <div  class="modal-footer">
+                                <button id="confirmar" type="button" class="btn btn-primary"> Eliminar</button>
+                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                            </div>
+                        </div>
+                    </div>
+            </form>
         </main>
+
     </div>
 @endsection

@@ -19,7 +19,7 @@
     <link rel="stylesheet" href="<?php echo asset('css/styles.css'); ?>" type="text/css">
     @yield("styles")
     <link rel="stylesheet" href="<?php echo asset('css/f1.css'); ?>" type="text/css">
-
+    <script src="{{ url('https://code.jquery.com/jquery-3.6.0.min.js') }}"></script>
     <link rel="stylesheet" href="<?php echo asset('css/input.css'); ?>" type="text/css">
 </head>
 
@@ -38,7 +38,6 @@
     <script src="{{ asset('js/chart-bar-demo.js') }}"></script>
     <script src="{{ asset('js/simple-datatables@latest.js') }}"></script>
     <script src="{{ asset('js/datatables-simple-demo.js') }}"></script>
-    <script src="{{ url('https://code.jquery.com/jquery-3.6.0.min.js') }}"></script>
     <script src="{{ url('https://cdn.jsdelivr.net/npm/sweetalert2@10.3.5/dist/sweetalert2.min.js') }}"></script>
     <script src="{{ asset('js/scripts.js') }}"></script>
     <script src="{{ asset('js/tablas.js') }}"></script>

@@ -17,31 +17,40 @@ function formatPhoneNumber(input) {
 $(document).ready(function () {
     $("#add-telefono").click(function () {
         var telefonoInput = $(".telefono:last"); // Obtener el último campo de teléfono agregado
-        var telefonoValue = telefonoInput.val(); // Obtener el valor y eliminar espacios en blanco
+        var telefonoValue = telefonoInput.val() // Obtener el valor del último campo y quitar espacios en blanco
 
-        // Validar si el campo está vacío antes de agregar un nuevo campo
-        if (telefonoValue === "+503 ") {
+        // Validar si el campo está vacío
+        if (telefonoValue == "+503 ") {
             alert("El campo de teléfono no puede estar vacío.");
             return; // Detener la función si el campo está vacío
-        } else {
+        }
+        // Validar si el campo no tiene al menos 10 caracteres
+        else if (telefonoValue.length < 13) {
+            alert("El número de teléfono ingresado no es valido.");
+            return; // Detener la función si el campo no es válido
+        }
+        else {
+            // Si pasa ambas validaciones, puedes agregar el nuevo campo de teléfono
             var newTelefonoField = `
-                <div id="flavio">
-                   <div class="col-xl-6">
-                      <div class="inputContainer">
-                           <input class="inputField form-control telefono" type="tel" maxlength="18"
-                              value="+503 " name="telefonos[]" oninput="formatPhoneNumber(this)"
-                               onkeydown="return restrictToNumbersAndHyphen(event)">
-                      </div>
-                    </div>
-                 <div class="col-xl-3">
-                      <button type="button" class="btn btn-danger remove-telefono">
-                       <i class="svg-icon fas fa-circle-xmark"></i>
-                      </button>
+            <div id="flavio">
+               <div class="col-xl-6">
+                  <div class="inputContainer">
+                       <input class="inputField form-control telefono" type="tel" maxlength="18"
+                          value="+503 " name="telefonos[]" oninput="formatPhoneNumber(this)"
+                           onkeydown="return restrictToNumbersAndHyphen(event)">
+                  </div>
                 </div>
-            `;
+             <div class="col-xl-3">
+                  <button type="button" class="btn btn-danger remove-telefono">
+                   <i class="svg-icon fas fa-circle-xmark"></i>
+                  </button>
+            </div>
+        `;
             $("#telefono-container").append(newTelefonoField);
         }
+
     });
+
 
     // Remover campos agregados dinámicamente
     $("#telefono-container").on("click", ".remove-telefono", function () {
@@ -65,5 +74,27 @@ $(document).ready(function () {
                 return;
             }
         }
+    });
+});
+
+$(document).ready(function () {
+    $('#exampleModalToggle').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget); // Botón que desencadenó el modal
+        var id = button.data('id'); // Obtiene el valor del atributo data-id
+        var nombre = button.data('nombre'); // Obtiene el valor del atributo data-nombre
+        var apellido = button.data('apellido'); // Obtiene el valor del atributo data-apellido
+        var correo = button.data('correo'); // Obtiene el valor del atributo data-correo
+
+        // Actualiza el contenido del modal con los detalles del registro
+        $('#modalRecordId').text(id);
+        $('#modalRecordNombre').text(nombre);
+        $('#modalRecordApellido').text(apellido);
+        $('#modalRecordCorreo').text(correo);
+        
+        $('body').on('click', '#confirmar', function() {
+            $.get('miembros/' + id +'/destroy', function() {
+            });
+        });
+       
     });
 });

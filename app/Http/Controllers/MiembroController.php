@@ -73,6 +73,10 @@ class MiembroController extends Controller
 
     public function destroy($id)
     {
-        //
+        $miembros = Miembro::find($id);
+        $miembros->estado = '1';
+        $miembros->save();
+
+        return redirect()->route("miembros.index");
     }
 }
