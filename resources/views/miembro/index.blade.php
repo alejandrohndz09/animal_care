@@ -40,37 +40,39 @@
                             <tbody id="tableBody">
 
                                 @foreach ($datos as $item)
-                                    <tr>
-                                        <td>
-                                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/2048px-User-avatar.svg.png"
-                                                alt="user" class="picture" />
-                                        </td>
-                                        <td>{{ $item->nombres }}</td>
-                                        <td>{{ $item->apellidos }}</td>
-                                        <td>{{ $item->correo }} </td>
-                                        <td>
-                                            <div
-                                                style="display: flex; align-items: flex-end; gap: 5px; justify-content: center">
-                                                <a href="{{ route('miembros.edit', $item->idMiembro) }}"method="GET">
-                                                    <button type="button" class="button button-blue">
-                                                        <i class="svg-icon fas fa-pencil"></i>
+                                    @if ($item->estado == 0)
+                                        <tr>
+                                            <td>
+                                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/2048px-User-avatar.svg.png"
+                                                    alt="user" class="picture" />
+                                            </td>
+                                            <td>{{ $item->nombres }}</td>
+                                            <td>{{ $item->apellidos }}</td>
+                                            <td>{{ $item->correo }} </td>
+                                            <td>
+                                                <div
+                                                    style="display: flex; align-items: flex-end; gap: 5px; justify-content: center">
+                                                    <a href="{{ route('miembros.edit', $item->idMiembro) }}"method="GET">
+                                                        <button type="button" class="button button-blue">
+                                                            <i class="svg-icon fas fa-pencil"></i>
+                                                            <span class="lable"></span>
+                                                        </button>
+                                                    </a>
+
+                                                    <button type="button" class="button button-red"data-bs-toggle="modal"
+                                                        data-bs-target="#exampleModalToggle"
+                                                        data-id="{{ $item->idMiembro }}" data-nombre="{{ $item->nombres }}"
+                                                        data-apellido="{{ $item->apellidos }}"
+                                                        data-correo="{{ $item->correo }}">
+
+                                                        <i class="svg-icon fas fa-trash"></i>
                                                         <span class="lable"></span>
                                                     </button>
-                                                </a>
 
-                                                <button type="button" class="button button-red"data-bs-toggle="modal"
-                                                    data-bs-target="#exampleModalToggle" data-id="{{ $item->idMiembro }}"
-                                                    data-nombre="{{ $item->nombres }}"
-                                                    data-apellido="{{ $item->apellidos }}"
-                                                    data-correo="{{ $item->correo }}">
-
-                                                    <i class="svg-icon fas fa-trash"></i>
-                                                    <span class="lable"></span>
-                                                </button>
-
-                                            </div>
-                                        </td>
-                                    </tr>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endif
                                 @endforeach
                             </tbody>
                         </table>
@@ -212,7 +214,6 @@
             <!-- Modal -->
             <form action="" id="form-edit" name="form" method="POST">
                 @csrf
-                @method('DELETE')
                 <div class="modal fade" id="exampleModalToggle" aria-hidden="true"
                     aria-labelledby="exampleModalToggleLabel" tabindex="-1">
                     <div class="modal-dialog modal-dialog-centered">
@@ -231,7 +232,7 @@
                                 <p>Apellidos: <span id="modalRecordApellido"></span></p>
                                 <p>Correo: <span id="modalRecordCorreo"></span></p>
                             </div>
-                            <div  class="modal-footer">
+                            <div class="modal-footer">
                                 <button id="confirmar" type="button" class="btn btn-primary"> Eliminar</button>
                                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
                             </div>

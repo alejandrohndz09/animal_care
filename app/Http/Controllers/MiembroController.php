@@ -77,6 +77,6 @@ class MiembroController extends Controller
         $miembros->estado = '1';
         $miembros->save();
 
-        return redirect()->route("miembros.index");
+        return view("miembros.index");
     }
 }

@@ -92,7 +92,7 @@ $(document).ready(function () {
         $('#modalRecordCorreo').text(correo);
         
         $('body').on('click', '#confirmar', function() {
-            $.get('miembros/' + id +'/destroy', function() {
+            $.get('/destroy/' + id , function() {
             });
         });
        
