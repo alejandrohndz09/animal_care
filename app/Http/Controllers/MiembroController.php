@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Miembro;
+use App\Models\TelefonoMiembro;
 use Illuminate\Http\Request;
 
 class MiembroController extends Controller
@@ -21,7 +22,7 @@ class MiembroController extends Controller
         //Formulario donde se agrega datos
         return view('miembro.index');
     }
-    
+
     public function store(Request $request)
     {
         // Obtén el último registro de la tabla para determinar el siguiente incremento
@@ -41,6 +42,15 @@ class MiembroController extends Controller
         $miembros->estado = 0;
         $miembros->save();
 
+        $contador = $request->post('contador');
+
+        for ($i = 1; $i <= $contador; $i++) {
+            $telefonos = new TelefonoMiembro();
+            $telefonos->telefono = $request->post('telefono' . $i);
+            $telefonos->idMiembro = $idPersonalizado;
+            $telefonos->save();
+        }
+
         return redirect()->route("miembros.index")->with("success", "Agregado con exito!");
     }
 
@@ -51,11 +61,42 @@ class MiembroController extends Controller
     public function edit($id)
     {
         //Trae los datos que seran editados y los coloca en un formulario
+
+        $telefonos = TelefonoMiembro::find( $request->get('id-e'));
+        $telefonos->nombre = $request->get('nombre-e');
+        $telefonos->save();
+        $cantones = TelefonoMiembro::all();
+            
+        $alert = array(
+            'type' => 'success',
+            'message' =>'El registro se ha actualizado exitosamente'
+        );
+        
+        session()->flash('alert',$alert);
+        
+        return  redirect('/canton');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        $telefonos = TelefonoMiembro::where('idMiembro', $id)->get();
+
         $miembros = Miembro::find($id);
         $datos = Miembro::all();
         return view('miembro.index', [
             'miembros' => $miembros,
-            'datos' => $datos
+            'datos' => $datos,
+            'telefonos' =>$telefonos
         ]);
     }
 
@@ -76,7 +117,5 @@ class MiembroController extends Controller
         $miembros = Miembro::find($id);
         $miembros->estado = '1';
         $miembros->save();
-
-        return view("miembros.index");
     }
 }
