@@ -1,13 +1,14 @@
 @extends('layouts.master')
 
-@section('scripts')
-    <script src="{{ asset('js/Jsmiembro.js') }}"></script>
-@endsection
+
 
 @section('styles')
     <link rel="stylesheet" href="<?php echo asset('css/f3.css'); ?>" type="text/css">
 @endsection
 
+@section('scripts')
+    <script src="{{ asset('js/Jsmiembro.js') }}"></script>
+@endsection
 @section('content')
     <div id="layoutSidenav_content">
         <main>
@@ -124,13 +125,8 @@
                                                 <i class="inputFieldIcon fas fa-phone"></i>
                                             </div>
                                         </div>
-                                        <div class="col-xl-6">
-                                            <button type="button" class="button button-pri" id="add-telefono">
-                                                <i class="svg-icon fas fa-plus"></i>
-                                            </button>
-                                        </div>
-
                                     </div>
+                                </div>
 
                                     <div style="display: flex; align-items: flex-end; gap: 10px; justify-content: center">
                                         <button type="submit" class="button button-pri">
@@ -140,6 +136,7 @@
                                         <a  href="miembro" class="button button-red">
                                             <i class="svg-icon fas fa-rotate-right"></i>
                                             <span class="lable">Cancelar</span>
+
                                         </a>
 
                                     </div>
@@ -209,6 +206,7 @@
                     </div>
                 </div>
             </div>
+
             <!-- Modal -->
             <form action="" id="form-edit" name="form" method="POST">
                 @csrf

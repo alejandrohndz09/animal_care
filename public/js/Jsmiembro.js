@@ -58,12 +58,14 @@ $(document).ready(function () {
             $("#telefono-container").append(newTelefonoField);
         }
 
+
         // Remover campos agregados dinámicamente
         $("#telefono-container").on("click", ".remove-telefono", function () {
             $(this).closest("#remove").remove();
             con--; // decrementa el valor en 1
             contador.val(con); // Actualiza el valor en el campo de entrada
         });
+
     });
 
 
