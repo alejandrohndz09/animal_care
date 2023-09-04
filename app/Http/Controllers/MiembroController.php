@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Miembro;
+use App\Models\TelefonoMiembro;
 use Illuminate\Http\Request;
+use Redirect,Response;
 
 class MiembroController extends Controller
 {
@@ -21,7 +23,7 @@ class MiembroController extends Controller
         //Formulario donde se agrega datos
         return view('miembro.index');
     }
-    
+
     public function store(Request $request)
     {
         // Obtén el último registro de la tabla para determinar el siguiente incremento
@@ -41,6 +43,15 @@ class MiembroController extends Controller
         $miembros->estado = 0;
         $miembros->save();
 
+        $contador = $request->post('contador');
+
+        for ($i = 1; $i <= $contador; $i++) {
+            $telefonos = new TelefonoMiembro();
+            $telefonos->telefono = $request->post('telefono' . $i);
+            $telefonos->idMiembro = $idPersonalizado;
+            $telefonos->save();
+        }
+
         return redirect()->route("miembros.index")->with("success", "Agregado con exito!");
     }
 
@@ -50,13 +61,11 @@ class MiembroController extends Controller
     }
     public function edit($id)
     {
-        //Trae los datos que seran editados y los coloca en un formulario
-        $miembros = Miembro::find($id);
+        $miembroEdit = Miembro::find($id);
         $datos = Miembro::all();
-        return view('miembro.index', [
-            'miembros' => $miembros,
-            'datos' => $datos
-        ]);
+       // return response()->json($miembrosEdit)->merge(view('miembros.index')->with('miembros', $miembros));
+       return view('miembro.index')->with('miembroEdit', $miembroEdit)->with('datos', $datos);
+
     }
 
     public function update(Request $request, $id)
@@ -73,6 +82,8 @@ class MiembroController extends Controller
 
     public function destroy($id)
     {
-        //
+        $miembros = Miembro::find($id);
+        $miembros->estado = '1';
+        $miembros->save();
     }
 }

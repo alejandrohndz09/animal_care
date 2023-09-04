@@ -41,34 +41,37 @@
                             <tbody id="tableBody">
 
                                 @foreach ($datos as $item)
-                                    
-                            
-                                    <tr>
-                                        <td>
-                                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/2048px-User-avatar.svg.png"
-                                                alt="user" class="picture" />
-                                        </td>
-                                        <td>{{ $item->nombres }}</td>
-                                        <td>{{ $item->apellidos }}</td>
-                                        <td>{{ $item->correo }} </td>
-                                        <td>
-                                            <div
-                                                style="display: flex; align-items: flex-end; gap: 5px; justify-content: center">
-                                                <a href="{{ route('miembros.edit', $item->idMiembro) }}"method="GET">
-                                                    <button type="button" class="button button-blue">
+                                    @if ($item->estado == 0)
+                                        <tr>
+                                            <td>
+                                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/2048px-User-avatar.svg.png"
+                                                    alt="user" class="picture" />
+                                            </td>
+                                            <td>{{ $item->nombres }}</td>
+                                            <td>{{ $item->apellidos }}</td>
+                                            <td>{{ $item->correo }} </td>
+                                            <td>
+                                                <div
+                                                    style="display: flex; align-items: flex-end; gap: 5px; justify-content: center">
+                                                    <a id="btnmodificar" href="edit/{{$item->idMiembro}}" type="button" class="button button-blue"
+                                                        data-id="{{ $item->idMiembro }}">
                                                         <i class="svg-icon fas fa-pencil"></i>
                                                         <span class="lable"></span>
+                                                    </a>
+
+                                                    <button type="button" class="button button-red"data-bs-toggle="modal"
+                                                        data-bs-target="#exampleModalToggle"
+                                                        data-id="{{ $item->idMiembro }}" data-nombre="{{ $item->nombres }}"
+                                                        data-apellido="{{ $item->apellidos }}"
+                                                        data-correo="{{ $item->correo }}">
+                                                        <i class="svg-icon fas fa-trash"></i>
+                                                        <span class="lable"></span>
                                                     </button>
-                                                </a>
 
-                                                <button type="button" class="button button-red">
-                                                    <i class="svg-icon fas fa-trash"></i>
-                                                    <span class="lable"></span>
-                                                </button>
-
-                                            </div>
-                                        </td>
-                                    </tr>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endif
                                 @endforeach
                             </tbody>
                         </table>
@@ -79,18 +82,18 @@
                     <div class="col-xl-5">
                         <div class="card  mb-4" style="border:none; padding-bottom: 25px !important; width: 100%">
 
-                            @if (isset($miembros))
+                            @if (isset($miembroEdit))
                                 <h3 style="padding: -5px 0px !important;">Modificar Registro</h3>
-                                <form action="{{ route('miembros.update', $miembros) }}" method="POST">
-
+                                <form action="{{route('miembros.update',$miembroEdit)}}" id="form-edit" name="form" method="POST">
                                     @csrf
                                     @method('PUT') <!-- Utilizar el método PUT para la actualización -->
 
                                     <div class="row">
                                         <div class="col-xl-6">
                                             <div class="inputContainer">
-                                                <input name="nombres" class="inputField" placeholder="Nombres"
-                                                    type="text" autocomplete="off" value="{{ $miembros->nombres }}">
+                                                <input name="nombres" id="nombres" class="inputField"
+                                                    placeholder="Nombres" type="text" autocomplete="off"
+                                                    value="{{ $miembroEdit->nombres }}">
                                                 <label class="inputFieldLabel" for="nombre">Nombres del miembro</label>
                                                 <i class="inputFieldIcon fas fa-user"></i>
                                             </div>
@@ -98,14 +101,15 @@
                                         <div class="col-xl-6">
                                             <div class="inputContainer">
                                                 <input name="apellidos" class="inputField" autocomplete="off"
-                                                    placeholder="Apellidos" type="text" value="{{ $miembros->apellidos }}">
+                                                    placeholder="Apellidos" type="text"
+                                                    value="{{ $miembroEdit->apellidos }}">
                                             </div>
                                         </div>
                                     </div>
 
                                     <div class="inputContainer">
                                         <input class="inputField" name="correo" autocomplete="off" placeholder="Correo"
-                                            type="email" value="{{ $miembros->correo }}">
+                                            type="email" value="{{ $miembroEdit->correo }}">
                                         <label class="inputFieldLabel" for="fecha">Correo</label>
                                         <i class="inputFieldIcon fas fa-envelope"></i>
                                     </div>
@@ -129,10 +133,12 @@
                                             <i class="svg-icon fa-regular fa-floppy-disk"></i>
                                             <span class="lable">Modificar</span>
                                         </button>
-                                        <button type="reset" class="button button-red">
+                                        <a  href="miembro" class="button button-red">
                                             <i class="svg-icon fas fa-rotate-right"></i>
                                             <span class="lable">Cancelar</span>
-                                        </button>
+
+                                        </a>
+
                                     </div>
                                 </form>
                             @else
@@ -158,18 +164,18 @@
                                     </div>
 
                                     <div class="inputContainer">
-                                        <input class="inputField" name="correo" autocomplete="off"
-                                            placeholder="Correo" type="email">
+                                        <input class="inputField" name="correo" autocomplete="off" placeholder="Correo"
+                                            type="email">
                                         <label class="inputFieldLabel" for="fecha">Correo</label>
                                         <i class="inputFieldIcon fas fa-envelope"></i>
                                     </div>
 
+                                    <input type="hidden" name="contador" id="contador" value="1">
                                     <div class="row" id="telefono-container">
                                         <div class="col-xl-6">
                                             <div class="inputContainer">
                                                 <input class="inputField form-control telefono" type="tel"
-                                                    maxlength="18" value="+503 " name="telefonos"
-                                                    oninput="formatPhoneNumber(this)"
+                                                    value="+503 " name="telefono1" oninput="formatPhoneNumber(this)"
                                                     onkeydown="return restrictToNumbersAndHyphen(event)">
                                                 <label class="inputFieldLabel" for="telefono">Telefono</label>
                                                 <i class="inputFieldIcon fas fa-phone"></i>
@@ -200,6 +206,36 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Modal -->
+            <form action="" id="form-edit" name="form" method="POST">
+                @csrf
+                <div class="modal fade" id="exampleModalToggle" aria-hidden="true"
+                    aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+                    <div class="modal-dialog modal-dialog-centered">
+
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalToggleLabel">Desea eliminar este registro?</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <!-- Aquí puedes mostrar los detalles del registro utilizando el id -->
+                                <p>ID del registro: <span id="modalRecordId"></span></p>
+                                <!-- Otros detalles del registro -->
+                                <p>Nombres: <span id="modalRecordNombre"></span></p>
+                                <p>Apellidos: <span id="modalRecordApellido"></span></p>
+                                <p>Correo: <span id="modalRecordCorreo"></span></p>
+                            </div>
+                            <div class="modal-footer">
+                                <button id="confirmar" type="button" class="btn btn-primary"> Eliminar</button>
+                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                            </div>
+                        </div>
+                    </div>
+            </form>
         </main>
+
     </div>
 @endsection

@@ -45,3 +45,5 @@ Route::post('/store', [MiembroController::class, 'store'])->name('miembros.store
 
 Route::get('/edit/{id}', [MiembroController::class, 'edit'])->name('miembros.edit');
 Route::put('/update/{id}', [MiembroController::class, 'update'])->name('miembros.update');
+
+Route::get('/destroy/{id}', [MiembroController::class,'destroy'])->name('miembros.destroy');
