@@ -83,7 +83,7 @@
 
                             @if (isset($miembroEdit))
                                 <h3 style="padding: -5px 0px !important;">Modificar Registro</h3>
-                                <form action="" id="form-edit" name="form" method="POST">
+                                <form action="{{route('miembros.update',$miembroEdit)}}" id="form-edit" name="form" method="POST">
                                     @csrf
                                     @method('PUT') <!-- Utilizar el método PUT para la actualización -->
 
