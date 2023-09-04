@@ -19,6 +19,7 @@ $(document).ready(function () {
         var telefonoInput = $(".telefono:last"); // Obtener el último campo de teléfono agregado
         var telefonoValue = telefonoInput.val() // Obtener el valor del último campo y quitar espacios en blanco
 
+
         // Validar si el campo está vacío
         if (telefonoValue == "+503 ") {
             alert("El campo de teléfono no puede estar vacío.");
@@ -30,13 +31,20 @@ $(document).ready(function () {
             return; // Detener la función si el campo no es válido
         }
         else {
+
+            var contador = $("#contador");
+            var con = parseInt(contador.val(), 10); // El segundo argumento (10) es la base numérica, que es 10 para números decimales.
+
+            con++; // Incrementa el valor en 1
+            contador.val(con); // Actualiza el valor en el campo de entrada
+
             // Si pasa ambas validaciones, puedes agregar el nuevo campo de teléfono
             var newTelefonoField = `
-            <div id="flavio">
+            <div id="remove">
                <div class="col-xl-6">
                   <div class="inputContainer">
-                       <input class="inputField form-control telefono" type="tel" maxlength="18"
-                          value="+503 " name="telefonos[]" oninput="formatPhoneNumber(this)"
+                       <input class="inputField form-control telefono" type="tel" 
+                          value="+503 " name="telefono`+ con + `" oninput="formatPhoneNumber(this)"
                            onkeydown="return restrictToNumbersAndHyphen(event)">
                   </div>
                 </div>
@@ -44,18 +52,20 @@ $(document).ready(function () {
                   <button type="button" class="btn btn-danger remove-telefono">
                    <i class="svg-icon fas fa-circle-xmark"></i>
                   </button>
+
             </div>
         `;
             $("#telefono-container").append(newTelefonoField);
         }
 
+        // Remover campos agregados dinámicamente
+        $("#telefono-container").on("click", ".remove-telefono", function () {
+            $(this).closest("#remove").remove();
+            con--; // decrementa el valor en 1
+            contador.val(con); // Actualiza el valor en el campo de entrada
+        });
     });
 
-
-    // Remover campos agregados dinámicamente
-    $("#telefono-container").on("click", ".remove-telefono", function () {
-        $(this).closest("#flavio").remove();
-    });
 
     // Restringir caracteres solo para campos de teléfono
     $(".telefono").on("keydown", function (event) {
@@ -90,11 +100,27 @@ $(document).ready(function () {
         $('#modalRecordNombre').text(nombre);
         $('#modalRecordApellido').text(apellido);
         $('#modalRecordCorreo').text(correo);
-        
-        $('body').on('click', '#confirmar', function() {
-            $.get('/destroy/' + id , function() {
+
+        $('body').on('click', '#confirmar', function () {
+            $.get('/destroy/' + id, function () {
+                location.reload();
             });
         });
-       
+
+    });
+});
+
+let obj = null;
+$('body').on('click', '#btnmodificar', function() {
+    var customer_id = $(this).data('id');
+    $.get('/edit/' + customer_id , function(data) {
+        obj = data;
+        document.getElementById("form-edit");
+        $("#form-edit input[name='nombres']").val(obj.nombre);
+        $("#form-edit input[name='apellidos']").val(obj.apellido);
+        $("#form-edit input[name='correo']").val(obj.apellido);
+
+
+       // $("#form-edit input[name='apellidos']").val(obj.apellido);
     });
 });

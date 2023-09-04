@@ -52,12 +52,12 @@
                                             <td>
                                                 <div
                                                     style="display: flex; align-items: flex-end; gap: 5px; justify-content: center">
-                                                    <a href="{{ route('miembros.edit', $item->idMiembro) }}"method="GET">
-                                                        <button type="button" class="button button-blue">
-                                                            <i class="svg-icon fas fa-pencil"></i>
-                                                            <span class="lable"></span>
-                                                        </button>
-                                                    </a>
+
+                                                    <button id="btnmodificar" type="button" class="button button-blue"
+                                                        data-id="{{ $item->idMiembro }}">
+                                                        <i class="svg-icon fas fa-pencil"></i>
+                                                        <span class="lable"></span>
+                                                    </button>
 
                                                     <button type="button" class="button button-red"data-bs-toggle="modal"
                                                         data-bs-target="#exampleModalToggle"
@@ -85,7 +85,7 @@
 
                             @if (isset($miembros))
                                 <h3 style="padding: -5px 0px !important;">Modificar Registro</h3>
-                                <form action="{{ route('miembros.update', $miembros) }}" method="POST">
+                                <form id="form-edit" action="{{ route('miembros.update', $miembros) }}" method="POST">
 
                                     @csrf
                                     @method('PUT') <!-- Utilizar el método PUT para la actualización -->
@@ -175,12 +175,12 @@
                                         <i class="inputFieldIcon fas fa-envelope"></i>
                                     </div>
 
+                                    <input type="hidden" name="contador" id="contador" value="1">
                                     <div class="row" id="telefono-container">
                                         <div class="col-xl-6">
                                             <div class="inputContainer">
                                                 <input class="inputField form-control telefono" type="tel"
-                                                    maxlength="18" value="+503 " name="telefonos"
-                                                    oninput="formatPhoneNumber(this)"
+                                                    value="+503 " name="telefono1" oninput="formatPhoneNumber(this)"
                                                     onkeydown="return restrictToNumbersAndHyphen(event)">
                                                 <label class="inputFieldLabel" for="telefono">Telefono</label>
                                                 <i class="inputFieldIcon fas fa-phone"></i>
