@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Miembro;
 use App\Models\TelefonoMiembro;
 use Illuminate\Http\Request;
+use Redirect,Response;
 
 class MiembroController extends Controller
 {
@@ -60,44 +61,11 @@ class MiembroController extends Controller
     }
     public function edit($id)
     {
-        //Trae los datos que seran editados y los coloca en un formulario
-
-        $telefonos = TelefonoMiembro::find( $request->get('id-e'));
-        $telefonos->nombre = $request->get('nombre-e');
-        $telefonos->save();
-        $cantones = TelefonoMiembro::all();
-            
-        $alert = array(
-            'type' => 'success',
-            'message' =>'El registro se ha actualizado exitosamente'
-        );
-        
-        session()->flash('alert',$alert);
-        
-        return  redirect('/canton');
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        $telefonos = TelefonoMiembro::where('idMiembro', $id)->get();
-
-        $miembros = Miembro::find($id);
+        $miembroEdit = Miembro::find($id);
         $datos = Miembro::all();
-        return view('miembro.index', [
-            'miembros' => $miembros,
-            'datos' => $datos,
-            'telefonos' =>$telefonos
-        ]);
+       // return response()->json($miembrosEdit)->merge(view('miembros.index')->with('miembros', $miembros));
+       return view('miembro.index')->with('miembroEdit', $miembroEdit)->with('datos', $datos);
+
     }
 
     public function update(Request $request, $id)

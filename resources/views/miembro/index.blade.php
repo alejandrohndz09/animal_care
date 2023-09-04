@@ -52,19 +52,17 @@
                                             <td>
                                                 <div
                                                     style="display: flex; align-items: flex-end; gap: 5px; justify-content: center">
-
-                                                    <button id="btnmodificar" type="button" class="button button-blue"
+                                                    <a id="btnmodificar" href="edit/{{$item->idMiembro}}" type="button" class="button button-blue"
                                                         data-id="{{ $item->idMiembro }}">
                                                         <i class="svg-icon fas fa-pencil"></i>
                                                         <span class="lable"></span>
-                                                    </button>
+                                                    </a>
 
                                                     <button type="button" class="button button-red"data-bs-toggle="modal"
                                                         data-bs-target="#exampleModalToggle"
                                                         data-id="{{ $item->idMiembro }}" data-nombre="{{ $item->nombres }}"
                                                         data-apellido="{{ $item->apellidos }}"
                                                         data-correo="{{ $item->correo }}">
-
                                                         <i class="svg-icon fas fa-trash"></i>
                                                         <span class="lable"></span>
                                                     </button>
@@ -83,18 +81,18 @@
                     <div class="col-xl-5">
                         <div class="card  mb-4" style="border:none; padding-bottom: 25px !important; width: 100%">
 
-                            @if (isset($miembros))
+                            @if (isset($miembroEdit))
                                 <h3 style="padding: -5px 0px !important;">Modificar Registro</h3>
-                                <form id="form-edit" action="{{ route('miembros.update', $miembros) }}" method="POST">
-
+                                <form action="" id="form-edit" name="form" method="POST">
                                     @csrf
                                     @method('PUT') <!-- Utilizar el método PUT para la actualización -->
 
                                     <div class="row">
                                         <div class="col-xl-6">
                                             <div class="inputContainer">
-                                                <input name="nombres" class="inputField" placeholder="Nombres"
-                                                    type="text" autocomplete="off" value="{{ $miembros->nombres }}">
+                                                <input name="nombres" id="nombres" class="inputField"
+                                                    placeholder="Nombres" type="text" autocomplete="off"
+                                                    value="{{ $miembroEdit->nombres }}">
                                                 <label class="inputFieldLabel" for="nombre">Nombres del miembro</label>
                                                 <i class="inputFieldIcon fas fa-user"></i>
                                             </div>
@@ -103,14 +101,14 @@
                                             <div class="inputContainer">
                                                 <input name="apellidos" class="inputField" autocomplete="off"
                                                     placeholder="Apellidos" type="text"
-                                                    value="{{ $miembros->apellidos }}">
+                                                    value="{{ $miembroEdit->apellidos }}">
                                             </div>
                                         </div>
                                     </div>
 
                                     <div class="inputContainer">
                                         <input class="inputField" name="correo" autocomplete="off" placeholder="Correo"
-                                            type="email" value="{{ $miembros->correo }}">
+                                            type="email" value="{{ $miembroEdit->correo }}">
                                         <label class="inputFieldLabel" for="fecha">Correo</label>
                                         <i class="inputFieldIcon fas fa-envelope"></i>
                                     </div>
@@ -139,10 +137,10 @@
                                             <i class="svg-icon fa-regular fa-floppy-disk"></i>
                                             <span class="lable">Modificar</span>
                                         </button>
-                                        <button type="reset" class="button button-red">
+                                        <a  href="miembro" class="button button-red">
                                             <i class="svg-icon fas fa-rotate-right"></i>
                                             <span class="lable">Cancelar</span>
-                                        </button>
+                                        </a>
 
                                     </div>
                                 </form>

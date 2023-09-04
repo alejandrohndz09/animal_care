@@ -110,17 +110,19 @@ $(document).ready(function () {
     });
 });
 
-let obj = null;
-$('body').on('click', '#btnmodificar', function() {
+/*$('body').on('click', '#btnmodificar', function () {
     var customer_id = $(this).data('id');
-    $.get('/edit/' + customer_id , function(data) {
+    let obj = null;
+
+    $.get('edit/' + customer_id, function (data) {
         obj = data;
-        document.getElementById("form-edit");
-        $("#form-edit input[name='nombres']").val(obj.nombre);
-        $("#form-edit input[name='apellidos']").val(obj.apellido);
+
+
+        $("#form-edit input[name='nombress']").val(obj.nombres);
+        $("#form-edit input[name='apellidos']").val(obj.apellidos);
         $("#form-edit input[name='correo']").val(obj.apellido);
 
-
-       // $("#form-edit input[name='apellidos']").val(obj.apellido);
+        // $("#form-edit input[name='apellidos']").val(obj.apellido);
     });
-});
+
+});*/
