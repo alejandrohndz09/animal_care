@@ -1,18 +1,26 @@
 @extends('layouts.master')
-<link rel="stylesheet" href="<?php echo asset('css/f3.css'); ?>" type="text/css">
+@section('styles')
+    <link rel="stylesheet" href="<?php echo asset('css/f3.css'); ?>" type="text/css">
+@endsection
+
+@section('scripts')
+@endsection
 @section('content')
     <div id="layoutSidenav_content">
         <main>
             <div class="container-fluid px-4 py-4">
-                <div style=" width: 100%;display: flex;align-items: center;justify-content: space-between;">
-                    <h1>Animales</h1>
-                    {{-- <button class="btn button-pri">
-                        <i class="fas fa-plus"></i>
-                        <span class="lable">Agregar nuevo registro</span>
-                    </button> --}}
+                <div style="width: 100%; display: flex; align-items: center; justify-content: space-between; gap:20px">
+                   
                 </div>
+
                 <div class="row mt-3">
                     <div class="col-xl-7">
+                        <div style="width:100%; display: flex;  justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                            <h1>Animales </h1>
+                            <input id="searchInput" class="inputField card" style="width: 50% "
+                            autocomplete="off" placeholder="🔍︎ Buscar" type="search">
+                        </div>
+                       
                         <table>
                             <thead>
                                 <tr class="head">
@@ -21,9 +29,12 @@
                                     <th>Apellido</th>
                                     <th>Edad</th>
                                     <th>Sexo</th>
+                                    <th>
+                
+                                    </th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="tableBody">
                                 <tr>
                                     <td>
                                         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/2048px-User-avatar.svg.png"
@@ -33,6 +44,23 @@
                                     <td>Doe</td>
                                     <td>25</td>
                                     <td>Masculino</td>
+                                    <td>
+                                        <div
+                                            style="display: flex; align-items: flex-end; gap: 5px; justify-content: center">
+                                            <button type="button" class="button button-blue">
+                                                <i class="svg-icon fas fa-pencil"></i>
+                                                <span class="lable"></span>
+                                            </button>
+                                            <button type="button" class="button button-red">
+                                                <i class="svg-icon fas fa-trash"></i>
+                                                <span class="lable"></span>
+                                            </button>
+                                            <button type="button" class="button button-sec">
+                                                <i class="svg-icon fas fa-ellipsis-vertical"></i>
+                                                <span class="lable"></span>
+                                            </button>
+                                        </div>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>
@@ -126,6 +154,9 @@
                                 </tr>
                             </tbody>
                         </table>
+                        <div id="pagination">
+
+                        </div>
                     </div>
                     <div class="col-xl-5">
                         <div class="card  mb-4" style="border:none; padding-bottom: 25px !important; width: 100%">
@@ -145,7 +176,7 @@
                                     <div class="col-xl-8">
                                         <div class="inputContainer">
                                             <input required="required" id="nombre" class="inputField"
-                                                placeholder="Nombre" type="text" autocomplete="none">
+                                                placeholder="Nombre" type="text" autocomplete="off">
                                             <label class="inputFieldLabel" for="nombre">Nombre</label>
                                             <i class="inputFieldIcon fas fa-pen"></i>
                                         </div>
@@ -197,24 +228,20 @@
 
                                 </div>
                                 <div style="display: flex; align-items: flex-end; gap: 10px; justify-content: center">
+                                    <button type="reset" class="button button-sec">
+                                        <i class="svg-icon fas fa-rotate-right"></i>
+                                        <span class="lable">Cancelar</span>
+                                    </button>
                                     <button type="submit" class="button button-pri">
                                         <i class="svg-icon fa-regular fa-floppy-disk"></i>
                                         <span class="lable">Guardar</span>
                                     </button>
-                                    <button  type="reset" class="button button-red">
-                                        <i class="svg-icon fas fa-rotate-right"></i>
-                                        <span class="lable">Cancelar</span>
-                                    </button>
-                                    
                                 </div>
-                                
+
                             </form>
                         </div>
                     </div>
                 </div>
-
-
-
             </div>
         </main>
     </div>

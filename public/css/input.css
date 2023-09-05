@@ -22,7 +22,7 @@
   
   .inputFieldIcon {
     position: absolute;
-    color: rgb(155, 78, 255);
+    color:#6067eb;
     width: 12px;
     top: -17px;
     left: 5px;
@@ -108,6 +108,26 @@
   .button-sec >.svg-icon{
     color:  #000;
   }
+
+   .button-red{
+    background: #ff000027;
+  }
+  .button-red >.lable{
+    color: #d02929;
+  }
+  .button-red >.svg-icon{
+    color:  #d02929;
+  }
+
+  .button-blue{
+    background: #0015ff27;
+  }
+  .button-blue >.lable{
+    color: #002df8;
+  }
+  .button-blue >.svg-icon{
+    color:  #002df8;
+  }
   .lable {
     margin-top: 1px;
     font-size: 14px;
@@ -121,10 +141,16 @@
     background-color: rgba(101, 77, 237, 0.299);; 
   }
   .button-sec:hover  {
-    background-color:  #41464e2c;
-    
+    background-color:  #41464e2c;   
   }
-  
+  .button-red:hover  {
+    background-color:  #ff00003b;   
+  }
+  .button-blue:hover  {
+    background-color:  #0015ff4a;   
+  }
+  .button-blue:hover .svg-icon,
+  .button-red:hover .svg-icon,
   .button-pri:hover .svg-icon,
   .button-sec:hover .svg-icon {
     animation: spin 1s linear infinite;
@@ -151,3 +177,20 @@
       transform: rotate(0deg);
     }
   }
+
+  #pagination {
+    display: flex;
+    text-align: center;
+    justify-content: end;
+    margin-top: 1px;
+}
+
+#pagination a {
+  color: #6067eb;
+    display: inline-block;
+    padding: 10px 20px;
+    width: auto;
+    margin: 0 5px;
+   text-decoration: none;
+    
+}

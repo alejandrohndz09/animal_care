@@ -1,6 +1,7 @@
 <?php
 
 
+use App\Http\Controllers\MiembroController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -23,6 +24,10 @@ Route::get('/home', function () {
     return view('dashboard.dashboard');
 });
 
+Route::get('/animal', function () {
+    return view('animal.index');
+});
+
 Route::get('/form1', function () {
     return view('formularios.form1');
 });
@@ -34,3 +39,15 @@ Route::get('/form2', function () {
 Route::get('/form3', function () {
     return view('formularios.form3');
 });
+
+
+
+////////////////////////////MIS RUTAS PETER////////////////////////////////////////
+Route::get('/miembro', [MiembroController::class, 'index'])->name('miembros.index');
+Route::post('/store', [MiembroController::class, 'store'])->name('miembros.store');
+
+Route::get('/edit/{id}', [MiembroController::class, 'edit'])->name('miembros.edit');
+Route::put('/update/{id}', [MiembroController::class, 'update'])->name('miembros.update');
+
+Route::get('/destroy/{id}', [MiembroController::class,'destroy'])->name('miembros.destroy');
+

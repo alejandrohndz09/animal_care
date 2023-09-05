@@ -8,7 +8,7 @@
                     Dashboard
                 </a>
                 <div class="sb-sidenav-menu-heading">Menu</div>
-                <a class="nav-link" href="/medidor">
+                <a class="nav-link" href="/animal">
                     <div class="sb-nav-link-icon"><i class="fas fa-dog" ></i></div>
                     Mascotas
                 </a>
@@ -23,6 +23,11 @@
                 <a class="nav-link" href="/Inventario">
                     <div class="sb-nav-link-icon"><i class="fas fa-warehouse" ></i></div>
                     Inventario
+                </a>
+
+                <a class="nav-link" href="/miembro">
+                    <div class="sb-nav-link-icon"><i class="fas fa-user" ></i></div>
+                    Miembro
                 </a>
                 
                 <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages"
