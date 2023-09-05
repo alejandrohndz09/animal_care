@@ -22,9 +22,9 @@ Route::get('/home', function () {
     return view('dashboard.dashboard');
 });
 
-Route::get('/animal', function () {
-    return view('animal.index');
-});
+Route::resource('animal','App\Http\Controllers\AnimalControlador');
+Route::get('/obtener-razas/{especie}', 'App\Http\Controllers\AnimalControlador@obtenerRazas');
+
 
 Route::get('/form1', function () {
     return view('formularios.form1');

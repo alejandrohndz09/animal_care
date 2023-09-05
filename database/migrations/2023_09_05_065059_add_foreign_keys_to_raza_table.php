@@ -13,10 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('telefono_donante', function (Blueprint $table) {
-            $table->integer('idTelefono', true);
-            $table->string('telefono', 15)->nullable();
-            $table->string('idDonante', 7)->nullable()->index('fk_tlf-mbr');
+        Schema::table('raza', function (Blueprint $table) {
+            $table->foreign(['idEspecie'], 'raza_ibfk_1')->references(['idEspecie'])->on('especie')->onUpdate('CASCADE')->onDelete('NO ACTION');
         });
     }
 
@@ -27,6 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('telefono_donante');
+        Schema::table('raza', function (Blueprint $table) {
+            $table->dropForeign('raza_ibfk_1');
+        });
     }
 };

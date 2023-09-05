@@ -13,8 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('adoptante', function (Blueprint $table) {
-            $table->foreign(['idHogar'], 'fk_hgr-adp')->references(['idHogar'])->on('hogar')->onUpdate('CASCADE')->onDelete('NO ACTION');
+        Schema::create('especie', function (Blueprint $table) {
+            $table->string('idEspecie', 7)->primary();
+            $table->string('especie', 100)->nullable();
         });
     }
 
@@ -25,8 +26,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('adoptante', function (Blueprint $table) {
-            $table->dropForeign('fk_hgr-adp');
-        });
+        Schema::dropIfExists('especie');
     }
 };
