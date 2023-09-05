@@ -14,20 +14,16 @@
         <main>
             <div class="container-fluid px-4 py-4">
                 <div style=" width: 100%;display: flex;align-items: center;justify-content: space-between;">
-                    <h1>Miembros</h1>
-                    {{-- <button class="btn button-pri">
-                        <i class="fas fa-plus"></i>
-                        <span class="lable">Agregar nuevo registro</span>
-                    </button> --}}
-
-                    <div class="inputContainer" style="margin: auto; align-items: end">
-                        <input id="searchInput" class="inputField card" style="width: 50%" autocomplete="off"
-                            placeholder="🔍︎ Buscar" type="search">
-                    </div>
+                 
                 </div>
 
                 <div class="row mt-3">
                     <div class="col-xl-7">
+                        <div style="width:100%; display: flex;  justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                            <h1>Miembros </h1>
+                            <input id="searchInput" class="inputField card" style="width: 50% "
+                            autocomplete="off" placeholder="🔍︎ Buscar" type="search">
+                        </div>
                         <table>
                             <thead>
                                 <tr class="head">
