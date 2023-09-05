@@ -1,18 +1,27 @@
-function formatPhoneNumber(input) {
-    var value = input.value; // Obtener el valor actual
+function validarInput(input) {
+    let telefonoValue = input.value;
+    const formatoTelefono = /^\+\d{3} \d{4}-\d{4}$/;
+    
+    // Eliminar caracteres no válidos
+    telefonoValue = telefonoValue.replace(/[^+\d\s-]/g, '');
 
-    // Si no comienza con el código de país, agrégalo
-    if (!value.startsWith("+503 ")) {
-        value = "+503 " + value;
+    // Eliminar guiones existentes
+    telefonoValue = telefonoValue.replace(/-/g, '');
+
+    // Limitar la longitud máxima a 14 caracteres
+    if (telefonoValue.length > 13) {
+      telefonoValue = telefonoValue.slice(0, 13);
     }
 
-    // Insertar el guion después del código de país si no existe
-    if (value.length >= 10 && value.charAt(9) !== '-') {
-        value = value.substring(0, 9) + '-' + value.substring(9);
+    // Agregar un guion después del cuarto dígito
+    if (telefonoValue.length >= 9) {
+      telefonoValue = telefonoValue.slice(0, 9) + '-' + telefonoValue.slice(9);
     }
 
-    input.value = value; // Actualizar el valor del campo
-}
+    // Asignar el valor al campo de entrada
+    input.value = telefonoValue;
+    
+  }
 
 $(document).ready(function () {
     $("#add-telefono").click(function () {
@@ -43,8 +52,8 @@ $(document).ready(function () {
             <div id="remove">
                <div class="col-xl-6">
                   <div class="inputContainer">
-                       <input class="inputField form-control telefono" type="tel" 
-                          value="+503 " name="telefono`+ con + `" oninput="formatPhoneNumber(this)"
+                       <input class="inputField form-control telefono"  
+                          value="+503 " name="telefono`+ con + `" type="text" oninput="validarInput(this)"
                            onkeydown="return restrictToNumbersAndHyphen(event)">
                   </div>
                 </div>
