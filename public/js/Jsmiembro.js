@@ -1,7 +1,7 @@
 function validarInput(input) {
     let telefonoValue = input.value;
     const formatoTelefono = /^\+\d{3} \d{4}-\d{4}$/;
-    
+
     // Eliminar caracteres no válidos
     telefonoValue = telefonoValue.replace(/[^+\d\s-]/g, '');
 
@@ -10,18 +10,18 @@ function validarInput(input) {
 
     // Limitar la longitud máxima a 14 caracteres
     if (telefonoValue.length > 13) {
-      telefonoValue = telefonoValue.slice(0, 13);
+        telefonoValue = telefonoValue.slice(0, 13);
     }
 
     // Agregar un guion después del cuarto dígito
     if (telefonoValue.length >= 9) {
-      telefonoValue = telefonoValue.slice(0, 9) + '-' + telefonoValue.slice(9);
+        telefonoValue = telefonoValue.slice(0, 9) + '-' + telefonoValue.slice(9);
     }
 
     // Asignar el valor al campo de entrada
     input.value = telefonoValue;
-    
-  }
+
+}
 
 $(document).ready(function () {
     $("#add-telefono").click(function () {
@@ -77,25 +77,25 @@ $(document).ready(function () {
 
     });
 
+    $(document).ready(function () {
+        $("#miFormulario").submit(function (event) {
+            var inputs = $(this).find("input"); // Obtener todos los campos de entrada en el formulario
 
-    // Restringir caracteres solo para campos de teléfono
-    $(".telefono").on("keydown", function (event) {
-        return restrictToNumbersAndHyphen(event);
-    });
+            // Iterar a través de los campos de entrada
+            for (var i = 0; i < inputs.length; i++) {
+                var inputValue = inputs[i].value.trim();
+                var errorSpan = $(inputs[i]).siblings(".error-message");
 
-    $("form").submit(function (event) {
-        var inputs = $(this).find("input"); // Obtener todos los campos de entrada en el formulario
-
-        // Iterar a través de los campos de entrada
-        for (var i = 0; i < inputs.length; i++) {
-            var inputValue = inputs[i].value.trim();
-            if (inputValue === "") {
-                event.preventDefault(); // Detener el envío del formulario
-                alert("Ninguno de los campos puede estar vacío.");
-                return;
+                if (inputValue === "") {
+                    event.preventDefault(); // Detener el envío del formulario
+                    errorSpan.text("Este campo no puede estar vacío.");
+                } else {
+                    errorSpan.text(""); // Limpiar el mensaje de error si el campo no está vacío
+                }
             }
-        }
+        });
     });
+
 });
 
 $(document).ready(function () {

@@ -68,12 +68,16 @@ class MiembroController extends Controller
     {
         $miembroEdit = Miembro::find($id);
         $datos = Miembro::all();
-        // return response()->json($miembrosEdit)->merge(view('miembros.index')->with('miembros', $miembros));
+   
         return view('miembro.index')->with('miembroEdit', $miembroEdit)->with('datos', $datos);
     }
 
     public function update(Request $request, $id)
     {
+        $request->validate([
+            'correo' => 'unique:miembro'
+        ]);
+        
         //Actualiza los datos en la BD
         $miembros = Miembro::find($id);
         $miembros->nombres = $request->post('nombres');
