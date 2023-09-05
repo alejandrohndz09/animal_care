@@ -57,7 +57,7 @@ class MiembroController extends Controller
             $telefonos->save();
         }
 
-        return redirect()->route("miembros.index")->with("success", "Agregado con exito!")->withErrors($validar);
+        return redirect()->route("miembros.index")->with("success", "Agregado con exito!");
     }
 
     public function show($id)
