@@ -1,7 +1,9 @@
 <?php
 
+
 use App\Http\Controllers\MiembroController;
 use Illuminate\Support\Facades\Route;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -39,6 +41,7 @@ Route::get('/form3', function () {
 });
 
 
+
 ////////////////////////////MIS RUTAS PETER////////////////////////////////////////
 Route::get('/miembro', [MiembroController::class, 'index'])->name('miembros.index');
 Route::post('/store', [MiembroController::class, 'store'])->name('miembros.store');
@@ -47,3 +50,4 @@ Route::get('/edit/{id}', [MiembroController::class, 'edit'])->name('miembros.edi
 Route::put('/update/{id}', [MiembroController::class, 'update'])->name('miembros.update');
 
 Route::get('/destroy/{id}', [MiembroController::class,'destroy'])->name('miembros.destroy');
+
