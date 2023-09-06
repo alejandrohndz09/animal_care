@@ -13,8 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('animal', function (Blueprint $table) {
-            $table->foreign(['idRaza'], 'fk_raz-ani')->references(['idRaza'])->on('raza')->onUpdate('CASCADE')->onDelete('CASCADE');
+        Schema::create('raza', function (Blueprint $table) {
+            $table->string('idRaza', 7)->primary();
+            $table->string('raza')->nullable();
+            $table->string('idEspecie', 7)->nullable()->index('idEspecie');
         });
     }
 
@@ -25,8 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('animal', function (Blueprint $table) {
-            $table->dropForeign('fk_raz-ani');
-        });
+        Schema::dropIfExists('raza');
     }
 };

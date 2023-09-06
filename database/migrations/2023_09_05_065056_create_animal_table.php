@@ -19,7 +19,7 @@ return new class extends Migration
             $table->date('fechaNacimiento')->nullable();
             $table->string('sexo', 12)->nullable();
             $table->text('particularidad')->nullable();
-            $table->integer('idRaza')->nullable()->index('fk_raz-ani');
+            $table->string('idRaza', 7)->nullable()->index('idRaza');
             $table->text('imagen')->nullable();
         });
     }

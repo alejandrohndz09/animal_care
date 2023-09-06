@@ -13,9 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('especie', function (Blueprint $table) {
-            $table->integer('idEspecie', true);
-            $table->string('especie', 100)->nullable();
+        Schema::table('animal', function (Blueprint $table) {
+            $table->foreign(['idRaza'], 'animal_ibfk_1')->references(['idRaza'])->on('raza')->onUpdate('CASCADE')->onDelete('NO ACTION');
         });
     }
 
@@ -26,6 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('especie');
+        Schema::table('animal', function (Blueprint $table) {
+            $table->dropForeign('animal_ibfk_1');
+        });
     }
 };

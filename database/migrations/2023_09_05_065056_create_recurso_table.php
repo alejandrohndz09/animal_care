@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('idRecurso', 7)->primary();
             $table->text('recurso')->nullable();
             $table->string('idCategoria', 7)->nullable()->index('idCategoria');
-            $table->double('cantidad')->nullable();
+            $table->float('cantidad', 10, 0)->nullable();
             $table->string('idUnidadMedida', 7)->nullable()->index('idUnidadMedida');
         });
     }

@@ -18,7 +18,7 @@ return new class extends Migration
             $table->text('descripcion')->nullable();
             $table->dateTime('fechaMovimento')->nullable();
             $table->string('tipoMovimiento', 25)->nullable();
-            $table->double('valor')->nullable();
+            $table->float('valor', 10, 0)->nullable();
             $table->string('idMiembro', 7)->nullable()->index('idMiembro');
             $table->string('idRecurso', 7)->nullable()->index('idRecurso');
             $table->string('idDonante', 7)->nullable()->index('idDonante');

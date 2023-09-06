@@ -13,10 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('raza', function (Blueprint $table) {
-            $table->integer('idRaza', true);
-            $table->string('raza')->nullable();
-            $table->integer('idEspecie')->nullable()->index('fk_esp-raz');
+        Schema::table('raza', function (Blueprint $table) {
+            $table->foreign(['idEspecie'], 'raza_ibfk_1')->references(['idEspecie'])->on('especie')->onUpdate('CASCADE')->onDelete('NO ACTION');
         });
     }
 
@@ -27,6 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('raza');
+        Schema::table('raza', function (Blueprint $table) {
+            $table->dropForeign('raza_ibfk_1');
+        });
     }
 };

@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * Class Especie
  * 
- * @property int $idEspecie
+ * @property string $idEspecie
  * @property string|null $especie
  * 
  * @property Collection|Raza[] $razas
@@ -23,6 +23,7 @@ class Especie extends Model
 {
 	protected $table = 'especie';
 	protected $primaryKey = 'idEspecie';
+	public $incrementing = false;
 	public $timestamps = false;
 
 	protected $fillable = [

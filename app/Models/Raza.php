@@ -12,9 +12,9 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * Class Raza
  * 
- * @property int $idRaza
+ * @property string $idRaza
  * @property string|null $raza
- * @property int|null $idEspecie
+ * @property string|null $idEspecie
  * 
  * @property Especie|null $especie
  * @property Collection|Animal[] $animals
@@ -25,11 +25,8 @@ class Raza extends Model
 {
 	protected $table = 'raza';
 	protected $primaryKey = 'idRaza';
+	public $incrementing = false;
 	public $timestamps = false;
-
-	protected $casts = [
-		'idEspecie' => 'int'
-	];
 
 	protected $fillable = [
 		'raza',

@@ -13,8 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('raza', function (Blueprint $table) {
-            $table->foreign(['idEspecie'], 'fk_esp-raz')->references(['idEspecie'])->on('especie')->onUpdate('CASCADE')->onDelete('CASCADE');
+        Schema::create('especie', function (Blueprint $table) {
+            $table->string('idEspecie', 7)->primary();
+            $table->string('especie', 100)->nullable();
         });
     }
 
@@ -25,8 +26,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('raza', function (Blueprint $table) {
-            $table->dropForeign('fk_esp-raz');
-        });
+        Schema::dropIfExists('especie');
     }
 };

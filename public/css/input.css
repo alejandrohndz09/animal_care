@@ -62,19 +62,36 @@
   }
   
   /* Estilo para ocultar el icono de calendario en inputs de tipo date */
-  .inputContainer> input[type="date"]::-webkit-calendar-picker-indicator,
   
   .inputContainer> input[type="date"]::-webkit-clear-button {
     display: none;
     -webkit-appearance: none;
     appearance: none;
   }
+  #image-preview {
+    background-size: cover; /* La imagen se ajusta para cubrir todo el contenedor */
+    background-repeat: no-repeat; /* Evita que la imagen se repita */
+    width: 100%; /* Asegura que el div ocupe todo el espacio del label */
+    height: 100%; /* Asegura que el div ocupe todo el espacio del label */
+}
   
   input[type="radio"]:checked{
-    border-color: #6c36b2;
+    border-color: #6c36b2;  
     transform: translateZ(0px);
     background-color: #9b4eff;
   }
+  .inputContainer>[type="date"]::-webkit-calendar-picker-indicator {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    color: transparent;
+    background: 0 0;
+    margin: 0;
+    opacity: 0;
+    pointer-events: auto;
+    }
 
   .button {
     display: flex;

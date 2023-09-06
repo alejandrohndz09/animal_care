@@ -4,154 +4,72 @@
 @endsection
 
 @section('scripts')
+    <script src="{{ asset('js/validaciones/jsAnimal.js') }}"></script>
 @endsection
 @section('content')
     <div id="layoutSidenav_content">
         <main>
             <div class="container-fluid px-4 py-4">
                 <div style="width: 100%; display: flex; align-items: center; justify-content: space-between; gap:20px">
-                   
+
                 </div>
 
                 <div class="row mt-3">
                     <div class="col-xl-7">
-                        <div style="width:100%; display: flex;  justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                        <div
+                            style="width:100%; display: flex;  justify-content: space-between; align-items: center; margin-bottom: 15px;">
                             <h1>Animales </h1>
-                            <input id="searchInput" class="inputField card" style="width: 50% "
-                            autocomplete="off" placeholder="🔍︎ Buscar" type="search">
+                            <input id="searchInput" class="inputField card" style="width: 50% " autocomplete="off"
+                                placeholder="🔍︎ Buscar" type="search">
                         </div>
-                       
+
                         <table>
                             <thead>
                                 <tr class="head">
                                     <th></th>
                                     <th>Nombre</th>
-                                    <th>Apellido</th>
                                     <th>Edad</th>
+                                    <th>Especie</th>
+                                    <th>Raza</th>
                                     <th>Sexo</th>
                                     <th>
-                
                                     </th>
                                 </tr>
                             </thead>
                             <tbody id="tableBody">
-                                <tr>
-                                    <td>
-                                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/2048px-User-avatar.svg.png"
-                                            alt="user" class="picture" />
-                                    </td>
-                                    <td>John</td>
-                                    <td>Doe</td>
-                                    <td>25</td>
-                                    <td>Masculino</td>
-                                    <td>
-                                        <div
-                                            style="display: flex; align-items: flex-end; gap: 5px; justify-content: center">
-                                            <button type="button" class="button button-blue">
-                                                <i class="svg-icon fas fa-pencil"></i>
-                                                <span class="lable"></span>
-                                            </button>
-                                            <button type="button" class="button button-red">
-                                                <i class="svg-icon fas fa-trash"></i>
-                                                <span class="lable"></span>
-                                            </button>
-                                            <button type="button" class="button button-sec">
+
+                                @php use App\Http\Controllers\AnimalControlador; @endphp
+                                @foreach ($animales as $a)
+                                    <tr>
+                                        <td>
+                                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/2048px-User-avatar.svg.png"
+                                                alt="user" class="picture" />
+                                        </td>
+                                        <td>{{ $a->nombre }}</td>
+                                        <td>{{ AnimalControlador::calcularEdad(explode(' ', $a->fechaNacimiento)[0]) }}
+                                        </td>
+                                        <td>{{ $a->raza->especie->especie }}</td>
+                                        <td>{{ $a->raza->raza }}</td>
+                                        <td>{{ $a->sexo }}</td>
+                                        <td>
+                                            <div
+                                                style="display: flex; align-items: flex-end; gap: 3px; justify-content: center">
+                                                <button type="button" class="button button-blue">
+                                                    <i class="svg-icon fas fa-pencil"></i>
+                                                    <span class="lable"></span>
+                                                </button>
+                                                <button type="button" class="button button-red">
+                                                    <i class="svg-icon fas fa-trash"></i>
+                                                    <span class="lable"></span>
+                                                </button>
+                                                {{-- <button type="button" class="button button-sec">
                                                 <i class="svg-icon fas fa-ellipsis-vertical"></i>
                                                 <span class="lable"></span>
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/2048px-User-avatar.svg.png"
-                                            alt="user" class="picture" />
-                                    </td>
-                                    <td>Jane</td>
-                                    <td>Smith</td>
-                                    <td>30</td>
-                                    <td>Femenino</td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/2048px-User-avatar.svg.png"
-                                            alt="user" class="picture" />
-                                    </td>
-                                    <td>Michael</td>
-                                    <td>Johnson</td>
-                                    <td>45</td>
-                                    <td>Masculino</td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/2048px-User-avatar.svg.png"
-                                            alt="user" class="picture" />
-                                    </td>
-                                    <td>Sarah</td>
-                                    <td>Williams</td>
-                                    <td>35</td>
-                                    <td>Femenino</td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/2048px-User-avatar.svg.png"
-                                            alt="user" class="picture" />
-                                    </td>
-                                    <td>Robert</td>
-                                    <td>Brown</td>
-                                    <td>28</td>
-                                    <td>Masculino</td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/2048px-User-avatar.svg.png"
-                                            alt="user" class="picture" />
-                                    </td>
-                                    <td>Emily</td>
-                                    <td>Davis</td>
-                                    <td>32</td>
-                                    <td>Femenino</td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/2048px-User-avatar.svg.png"
-                                            alt="user" class="picture" />
-                                    </td>
-                                    <td>David</td>
-                                    <td>Miller</td>
-                                    <td>50</td>
-                                    <td>Masculino</td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/2048px-User-avatar.svg.png"
-                                            alt="user" class="picture" />
-                                    </td>
-                                    <td>Emma</td>
-                                    <td>Wilson</td>
-                                    <td>29</td>
-                                    <td>Femenino</td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/2048px-User-avatar.svg.png"
-                                            alt="user" class="picture" />
-                                    </td>
-                                    <td>Christopher</td>
-                                    <td>Taylor</td>
-                                    <td>42</td>
-                                    <td>Masculino</td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/2048px-User-avatar.svg.png"
-                                            alt="user" class="picture" />
-                                    </td>
-                                    <td>Olivia</td>
-                                    <td>Anderson</td>
-                                    <td>31</td>
-                                    <td>Femenino</td>
-                                </tr>
+                                            </button> --}}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
                             </tbody>
                         </table>
                         <div id="pagination">
@@ -161,80 +79,106 @@
                     <div class="col-xl-5">
                         <div class="card  mb-4" style="border:none; padding-bottom: 25px !important; width: 100%">
                             <h3 style="padding: -5px 0px !important;">Nuevo Registro</h3>
-                            <form action="post">
+                            <form action="{{ route('animal.store') }}"method="POST">
+                                @csrf
                                 <div class="row">
                                     <div class="col-xl-4">
-                                        <label class="custum-file-upload" for="file"
+                                        <label id="image-preview" class="custum-file-upload" for="file"
                                             style="margin-top:-10px; width: auto; height: 75%;">
-                                            <div class="icon" style="color:#c4c4c4;">
+                                            <div  class="icon" style="color:#c4c4c4;">
                                                 <i style="height: 55px; padding: 10px" class="fas fa-camera"></i>
                                             </div>
 
-                                            <input type="file" id="file">
+                                            <input type="file" name="foto" id="file" accept="image/*" value="{{old('foto')}}">
                                         </label>
+                                        @error('foto')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
                                     </div>
                                     <div class="col-xl-8">
                                         <div class="inputContainer">
-                                            <input required="required" id="nombre" class="inputField"
-                                                placeholder="Nombre" type="text" autocomplete="off">
+                                            <input id="nombre" name="nombre" class="inputField" placeholder="Nombre"
+                                                type="text" value="{{old('nombre')}}" autocomplete="off">
                                             <label class="inputFieldLabel" for="nombre">Nombre</label>
                                             <i class="inputFieldIcon fas fa-pen"></i>
+                                            @error('nombre')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
                                         </div>
+
                                         <div class="inputContainer">
-                                            <input required="required" id="fecha" class="inputField"
-                                                autocomplete="false" placeholder="Fecha de nacimiento" type="date">
+                                            <input id="fecha" name="fecha" value="{{old('fecha')}}" class="inputField" autocomplete="false"
+                                                placeholder="Fecha de nacimiento" type="date">
                                             <label class="inputFieldLabel" for="fecha">Fecha de nacimiento
                                                 estimada</label>
                                             <i class="inputFieldIcon fas fa-calendar"></i>
+                                            @error('fecha')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
                                         </div>
+
                                     </div>
                                 </div>
 
                                 <div class="inputContainer">
-                                    <select required="required" id="especie" class="inputField">
-                                        <option selected>Seleccione...</option>
-                                        <option>Perro</option>
-                                        <option>Gato</option>
+                                    <select id="especie" name="especie" class="inputField">
+                                        <option value="" {{ old('especie') == '' ? 'selected' : '' }}>Seleccione</option>
+                                        @php use App\Models\Especie; @endphp
+                                        @foreach (Especie::all() as $e)
+                                            <option value="{{ $e->idEspecie }}" {{ old('especie') == $e->idEspecie ? 'selected' : '' }}>
+                                                {{ $e->especie }}
+                                            </option>
+                                        @endforeach
                                     </select>
+                                    
                                     <label class="inputFieldLabel" for="especie">Especie</label>
                                     <i class="inputFieldIcon fas fa-dog"></i>
+                                    @error('especie')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
                                 </div>
+
                                 <div class="inputContainer">
-                                    <select required="required" id="raza" class="inputField">
-                                        <option>Seleccione...</option>
-                                        <option>Chiguagua</option>
-                                        <option>Dalmata</option>
-                                        <option>Pitbull</option>
-                                        <option>Mestizo</option>
+                                    <select id="raza" name="raza" data-selected="{{ old('raza') }}" class="inputField">
+                                        <option value="">Seleccione...</option>
+
                                     </select>
                                     <label class="inputFieldLabel" for="raza">Raza</label>
                                     <i class="inputFieldIcon fas fa-paw"></i>
+                                    @error('raza')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
                                 </div>
+
                                 <div class="inputContainer">
                                     <label class="inputFieldLabel">sexo</label>
                                     <i class="inputFieldIcon fas fa-question"></i>
                                     <div style="padding: 3px 15px">
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="sexo"
-                                                id="inlineRadio1" value="option1">
+                                            <input class="form-check-input" type="radio" name="sexo" id="inlineRadio1"
+                                            value="Hembra" {{ old('sexo') == 'Hembra' ? 'checked' : '' }}>
                                             <label class="form-check-label" for="Hembra">Hembra</label>
                                         </div>
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="radio" name="sexo"
-                                                id="inlineRadio2" value="option2">
+                                                id="inlineRadio2" value="Macho" {{ old('sexo') == 'Macho' ? 'checked' : '' }}>
                                             <label class="form-check-label" for="Macho">Macho</label>
                                         </div>
                                     </div>
-
+                                    @error('sexo')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
                                 </div>
+
                                 <div style="display: flex; align-items: flex-end; gap: 10px; justify-content: center">
-                                    <button type="reset" class="button button-sec">
-                                        <i class="svg-icon fas fa-rotate-right"></i>
-                                        <span class="lable">Cancelar</span>
-                                    </button>
+
                                     <button type="submit" class="button button-pri">
                                         <i class="svg-icon fa-regular fa-floppy-disk"></i>
                                         <span class="lable">Guardar</span>
+                                    </button>
+                                    <button type="reset" class="button button-red">
+                                        <i class="svg-icon fas fa-rotate-right"></i>
+                                        <span class="lable">Cancelar</span>
                                     </button>
                                 </div>
 
