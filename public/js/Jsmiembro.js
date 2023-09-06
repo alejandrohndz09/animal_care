@@ -1,17 +1,26 @@
-function formatPhoneNumber(input) {
-    var value = input.value; // Obtener el valor actual
+function validarInput(input) {
+    let telefonoValue = input.value;
+    const formatoTelefono = /^\+\d{3} \d{4}-\d{4}$/;
 
-    // Si no comienza con el código de país, agrégalo
-    if (!value.startsWith("+503 ")) {
-        value = "+503 " + value;
+    // Eliminar caracteres no válidos
+    telefonoValue = telefonoValue.replace(/[^+\d\s-]/g, '');
+
+    // Eliminar guiones existentes
+    telefonoValue = telefonoValue.replace(/-/g, '');
+
+    // Limitar la longitud máxima a 14 caracteres
+    if (telefonoValue.length > 13) {
+        telefonoValue = telefonoValue.slice(0, 13);
     }
 
-    // Insertar el guion después del código de país si no existe
-    if (value.length >= 10 && value.charAt(9) !== '-') {
-        value = value.substring(0, 9) + '-' + value.substring(9);
+    // Agregar un guion después del cuarto dígito
+    if (telefonoValue.length >= 9) {
+        telefonoValue = telefonoValue.slice(0, 9) + '-' + telefonoValue.slice(9);
     }
 
-    input.value = value; // Actualizar el valor del campo
+    // Asignar el valor al campo de entrada
+    input.value = telefonoValue;
+
 }
 
 $(document).ready(function () {
@@ -43,8 +52,8 @@ $(document).ready(function () {
             <div id="remove">
                <div class="col-xl-6">
                   <div class="inputContainer">
-                       <input class="inputField form-control telefono" type="tel" 
-                          value="+503 " name="telefono`+ con + `" oninput="formatPhoneNumber(this)"
+                       <input class="inputField form-control telefono"  
+                          value="+503 " name="telefono`+ con + `" type="text" oninput="validarInput(this)"
                            onkeydown="return restrictToNumbersAndHyphen(event)">
                   </div>
                 </div>
@@ -68,25 +77,25 @@ $(document).ready(function () {
 
     });
 
+    $(document).ready(function () {
+        $("#miFormulario").submit(function (event) {
+            var inputs = $(this).find("input"); // Obtener todos los campos de entrada en el formulario
 
-    // Restringir caracteres solo para campos de teléfono
-    $(".telefono").on("keydown", function (event) {
-        return restrictToNumbersAndHyphen(event);
-    });
+            // Iterar a través de los campos de entrada
+            for (var i = 0; i < inputs.length; i++) {
+                var inputValue = inputs[i].value.trim();
+                var errorSpan = $(inputs[i]).siblings(".error-message");
 
-    $("form").submit(function (event) {
-        var inputs = $(this).find("input"); // Obtener todos los campos de entrada en el formulario
-
-        // Iterar a través de los campos de entrada
-        for (var i = 0; i < inputs.length; i++) {
-            var inputValue = inputs[i].value.trim();
-            if (inputValue === "") {
-                event.preventDefault(); // Detener el envío del formulario
-                alert("Ninguno de los campos puede estar vacío.");
-                return;
+                if (inputValue === "") {
+                    event.preventDefault(); // Detener el envío del formulario
+                    errorSpan.text("Este campo no puede estar vacío.");
+                } else {
+                    errorSpan.text(""); // Limpiar el mensaje de error si el campo no está vacío
+                }
             }
-        }
+        });
     });
+
 });
 
 $(document).ready(function () {

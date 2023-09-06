@@ -6,11 +6,12 @@ use App\Http\Controllers\Controller;
 use App\Models\Miembro;
 use App\Models\TelefonoMiembro;
 use Illuminate\Http\Request;
-use Redirect,Response;
+use Illuminate\Validation\Validator;
 
 class MiembroController extends Controller
 {
 
+    
     public function index()
     {
         //Pagina inicio
@@ -26,6 +27,10 @@ class MiembroController extends Controller
 
     public function store(Request $request)
     {
+        $request->validate([
+            'correo' => 'unique:miembro'
+        ]);
+
         // Obtén el último registro de la tabla para determinar el siguiente incremento
         $ultimoRegistro = Miembro::latest('idMiembro')->first();
 
@@ -63,13 +68,16 @@ class MiembroController extends Controller
     {
         $miembroEdit = Miembro::find($id);
         $datos = Miembro::all();
-       // return response()->json($miembrosEdit)->merge(view('miembros.index')->with('miembros', $miembros));
-       return view('miembro.index')->with('miembroEdit', $miembroEdit)->with('datos', $datos);
-
+   
+        return view('miembro.index')->with('miembroEdit', $miembroEdit)->with('datos', $datos);
     }
 
     public function update(Request $request, $id)
     {
+        $request->validate([
+            'correo' => 'unique:miembro'
+        ]);
+        
         //Actualiza los datos en la BD
         $miembros = Miembro::find($id);
         $miembros->nombres = $request->post('nombres');

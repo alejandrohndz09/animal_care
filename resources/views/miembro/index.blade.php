@@ -14,15 +14,16 @@
         <main>
             <div class="container-fluid px-4 py-4">
                 <div style=" width: 100%;display: flex;align-items: center;justify-content: space-between;">
-                 
+
                 </div>
 
                 <div class="row mt-3">
                     <div class="col-xl-7">
-                        <div style="width:100%; display: flex;  justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                        <div
+                            style="width:100%; display: flex;  justify-content: space-between; align-items: center; margin-bottom: 15px;">
                             <h1>Miembros </h1>
-                            <input id="searchInput" class="inputField card" style="width: 50% "
-                            autocomplete="off" placeholder="🔍︎ Buscar" type="search">
+                            <input id="searchInput" class="inputField card" style="width: 50% " autocomplete="off"
+                                placeholder="🔍︎ Buscar" type="search">
                         </div>
                         <table>
                             <thead>
@@ -32,7 +33,7 @@
                                     <th>Apellido</th>
                                     <th>Correo</th>
                                     <th></th>
-                                    
+
                                 </tr>
                             </thead>
                             <tbody id="tableBody">
@@ -50,8 +51,8 @@
                                             <td>
                                                 <div
                                                     style="display: flex; align-items: flex-end; gap: 5px; justify-content: center">
-                                                    <a id="btnmodificar" href="edit/{{$item->idMiembro}}" type="button" class="button button-blue"
-                                                        data-id="{{ $item->idMiembro }}">
+                                                    <a id="btnmodificar" href="edit/{{ $item->idMiembro }}" type="button"
+                                                        class="button button-blue" data-id="{{ $item->idMiembro }}">
                                                         <i class="svg-icon fas fa-pencil"></i>
                                                         <span class="lable"></span>
                                                     </a>
@@ -81,7 +82,8 @@
 
                             @if (isset($miembroEdit))
                                 <h3 style="padding: -5px 0px !important;">Modificar Registro</h3>
-                                <form action="{{route('miembros.update',$miembroEdit)}}" id="form-edit" name="form" method="POST">
+                                <form action="{{ route('miembros.update', $miembroEdit) }}" id="form-edit" name="form"
+                                    method="POST">
                                     @csrf
                                     @method('PUT') <!-- Utilizar el método PUT para la actualización -->
 
@@ -116,123 +118,124 @@
                                             <div class="inputContainer">
                                                 <input class="inputField form-control telefono" type="tel"
                                                     maxlength="18" value="+503 " name="telefonos"
-                                                    oninput="formatPhoneNumber(this)"
-                                                    onkeydown="return restrictToNumbersAndHyphen(event)">
+                                                    oninput="formatPhoneNumber(this)">
                                                 <label class="inputFieldLabel" for="telefono">Telefono</label>
                                                 <i class="inputFieldIcon fas fa-phone"></i>
                                             </div>
                                         </div>
+                                    </div>
+                        </div>
+
+                        <div style="display: flex; align-items: flex-end; gap: 10px; justify-content: center">
+                            <button type="submit" class="button button-pri">
+                                <i class="svg-icon fa-regular fa-floppy-disk"></i>
+                                <span class="lable">Modificar</span>
+                            </button>
+                            <a href="miembro" class="button button-red">
+                                <i class="svg-icon fas fa-rotate-right"></i>
+                                <span class="lable">Cancelar</span>
+
+                            </a>
+
+                        </div>
+                        </form>
+                    @else
+                        <h3 style="padding: -5px 0px !important;">Nuevo Registro</h3>
+                        <form id="miFormulario" action="{{ route('miembros.store') }}" method="POST">
+                            @csrf
+
+                            <div class="row">
+                                <div class="col-xl-6">
+                                    <div class="inputContainer">
+                                        <input name="nombres" value="{{ old('nombres') }}" class="inputField"
+                                            placeholder="Nombres" type="text" autocomplete="off">
+                                        <label class="inputFieldLabel" for="nombre">Nombres del miembro</label>
+                                        <i class="inputFieldIcon fas fa-user"></i>
+                                        <small style="color:red" class="error-message"></small>
                                     </div>
                                 </div>
-
-                                    <div style="display: flex; align-items: flex-end; gap: 10px; justify-content: center">
-                                        <button type="submit" class="button button-pri">
-                                            <i class="svg-icon fa-regular fa-floppy-disk"></i>
-                                            <span class="lable">Modificar</span>
-                                        </button>
-                                        <a  href="miembro" class="button button-red">
-                                            <i class="svg-icon fas fa-rotate-right"></i>
-                                            <span class="lable">Cancelar</span>
-
-                                        </a>
-
-                                    </div>
-                                </form>
-                            @else
-                                <h3 style="padding: -5px 0px !important;">Nuevo Registro</h3>
-                                <form action="{{ route('miembros.store') }}" method="POST">
-                                    @csrf
-
-                                    <div class="row">
-                                        <div class="col-xl-6">
-                                            <div class="inputContainer">
-                                                <input name="nombres" class="inputField" placeholder="Nombres"
-                                                    type="text" autocomplete="off">
-                                                <label class="inputFieldLabel" for="nombre">Nombres del miembro</label>
-                                                <i class="inputFieldIcon fas fa-user"></i>
-                                            </div>
-                                        </div>
-                                        <div class="col-xl-6">
-                                            <div class="inputContainer">
-                                                <input name="apellidos" class="inputField" autocomplete="off"
-                                                    placeholder="Apellidos" type="text">
-                                            </div>
-                                        </div>
-                                    </div>
-
+                                <div class="col-xl-6">
                                     <div class="inputContainer">
-                                        <input class="inputField" name="correo" autocomplete="off" placeholder="Correo"
-                                            type="email">
-                                        <label class="inputFieldLabel" for="fecha">Correo</label>
-                                        <i class="inputFieldIcon fas fa-envelope"></i>
+                                        <input name="apellidos" value="{{ old('apellidos') }}" class="inputField"
+                                            autocomplete="off" placeholder="Apellidos" type="text">
+                                        <small style="color:red" class="error-message"></small>
                                     </div>
+                                </div>
+                            </div>
 
-                                    <input type="hidden" name="contador" id="contador" value="1">
-                                    <div class="row" id="telefono-container">
-                                        <div class="col-xl-6">
-                                            <div class="inputContainer">
-                                                <input class="inputField form-control telefono" type="tel"
-                                                    value="+503 " name="telefono1" oninput="formatPhoneNumber(this)"
-                                                    onkeydown="return restrictToNumbersAndHyphen(event)">
-                                                <label class="inputFieldLabel" for="telefono">Telefono</label>
-                                                <i class="inputFieldIcon fas fa-phone"></i>
-                                            </div>
-                                        </div>
-                                        <div class="col-xl-6">
-                                            <button type="button" class="button button-pri" id="add-telefono">
-                                                <i class="svg-icon fas fa-plus"></i>
-                                            </button>
-                                        </div>
+                            <div class="inputContainer">
+                                <input class="inputField" value="{{ old('correo') }}" name="correo" autocomplete="off"
+                                    placeholder="Correo" type="email">
+                                <label class="inputFieldLabel" for="fecha">Correo</label>
+                                <i class="inputFieldIcon fas fa-envelope"></i>
+                                <small style="color:red" class="error-message"></small>
+                                @error('correo')
+                                    <small style="color:red">El correo ya ha sido registrado</small>
+                                @enderror
+                            </div>
 
+                            <input type="hidden" name="contador" id="contador" value="1">
+                            <div class="row" id="telefono-container">
+                                <div class="col-xl-6">
+                                    <div class="inputContainer">
+                                        <input class="inputField form-control telefono" value="+503 " id="tel"
+                                            name="telefono1" type="text" oninput="validarInput(this)">
+                                        <label class="inputFieldLabel" for="telefono">Telefono</label>
+                                        <i class="inputFieldIcon fas fa-phone"></i>
                                     </div>
+                                </div>
+                                <div class="col-xl-6">
+                                    <button type="button" class="button button-pri" id="add-telefono">
+                                        <i class="svg-icon fas fa-plus"></i>
+                                    </button>
+                                </div>
+                            </div>
 
-                                    <div style="display: flex; align-items: flex-end; gap: 10px; justify-content: center">
-                                        <button type="submit" class="button button-pri">
-                                            <i class="svg-icon fa-regular fa-floppy-disk"></i>
-                                            <span class="lable">Guardar</span>
-                                        </button>
-                                        <button type="reset" class="button button-red">
-                                            <i class="svg-icon fas fa-rotate-right"></i>
-                                            <span class="lable">Cancelar</span>
-                                        </button>
-
-                                    </div>
-                                </form>
-                            @endif
-                        </div>
+                            <div style="display: flex; align-items: flex-end; gap: 10px; justify-content: center">
+                                <button type="submit" class="button button-pri">
+                                    <i class="svg-icon fa-regular fa-floppy-disk"></i>
+                                    <span class="lable">Guardar</span>
+                                </button>
+                                <button type="reset" class="button button-red">
+                                    <i class="svg-icon fas fa-rotate-right"></i>
+                                    <span class="lable">Cancelar</span>
+                                </button>
+                            </div>
+                        </form>
+                        @endif
                     </div>
                 </div>
             </div>
+    </div>
 
-            <!-- Modal -->
-            <form action="" id="form-edit" name="form" method="POST">
-                @csrf
-                <div class="modal fade" id="exampleModalToggle" aria-hidden="true"
-                    aria-labelledby="exampleModalToggleLabel" tabindex="-1">
-                    <div class="modal-dialog modal-dialog-centered">
+    <!-- Modal -->
+    <form action="" id="form-edit" name="form" method="POST">
+        @csrf
+        <div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel"
+            tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
 
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalToggleLabel">Desea eliminar este registro?</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                    aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <!-- Aquí puedes mostrar los detalles del registro utilizando el id -->
-                                <p>ID del registro: <span id="modalRecordId"></span></p>
-                                <!-- Otros detalles del registro -->
-                                <p>Nombres: <span id="modalRecordNombre"></span></p>
-                                <p>Apellidos: <span id="modalRecordApellido"></span></p>
-                                <p>Correo: <span id="modalRecordCorreo"></span></p>
-                            </div>
-                            <div class="modal-footer">
-                                <button id="confirmar" type="button" class="btn btn-primary"> Eliminar</button>
-                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-                            </div>
-                        </div>
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalToggleLabel">Desea eliminar este registro?</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-            </form>
-        </main>
+                    <div class="modal-body">
+                        <!-- Aquí puedes mostrar los detalles del registro utilizando el id -->
+                        <p>ID del registro: <span id="modalRecordId"></span></p>
+                        <!-- Otros detalles del registro -->
+                        <p>Nombres: <span id="modalRecordNombre"></span></p>
+                        <p>Apellidos: <span id="modalRecordApellido"></span></p>
+                        <p>Correo: <span id="modalRecordCorreo"></span></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="confirmar" type="button" class="btn btn-primary"> Eliminar</button>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                    </div>
+                </div>
+            </div>
+    </form>
+    </main>
 
     </div>
 @endsection
