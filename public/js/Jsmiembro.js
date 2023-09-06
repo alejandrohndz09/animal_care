@@ -25,27 +25,25 @@ function validarInput(input) {
 
 $(document).ready(function () {
     $("#add-telefono").click(function () {
-        var telefonoInput = $(".telefono:last"); // Obtener el último campo de teléfono agregado
-        var telefonoValue = telefonoInput.val() // Obtener el valor del último campo y quitar espacios en blanco
-
+        var telefonoInput = $(".telefono:last");
+        var telefonoValue = telefonoInput.val().trim();
+        var errorSpan = telefonoInput.siblings(".error-message");
 
         // Validar si el campo está vacío
-        if (telefonoValue == "+503 ") {
-            alert("El campo de teléfono no puede estar vacío.");
+        if (telefonoValue === "+503") {
+            errorSpan.text("El campo no puede estar vacío.");
             return; // Detener la función si el campo está vacío
-        }
-        // Validar si el campo no tiene al menos 10 caracteres
-        else if (telefonoValue.length < 13) {
-            alert("El número de teléfono ingresado no es valido.");
+        } else if (telefonoValue.length < 13) {
+            errorSpan.text("El número de teléfono no es válido.");
             return; // Detener la función si el campo no es válido
-        }
-        else {
+        } else {
+            errorSpan.text(""); // Limpiar el mensaje de error si no hay errores
 
             var contador = $("#contador");
-            var con = parseInt(contador.val(), 10); // El segundo argumento (10) es la base numérica, que es 10 para números decimales.
+            var con = parseInt(contador.val(), 10);
 
-            con++; // Incrementa el valor en 1
-            contador.val(con); // Actualiza el valor en el campo de entrada
+            con++;
+            contador.val(con);
 
             // Si pasa ambas validaciones, puedes agregar el nuevo campo de teléfono
             var newTelefonoField = `
@@ -55,6 +53,7 @@ $(document).ready(function () {
                        <input class="inputField form-control telefono"  
                           value="+503 " name="telefono`+ con + `" type="text" oninput="validarInput(this)"
                            onkeydown="return restrictToNumbersAndHyphen(event)">
+                           <small  style="color:red" class="error-message"></small>
                   </div>
                 </div>
              <div class="col-xl-3">
@@ -66,8 +65,6 @@ $(document).ready(function () {
         `;
             $("#telefono-container").append(newTelefonoField);
         }
-
-
         // Remover campos agregados dinámicamente
         $("#telefono-container").on("click", ".remove-telefono", function () {
             $(this).closest("#remove").remove();

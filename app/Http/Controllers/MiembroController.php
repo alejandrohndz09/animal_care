@@ -11,7 +11,7 @@ use Illuminate\Validation\Validator;
 class MiembroController extends Controller
 {
 
-    
+
     public function index()
     {
         //Pagina inicio
@@ -68,18 +68,24 @@ class MiembroController extends Controller
     {
         $miembroEdit = Miembro::find($id);
         $datos = Miembro::all();
-   
-        return view('miembro.index')->with('miembroEdit', $miembroEdit)->with('datos', $datos);
+        $telefonos = TelefonoMiembro::where('idMiembro', $miembroEdit->idMiembro)->get();
+
+        return view('miembro.index')->with('miembroEdit', $miembroEdit)->with('datos', $datos)->with('telefonos', $telefonos);
     }
 
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'correo' => 'unique:miembro'
-        ]);
-        
-        //Actualiza los datos en la BD
+
         $miembros = Miembro::find($id);
+
+        // Verificar si el correo se ha modificado antes de aplicar la validación de unicidad
+        if ($request->input('correo') !==   $miembros->correo) {
+            $request->validate([
+                'correo' => 'unique:miembro',
+            ]);
+        }
+
+        //Actualiza los datos en la BD
         $miembros->nombres = $request->post('nombres');
         $miembros->apellidos = $request->post('apellidos');
         $miembros->correo = $request->post('correo');
