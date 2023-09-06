@@ -4,7 +4,7 @@
 @endsection
 
 @section('scripts')
-<script src="{{ asset('js/validaciones/jsAnimal.js') }}"></script>
+    <script src="{{ asset('js/validaciones/jsAnimal.js') }}"></script>
 @endsection
 @section('content')
     <div id="layoutSidenav_content">
@@ -37,8 +37,8 @@
                                 </tr>
                             </thead>
                             <tbody id="tableBody">
-                                
-                               @php use App\Http\Controllers\AnimalControlador; @endphp
+
+                                @php use App\Http\Controllers\AnimalControlador; @endphp
                                 @foreach ($animales as $a)
                                     <tr>
                                         <td>
@@ -46,7 +46,8 @@
                                                 alt="user" class="picture" />
                                         </td>
                                         <td>{{ $a->nombre }}</td>
-                                        <td>{{AnimalControlador::calcularEdad(explode(' ', $a->fechaNacimiento)[0]); }}</td>
+                                        <td>{{ AnimalControlador::calcularEdad(explode(' ', $a->fechaNacimiento)[0]) }}
+                                        </td>
                                         <td>{{ $a->raza->especie->especie }}</td>
                                         <td>{{ $a->raza->raza }}</td>
                                         <td>{{ $a->sexo }}</td>
@@ -78,73 +79,99 @@
                     <div class="col-xl-5">
                         <div class="card  mb-4" style="border:none; padding-bottom: 25px !important; width: 100%">
                             <h3 style="padding: -5px 0px !important;">Nuevo Registro</h3>
-                            <form action="post">
+                            <form action="{{ route('animal.store') }}"method="POST">
+                                @csrf
                                 <div class="row">
                                     <div class="col-xl-4">
-                                        <label class="custum-file-upload" for="file"
+                                        <label id="image-preview" class="custum-file-upload" for="file"
                                             style="margin-top:-10px; width: auto; height: 75%;">
-                                            <div class="icon" style="color:#c4c4c4;">
+                                            <div  class="icon" style="color:#c4c4c4;">
                                                 <i style="height: 55px; padding: 10px" class="fas fa-camera"></i>
                                             </div>
 
-                                            <input type="file" name="foto"  id="file">
+                                            <input type="file" name="foto" id="file" accept="image/*" value="{{old('foto')}}">
                                         </label>
+                                        @error('foto')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
                                     </div>
                                     <div class="col-xl-8">
                                         <div class="inputContainer">
-                                            <input required="required" id="nombre" name="nombre" class="inputField"
-                                                placeholder="Nombre" type="text" autocomplete="off">
+                                            <input id="nombre" name="nombre" class="inputField" placeholder="Nombre"
+                                                type="text" value="{{old('nombre')}}" autocomplete="off">
                                             <label class="inputFieldLabel" for="nombre">Nombre</label>
                                             <i class="inputFieldIcon fas fa-pen"></i>
+                                            @error('nombre')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
                                         </div>
+
                                         <div class="inputContainer">
-                                            <input required="required" id="fecha" name="fecha" class="inputField"
-                                                autocomplete="false" placeholder="Fecha de nacimiento" type="date">
+                                            <input id="fecha" name="fecha" value="{{old('fecha')}}" class="inputField" autocomplete="false"
+                                                placeholder="Fecha de nacimiento" type="date">
                                             <label class="inputFieldLabel" for="fecha">Fecha de nacimiento
                                                 estimada</label>
                                             <i class="inputFieldIcon fas fa-calendar"></i>
+                                            @error('fecha')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
                                         </div>
+
                                     </div>
                                 </div>
 
                                 <div class="inputContainer">
-                                    <select required="required" id="especie" name="especie" class="inputField">
-                                        <option value="" selected>Seleccione</option>
+                                    <select id="especie" name="especie" class="inputField">
+                                        <option value="" {{ old('especie') == '' ? 'selected' : '' }}>Seleccione</option>
                                         @php use App\Models\Especie; @endphp
                                         @foreach (Especie::all() as $e)
-                                            <option value="{{ $e->idEspecie }}">{{ $e->especie }}</option>
+                                            <option value="{{ $e->idEspecie }}" {{ old('especie') == $e->idEspecie ? 'selected' : '' }}>
+                                                {{ $e->especie }}
+                                            </option>
                                         @endforeach
                                     </select>
+                                    
                                     <label class="inputFieldLabel" for="especie">Especie</label>
                                     <i class="inputFieldIcon fas fa-dog"></i>
+                                    @error('especie')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
                                 </div>
+
                                 <div class="inputContainer">
-                                    <select required="required" id="raza" name="raza" class="inputField">
-                                        <option>Seleccione...</option>
-                                        
+                                    <select id="raza" name="raza" data-selected="{{ old('raza') }}" class="inputField">
+                                        <option value="">Seleccione...</option>
+
                                     </select>
                                     <label class="inputFieldLabel" for="raza">Raza</label>
                                     <i class="inputFieldIcon fas fa-paw"></i>
+                                    @error('raza')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
                                 </div>
+
                                 <div class="inputContainer">
                                     <label class="inputFieldLabel">sexo</label>
                                     <i class="inputFieldIcon fas fa-question"></i>
                                     <div style="padding: 3px 15px">
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="radio" name="sexo" id="inlineRadio1"
-                                                value="option1">
+                                            value="Hembra" {{ old('sexo') == 'Hembra' ? 'checked' : '' }}>
                                             <label class="form-check-label" for="Hembra">Hembra</label>
                                         </div>
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="sexo" id="inlineRadio2"
-                                                value="option2">
+                                            <input class="form-check-input" type="radio" name="sexo"
+                                                id="inlineRadio2" value="Macho" {{ old('sexo') == 'Macho' ? 'checked' : '' }}>
                                             <label class="form-check-label" for="Macho">Macho</label>
                                         </div>
                                     </div>
-
+                                    @error('sexo')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
                                 </div>
+
                                 <div style="display: flex; align-items: flex-end; gap: 10px; justify-content: center">
-                                    
+
                                     <button type="submit" class="button button-pri">
                                         <i class="svg-icon fa-regular fa-floppy-disk"></i>
                                         <span class="lable">Guardar</span>

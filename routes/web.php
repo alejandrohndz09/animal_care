@@ -26,7 +26,7 @@ Route::get('/home', function () {
 
 Route::resource('animal','App\Http\Controllers\AnimalControlador');
 Route::get('/obtener-razas/{especie}', 'App\Http\Controllers\AnimalControlador@obtenerRazas');
-
+Route::post('/store', [AnimalControlador::class, 'store'])->name('animal.store');
 
 Route::get('/form1', function () {
     return view('formularios.form1');

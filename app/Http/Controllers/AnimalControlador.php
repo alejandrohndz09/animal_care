@@ -40,30 +40,33 @@ class AnimalControlador extends Controller
     {
         // Validar la solicitud
         $request->validate([
-            'imagen' => 'required|image|mimes:jpeg,png,jpg|max:2048', // Puedes ajustar las reglas de validación según tus necesidades
-            'nombre' => 'required',
+           'foto' => 'required|mimes:jpeg,png,jpg|max:2048', // Puedes ajustar las reglas de validación según tus necesidades
+            'nombre' => 'required|min:3',
             'especie' => 'required',
             'fecha' => 'required|date|before_or_equal:today',
             'raza' => 'required',
-            'sexo' => 'required|in:Hembra,Macho'
+            'sexo' => 'required|in:Hembra,Macho',
+        ], [
+            'foto.required' => 'La Fotografía es necesaria.',
+            'fecha.before_or_equal' => 'La fecha ingresada no debe ser mayor a la de ahora.',
         ]);
 
         $animal = new Animal();
         $animal->idAnimal = $this->generarId();
         $animal->nombre = $request->post('nombre');
         $animal->fechaNacimiento = $request->post('fecha');
-        $animal->raza = $request->post('raza');
+        $animal->idRaza = $request->post('raza');
         $animal->sexo = $request->post('sexo');
 
-        // Obtener el archivo de imagen
-        $imagen = $request->file('imagen');
-        // Generar un nombre único para la imagen
-        $nombreImagen = $animal->idAnimal;
-        // Guardar la imagen en el directorio de almacenamiento
-        $imagen->move(public_path('imagenes'), $nombreImagen);
-        // Puedes almacenar la ruta de la imagen en la base de datos si es necesario
-        $animal->imagen = 'imagenes/' . $nombreImagen;
+        if ($request->hasFile('foto')) {
+            $imagen = $request->file('foto');
+            $nombreImagen = time() . '.' . $imagen->getClientOriginalExtension();
+            $rutaImagen = public_path('imagenes'); // Ruta donde deseas guardar la imagen
+            $imagen->move($rutaImagen, $nombreImagen);
 
+            // Aquí puedes guardar $nombreImagen en tu base de datos o realizar otras acciones necesarias.
+            $animal->imagen = 'imagenes/' . $nombreImagen;
+        }
         $animal->save();
 
         return back()->with('success', 'Guardado con éxito');
