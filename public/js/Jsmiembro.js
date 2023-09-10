@@ -1,6 +1,6 @@
+
 function validarInput(input) {
     let telefonoValue = input.value;
-    const formatoTelefono = /^\+\d{3} \d{4}-\d{4}$/;
 
     // Eliminar caracteres no válidos
     telefonoValue = telefonoValue.replace(/[^+\d\s-]/g, '');
@@ -21,10 +21,37 @@ function validarInput(input) {
     // Asignar el valor al campo de entrada
     input.value = telefonoValue;
 
+} function validarDui(input) {
+    let duiValue = input.value;
+    const formatoDUI = /^\d{8}-\d$/;
+
+    // Eliminar caracteres no válidos
+    duiValue = duiValue.replace(/[^\d-]/g, '');
+
+    // Eliminar guiones adicionales al final del valor
+    duiValue = duiValue.replace(/-+$/, '');
+
+    // Limitar la longitud máxima a 10 caracteres (8 dígitos + 1 guion + 1 verificador)
+    if (duiValue.length > 10) {
+        duiValue = duiValue.slice(0, 10);
+    }
+
+    // Insertar el guion después del octavo dígito
+    if (duiValue.length == 8) {
+        duiValue = duiValue.slice(0, 8) + '-' + duiValue.slice(8);
+    }
+
+    // Asignar el valor al campo de entrada
+    input.value = duiValue;
 }
+
 
 $(document).ready(function () {
     $("#add-telefono").click(function () {
+        var contador = $("#con");
+        var con = parseInt(contador.val());
+
+
         var telefonoInput = $(".telefono:last");
         var telefonoValue = telefonoInput.val().trim();
         var errorSpan = telefonoInput.siblings(".error-message");
@@ -39,8 +66,6 @@ $(document).ready(function () {
         } else {
             errorSpan.text(""); // Limpiar el mensaje de error si no hay errores
 
-            var contador = $("#contador");
-            var con = parseInt(contador.val(), 10);
 
             con++;
             contador.val(con);
@@ -51,13 +76,13 @@ $(document).ready(function () {
                <div class="col-xl-6">
                   <div class="inputContainer">
                        <input class="inputField form-control telefono"  
-                          value="+503 " name="telefono`+ con + `" type="text" oninput="validarInput(this)"
-                           onkeydown="return restrictToNumbersAndHyphen(event)">
+                          value="+503 " name="telefono`+ con + `" type="text" oninput="validarInput(this)">
                            <small  style="color:red" class="error-message"></small>
                   </div>
                 </div>
              <div class="col-xl-3">
-                  <button type="button" class="btn btn-danger remove-telefono">
+                  <button type="button" class="btn btn-danger remove-telefono"
+                  data-bs-toggle="modal" >
                    <i class="svg-icon fas fa-circle-xmark"></i>
                   </button>
 
@@ -65,37 +90,67 @@ $(document).ready(function () {
         `;
             $("#telefono-container").append(newTelefonoField);
         }
-        // Remover campos agregados dinámicamente
-        $("#telefono-container").on("click", ".remove-telefono", function () {
-            $(this).closest("#remove").remove();
-            con--; // decrementa el valor en 1
-            contador.val(con); // Actualiza el valor en el campo de entrada
-        });
 
     });
 
-    $(document).ready(function () {
-        $("#miFormulario").submit(function (event) {
-            var inputs = $(this).find("input"); // Obtener todos los campos de entrada en el formulario
+    $("#telefono-container").on("click", ".remove-telefono", function () {
+        var telefonoInput = $(this).closest("#remove").find(".telefono");
+        var telefonoValue = telefonoInput.val().trim();
+        var telefonoId = $(this).data("telefono-id");
 
-            // Iterar a través de los campos de entrada
-            for (var i = 0; i < inputs.length; i++) {
-                var inputValue = inputs[i].value.trim();
-                var errorSpan = $(inputs[i]).siblings(".error-message");
+        var elemento = document.getElementById('telefono-container');
+        var objeto = JSON.parse(elemento.getAttribute('data-objeto'));
 
-                if (inputValue === "") {
-                    event.preventDefault(); // Detener el envío del formulario
-                    errorSpan.text("Este campo no puede estar vacío.");
-                } else {
-                    errorSpan.text(""); // Limpiar el mensaje de error si el campo no está vacío
+        if (objeto) {
+            $.ajax({
+                url: "/destroyTelefono/" + telefonoId,
+                method: "GET",
+               
+                success: function (response) {
+                    // Eliminar el elemento del DOM si la eliminación en la base de datos fue exitosa
+                    $(this).closest("#remove").remove();
+                    var contador = $("#con");
+                    var con = parseInt(contador.val());
+                    con = con - 1;
+                    contador.val(con);
+                    alert(response.message);
+                },
+                error: function (xhr, status, error) {
+                    //console.error(error);
+                    console.log(error);
+                    alert("Ocurrió un error al eliminar el teléfono.");
                 }
-            }
-        });
+            });
+
+        }
+
+        // Si no se cumple la condición, eliminar el campo de teléfono
+        $(this).closest("#remove").remove();
+        var contador = $("#con");
+        var con = parseInt(contador.val());
+
+        con = con - 1; // decrementa el valor de 'con' en 1
+        contador.val(con); // Actualiza el valor en el campo de entrada
+
     });
 
-});
+    $("#miFormulario").submit(function (event) {
+        var inputs = $(this).find("input"); // Obtener todos los campos de entrada en el formulario
 
-$(document).ready(function () {
+        // Iterar a través de los campos de entrada
+        for (var i = 0; i < inputs.length; i++) {
+            var inputValue = inputs[i].value.trim();
+            var errorSpan = $(inputs[i]).siblings(".error-message");
+
+            if (inputValue === "") {
+                event.preventDefault(); // Detener el envío del formulario
+                errorSpan.text("Este campo no puede estar vacío.");
+            } else {
+                errorSpan.text(""); // Limpiar el mensaje de error si el campo no está vacío
+            }
+        }
+    });
+
     $('#exampleModalToggle').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget); // Botón que desencadenó el modal
         var id = button.data('id'); // Obtiene el valor del atributo data-id
@@ -116,21 +171,5 @@ $(document).ready(function () {
         });
 
     });
+
 });
-
-/*$('body').on('click', '#btnmodificar', function () {
-    var customer_id = $(this).data('id');
-    let obj = null;
-
-    $.get('edit/' + customer_id, function (data) {
-        obj = data;
-
-
-        $("#form-edit input[name='nombress']").val(obj.nombres);
-        $("#form-edit input[name='apellidos']").val(obj.apellidos);
-        $("#form-edit input[name='correo']").val(obj.apellido);
-
-        // $("#form-edit input[name='apellidos']").val(obj.apellido);
-    });
-
-});*/

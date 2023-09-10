@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Miembro;
 use App\Models\TelefonoMiembro;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Validator;
 
 class MiembroController extends Controller
 {
@@ -28,7 +27,8 @@ class MiembroController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'correo' => 'unique:miembro'
+            'correo' => 'unique:miembro',
+            'dui' => 'unique:miembro'
         ]);
 
         // Obtén el último registro de la tabla para determinar el siguiente incremento
@@ -40,15 +40,18 @@ class MiembroController extends Controller
         // Crea el ID personalizado concatenando "MB" y el incremento
         $idPersonalizado = "MB" . str_pad($siguienteIncremento, 5, '0', STR_PAD_LEFT);
 
+        //Guardar en BD
         $miembros = new Miembro();
         $miembros->idMiembro = $idPersonalizado;
+        $miembros->dui = $request->post('dui');
         $miembros->nombres = $request->post('nombres');
         $miembros->apellidos = $request->post('apellidos');
         $miembros->correo = $request->post('correo');
         $miembros->estado = 0;
         $miembros->save();
 
-        $contador = $request->post('contador');
+        $contador = $request->post('con');
+
 
         for ($i = 1; $i <= $contador; $i++) {
             $telefonos = new TelefonoMiembro();
@@ -60,10 +63,6 @@ class MiembroController extends Controller
         return redirect()->route("miembros.index")->with("success", "Agregado con exito!");
     }
 
-    public function show($id)
-    {
-        //Obtiene un registro en especifico de una tabla
-    }
     public function edit($id)
     {
         $miembroEdit = Miembro::find($id);
@@ -78,18 +77,44 @@ class MiembroController extends Controller
 
         $miembros = Miembro::find($id);
 
-        // Verificar si el correo se ha modificado antes de aplicar la validación de unicidad
-        if ($request->input('correo') !==   $miembros->correo) {
-            $request->validate([
-                'correo' => 'unique:miembro',
-            ]);
-        }
+
+        //Valida si estan en la BD
+        $request->validate([
+            'correo' => 'unique:miembro,correo,' . $id . ',idMiembro',
+            'dui' => 'unique:miembro,dui,' . $id . ',idMiembro'
+        ]);
 
         //Actualiza los datos en la BD
+        $miembros->dui = $request->post('dui');
         $miembros->nombres = $request->post('nombres');
         $miembros->apellidos = $request->post('apellidos');
         $miembros->correo = $request->post('correo');
         $miembros->save();
+
+
+        $contador = $request->post('con');
+        // dd($request->post('con'));
+        for ($i = 2; $i <= $contador; $i++) {
+
+            $nuevoTelefono = $request->post('telefono' . $i);
+            // Busca el teléfono por su número de teléfono en la base de datos
+            $telefono = TelefonoMiembro::where('telefono', $nuevoTelefono)->first();
+
+            if ($telefono) {
+                // El teléfono existe en la base de datos, actualiza su valor
+                $telefono->telefono = $nuevoTelefono;
+                $telefono->save();
+            } else {
+                //Sino entonces crea un nuevo registro
+                $telefonos = new TelefonoMiembro();
+                $telefonos->telefono = $request->post('telefono' . $i);
+                $telefonos->idMiembro = $id;
+                $telefonos->save();
+            }
+        }
+
+
+
 
         return redirect()->route("miembros.index")->with("success", "Actualizado con exito!");
     }
@@ -99,5 +124,18 @@ class MiembroController extends Controller
         $miembros = Miembro::find($id);
         $miembros->estado = '1';
         $miembros->save();
+    }
+
+    public function destroyTelefono($telefonoId)
+    {
+        $telefono = TelefonoMiembro::find($telefonoId);
+
+        if (!$telefono) {
+            return response()->json(['message' => 'El teléfono no se encontró o ya fue eliminado.'], 404);
+        }
+
+        $telefono->delete();
+
+        return response()->json(['message' => 'Teléfono eliminado con éxito.']);
     }
 }

@@ -51,3 +51,6 @@ Route::put('/update/{id}', [MiembroController::class, 'update'])->name('miembros
 
 Route::get('/destroy/{id}', [MiembroController::class,'destroy'])->name('miembros.destroy');
 
+Route::get('/destroyTelefono/{id}', [MiembroController::class,'destroyTelefono'])->name('miembros.destroyTelefono');
+
+
