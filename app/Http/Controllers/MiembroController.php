@@ -81,7 +81,7 @@ class MiembroController extends Controller
         //Valida si estan en la BD
         $request->validate([
             'correo' => 'unique:miembro,correo,' . $id . ',idMiembro',
-            'dui' => 'unique:miembro,dui,' . $id . ',idMiembro'
+            'dui' => 'unique:miembro,dui,' . $id . ',idMiembro',
         ]);
 
         //Actualiza los datos en la BD
@@ -93,12 +93,21 @@ class MiembroController extends Controller
 
 
         $contador = $request->post('con');
-        // dd($request->post('con'));
-        for ($i = 2; $i <= $contador; $i++) {
+        for ($i = 1; $i <= $contador; $i++) {
+
 
             $nuevoTelefono = $request->post('telefono' . $i);
-            // Busca el teléfono por su número de teléfono en la base de datos
-            $telefono = TelefonoMiembro::where('telefono', $nuevoTelefono)->first();
+            $telefonoId = $request->input('boton' . $i);
+
+            // Genera dinámicamente la regla de validación para cada campo de teléfono
+            $validationRules['telefono' . $i] = 'unique:telefono_miembro,telefono,' . $telefonoId . ',idTelefono';
+
+            // Aplica las reglas de validación generadas dinámicamente
+            $request->validate($validationRules);
+
+            // Busca el teléfono por su ID en la base de datos
+            $telefono = TelefonoMiembro::find($telefonoId);
+
 
             if ($telefono) {
                 // El teléfono existe en la base de datos, actualiza su valor
@@ -112,10 +121,6 @@ class MiembroController extends Controller
                 $telefonos->save();
             }
         }
-
-
-
-
         return redirect()->route("miembros.index")->with("success", "Actualizado con exito!");
     }
 
@@ -129,7 +134,6 @@ class MiembroController extends Controller
     public function destroyTelefono($telefonoId)
     {
         $telefono = TelefonoMiembro::find($telefonoId);
-
         if (!$telefono) {
             return response()->json(['message' => 'El teléfono no se encontró o ya fue eliminado.'], 404);
         }

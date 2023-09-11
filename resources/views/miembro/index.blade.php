@@ -139,7 +139,7 @@
                                     @if ($telefonos->count() > 0)
                                         <!-- Contador -->
                                         @php
-                                            $contador = 0;
+                                            $contador = 1;
                                         @endphp
 
                                         <!-- Recorre los telefonos que pueda tener el miembro -->
@@ -150,7 +150,7 @@
                                                     <div class="col-xl-6">
                                                         <div class="inputContainer">
                                                             <input class="inputField form-control telefono" id="tel"
-                                                                name="telefono{{ $contador + 1 }}" type="text"
+                                                                name="telefono{{ $contador }}" type="text"
                                                                 oninput="validarInput(this)"
                                                                 @if (old('telefono') === null) value="{{ $item->telefono }}"
                                                                    @else
@@ -160,19 +160,23 @@
                                                                     for="telefono">Telefono</label>
                                                                 <i class="inputFieldIcon fas fa-phone"></i>
                                                             @endif
+                                                            @error('telefono')
+                                                                <small style="color:red">El telefono ya ha sido
+                                                                    registrado</small>
+                                                            @enderror
                                                             <small style="color:red" class="error-message"></small>
                                                         </div>
                                                     </div>
                                                     <div class="col-xl-6">
-                                                        @if ($contador === 0)
-                                                            <input type="hidden" name="boton{{ $contador + 1 }}"
+                                                        @if ($contador === 1)
+                                                            <input type="hidden" name="boton{{ $contador }}"
                                                                 value="{{ $item->idTelefono }}">
                                                             <button type="button" class="button button-pri"
                                                                 id="add-telefono">
                                                                 <i class="svg-icon fas fa-plus"></i>
                                                             </button>
                                                         @else
-                                                            <input type="hidden" name="boton{{ $contador + 1 }}"
+                                                            <input type="hidden" name="boton{{ $contador }}"
                                                                 value="{{ $item->idTelefono }}">
                                                             <button type="button" class="btn btn-danger remove-telefono"
                                                                 data-telefono-id="{{ $item->idTelefono }}">
@@ -188,7 +192,7 @@
                                                 @endphp
                                             @endforeach
                                             <input type="hidden" name="con" id="con"
-                                                value="{{ $contador }}">
+                                                value="{{ $contador - 1 }}">
                                         @else
                                             <input type="hidden" name="con" id="con" value="1">
                                             <div class="row" id="telefono-container">
