@@ -16,7 +16,7 @@
                 <div class="col-xl-12">
                     <div
                         style="width:100%; display: flex;  justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                        <h1>Alvergues </h1>
+                        <h1>Albergues </h1>
                         <input id="searchInput" class="inputField card" style="width: 50% " autocomplete="off"
                             placeholder="🔍︎ Buscar" type="search">
                     </div>
