@@ -29,6 +29,10 @@
                     <div class="sb-nav-link-icon"><i class="fas fa-user" ></i></div>
                     Miembro
                 </a>
+                <a class="nav-link" href="/albergue">
+                    <div class="sb-nav-link-icon"><i class="fas fa-tents" ></i></div>
+                    Albergue
+                </a>
                 
                 <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages"
                    aria-expanded="false" aria-controls="collapsePages">
