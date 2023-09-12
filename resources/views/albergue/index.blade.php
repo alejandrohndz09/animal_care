@@ -21,8 +21,8 @@
                             placeholder="🔍︎ Buscar" type="search">
                     </div>
 
-                    @foreach ($medidores as $m)
-                    <div class="col-sm-3">
+                
+                    <div class="col-xl-3">
                         <div class="card shadow p-3 mb-5 bg-body rounded" style="max-width: 300px;">
                             <div class="row g-0">
                                 <div class="col-md-3 d-flex align-items-center">
@@ -30,18 +30,17 @@
                                 </div>
                                 <div class="col-md-9">
                                     <div class="card-body">
-                                        <h5 class="card-title fw-bold">Medidor No. {{ $m->idMedidores }}</h5>
-                                        <p class="card-text mb-0 fw-semibold">CANTON {{ $m->canton->nombre }}</p>
+                                        <h5 class="card-title fw-bold">Medidor No. 1</h5>
+                                        <p class="card-text mb-0 fw-semibold">CANTON EL ZAPOTE</p>
                                         <p class="card-text fs-6"><small class="text-muted">
-                                                {{ $m->referencia }}
+                                           HOLA
                                             </small></p>
                                     </div>
-                                    <a href="consumo/{{ $m->idMedidores }}"  class="stretched-link"></a>
+                                    <a href=""  class="stretched-link"></a>
                                 </div>
                             </div>
                         </div>
                     </div>
-                @endforeach
                 </div>
                 
             </div>
