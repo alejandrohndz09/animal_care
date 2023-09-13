@@ -67,9 +67,15 @@ class MiembroController extends Controller
     {
         $miembroEdit = Miembro::find($id);
         $datos = Miembro::all();
+        //Busca en la tabla Telefono_miembro el idMiembro para modificar
         $telefonos = TelefonoMiembro::where('idMiembro', $miembroEdit->idMiembro)->get();
 
-        return view('miembro.index')->with('miembroEdit', $miembroEdit)->with('datos', $datos)->with('telefonos', $telefonos);
+        return view('miembro.index')->with([
+            'miembroEdit' => $miembroEdit,
+            'datos' => $datos,
+            'telefonos' => $telefonos
+        ]);
+
     }
 
     public function update(Request $request, $id)
