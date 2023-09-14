@@ -10,9 +10,7 @@
     <div id="layoutSidenav_content">
         <main>
             <div class="container-fluid px-4 py-4">
-                <div style="width: 100%; display: flex; align-items: center; justify-content: space-between; gap:20px">
-
-                </div>
+          
 
                 <div class="row mt-3">
                     <div class="col-xl-7">
@@ -78,18 +76,30 @@
                     </div>
                     <div class="col-xl-5">
                         <div class="card  mb-4" style="border:none; padding-bottom: 25px !important; width: 100%">
-                            <h3 style="padding: -5px 0px !important;">Nuevo Registro</h3>
-                            <form action="{{ route('animal.store') }}"method="POST">
+                            <h3 style="padding: -5px 0px !important;">
+                                {{isset($animal)?'Editar Registro':'Nuevo Registro'}}
+                            </h3>
+                            <form action="{{isset($animal)?'medidor/' . $animal->idAnimal .'/edit':''}}" method="POST" enctype="multipart/form-data">
                                 @csrf
+                                @if(isset($animal))
+                                    @method('PUT')
+                                @endif
                                 <div class="row">
                                     <div class="col-xl-4">
-                                        <label id="image-preview" class="custum-file-upload" for="file"
-                                            style="margin-top:-10px; width: auto; height: 75%;">
+                                        <input type="hidden" value="{{old('imagenTemp')}}" id="imagenTemp" name="imagenTemp">
+                                        @if(old('imagenTemp'))
+                                        <label id="image-preview"  class="custum-file-upload" 
+                                        style="margin-top:-10px; width: auto; height: 75%;
+                                        {{'backgroundImage: url('.old('imagenTemp').')'}}" for="foto" >
+                                    @else
+                                      <label id="image-preview"  class="custum-file-upload" for="foto" style="margin-top:-10px; width: auto; height: 75%;">
+                                    @endif
+                                        
                                             <div  class="icon" style="color:#c4c4c4;">
                                                 <i style="height: 55px; padding: 10px" class="fas fa-camera"></i>
                                             </div>
 
-                                            <input type="file" name="foto" id="file" accept="image/*" value="{{old('foto')}}">
+                                            <input type="file" name="foto" id="foto" accept="image/jpeg,image/png" >
                                         </label>
                                         @error('foto')
                                         <span class="text-danger">{{ $message }}</span>
@@ -107,9 +117,9 @@
                                         </div>
 
                                         <div class="inputContainer">
-                                            <input id="fecha" name="fecha" value="{{old('fecha')}}" class="inputField" autocomplete="false"
+                                            <input id="fecha" name="fecha" value="{{old('fecha')}}" max="{{date("Y-m-d")}}" class="inputField" autocomplete="false"
                                                 placeholder="Fecha de nacimiento" type="date">
-                                            <label class="inputFieldLabel" for="fecha">Fecha de nacimiento
+                                            <label class="inputFieldLabel" for="fecha" >Fecha de nacimiento
                                                 estimada</label>
                                             <i class="inputFieldIcon fas fa-calendar"></i>
                                             @error('fecha')
@@ -176,7 +186,7 @@
                                         <i class="svg-icon fa-regular fa-floppy-disk"></i>
                                         <span class="lable">Guardar</span>
                                     </button>
-                                    <button type="reset" class="button button-red">
+                                    <button type="button" id="btnCancelar"class="button button-red">
                                         <i class="svg-icon fas fa-rotate-right"></i>
                                         <span class="lable">Cancelar</span>
                                     </button>

@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('styles')
-    <link rel="stylesheet" href="<?php echo asset('css/f3.css'); ?>" type="text/css">
+    
 @endsection
 
 @section('scripts')
@@ -11,6 +11,7 @@
     <div id="layoutSidenav_content">
         <main>
             <div class="container-fluid px-4 py-4">
+
                 <div style=" width: 100%;display: flex;align-items: center;justify-content: space-between;">
 
                 </div>
@@ -168,6 +169,7 @@
                         @endif
 
                     </div>
+
                 </div>
             </div>
     </div>
@@ -200,5 +202,8 @@
             </div>
     </form>
     </main>
+
+        </main>
+
     </div>
 @endsection

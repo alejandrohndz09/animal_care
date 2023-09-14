@@ -1,4 +1,5 @@
 $(document).ready(function () {
+    subidaImagen();
     // Captura el valor anterior de "raza" (puedes obtenerlo de old('raza') o de otra fuente)
     var especieId = $('#especie').val();
     $.ajax({
@@ -54,12 +55,20 @@ $(document).ready(function () {
             }
         });
     });
+    $("#btnCancelar").click(function () {
+        location.reload();
+    });
 });
 
 document.addEventListener('DOMContentLoaded', function () {
     // Obtén referencias a los elementos HTML que necesitas
-    const fileInput = document.getElementById('file');
+    imagenVistaPrevia();
+});
+
+function imagenVistaPrevia() {
+    const fileInput = document.getElementById('foto');
     const imagePreview = document.getElementById('image-preview');
+    const imagenTemp = document.getElementById('imagenTemp');
 
     // Escucha el evento change en el input de tipo "file"
     fileInput.addEventListener('change', function () {
@@ -71,7 +80,34 @@ document.addEventListener('DOMContentLoaded', function () {
             const imageURL = URL.createObjectURL(selectedFile);
 
             // Establece la URL como fondo del label
-            imagePreview.style.backgroundImage = `url('`+imageURL+`')`;
+            imagePreview.style.backgroundImage = `url('` + imageURL + `')`;
+            imagenTemp.value = imageURL;
         }
     });
-});
+}
+
+function subidaImagen() {
+    
+    const fileInput = document.getElementById('foto');
+    const imagePreview = document.getElementById('image-preview');
+    const imagenTemp = document.getElementById('imagenTemp');
+        if (fileInput.files.length > 0) {
+          const selectedFile = fileInput.files[0];
+          const reader = new FileReader();
+      
+          reader.onload = function (e) {
+            // Crear un Blob a partir de la imagen
+            const blob = new Blob([e.target.result], { type: selectedFile.type });
+      
+            // Guardar el Blob en un campo de entrada oculto
+            imagenTemp.value = blob;
+      
+            // Mostrar la vista previa de la imagen si lo deseas
+            imagePreview.style.backgroundImage = `url('` + URL.createObjectURL(blob); + `')`;
+          };
+      
+          // Leer el contenido del archivo como una URL de datos
+          reader.readAsArrayBuffer(selectedFile);
+        }
+      
+}
