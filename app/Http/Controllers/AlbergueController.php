@@ -3,81 +3,82 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Alvergue;
+use App\Models\Miembro;
 use Illuminate\Http\Request;
 
 class AlbergueController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
-        return view('albergue.index');
+        $miembros = Miembro::all();
+        $albergues = Alvergue::all();
+        return view('albergue.index')->with([
+            'collection' => $miembros,
+            'Albergues' => $albergues,
+        ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //
+
+        // Obtén el último registro de la tabla para determinar el siguiente incremento
+        $ultimoRegistro = Alvergue::latest('idAlvergue')->first();
+
+        // Calcula el siguiente incremento
+        $siguienteIncremento = $ultimoRegistro ? (int) substr($ultimoRegistro->idMiembro, -4) + 1 : 1;
+
+        // Crea el ID personalizado concatenando "MB" y el incremento
+        $idPersonalizado = "AL" . str_pad($siguienteIncremento, 5, '0', STR_PAD_LEFT);
+
+        //Guardar en BD
+        $miembros = new Alvergue();
+        $miembros->idAlvergue = $idPersonalizado;
+        $miembros->direccion = $request->post('direccion');
+        $miembros->idMiembro = $request->post('miembro');
+        $miembros->save();
+
+        return redirect()->route("albergue.index")->with("success", "Agregado con exito!");
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
-        //
+        $AlbergueEdit = Alvergue::find($id);
+        $miembros = Miembro::all();
+        $Albergues = Alvergue::all();
+        return view('albergue.index')->with([
+            'collection' => $miembros,
+            'Albergues' => $Albergues,
+            'AlbergueEdit' => $AlbergueEdit
+        ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
-        //
+        $albergue = Alvergue::find($id);
+
+
+        //Actualiza los datos en la BD
+        $albergue->direccion = $request->post('direccion');
+        $albergue->idMiembro = $request->post('miembro');
+        $albergue->save();
+
+        
+
+        return redirect()->route("albergue.index")->with("success", "Actualizado con exito!");
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         //

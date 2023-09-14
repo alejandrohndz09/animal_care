@@ -235,7 +235,7 @@
                         <form id="miFormulario" action="{{ route('miembros.store') }}" method="POST">
                             @csrf
 
-                            <div class="col-xl-9">
+                            <div class="col-xl-12">
                                 <div class="inputContainer">
                                     <input name="dui" value="{{ old('dui') }}" class="inputField"
                                         placeholder="00000000-0" type="text" autocomplete="off"
