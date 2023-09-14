@@ -40,7 +40,7 @@ class AnimalControlador extends Controller
     {
         // Validar la solicitud
         $request->validate([
-           'foto' => 'required|mimes:jpeg,png,jpg|max:2048', // Puedes ajustar las reglas de validación según tus necesidades
+           'foto' => 'required|image|mimes:jpeg,png,jpg|max:3000', // Puedes ajustar las reglas de validación según tus necesidades
             'nombre' => 'required|min:3',
             'especie' => 'required',
             'fecha' => 'required|date|before_or_equal:today',
@@ -60,12 +60,11 @@ class AnimalControlador extends Controller
 
         if ($request->hasFile('foto')) {
             $imagen = $request->file('foto');
-            $nombreImagen = time() . '.' . $imagen->getClientOriginalExtension();
+            $nombreImagen = $animal->idAnimal . '.' . $imagen->getClientOriginalExtension();
             $rutaImagen = public_path('imagenes'); // Ruta donde deseas guardar la imagen
             $imagen->move($rutaImagen, $nombreImagen);
-
             // Aquí puedes guardar $nombreImagen en tu base de datos o realizar otras acciones necesarias.
-            $animal->imagen = 'imagenes/' . $nombreImagen;
+            $animal->imagen='imagenes/' . $nombreImagen;
         }
         $animal->save();
 
