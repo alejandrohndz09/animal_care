@@ -15,7 +15,11 @@ class MiembroController extends Controller
     {
         //Pagina inicio
         $datos = Miembro::all();
-        return view('miembro.index')->with('datos', $datos);
+        $miembroEdit = null;
+        return view('miembro.index')->with([
+            'miembroEdit' => $miembroEdit,
+            'datos' => $datos
+        ]);
     }
 
     public function create()
@@ -27,8 +31,8 @@ class MiembroController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'correo' => 'unique:miembro',
-            'dui' => 'unique:miembro'
+            'correo' => 'required|unique:miembro',
+            'dui' => 'required|unique:miembro'
         ]);
 
         // Obtén el último registro de la tabla para determinar el siguiente incremento
@@ -47,7 +51,7 @@ class MiembroController extends Controller
         $miembros->nombres = $request->post('nombres');
         $miembros->apellidos = $request->post('apellidos');
         $miembros->correo = $request->post('correo');
-        $miembros->estado = 0;
+        $miembros->estado = 1;
         $miembros->save();
 
         $contador = $request->post('con');
@@ -86,8 +90,8 @@ class MiembroController extends Controller
 
         //Valida si estan en la BD
         $request->validate([
-            'correo' => 'unique:miembro,correo,' . $id . ',idMiembro',
-            'dui' => 'unique:miembro,dui,' . $id . ',idMiembro',
+            'correo' => 'required|unique:miembro,correo,' . $id . ',idMiembro',
+            'dui' => 'required|unique:miembro,dui,' . $id . ',idMiembro',
         ]);
 
         //Actualiza los datos en la BD

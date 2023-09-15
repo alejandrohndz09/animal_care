@@ -44,7 +44,13 @@ class AlbergueController extends Controller
         $miembros->idMiembro = $request->post('miembro');
         $miembros->save();
 
-        return redirect()->route("albergue.index")->with("success", "Agregado con exito!");
+        $miembros = Miembro::all();
+        $Albergues = Alvergue::all();
+        return view('albergue.index')->with([
+            'collection' => $miembros,
+            'Albergues' => $Albergues,
+            "success", "Actualizado con exito!"
+        ]);
     }
 
     public function show($id)
@@ -57,6 +63,7 @@ class AlbergueController extends Controller
         $AlbergueEdit = Alvergue::find($id);
         $miembros = Miembro::all();
         $Albergues = Alvergue::all();
+
         return view('albergue.index')->with([
             'collection' => $miembros,
             'Albergues' => $Albergues,
@@ -74,13 +81,26 @@ class AlbergueController extends Controller
         $albergue->idMiembro = $request->post('miembro');
         $albergue->save();
 
-        
 
-        return redirect()->route("albergue.index")->with("success", "Actualizado con exito!");
+        $miembros = Miembro::all();
+        $albergues = Alvergue::all();
+
+        return view('albergue.index')->with([
+            'collection' => $miembros,
+            'Albergues' => $albergues,
+            "success", "Actualizado con exito!"
+        ]);
     }
 
     public function destroy($id)
     {
-        //
+        $Albergue = Alvergue::find($id);
+        if (!$Albergue) {
+            return response()->json(['message' => 'El teléfono no se encontró o ya fue eliminado.'], 404);
+        }
+
+        $Albergue->delete();
+
+        return response()->json(['message' => 'Teléfono eliminado con éxito.']);
     }
 }

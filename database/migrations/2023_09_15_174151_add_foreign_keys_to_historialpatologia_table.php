@@ -14,8 +14,8 @@ return new class extends Migration
     public function up()
     {
         Schema::table('historialpatologia', function (Blueprint $table) {
-            $table->foreign(['idPatologia'], 'fk_pat-htp')->references(['idPatologia'])->on('patologia')->onUpdate('CASCADE')->onDelete('NO ACTION');
             $table->foreign(['idExpediente'], 'historialpatologia_ibfk_1')->references(['idExpediente'])->on('expediente')->onUpdate('CASCADE')->onDelete('CASCADE');
+            $table->foreign(['idPatologia'], 'fk_pat-htp')->references(['idPatologia'])->on('patologia')->onUpdate('CASCADE')->onDelete('NO ACTION');
         });
     }
 
@@ -27,8 +27,8 @@ return new class extends Migration
     public function down()
     {
         Schema::table('historialpatologia', function (Blueprint $table) {
-            $table->dropForeign('fk_pat-htp');
             $table->dropForeign('historialpatologia_ibfk_1');
+            $table->dropForeign('fk_pat-htp');
         });
     }
 };

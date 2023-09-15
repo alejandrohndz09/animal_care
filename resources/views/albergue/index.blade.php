@@ -44,12 +44,12 @@
                                                 alt="user" class="picture" />
                                         </td>
                                         <td>{{ $item->idAlvergue }}</td>
-                                        <td>{{ $item->miembro->nombres }}</td>
+                                        <td>{{ $item->miembro->nombres }} {{ $item->miembro->apellidos }}</td>
                                         <td>{{ $item->direccion }} </td>
                                         <td>
                                             <div
                                                 style="display: flex; align-items: flex-end; gap: 5px; justify-content: center">
-                                                <a id="btnmodificar" href="AlbergueEdit/{{ $item->idAlvergue }}"
+                                                <a id="btnmodificar" href="{{ url('AlbergueEdit/' . $item->idAlvergue) }}"
                                                     type="button" class="button button-blue"
                                                     data-id="{{ $item->idAlvergue }}">
                                                     <i class="svg-icon fas fa-pencil"></i>
@@ -58,9 +58,9 @@
 
                                                 <button type="button" class="button button-red"data-bs-toggle="modal"
                                                     data-bs-target="#exampleModalToggle" data-id="{{ $item->idAlvergue }}"
-                                                    data-nombre="{{ $item->nombres }}"
-                                                    data-apellido="{{ $item->apellidos }}"
-                                                    data-correo="{{ $item->correo }}">
+                                                    data-nombre="{{ $item->miembro->nombres }}"
+                                                    data-apellido="{{ $item->miembro->apellidos }}"
+                                                    data-direccion="{{ $item->direccion }}">
                                                     <i class="svg-icon fas fa-trash"></i>
                                                     <span class="lable"></span>
                                                 </button>
@@ -137,6 +137,7 @@
                                         <label class="inputFieldLabel" autocomplete="off" for="direccion">Dirección</label>
                                         <i class="inputFieldIcon fas fa-house"></i>
                                         <input class="inputField" name="direccion">
+                                        <small style="color:red" class="error-message"></small>
                                     </div>
 
                                     <div class="inputContainer">
@@ -146,7 +147,7 @@
                                             <option value="" {{ old('miembro') == '' ? 'Seleccione' : '' }}>
                                                 Seleccione</option>
                                             @foreach ($collection as $miembro)
-                                                @if ($miembro->estado === 0)
+                                                @if ($miembro->estado === 1)
                                                     <option value="{{ $miembro->idMiembro }}"
                                                         {{ old('miembro') == $miembro->idMiembro ? 'Seleccione' : '' }}>
                                                         {{ $miembro->nombres }}
@@ -195,7 +196,7 @@
                         <!-- Otros detalles del registro -->
                         <p>Nombres: <span id="modalRecordNombre"></span></p>
                         <p>Apellidos: <span id="modalRecordApellido"></span></p>
-                        <p>Correo: <span id="modalRecordCorreo"></span></p>
+                        <p>direccion: <span id="modalRecorddireccion"></span></p>
                     </div>
                     <div class="modal-footer">
                         <button id="confirmar" type="button" class="btn btn-primary"> Eliminar</button>

@@ -14,8 +14,8 @@ return new class extends Migration
     public function up()
     {
         Schema::table('expediente', function (Blueprint $table) {
-            $table->foreign(['idAlvergue'], 'expediente_ibfk_1')->references(['idAlvergue'])->on('alvergue')->onUpdate('CASCADE')->onDelete('NO ACTION');
             $table->foreign(['idAnimal'], 'fk_aml-exp')->references(['idAnimal'])->on('animal')->onUpdate('CASCADE')->onDelete('NO ACTION');
+            $table->foreign(['idAlvergue'], 'expediente_ibfk_1')->references(['idAlvergue'])->on('alvergue')->onUpdate('CASCADE')->onDelete('NO ACTION');
         });
     }
 
@@ -27,8 +27,8 @@ return new class extends Migration
     public function down()
     {
         Schema::table('expediente', function (Blueprint $table) {
-            $table->dropForeign('expediente_ibfk_1');
             $table->dropForeign('fk_aml-exp');
+            $table->dropForeign('expediente_ibfk_1');
         });
     }
 };
