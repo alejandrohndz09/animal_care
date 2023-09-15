@@ -113,7 +113,7 @@
                                                 type="text"
                                                 value="{{ isset($animal) ? $animal->nombre : old('nombre') }}"
                                                 autocomplete="off">
-                                            <label class="inputFieldLabel" for="nombre">Nombre</label>
+                                            <label class="inputFieldLabel" for="nombre">Nombre*</label>
                                             <i class="inputFieldIcon fas fa-pen"></i>
                                             @error('nombre')
                                                 <span class="text-danger">{{ $message }}</span>
@@ -125,8 +125,7 @@
                                                 value="{{ isset($animal) ? explode(' ', $animal->fechaNacimiento)[0] : old('fecha') }}"
                                                 max="{{ date('Y-m-d') }}" class="inputField" autocomplete="false"
                                                 placeholder="Fecha de nacimiento" type="date">
-                                            <label class="inputFieldLabel" for="fecha">Fecha de nacimiento
-                                                estimada</label>
+                                            <label class="inputFieldLabel" for="fecha">Fecha de nacimiento estimada*</label>
                                             <i class="inputFieldIcon fas fa-calendar"></i>
                                             @error('fecha')
                                                 <span class="text-danger">{{ $message }}</span>
@@ -151,7 +150,7 @@
                                         @endforeach
                                     </select>
 
-                                    <label class="inputFieldLabel" for="especie">Especie</label>
+                                    <label class="inputFieldLabel" for="especie">Especie*</label>
                                     <i class="inputFieldIcon fas fa-dog"></i>
                                     @error('especie')
                                         <span class="text-danger">{{ $message }}</span>
@@ -165,7 +164,7 @@
                                         <option value="">Seleccione...</option>
 
                                     </select>
-                                    <label class="inputFieldLabel" for="raza">Raza</label>
+                                    <label class="inputFieldLabel" for="raza">Raza*</label>
                                     <i class="inputFieldIcon fas fa-paw"></i>
                                     @error('raza')
                                         <span class="text-danger">{{ $message }}</span>
@@ -173,7 +172,7 @@
                                 </div>
 
                                 <div class="inputContainer">
-                                    <label class="inputFieldLabel">sexo</label>
+                                    <label class="inputFieldLabel">sexo*</label>
                                     <i class="inputFieldIcon fas fa-question"></i>
                                     <div style="padding: 3px 15px">
                                         <div class="form-check form-check-inline">
@@ -203,6 +202,7 @@
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
+                                <p style="margin-top: -25px;">(*)Campos Obligatorios</p>
 
                                 <div style="display: flex; align-items: flex-end; gap: 10px; justify-content: center">
 

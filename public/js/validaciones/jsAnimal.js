@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', function () {
 function imagenVistaPrevia() {
     const fileInput = document.getElementById('foto');
     const imagePreview = document.getElementById('image-preview');
-    const imagenTemp = document.getElementById('imagenTemp');
+    
 
     // Escucha el evento change en el input de tipo "file"
     fileInput.addEventListener('change', function () {
@@ -81,7 +81,7 @@ function imagenVistaPrevia() {
 
             // Establece la URL como fondo del label
             imagePreview.style.backgroundImage = `url('` + imageURL + `')`;
-            imagenTemp.value = imageURL;
+            
         }
     });
 }
@@ -90,7 +90,7 @@ function subidaImagen() {
     
     const fileInput = document.getElementById('foto');
     const imagePreview = document.getElementById('image-preview');
-    const imagenTemp = document.getElementById('imagenTemp');
+    
         if (fileInput.files.length > 0) {
           const selectedFile = fileInput.files[0];
           const reader = new FileReader();
@@ -98,9 +98,6 @@ function subidaImagen() {
           reader.onload = function (e) {
             // Crear un Blob a partir de la imagen
             const blob = new Blob([e.target.result], { type: selectedFile.type });
-      
-            // Guardar el Blob en un campo de entrada oculto
-            imagenTemp.value = blob;
       
             // Mostrar la vista previa de la imagen si lo deseas
             imagePreview.style.backgroundImage = `url('` + URL.createObjectURL(blob); + `')`;

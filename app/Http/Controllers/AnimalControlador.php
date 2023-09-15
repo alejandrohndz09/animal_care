@@ -57,6 +57,7 @@ class AnimalControlador extends Controller
         $animal->fechaNacimiento = $request->post('fecha');
         $animal->idRaza = $request->post('raza');
         $animal->sexo = $request->post('sexo');
+        $animal->particularidad = $request->post('particularidad');
 
         if ($request->hasFile('foto')) {
             $imagen = $request->file('foto');
@@ -107,14 +108,13 @@ class AnimalControlador extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'foto' => 'required|image|mimes:jpeg,png,jpg|max:3000', // Puedes ajustar las reglas de validación según tus necesidades
+            'foto' => 'image|mimes:jpeg,png,jpg|max:3000', // Puedes ajustar las reglas de validación según tus necesidades
              'nombre' => 'required|min:3',
              'especie' => 'required',
              'fecha' => 'required|date|before_or_equal:today',
              'raza' => 'required',
              'sexo' => 'required|in:Hembra,Macho',
          ], [
-             'foto.required' => 'La Fotografía es necesaria.',
              'fecha.before_or_equal' => 'La fecha ingresada no debe ser mayor a la de ahora.',
          ]);
  
@@ -124,6 +124,7 @@ class AnimalControlador extends Controller
          $animal->fechaNacimiento = $request->post('fecha');
          $animal->idRaza = $request->post('raza');
          $animal->sexo = $request->post('sexo');
+         $animal->particularidad = $request->post('particularidad');
  
          if ($request->hasFile('foto')) {
              $imagen = $request->file('foto');
@@ -135,7 +136,7 @@ class AnimalControlador extends Controller
          }
          $animal->save();
  
-         return view('animal.index')->with([
+         return redirect()->route('animal.index')->with([
             'animales' => Animal::all(),
             'success'=>'Guardado con éxito']);
     }
