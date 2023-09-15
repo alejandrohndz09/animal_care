@@ -15,7 +15,11 @@ class MiembroController extends Controller
     {
         //Pagina inicio
         $datos = Miembro::all();
-        return view('miembro.index')->with('datos', $datos);
+        $miembroEdit = null;
+        return view('miembro.index')->with([
+            'miembroEdit' => $miembroEdit,
+            'datos' => $datos
+        ]);
     }
 
     public function create()
@@ -86,8 +90,8 @@ class MiembroController extends Controller
 
         //Valida si estan en la BD
         $request->validate([
-            'correo' => 'unique:miembro,correo,' . $id . ',idMiembro',
-            'dui' => 'unique:miembro,dui,' . $id . ',idMiembro',
+            'correo' => 'required|unique:miembro,correo,' . $id . ',idMiembro',
+            'dui' => 'required|unique:miembro,dui,' . $id . ',idMiembro',
         ]);
 
         //Actualiza los datos en la BD
@@ -127,7 +131,7 @@ class MiembroController extends Controller
                 $telefonos->save();
             }
         }
-        return redirect()->route("miembro.index")->with("success", "Actualizado con exito!");
+        return redirect()->route("miembros.index")->with("success", "Actualizado con exito!");
     }
 
     public function destroy($id)

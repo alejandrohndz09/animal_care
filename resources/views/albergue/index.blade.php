@@ -147,7 +147,7 @@
                                             <option value="" {{ old('miembro') == '' ? 'Seleccione' : '' }}>
                                                 Seleccione</option>
                                             @foreach ($collection as $miembro)
-                                                @if ($miembro->estado === 0)
+                                                @if ($miembro->estado === 1)
                                                     <option value="{{ $miembro->idMiembro }}"
                                                         {{ old('miembro') == $miembro->idMiembro ? 'Seleccione' : '' }}>
                                                         {{ $miembro->nombres }}
@@ -196,7 +196,7 @@
                         <!-- Otros detalles del registro -->
                         <p>Nombres: <span id="modalRecordNombre"></span></p>
                         <p>Apellidos: <span id="modalRecordApellido"></span></p>
-                        <p>direccion: <span id="modalRecordCorreo"></span></p>
+                        <p>direccion: <span id="modalRecorddireccion"></span></p>
                     </div>
                     <div class="modal-footer">
                         <button id="confirmar" type="button" class="btn btn-primary"> Eliminar</button>

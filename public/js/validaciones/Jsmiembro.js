@@ -72,7 +72,7 @@ $(document).ready(function () {
 
             // Si pasa ambas validaciones, puedes agregar el nuevo campo de teléfono
             var newTelefonoField = `
-            <div id="remove">
+        
                <div class="col-xl-6">
                   <div class="inputContainer">
                        <input class="inputField form-control telefono"  
@@ -80,12 +80,11 @@ $(document).ready(function () {
                            <small  style="color:red" class="error-message"></small>
                   </div>
                 </div>
-             <div class="col-xl-3">
+             <div class="col-xl-6">
                   <button type="button" class="btn btn-danger remove-telefono"
                   data-bs-toggle="modal" >
                    <i class="svg-icon fas fa-circle-xmark"></i>
                   </button>
-
             </div>
         `;
             $("#telefono-container").append(newTelefonoField);
@@ -94,8 +93,6 @@ $(document).ready(function () {
     });
 
     $("#telefono-container").on("click", ".remove-telefono", function () {
-        var telefonoInput = $(this).closest("#remove").find(".telefono");
-        var telefonoValue = telefonoInput.val().trim();
         var telefonoId = $(this).data("telefono-id");
 
         var elemento = document.getElementById('telefono-container');
