@@ -42,8 +42,8 @@
                                     @if ($item->estado == 0)
                                         <tr>
                                             <td>
-                                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/2048px-User-avatar.svg.png"
-                                                    alt="user" class="picture" />
+                                                {{-- <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/2048px-User-avatar.svg.png"
+                                                    alt="user" class="picture" /> --}}
                                             </td>
                                             <td>{{ $item->nombres }}</td>
                                             <td>{{ $item->apellidos }}</td>
