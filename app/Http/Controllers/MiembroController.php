@@ -47,7 +47,7 @@ class MiembroController extends Controller
         $miembros->nombres = $request->post('nombres');
         $miembros->apellidos = $request->post('apellidos');
         $miembros->correo = $request->post('correo');
-        $miembros->estado = 0;
+        $miembros->estado = 1;
         $miembros->save();
 
         $contador = $request->post('con');
