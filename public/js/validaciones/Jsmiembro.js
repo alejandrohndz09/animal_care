@@ -72,7 +72,7 @@ $(document).ready(function () {
 
             // Si pasa ambas validaciones, puedes agregar el nuevo campo de teléfono
             var newTelefonoField = `
-        
+        <div  class="row" id="remove">
                <div class="col-xl-6">
                   <div class="inputContainer">
                        <input class="inputField form-control telefono"  
@@ -86,6 +86,7 @@ $(document).ready(function () {
                    <i class="svg-icon fas fa-circle-xmark"></i>
                   </button>
             </div>
+        </div>
         `;
             $("#telefono-container").append(newTelefonoField);
         }
@@ -101,7 +102,7 @@ $(document).ready(function () {
         if (objeto) {
             $.ajax({
                 url: "/destroyTelefono/" + telefonoId,
-                method: "GET",
+                method: "DELETE",
                
                 success: function (response) {
                     // Eliminar el elemento del DOM si la eliminación en la base de datos fue exitosa

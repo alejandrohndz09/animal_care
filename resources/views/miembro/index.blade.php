@@ -80,17 +80,12 @@
                     <div class="col-xl-5">
                         <div class="card  mb-4" style="border:none; padding-bottom: 25px !important; width: 100%">
 
-
                             <h3 style="padding: -5px 0px !important;">
-                                @if (isset($miembroEdit))
-                                    Modificar Registro
-                                @else
-                                    Nuevo registro
-                                @endif
+                                {{ isset($miembroEdit) ? 'Editar Registro' : 'Nuevo registro' }}
                             </h3>
                             <form
-                                action="{{ isset($miembroEdit) ? url('miembro/update/' . $miembroEdit->idMiembro) : '' }}"
-                                id="miFormulario" name="form" method="POST">
+                                action="{{ isset($miembroEdit) ? url('miembro/update/' . $miembroEdit->idMiembro) :  route('miembros.store') }}"
+                                id="miFormulario" name="form" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 @if (isset($miembroEdit))
                                     @method('PUT') <!-- Utilizar el método PUT para la actualización -->
@@ -111,6 +106,7 @@
                                         @enderror
                                     </div>
                                 </div>
+
                                 <!-- Input Nombres -->
                                 <div class="row">
                                     <div class="col-xl-6">
@@ -223,35 +219,34 @@
 
                                                     </div>
                                                 </div>
+                                        </div>
+                                        @php
+                                            $contador++;
+                                        @endphp
+                                    @endforeach
 
-                                                @php
-                                                    $contador++;
-                                                @endphp
-                                            @endforeach
-
-                                            <input type="hidden" name="con" id="con"
-                                                value="{{ $contador - 1 }}">
-                                        @else
-                                            <input type="hidden" name="con" id="con" value="1">
-                                            <div class="row" id="telefono-container">
-                                                <div class="col-xl-6">
-                                                    <div class="inputContainer">
-                                                        <input class="inputField form-control telefono" value="+503 "
-                                                            id="tel" name="telefono1" type="text"
-                                                            oninput="validarInput(this)">
-                                                        <label class="inputFieldLabel" for="telefono">Teléfono</label>
-                                                        <i class="inputFieldIcon fas fa-phone"></i>
-                                                        <small style="color:red" class="error-message"></small>
-                                                    </div>
-                                                </div>
-                                                <div class="col-xl-6">
-                                                    <button type="button" class="button button-pri" id="add-telefono">
-                                                        <i class="svg-icon fas fa-plus"></i>
-                                                    </button>
-                                                </div>
+                                    <input type="hidden" name="con" id="con" value="{{ $contador - 1 }}">
+                                @else
+                                    <input type="hidden" name="con" id="con" value="1">
+                                    <div class="row" id="telefono-container">
+                                        <div class="col-xl-6">
+                                            <div class="inputContainer">
+                                                <input class="inputField form-control telefono" value="+503 "
+                                                    id="tel" name="telefono1" type="text"
+                                                    oninput="validarInput(this)">
+                                                <label class="inputFieldLabel" for="telefono">Teléfono</label>
+                                                <i class="inputFieldIcon fas fa-phone"></i>
+                                                <small style="color:red" class="error-message"></small>
                                             </div>
-                                    @endif
+                                        </div>
+                                        <div class="col-xl-6">
+                                            <button type="button" class="button button-pri" id="add-telefono">
+                                                <i class="svg-icon fas fa-plus"></i>
+                                            </button>
+                                        </div>
+                                    </div>
                                 @endif
+                         
 
 
                                 <!-- Botones para la vista -->
@@ -278,7 +273,7 @@
             </div>
 
             <!-- Modal para la eliminacion de elementos de la lista-->
-            <form action="" id="form-edit" name="form" method="POST">
+            <form action="" id="form-edit" name="form">
                 @csrf
                 <div class="modal fade" id="exampleModalToggle" aria-hidden="true"
                     aria-labelledby="exampleModalToggleLabel" tabindex="-1">
@@ -291,8 +286,6 @@
                             </div>
                             <div class="modal-body">
                                 <!-- Aquí puedes mostrar los detalles del registro utilizando el id -->
-                                <p>ID del registro: <span id="modalRecordId"></span></p>
-                                <!-- Otros detalles del registro -->
                                 <p>Nombres: <span id="modalRecordNombre"></span></p>
                                 <p>Apellidos: <span id="modalRecordApellido"></span></p>
                                 <p>Correo: <span id="modalRecordCorreo"></span></p>
