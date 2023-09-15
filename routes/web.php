@@ -56,7 +56,7 @@ Route::get('/destroyTelefono/{id}', [MiembroController::class,'destroyTelefono']
 Route::get('/albergue',[AlbergueController::class,'index'])->name('albergue.index');
 Route::post('/albergue/store',[AlbergueController::class,'store'])->name('albergueStore.index');
 Route::get('/AlbergueEdit/{id}', [AlbergueController::class, 'edit'])->name('Albergue.edit');
-Route::get('/AlbergueUpdate/{id}', [AlbergueController::class, 'update'])->name('albergue.update');
+Route::put('/AlbergueUpdate/{id}', [AlbergueController::class, 'update'])->name('albergue.update');
 
 
 
