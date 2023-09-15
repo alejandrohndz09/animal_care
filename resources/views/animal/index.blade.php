@@ -52,7 +52,8 @@
                                         <td>
                                             <div
                                                 style="display: flex; align-items: flex-end; gap: 3px; justify-content: center">
-                                                <a href="{{url('animal/' . $a->idAnimal . '/edit') }}" class="button button-blue">
+                                                <a href="{{ url('animal/' . $a->idAnimal . '/edit') }}"
+                                                    class="button button-blue">
                                                     <i class="svg-icon fas fa-pencil"></i>
                                                     <span class="lable"></span>
                                                 </a>
@@ -78,8 +79,8 @@
                         <div class="card  mb-4" style="border:none; padding-bottom: 25px !important; width: 100%">
                             <h3 style="padding: -5px 0px !important;">
                                 {{ isset($animal) ? 'Editar Registro' : 'Nuevo Registro' }}</h3>
-                            <form action="{{ isset($animal) ? url('animal/' . $animal->idAnimal . '/update') : '' }}" method="POST"
-                                enctype="multipart/form-data">
+                            <form action="{{ isset($animal) ? url('animal/update/' . $animal->idAnimal) : '' }}"
+                                method="POST" enctype="multipart/form-data">
                                 @csrf
                                 @if (isset($animal))
                                     @method('PUT')
@@ -91,13 +92,10 @@
 
                                         <label id="image-preview" class="custum-file-upload"
                                             style="margin-top:-10px; width: auto; height: 75%;
-                                        {{  isset($animal)?'background-image: url(' .asset($animal->imagen).')'
-                                        :'background-image: url('. old('imagenTemp') . ')' }}"
+                                        {{ isset($animal)
+                                            ? 'background-image: url(' . asset($animal->imagen) . ')'
+                                            : 'background-image: url(' . old('imagenTemp') . ')' }}"
                                             for="foto">
-
-
-
-
                                             <div class="icon" style="color:#c4c4c4;">
                                                 <i style="height: 55px; padding: 10px" class="fas fa-camera"></i>
                                             </div>
@@ -106,13 +104,14 @@
                                                 accept="image/jpeg,image/png">
                                         </label>
                                         @error('foto')
-                                            <span class="text-danger">{{ $message }}</span>
+                                            <span class="text-danger" style="line-height: 0.05px">{{ $message }}</span>
                                         @enderror
                                     </div>
                                     <div class="col-xl-8">
                                         <div class="inputContainer">
                                             <input id="nombre" name="nombre" class="inputField" placeholder="Nombre"
-                                                type="text" value="{{ isset($animal) ? $animal->nombre : old('nombre') }}"
+                                                type="text"
+                                                value="{{ isset($animal) ? $animal->nombre : old('nombre') }}"
                                                 autocomplete="off">
                                             <label class="inputFieldLabel" for="nombre">Nombre</label>
                                             <i class="inputFieldIcon fas fa-pen"></i>
@@ -123,7 +122,7 @@
 
                                         <div class="inputContainer">
                                             <input id="fecha" name="fecha"
-                                                value="{{ isset($animal) ? explode(' ',$animal->fechaNacimiento)[0] : old('fecha') }}"
+                                                value="{{ isset($animal) ? explode(' ', $animal->fechaNacimiento)[0] : old('fecha') }}"
                                                 max="{{ date('Y-m-d') }}" class="inputField" autocomplete="false"
                                                 placeholder="Fecha de nacimiento" type="date">
                                             <label class="inputFieldLabel" for="fecha">Fecha de nacimiento
@@ -139,7 +138,9 @@
 
                                 <div class="inputContainer">
                                     <select id="especie" name="especie" class="inputField">
-                                        <option value="" {{ (old('especie') == '' && isset($animal) ==null)? 'selected' : '' }}>Seleccione...
+                                        <option value=""
+                                            {{ old('especie') == '' && isset($animal) == null ? 'selected' : '' }}>
+                                            Seleccione...
                                         </option>
                                         @php use App\Models\Especie; @endphp
                                         @foreach (Especie::all() as $e)
@@ -192,6 +193,16 @@
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
+                                <div class="inputContainer">
+                                    <textarea id="particularidad" name="particularidad" class="inputField"
+                                    placeholder="Ej. Mancha en la panza, ojos de diferente color, etc." rows="2" cols="50"{{isset($animal) ? $animal->particularidad : old('particularidad')}}></textarea>
+                                    
+                                    <label class="inputFieldLabel" for="particularidad">Alguna Particularidad</label>
+                                    <i class="inputFieldIcon fas fa-magnifying-glass-plus"></i>
+                                    @error('particularidad')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
 
                                 <div style="display: flex; align-items: flex-end; gap: 10px; justify-content: center">
 
@@ -199,7 +210,8 @@
                                         <i class="svg-icon fa-regular fa-floppy-disk"></i>
                                         <span class="lable">Guardar</span>
                                     </button>
-                                    <button type="button" id="btnCancelar"class="button button-red">
+                                    <button type="button" id="btnCancelar" class="button button-red"
+                                        onclick="{{ url('animal') }}">
                                         <i class="svg-icon fas fa-rotate-right"></i>
                                         <span class="lable">Cancelar</span>
                                     </button>
