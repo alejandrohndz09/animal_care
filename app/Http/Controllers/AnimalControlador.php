@@ -90,7 +90,11 @@ class AnimalControlador extends Controller
      */
     public function edit($id)
     {
-        //
+        $animal = Animal::find($id);
+        return view('animal.index')->with([
+            'animales' => Animal::all(),
+            'animal'=> $animal
+        ]);
     }
 
     /**
