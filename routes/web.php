@@ -26,6 +26,8 @@ Route::get('/home', function () {
 });
 
 Route::resource('animal','App\Http\Controllers\AnimalControlador');
+Route::put('/animal/update/{id}', 'App\Http\Controllers\AnimalControlador@update');
+
 Route::get('/obtener-razas/{especie}', 'App\Http\Controllers\AnimalControlador@obtenerRazas');
 Route::post('/store', [AnimalControlador::class, 'store'])->name('animal.store');
 

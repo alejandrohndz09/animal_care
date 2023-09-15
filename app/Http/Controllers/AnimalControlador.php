@@ -90,7 +90,11 @@ class AnimalControlador extends Controller
      */
     public function edit($id)
     {
-        //
+        $animal = Animal::find($id);
+        return view('animal.index')->with([
+            'animales' => Animal::all(),
+            'animal'=> $animal
+        ]);
     }
 
     /**
@@ -102,7 +106,38 @@ class AnimalControlador extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'foto' => 'required|image|mimes:jpeg,png,jpg|max:3000', // Puedes ajustar las reglas de validación según tus necesidades
+             'nombre' => 'required|min:3',
+             'especie' => 'required',
+             'fecha' => 'required|date|before_or_equal:today',
+             'raza' => 'required',
+             'sexo' => 'required|in:Hembra,Macho',
+         ], [
+             'foto.required' => 'La Fotografía es necesaria.',
+             'fecha.before_or_equal' => 'La fecha ingresada no debe ser mayor a la de ahora.',
+         ]);
+ 
+         $animal = Animal::find($id);
+         
+         $animal->nombre = $request->post('nombre');
+         $animal->fechaNacimiento = $request->post('fecha');
+         $animal->idRaza = $request->post('raza');
+         $animal->sexo = $request->post('sexo');
+ 
+         if ($request->hasFile('foto')) {
+             $imagen = $request->file('foto');
+             $nombreImagen = $animal->idAnimal . '.' . $imagen->getClientOriginalExtension();
+             $rutaImagen = public_path('imagenes'); // Ruta donde deseas guardar la imagen
+             $imagen->move($rutaImagen, $nombreImagen);
+             // Aquí puedes guardar $nombreImagen en tu base de datos o realizar otras acciones necesarias.
+             $animal->imagen='imagenes/' . $nombreImagen;
+         }
+         $animal->save();
+ 
+         return view('animal.index')->with([
+            'animales' => Animal::all(),
+            'success'=>'Guardado con éxito']);
     }
 
     /**
