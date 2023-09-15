@@ -79,7 +79,6 @@
                     </div>
                     <div class="col-xl-5">
                         <div class="card  mb-4" style="border:none; padding-bottom: 25px !important; width: 100%">
-
                             <h3 style="padding: -5px 0px !important;">
                                 {{ isset($miembroEdit) ? 'Editar Registro' : 'Nuevo registro' }}
                             </h3>
@@ -138,7 +137,7 @@
                                     <i class="inputFieldIcon fas fa-envelope"></i>
                                     <small style="color:red" class="error-message"></small>
                                     @error('correo')
-                                        <small style="color:red">{{ $message }}o</small>
+                                        <small style="color:red">{{ $message }}</small>
                                     @enderror
                                 </div>
 
@@ -184,19 +183,19 @@
                                                             <input class="inputField form-control telefono" id="tel"
                                                                 name="telefono{{ $contador }}" type="text"
                                                                 oninput="validarInput(this)"
-                                                                @if (old('telefono') === null) value="{{ $item->telefono }}"
-                                                             @else
-                                                             value="{{ old('telefono') }}" @endif>
+                                                                @if (old('telefono') === null) 
+                                                                    value="{{ $item->telefono }}"
+                                                                @else
+                                                                    value="{{ old('telefono') }}" 
+                                                                @endif>
                                                             @if ($contador == 1)
                                                                 <label class="inputFieldLabel"
                                                                     for="telefono">Telefono</label>
                                                                 <i class="inputFieldIcon fas fa-phone"></i>
                                                             @endif
                                                             @error('telefono')
-                                                                <small style="color:red">El telefono ya ha sido
-                                                                    registrado</small>
+                                                                <small style="color:red">El telefono ya ha sido registrado</small>
                                                             @enderror
-                                                            <small style="color:red" class="error-message"></small>
                                                         </div>
                                                     </div>
                                                     <div class="col-xl-6" id="idTelefonos">
@@ -219,15 +218,14 @@
 
                                                     </div>
                                                 </div>
+                                            @php
+                                                $contador++;
+                                            @endphp
+                                            @endforeach
                                         </div>
-                                        @php
-                                            $contador++;
-                                        @endphp
-                                    @endforeach
-
-                                    <input type="hidden" name="con" id="con" value="{{ $contador - 1 }}">
-                                @else
-                                    <input type="hidden" name="con" id="con" value="1">
+                                        <input type="hidden" name="con" id="con" value="{{ $contador - 1 }}">
+                                    @endif
+                                    {{-- <input type="hidden" name="con" id="con" value="1">
                                     <div class="row" id="telefono-container">
                                         <div class="col-xl-6">
                                             <div class="inputContainer">
@@ -244,11 +242,8 @@
                                                 <i class="svg-icon fas fa-plus"></i>
                                             </button>
                                         </div>
-                                    </div>
+                                    </div> --}}
                                 @endif
-                         
-
-
                                 <!-- Botones para la vista -->
                                 <div style="display: flex; align-items: flex-end; gap: 10px; justify-content: center">
                                     <button type="submit" class="button button-pri">
