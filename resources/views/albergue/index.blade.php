@@ -49,7 +49,7 @@
                                         <td>
                                             <div
                                                 style="display: flex; align-items: flex-end; gap: 5px; justify-content: center">
-                                                <a id="btnmodificar" href="AlbergueEdit/{{ $item->idAlvergue }}"
+                                                <a id="btnmodificar" href="{{ url('AlbergueEdit/' . $item->idAlvergue) }}"
                                                     type="button" class="button button-blue"
                                                     data-id="{{ $item->idAlvergue }}">
                                                     <i class="svg-icon fas fa-pencil"></i>

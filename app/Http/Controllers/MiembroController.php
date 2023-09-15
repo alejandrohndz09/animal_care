@@ -86,8 +86,8 @@ class MiembroController extends Controller
 
         //Valida si estan en la BD
         $request->validate([
-            'correo' => 'required|unique:miembro,correo,' . $id . ',idMiembro',
-            'dui' => 'required|unique:miembro,dui,' . $id . ',idMiembro',
+            'correo' => 'unique:miembro,correo,' . $id . ',idMiembro',
+            'dui' => 'unique:miembro,dui,' . $id . ',idMiembro',
         ]);
 
         //Actualiza los datos en la BD
@@ -127,7 +127,7 @@ class MiembroController extends Controller
                 $telefonos->save();
             }
         }
-        return redirect()->route("miembros.index")->with("success", "Actualizado con exito!");
+        return redirect()->route("miembro.index")->with("success", "Actualizado con exito!");
     }
 
     public function destroy($id)
