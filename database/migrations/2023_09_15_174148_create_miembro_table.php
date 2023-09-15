@@ -13,10 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('telefono_donante', function (Blueprint $table) {
-            $table->integer('idTelefono', true);
-            $table->string('telefono', 15)->nullable();
-            $table->string('idDonante', 7)->nullable()->index('fk_tlf-mbr');
+        Schema::create('miembro', function (Blueprint $table) {
+            $table->string('idMiembro', 7)->primary();
+            $table->string('nombres')->nullable();
+            $table->string('apellidos')->nullable();
+            $table->string('correo')->nullable();
+            $table->integer('estado')->nullable();
+            $table->string('dui', 12);
         });
     }
 
@@ -27,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('telefono_donante');
+        Schema::dropIfExists('miembro');
     }
 };

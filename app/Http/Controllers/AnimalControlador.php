@@ -40,7 +40,7 @@ class AnimalControlador extends Controller
     {
         // Validar la solicitud
         $request->validate([
-           'foto' => 'required|image|mimes:jpeg,png,jpg|max:3000', // Puedes ajustar las reglas de validación según tus necesidades
+            'foto' => 'required|image|mimes:jpeg,png,jpg|max:3000', // Puedes ajustar las reglas de validación según tus necesidades
             'nombre' => 'required|min:3',
             'especie' => 'required',
             'fecha' => 'required|date|before_or_equal:today',
@@ -57,6 +57,7 @@ class AnimalControlador extends Controller
         $animal->fechaNacimiento = $request->post('fecha');
         $animal->idRaza = $request->post('raza');
         $animal->sexo = $request->post('sexo');
+        $animal->estado = 1;
         $animal->particularidad = $request->post('particularidad');
 
         if ($request->hasFile('foto')) {
@@ -65,7 +66,7 @@ class AnimalControlador extends Controller
             $rutaImagen = public_path('imagenes'); // Ruta donde deseas guardar la imagen
             $imagen->move($rutaImagen, $nombreImagen);
             // Aquí puedes guardar $nombreImagen en tu base de datos o realizar otras acciones necesarias.
-            $animal->imagen='imagenes/' . $nombreImagen;
+            $animal->imagen = 'imagenes/' . $nombreImagen;
         }
         $animal->save();
 
@@ -80,7 +81,6 @@ class AnimalControlador extends Controller
      */
     public function show($id)
     {
-
     }
 
     /**
@@ -94,7 +94,7 @@ class AnimalControlador extends Controller
         $animal = Animal::find($id);
         return view('animal.index')->with([
             'animales' => Animal::all(),
-            'animal'=> $animal
+            'animal' => $animal
         ]);
     }
 
@@ -138,7 +138,8 @@ class AnimalControlador extends Controller
  
          return redirect()->route('animal.index')->with([
             'animales' => Animal::all(),
-            'success'=>'Guardado con éxito']);
+            'success' => 'Guardado con éxito'
+        ]);
     }
 
     /**
