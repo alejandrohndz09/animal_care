@@ -266,10 +266,10 @@
                                             @endif
                                         </span>
                                     </button>
-                                    <Button onclick="{{ route('miembros.index') }}" class="button button-red">
+                                    <button onclick="{{ url('miembros') }}" class="button button-red">
                                         <i class="svg-icon fas fa-rotate-right"></i>
                                         <span class="lable">Cancelar</span>
-                                    </Button>
+                                    </button>
                                 </div>
                             </form>
                         </div>
