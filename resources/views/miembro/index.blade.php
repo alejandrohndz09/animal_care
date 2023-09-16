@@ -225,24 +225,6 @@
                                         </div>
                                         <input type="hidden" name="con" id="con" value="{{ $contador - 1 }}">
                                     @endif
-                                    {{-- <input type="hidden" name="con" id="con" value="1">
-                                    <div class="row" id="telefono-container">
-                                        <div class="col-xl-6">
-                                            <div class="inputContainer">
-                                                <input class="inputField form-control telefono" value="+503 "
-                                                    id="tel" name="telefono1" type="text"
-                                                    oninput="validarInput(this)">
-                                                <label class="inputFieldLabel" for="telefono">Teléfono</label>
-                                                <i class="inputFieldIcon fas fa-phone"></i>
-                                                <small style="color:red" class="error-message"></small>
-                                            </div>
-                                        </div>
-                                        <div class="col-xl-6">
-                                            <button type="button" class="button button-pri" id="add-telefono">
-                                                <i class="svg-icon fas fa-plus"></i>
-                                            </button>
-                                        </div>
-                                    </div> --}}
                                 @endif
                                 <!-- Botones para la vista -->
                                 <div style="display: flex; align-items: flex-end; gap: 10px; justify-content: center">
