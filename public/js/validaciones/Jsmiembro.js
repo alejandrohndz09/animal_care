@@ -51,7 +51,6 @@ $(document).ready(function () {
         var contador = $("#con");
         var con = parseInt(contador.val());
 
-
         var telefonoInput = $(".telefono:last");
         var telefonoValue = telefonoInput.val().trim();
         var errorSpan = telefonoInput.siblings(".error-message");
@@ -66,7 +65,6 @@ $(document).ready(function () {
         } else {
             errorSpan.text(""); // Limpiar el mensaje de error si no hay errores
 
-
             con++;
             contador.val(con);
 
@@ -77,13 +75,13 @@ $(document).ready(function () {
                   <div class="inputContainer">
                        <input class="inputField form-control telefono"  
                           value="+503 " name="telefono`+ con + `" type="text" oninput="validarInput(this)">
-                           <small  style="color:red" class="error-message"></small>
+                           <small  style="color:red" class="error-message" id="error-` + con + `"></small>
                   </div>
                 </div>
              <div class="col-xl-6">
-                  <button type="button" class="btn btn-danger remove-telefono"
+                  <button type="button" class="button button-sec remove-telefono"
                   data-bs-toggle="modal" >
-                   <i class="svg-icon fas fa-circle-xmark"></i>
+                   <i class="svg-icon fas fa-minus"></i>
                   </button>
             </div>
         </div>
@@ -93,14 +91,17 @@ $(document).ready(function () {
 
     });
 
+
+
     $("#telefono-container").on("click", ".remove-telefono", function () {
         var telefonoId = $(this).data("telefono-id");
 
-        var elemento = document.getElementById('telefono-container');
-        var objeto = JSON.parse(elemento.getAttribute('data-objeto'));
+        var contador = parseInt($("#con").val());
 
-        if (objeto) {
+        if (telefonosBD == contador) {
+            console.log(telefonosBD);
             $.ajax({
+
                 url: "/destroyTelefono/" + telefonoId,
                 method: "DELETE",
                 headers: {
@@ -113,7 +114,13 @@ $(document).ready(function () {
                     var con = parseInt(contador.val());
                     con = con - 1;
                     contador.val(con);
-                    alert(response.message);
+                    // Abre el modal
+                    $('#modalEliminacion').modal('show');
+
+                    // Ocultar el modal después de 4 segundos
+                    setTimeout(function () {
+                        $('#modalEliminacion').modal('hide');
+                    }, 1000);
                 },
                 error: function (xhr, status, error) {
                     //console.error(error);
@@ -166,10 +173,71 @@ $(document).ready(function () {
 
         $('body').on('click', '#confirmar', function () {
             $.get('/destroy/' + id, function () {
-                location.reload();
+                // location.reload();
+                window.location.href = '/miembro'
             });
         });
 
+    });
+
+    $("#btnCancelar").click(function () {
+        window.location.href = '/miembro'
+    });
+
+
+    // Escuchar el clic en una fila
+    $('.miembro-row').on('click', function (event) {
+
+        // Verifica si el clic se realizó en un botón de editar o eliminar
+        if ($(event.target).is('#btn') || $(event.target).is('#btnEliminar')) {
+            console.log('Presiono aqui en los botones')
+            return; // No muestres el modal si se hizo click en un botón
+
+        } else {
+            var idMiembro = $(this).find('[data-id]').data('id');
+            var dui = $(this).find('[data-dui]').data('dui');
+            var nombres = $(this).find('[data-nombre]').data('nombre');
+            var apellidos = $(this).find('[data-apellido]').data('apellido');
+            var correo = $(this).find('[data-correo]').data('correo');
+
+            $.ajax({
+                url: 'miembro/telefonos/' + idMiembro, // La URL de la ruta definida en Laravel
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    var isFirst = true; // Variable para rastrear si es el primer registro
+                    $('#telefonos').empty();
+                    for (var key in data) {
+                        if (data.hasOwnProperty(key)) {
+                            var text = data[key]; // Obtén el valor actual
+
+                            // Aplica el estilo CSS solo al primer registro
+                            if (isFirst) {
+                                $('#telefonos').append('<br>' + text);
+                                isFirst = false; // Cambia el valor de isFirst para que los siguientes registros no apliquen el estilo
+                            } else {
+                                // Inserta los registros restantes sin el estilo
+                                $('#telefonos').append('<br>' + text);
+
+                            }
+                        }
+                    }
+                },
+                error: function (error) {
+                    console.error('Error en la solicitud:', error);
+                }
+            });
+
+            // Llena el modal con los datos correspondientes
+            $('#modalIdMiembro').text(idMiembro);
+            $('#modalDui').text(dui);
+            $('#modalNombres').text(nombres);
+            $('#modalApellidos').text(apellidos);
+            $('#modalCorreo').text(correo);
+
+            // Abre el modal
+            $('#ModalToggle').modal('show');
+        }
     });
 
 });

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Miembro;
 use App\Models\TelefonoMiembro;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
 
 class MiembroController extends Controller
@@ -15,9 +16,7 @@ class MiembroController extends Controller
     {
         //Pagina inicio
         $datos = Miembro::all();
-        $miembroEdit = null;
         return view('miembro.index')->with([
-            'miembroEdit' => $miembroEdit,
             'datos' => $datos
         ]);
     }
@@ -64,7 +63,12 @@ class MiembroController extends Controller
             $telefonos->save();
         }
 
-        return redirect()->route("miembros.index")->with("success", "Agregado con exito!");
+        $datos = Miembro::all();
+        // Configura la variable de sesión de éxito
+        Session::flash('success', 'Agregado exitosamente!');
+        return view('miembro.index')->with([
+            'datos' => $datos,
+        ]);
     }
 
     public function edit($id)
@@ -79,7 +83,6 @@ class MiembroController extends Controller
             'datos' => $datos,
             'telefonos' => $telefonos
         ]);
-
     }
 
     public function update(Request $request, $id)
@@ -131,14 +134,18 @@ class MiembroController extends Controller
                 $telefonos->save();
             }
         }
-        return redirect()->route("miembros.index")->with("success", "Actualizado con exito!");
+        return redirect()->route("miembro.index");
     }
 
     public function destroy($id)
     {
         $miembros = Miembro::find($id);
-        $miembros->estado = '1';
+        $miembros->estado = '0';
         $miembros->save();
+        $datos = Miembro::all();
+        return view('miembro.index')->with([
+            'datos' => $datos
+        ]);
     }
 
     public function destroyTelefono($telefonoId)
@@ -151,5 +158,13 @@ class MiembroController extends Controller
         $telefono->delete();
 
         return response()->json(['message' => 'Teléfono eliminado con éxito.']);
+    }
+
+    public function ObtenerTelefonos($id)
+    {
+
+        $telefonos = TelefonoMiembro::where('idMiembro', $id)->pluck('telefono');
+
+        return response()->json($telefonos);
     }
 }

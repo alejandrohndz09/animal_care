@@ -12,34 +12,35 @@ class AlbergueController extends Controller
 
     public function index()
     {
-        $miembros = Miembro::all();
         $albergues = Alvergue::all();
         return view('albergue.index')->with([
-            'collection' => $miembros,
-            'Albergues' => $albergues,
+            'Albergues' => $albergues
         ]);
-    }
-
-    public function create()
-    {
-        //
     }
 
     public function store(Request $request)
     {
 
+        $request->validate([
+            'direccion' => 'required|unique:alvergue',
+            'idMiembro' => 'required|unique:alvergue'
+        ]);
+
         // Obtén el último registro de la tabla para determinar el siguiente incremento
         $ultimoRegistro = Alvergue::latest('idAlvergue')->first();
 
-        // Calcula el siguiente incremento
-        $siguienteIncremento = $ultimoRegistro ? (int) substr($ultimoRegistro->idMiembro, -4) + 1 : 1;
+        // Obtener el número del último idAnimal
+        $ultimoNumero = intval(substr($ultimoRegistro->idAlvergue, 2));
 
-        // Crea el ID personalizado concatenando "MB" y el incremento
-        $idPersonalizado = "AL" . str_pad($siguienteIncremento, 5, '0', STR_PAD_LEFT);
+        // Incrementar el número para el nuevo registro
+        $nuevoNumero = $ultimoNumero + 1;
+
+        // Formatear el nuevo idAnimal con ceros a la izquierda
+        $nuevoId = 'AL' . str_pad($nuevoNumero, 4, '0', STR_PAD_LEFT);
 
         //Guardar en BD
         $miembros = new Alvergue();
-        $miembros->idAlvergue = $idPersonalizado;
+        $miembros->idAlvergue = $nuevoId;
         $miembros->direccion = $request->post('direccion');
         $miembros->idMiembro = $request->post('miembro');
         $miembros->save();
@@ -51,11 +52,6 @@ class AlbergueController extends Controller
             'Albergues' => $Albergues,
             "success", "Actualizado con exito!"
         ]);
-    }
-
-    public function show($id)
-    {
-        //
     }
 
     public function edit($id)
@@ -73,23 +69,22 @@ class AlbergueController extends Controller
 
     public function update(Request $request, $id)
     {
-        $albergue = Alvergue::find($id);
 
+
+        //Valida si estan en la BD excluyendo al registro modificado
+        $request->validate([
+            'direccion' => 'required|unique:alvergue,direccion,'. $id . ',idAlvergue',
+            'miembro' => 'required'
+        ]);
+
+        $albergue = Alvergue::find($id);
 
         //Actualiza los datos en la BD
         $albergue->direccion = $request->post('direccion');
         $albergue->idMiembro = $request->post('miembro');
         $albergue->save();
 
-
-        $miembros = Miembro::all();
-        $albergues = Alvergue::all();
-
-        return view('albergue.index')->with([
-            'collection' => $miembros,
-            'Albergues' => $albergues,
-            "success", "Actualizado con exito!"
-        ]);
+        return redirect()->route("albergue.index");
     }
 
     public function destroy($id)

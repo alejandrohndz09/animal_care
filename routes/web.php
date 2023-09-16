@@ -29,7 +29,7 @@ Route::resource('animal','App\Http\Controllers\AnimalControlador');
 Route::put('/animal/update/{id}', 'App\Http\Controllers\AnimalControlador@update');
 
 Route::get('/obtener-razas/{especie}', 'App\Http\Controllers\AnimalControlador@obtenerRazas');
-Route::post('/store', [AnimalControlador::class, 'store'])->name('animal.store');
+// Route::post('/store', [AnimalControlador::class, 'store'])->name('animal.store');
 
 Route::get('/form1', function () {
     return view('formularios.form1');
@@ -46,17 +46,14 @@ Route::get('/form3', function () {
 
 
 ////////////////////////////MIS RUTAS PETER////////////////////////////////////////
-Route::get('/miembro', [MiembroController::class, 'index'])->name('miembros.index');
-Route::post('/store', [MiembroController::class, 'store'])->name('miembros.store');
-Route::get('/edit/{id}', [MiembroController::class, 'edit'])->name('miembros.edit');
+Route::resource('/miembro','App\Http\Controllers\MiembroController');
 Route::put('miembro/update/{id}', [MiembroController::class, 'update'])->name('miembros.update');
+Route::get('miembro/telefonos/{id}', [MiembroController::class, 'ObtenerTelefonos'])->name('miembro.telefono');
 Route::get('/destroy/{id}', [MiembroController::class,'destroy'])->name('miembros.destroy');
 Route::delete('/destroyTelefono/{id}', [MiembroController::class,'destroyTelefono'])->name('miembros.destroyTelefono');
 /////////////////////////////////////////////////////////////////////////////////
-Route::get('/albergue',[AlbergueController::class,'index'])->name('albergue.index');
-Route::post('/albergue/store',[AlbergueController::class,'store'])->name('albergueStore.index');
-Route::get('/AlbergueEdit/{id}', [AlbergueController::class, 'edit'])->name('Albergue.edit');
-Route::put('/AlbergueUpdate/{id}', [AlbergueController::class, 'update'])->name('albergue.update');
+Route::resource('/albergue','App\Http\Controllers\AlbergueController');
+Route::put('albergue/update/{id}', [AlbergueController::class, 'update'])->name('albergue.update');
 Route::delete('/destroyAlbergue/{id}', [AlbergueController::class,'destroy'])->name('albergue.destroy');
 
 

@@ -211,3 +211,39 @@
    text-decoration: none;
     
 }
+
+.modal-content p {
+  margin-bottom: 5px;
+  /* Puedes ajustar este valor según tus necesidades para reducir el interlineado */
+}
+
+.circle-button {
+  width: 30px;
+  /* Ajusta el ancho y alto según tu preferencia */
+  height: 30px;
+  background-color: #ffffff;
+  color: #ff000053;
+  border: none;
+  border-radius: 50%;
+  /* El valor debe ser la mitad del ancho o alto para lograr un círculo */
+  cursor: pointer;
+  text-align: center;
+  line-height: 30px;
+  /* Para centrar el texto verticalmente en el círculo */
+}
+
+
+.circle-button-accept{
+  width: 30px;
+  /* Ajusta el ancho y alto según tu preferencia */
+  height: 30px;
+  background-color: #ffffff;
+  color: #21cb2c77;
+  border: none;
+  border-radius: 50%;
+  /* El valor debe ser la mitad del ancho o alto para lograr un círculo */
+  cursor: pointer;
+  text-align: center;
+  line-height: 30px;
+  /* Para centrar el texto verticalmente en el círculo */
+}
