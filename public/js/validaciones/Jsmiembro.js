@@ -103,7 +103,9 @@ $(document).ready(function () {
             $.ajax({
                 url: "/destroyTelefono/" + telefonoId,
                 method: "DELETE",
-               
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
                 success: function (response) {
                     // Eliminar el elemento del DOM si la eliminación en la base de datos fue exitosa
                     $(this).closest("#remove").remove();
@@ -116,7 +118,7 @@ $(document).ready(function () {
                 error: function (xhr, status, error) {
                     //console.error(error);
                     console.log(error);
-                    alert("Ocurrió un error al eliminar el teléfono.");
+                    alert("Ocurrió un error al eliminar el teléfono." + xhr.responseText);
                 }
             });
 
