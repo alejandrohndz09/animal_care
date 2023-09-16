@@ -93,10 +93,10 @@
                                         <label id="image-preview" class="custum-file-upload"
                                             style="margin-top:-10px; width: auto; height: 75%;
                                         {{ isset($animal)
-                                            ? 'background-image: url(' . asset($animal->imagen) . ')'
+                                            ? 'background-image: url(' . old('imagenTemp', $animal->imagen) . ')'
                                             : 'background-image: url(' . old('imagenTemp') . ')' }}"
                                             for="foto">
-                                            <div class="icon" style="color:#c4c4c4;">
+                                            <div class="icon" id="iconContainer" style="color:#c4c4c4;">
                                                 <i style="height: 55px; padding: 10px" class="fas fa-camera"></i>
                                             </div>
 
@@ -111,7 +111,7 @@
                                         <div class="inputContainer">
                                             <input id="nombre" name="nombre" class="inputField" placeholder="Nombre"
                                                 type="text"
-                                                value="{{ isset($animal) ? $animal->nombre : old('nombre') }}"
+                                                value="{{ isset($animal) ? old('nombre', $animal->nombre) : old('nombre') }}"
                                                 autocomplete="off">
                                             <label class="inputFieldLabel" for="nombre">Nombre*</label>
                                             <i class="inputFieldIcon fas fa-pen"></i>
@@ -122,10 +122,11 @@
 
                                         <div class="inputContainer">
                                             <input id="fecha" name="fecha"
-                                                value="{{ isset($animal) ? explode(' ', $animal->fechaNacimiento)[0] : old('fecha') }}"
+                                                value="{{ isset($animal) ? old('fecha',explode(' ', $animal->fechaNacimiento)[0]): old('fecha') }}"
                                                 max="{{ date('Y-m-d') }}" class="inputField" autocomplete="false"
                                                 placeholder="Fecha de nacimiento" type="date">
-                                            <label class="inputFieldLabel" for="fecha">Fecha de nacimiento estimada*</label>
+                                            <label class="inputFieldLabel" for="fecha">Fecha de nacimiento
+                                                estimada*</label>
                                             <i class="inputFieldIcon fas fa-calendar"></i>
                                             @error('fecha')
                                                 <span class="text-danger">{{ $message }}</span>
@@ -178,13 +179,13 @@
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="radio" name="sexo"
                                                 id="inlineRadio1" value="Hembra"
-                                                {{ isset($animal) ? ($animal->sexo == 'Hembra' ? 'checked' : '') : (old('sexo') == 'Hembra' ? 'checked' : '') }}>
+                                                {{(isset($animal) && old('sexo',$animal->sexo) == 'Hembra') || (old('sexo') == 'Hembra' )? 'checked' : '' }}>
                                             <label class="form-check-label" for="Hembra">Hembra</label>
                                         </div>
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="radio" name="sexo"
                                                 id="inlineRadio2" value="Macho"
-                                                {{ isset($animal) ? ($animal->sexo == 'Macho' ? 'checked' : '') : (old('sexo') == 'Macho' ? 'checked' : '') }}>
+                                                {{ isset($animal) ? (old('sexo', $animal->sexo) == 'Macho' ? 'checked' : '') : (old('sexo') == 'Macho' ? 'checked' : '') }}>
                                             <label class="form-check-label" for="Macho">Macho</label>
                                         </div>
                                     </div>
@@ -194,8 +195,9 @@
                                 </div>
                                 <div class="inputContainer">
                                     <textarea id="particularidad" name="particularidad" class="inputField"
-                                    placeholder="Ej. Mancha en la panza, ojos de diferente color, etc." rows="2" cols="50"{{isset($animal) ? $animal->particularidad : old('particularidad')}}></textarea>
-                                    
+                                        placeholder="Ej. Mancha en la panza, ojos de diferente color, etc." rows="2"
+                                        cols="50" >{{ isset($animal) ? old('particularidad',$animal->particularidad ): old('particularidad') }}</textarea>
+
                                     <label class="inputFieldLabel" for="particularidad">Alguna Particularidad</label>
                                     <i class="inputFieldIcon fas fa-magnifying-glass-plus"></i>
                                     @error('particularidad')
