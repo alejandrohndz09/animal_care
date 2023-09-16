@@ -1,5 +1,9 @@
 $(document).ready(function () {
-    
+    //Habilitar tooltips
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-pp="tooltip"]'))
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl)
+    })
     // Captura el valor anterior de "raza" (puedes obtenerlo de old('raza') o de otra fuente)
     var especieId = $('#especie').val();
     $.ajax({
@@ -18,12 +22,12 @@ $(document).ready(function () {
                     value: value.idRaza,
                     text: value.raza
                 });
-        
+
                 // Verifica si la opción coincide con la que estaba seleccionada anteriormente
                 if (value.idRaza == $('#raza').data('selected')) {
                     option.attr('selected', 'selected');
                 }
-        
+
                 $('#raza').append(option);
             });
         }
@@ -81,7 +85,7 @@ function imagenVistaPrevia() {
 
             // Establece la URL como fondo del label
             imagePreview.style.backgroundImage = `url('` + imageURL + `')`;
-            
+
         } else {
             // No se ha seleccionado ningún archivo, muestra el icono 
             iconContainer.style.display = 'flex';

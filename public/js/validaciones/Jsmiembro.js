@@ -47,6 +47,11 @@ function validarInput(input) {
 
 
 $(document).ready(function () {
+     //Habilitar tooltips
+     var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-pp="tooltip"]'))
+     var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+         return new bootstrap.Tooltip(tooltipTriggerEl)
+     })
     $("#add-telefono").click(function () {
         var contador = $("#con");
         var con = parseInt(contador.val());

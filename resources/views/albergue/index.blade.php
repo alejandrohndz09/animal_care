@@ -51,18 +51,16 @@
                                                 style="display: flex; align-items: flex-end; gap: 5px; justify-content: center">
                                                 <a id="btnmodificar" href="{{ url('AlbergueEdit/' . $item->idAlvergue) }}"
                                                     type="button" class="button button-blue"
-                                                    data-id="{{ $item->idAlvergue }}">
+                                                    data-id="{{ $item->idAlvergue }}" style="width: 45%" data-bs-pp="tooltip" data-bs-placement="top" title="Editar">
                                                     <i class="svg-icon fas fa-pencil"></i>
-                                                    <span class="lable"></span>
                                                 </a>
 
-                                                <button type="button" class="button button-red"data-bs-toggle="modal"
+                                                <button type="button" class="button button-red" style="width: 45%" data-bs-toggle="modal"
                                                     data-bs-target="#exampleModalToggle" data-id="{{ $item->idAlvergue }}"
                                                     data-nombre="{{ $item->miembro->nombres }}"
                                                     data-apellido="{{ $item->miembro->apellidos }}"
-                                                    data-direccion="{{ $item->direccion }}">
+                                                    data-direccion="{{ $item->direccion }}" data-bs-pp="tooltip" data-bs-placement="top" title="Dar de baja">
                                                     <i class="svg-icon fas fa-trash"></i>
-                                                    <span class="lable"></span>
                                                 </button>
 
                                             </div>

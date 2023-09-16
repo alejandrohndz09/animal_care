@@ -52,18 +52,19 @@
                                                 <div
                                                     style="display: flex; align-items: flex-end; gap: 5px; justify-content: center">
                                                     <a id="btnmodificar" href="edit/{{ $item->idMiembro }}" type="button"
-                                                        class="button button-blue" data-id="{{ $item->idMiembro }}">
+                                                        class="button button-blue" style="width: 45%" data-id="{{ $item->idMiembro }}"
+                                                        data-bs-pp="tooltip" data-bs-placement="top" title="Editar">
                                                         <i class="svg-icon fas fa-pencil"></i>
-                                                        <span class="lable"></span>
                                                     </a>
 
-                                                    <button type="button" class="button button-red"data-bs-toggle="modal"
+                                                    <button type="button" class="button button-red" data-bs-pp="tooltip" data-bs-toggle="modal"
                                                         data-bs-target="#exampleModalToggle"
+                                                        style="width: 45%"
                                                         data-id="{{ $item->idMiembro }}" data-nombre="{{ $item->nombres }}"
                                                         data-apellido="{{ $item->apellidos }}"
-                                                        data-correo="{{ $item->correo }}">
+                                                        data-correo="{{ $item->correo }}"
+                                                         data-bs-placement="top" title="Dar de baja">
                                                         <i class="svg-icon fas fa-trash"></i>
-                                                        <span class="lable"></span>
                                                     </button>
 
                                                 </div>
@@ -158,7 +159,8 @@
                                             </div>
                                         </div>
                                         <div class="col-xl-6">
-                                            <button type="button" class="button button-pri" id="add-telefono">
+                                            <button type="button" class="button button-pri" id="add-telefono"
+                                            data-bs-pp="tooltip" data-bs-placement="top" title="Añadir teléfono">
                                                 <i class="svg-icon fas fa-plus"></i>
                                             </button>
                                         </div>

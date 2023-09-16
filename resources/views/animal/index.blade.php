@@ -53,18 +53,13 @@
                                             <div
                                                 style="display: flex; align-items: flex-end; gap: 3px; justify-content: center">
                                                 <a href="{{ url('animal/' . $a->idAnimal . '/edit') }}"
-                                                    class="button button-blue">
+                                                    class="button button-blue" style="width: 45%;" data-bs-pp="tooltip" data-bs-placement="top" title="Editar">
                                                     <i class="svg-icon fas fa-pencil"></i>
-                                                    <span class="lable"></span>
                                                 </a>
-                                                <button type="button" class="button button-red">
+                                                <button type="button" class="button button-red"  style="width: 45%" data-bs-pp="tooltip" data-bs-placement="top" title="Dar de baja">
                                                     <i class="svg-icon fas fa-trash"></i>
-                                                    <span class="lable"></span>
                                                 </button>
-                                                {{-- <button type="button" class="button button-sec">
-                                                <i class="svg-icon fas fa-ellipsis-vertical"></i>
-                                                <span class="lable"></span>
-                                            </button> --}}
+                                              
                                             </div>
                                         </td>
                                     </tr>
@@ -95,7 +90,7 @@
                                         {{ isset($animal)
                                             ? 'background-image: url(' . old('imagenTemp', $animal->imagen) . ')'
                                             : 'background-image: url(' . old('imagenTemp') . ')' }}"
-                                            for="foto">
+                                            for="foto" data-bs-pp="tooltip" data-bs-placement="left" title="Subir imagen">
                                             <div class="icon" id="iconContainer" style="color:#c4c4c4;">
                                                 <i style="height: 55px; padding: 10px" class="fas fa-camera"></i>
                                             </div>

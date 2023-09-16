@@ -32,3 +32,11 @@ $('#exampleModalToggle').on('show.bs.modal', function (event) {
     });
 
 });
+
+$(document).ready(function () {
+    //Habilitar tooltips
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-pp="tooltip"]'))
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl)
+    });
+});
