@@ -32,7 +32,9 @@ class MiembroController extends Controller
     {
         $request->validate([
             'correo' => 'required|unique:miembro',
-            'dui' => 'required|unique:miembro'
+            'dui' => 'required|unique:miembro',
+            'nombres' => 'required|min:3',
+            'apellidos' => 'required|min:3',
         ]);
 
         // Obtén el último registro de la tabla para determinar el siguiente incremento
@@ -91,7 +93,9 @@ class MiembroController extends Controller
         //Valida si estan en la BD
         $request->validate([
             'correo' => 'required|unique:miembro,correo,' . $id . ',idMiembro',
-            'dui' => 'required|unique:miembro,dui,' . $id . ',idMiembro',
+            'dui' => 'required|min:10|unique:miembro,dui,' . $id . ',idMiembro',
+            'nombres' => 'required|min:3',
+            'apellidos' => 'required|min:3',
         ]);
 
         //Actualiza los datos en la BD
@@ -104,11 +108,8 @@ class MiembroController extends Controller
 
         $contador = $request->post('con');
         for ($i = 1; $i <= $contador; $i++) {
-
-
             $nuevoTelefono = $request->post('telefono' . $i);
             $telefonoId = $request->input('boton' . $i);
-
             // Genera dinámicamente la regla de validación para cada campo de teléfono
             $validationRules['telefono' . $i] = 'unique:telefono_miembro,telefono,' . $telefonoId . ',idTelefono';
 
@@ -137,7 +138,7 @@ class MiembroController extends Controller
     public function destroy($id)
     {
         $miembros = Miembro::find($id);
-        $miembros->estado = '1';
+        $miembros->estado = '0';
         $miembros->save();
     }
 
