@@ -48,7 +48,7 @@ Route::get('/form3', function () {
 
 
 
-////////////////////////////MIS RUTAS PETER////////////////////////////////////////
+
 Route::resource('/miembro', 'App\Http\Controllers\MiembroController');
 Route::put('miembro/update/{id}', [MiembroController::class, 'update'])->name('miembros.update');
 Route::get('miembro/telefonos/{id}', [MiembroController::class, 'ObtenerTelefonos'])->name('miembro.telefono');
@@ -59,3 +59,4 @@ Route::post('/validar-telefono', 'App\Http\Controllers\AnimalControlador@validar
 Route::resource('/albergue', 'App\Http\Controllers\AlbergueController');
 Route::put('albergue/update/{id}', [AlbergueController::class, 'update'])->name('albergue.update');
 Route::delete('/destroyAlbergue/{id}', [AlbergueController::class, 'destroy'])->name('albergue.destroy');
+
