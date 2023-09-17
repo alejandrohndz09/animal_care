@@ -27,6 +27,7 @@ Route::get('/home', function () {
 
 Route::resource('animal', 'App\Http\Controllers\AnimalControlador');
 Route::put('/animal/update/{id}', 'App\Http\Controllers\AnimalControlador@update');
+Route::get('/animal/destroy/{id}', 'App\Http\Controllers\AnimalControlador@destroy');
 Route::get('/obtener-razas/{especie}', 'App\Http\Controllers\AnimalControlador@obtenerRazas');
 
 Route::resource('miembro1', 'App\Http\Controllers\MiembroController1');

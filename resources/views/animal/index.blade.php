@@ -40,7 +40,7 @@
                                 @foreach ($animales as $a)
                                     <tr>
                                         <td>
-                                            <img src="{{isset($a->imagen)?asset($a->imagen):'https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/2048px-User-avatar.svg.png'}}"
+                                            <img src="{{isset($a->imagen)?asset($a->imagen):'https://static.vecteezy.com/system/resources/previews/017/783/245/original/pet-shop-silhouette-logo-template-free-vector.jpg'}}"
                                                 alt="user" class="picture" />
                                         </td>
                                         <td>{{ $a->nombre }}</td>
@@ -58,6 +58,7 @@
                                                     <i class="svg-icon fas fa-pencil"></i>
                                                 </a>
                                                 <button type="button" class="button button-red" style="width: 45%"
+                                                data-bs-toggle="modal" data-bs-target="#exampleModalToggle" data-animal="{{json_encode($a)}}"
                                                     data-bs-pp="tooltip" data-bs-placement="top" title="Dar de baja">
                                                     <i class="svg-icon fas fa-trash"></i>
                                                 </button>
@@ -229,5 +230,6 @@
                 </div>
             </div>
         </main>
+        @include('animal.modalesAnimal')
     </div>
 @endsection
