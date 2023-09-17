@@ -15,8 +15,7 @@ class AnimalControlador extends Controller
      */
     public function index()
     {
-        // $animales=Animal::where('estado',1)->get();
-        $animales = Animal::all();
+        $animales = Animal::where('estado', 1)->get();
         return view('animal.index')->with('animales', $animales);
     }
 
@@ -59,7 +58,7 @@ class AnimalControlador extends Controller
         $animal->sexo = $request->post('sexo');
         $animal->estado = 1;
         $animal->particularidad = $request->post('particularidad');
-
+        $animal->estado =1;
         if ($request->hasFile('foto')) {
             $imagen = $request->file('foto');
             $nombreImagen = $animal->idAnimal . '.' . $imagen->getClientOriginalExtension();
@@ -93,7 +92,7 @@ class AnimalControlador extends Controller
     {
         $animal = Animal::find($id);
         return view('animal.index')->with([
-            'animales' => Animal::all(),
+            'animales' => Animal::where('estado', 1)->get(),
             'animal' => $animal
         ]);
     }
@@ -125,7 +124,6 @@ class AnimalControlador extends Controller
          $animal->idRaza = $request->post('raza');
          $animal->sexo = $request->post('sexo');
          $animal->particularidad = $request->post('particularidad');
- 
          if ($request->hasFile('foto')) {
              $imagen = $request->file('foto');
              $nombreImagen = $animal->idAnimal . '.' . $imagen->getClientOriginalExtension();
@@ -137,7 +135,7 @@ class AnimalControlador extends Controller
          $animal->save();
  
          return redirect()->route('animal.index')->with([
-            'animales' => Animal::all(),
+            'animales' => Animal::where('estado', 1)->get(),
             'success' => 'Guardado con éxito'
         ]);
     }
@@ -150,7 +148,13 @@ class AnimalControlador extends Controller
      */
     public function destroy($id)
     {
-        //
+        $animal = Animal::find($id);
+        $animal->estado=0;
+        $animal->save();
+        
+        return view('animal.index')->with([
+            'animales' => Animal::where('estado', 1)->get()
+        ]);
     }
 
     public function generarId()

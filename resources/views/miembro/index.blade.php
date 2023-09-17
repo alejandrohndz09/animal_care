@@ -289,4 +289,5 @@
             </div>
         </main>
         @include('miembro.modalesMiembro')
-    @endsection
+    </div>
+@endsection

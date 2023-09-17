@@ -23,24 +23,14 @@ class AlbergueController extends Controller
 
         $request->validate([
             'direccion' => 'required|unique:alvergue',
-            'idMiembro' => 'required|unique:alvergue'
+            'miembro' => 'required'
+        ],[
+            'direccion.unique' => 'Esta dirección ya ha sido utilizada.',
         ]);
-
-        // Obtén el último registro de la tabla para determinar el siguiente incremento
-        $ultimoRegistro = Alvergue::latest('idAlvergue')->first();
-
-        // Obtener el número del último idAnimal
-        $ultimoNumero = intval(substr($ultimoRegistro->idAlvergue, 2));
-
-        // Incrementar el número para el nuevo registro
-        $nuevoNumero = $ultimoNumero + 1;
-
-        // Formatear el nuevo idAnimal con ceros a la izquierda
-        $nuevoId = 'AL' . str_pad($nuevoNumero, 4, '0', STR_PAD_LEFT);
 
         //Guardar en BD
         $miembros = new Alvergue();
-        $miembros->idAlvergue = $nuevoId;
+        $miembros->idAlvergue = $this->generarId();
         $miembros->direccion = $request->post('direccion');
         $miembros->idMiembro = $request->post('miembro');
         $miembros->save();
@@ -75,6 +65,8 @@ class AlbergueController extends Controller
         $request->validate([
             'direccion' => 'required|unique:alvergue,direccion,'. $id . ',idAlvergue',
             'miembro' => 'required'
+        ],[
+            'direccion.unique' => 'Esta dirección ya ha sido utilizada.',
         ]);
 
         $albergue = Alvergue::find($id);
@@ -97,5 +89,27 @@ class AlbergueController extends Controller
         $Albergue->delete();
 
         return response()->json(['message' => 'Teléfono eliminado con éxito.']);
+    }
+
+    public function generarId()
+    {
+        // Obtener el último registro de la tabla "animal"
+        $ultimoAnimal = Alvergue::latest('idAlvergue')->first();
+
+        if (!$ultimoAnimal) {
+            // Si no hay registros previos, comenzar desde AN0001
+            $nuevoId = 'AL0001';
+        } else {
+            // Obtener el número del último idAnimal
+            $ultimoNumero = intval(substr($ultimoAnimal->idAnimal, 2));
+
+            // Incrementar el número para el nuevo registro
+            $nuevoNumero = $ultimoNumero + 1;
+
+            // Formatear el nuevo idAnimal con ceros a la izquierda
+            $nuevoId = 'AL' . str_pad($nuevoNumero, 4, '0', STR_PAD_LEFT);
+        }
+
+        return $nuevoId;
     }
 }
