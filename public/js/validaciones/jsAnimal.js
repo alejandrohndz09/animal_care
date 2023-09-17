@@ -73,6 +73,7 @@ function imagenVistaPrevia() {
     const fileInput = document.getElementById('foto');
     const imagePreview = document.getElementById('image-preview');
     const iconContainer = document.getElementById('iconContainer');
+    const imageTemp = document.getElementById('image-preview');
 
     // Escucha el evento change en el input de tipo "file"
     fileInput.addEventListener('change', function () {
@@ -82,7 +83,7 @@ function imagenVistaPrevia() {
             iconContainer.style.display = 'none';
             // Crea una URL del objeto Blob para la vista previa de la imagen
             const imageURL = URL.createObjectURL(selectedFile);
-
+            imageTemp.val = imageURL;
             // Establece la URL como fondo del label
             imagePreview.style.backgroundImage = `url('` + imageURL + `')`;
 

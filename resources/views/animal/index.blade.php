@@ -56,7 +56,8 @@
                                                     class="button button-blue" style="width: 45%;" data-bs-pp="tooltip" data-bs-placement="top" title="Editar">
                                                     <i class="svg-icon fas fa-pencil"></i>
                                                 </a>
-                                                <button type="button" class="button button-red"  style="width: 45%" data-bs-pp="tooltip" data-bs-placement="top" title="Dar de baja">
+                                                <button type="button" class="button button-red"  style="width: 45%"
+                                                 data-bs-pp="tooltip" data-bs-placement="top" title="Dar de baja">
                                                     <i class="svg-icon fas fa-trash"></i>
                                                 </button>
                                               
@@ -82,13 +83,13 @@
                                 @endif
                                 <div class="row">
                                     <div class="col-xl-4">
-                                        <input type="hidden" value="{{ old('imagenTemp') }}" id="imagenTemp"
+                                        <input type="hidden" value="{{ isset($animal) ? old('imageTemp', $animal->imagen): old('imagenTemp') }}" id="imagenTemp"
                                             name="imagenTemp">
 
                                         <label id="image-preview" class="custum-file-upload"
                                             style="margin-top:-10px; width: auto; height: 75%;
                                         {{ isset($animal)
-                                            ? 'background-image: url(' . old('imagenTemp', $animal->imagen) . ')'
+                                            ? 'background-image: url(' . asset(old('imagenTemp', $animal->imagen)). ')'
                                             : 'background-image: url(' . old('imagenTemp') . ')' }}"
                                             for="foto" data-bs-pp="tooltip" data-bs-placement="left" title="Subir imagen">
                                             <div class="icon" id="iconContainer" style="color:#c4c4c4;">
