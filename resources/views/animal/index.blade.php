@@ -25,11 +25,11 @@
                             <thead>
                                 <tr class="head">
                                     <th></th>
+                                    <th>Código</th>
                                     <th>Nombre</th>
-                                    <th>Edad</th>
                                     <th>Especie</th>
                                     <th>Raza</th>
-                                    <th>Sexo</th>
+                                    <th>Edad</th>
                                     <th>
                                     </th>
                                 </tr>
@@ -43,12 +43,12 @@
                                             <img src="{{isset($a->imagen)?asset($a->imagen):'https://static.vecteezy.com/system/resources/previews/017/783/245/original/pet-shop-silhouette-logo-template-free-vector.jpg'}}"
                                                 alt="user" class="picture" />
                                         </td>
+                                        <td>{{ $a->idAnimal }}</td>
                                         <td>{{ $a->nombre }}</td>
-                                        <td>{{ AnimalControlador::calcularEdad(explode(' ', $a->fechaNacimiento)[0]) }}
-                                        </td>
                                         <td>{{ $a->raza->especie->especie }}</td>
                                         <td>{{ $a->raza->raza }}</td>
-                                        <td>{{ $a->sexo }}</td>
+                                        <td>{{ AnimalControlador::calcularEdad(explode(' ', $a->fechaNacimiento)[0]) }}
+                                        </td>
                                         <td>
                                             <div
                                                 style="display: flex; align-items: flex-end; gap: 3px; justify-content: center">
