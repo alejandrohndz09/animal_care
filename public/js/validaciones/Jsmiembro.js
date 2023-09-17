@@ -47,11 +47,11 @@ function validarInput(input) {
 
 //Agregar un input telefono
 $(document).ready(function () {
-     //Habilitar tooltips
-     var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-pp="tooltip"]'))
-     var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-         return new bootstrap.Tooltip(tooltipTriggerEl)
-     })
+    //Habilitar tooltips
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-pp="tooltip"]'))
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl)
+    })
     $("#add-telefono").click(function () {
         var contador = $("#con");
         var con = parseInt(contador.val());
@@ -78,7 +78,7 @@ $(document).ready(function () {
         <div  class="row" id="remove">
                <div class="col-xl-6">
                   <div class="inputContainer">
-                       <input class="inputField form-control telefono"  
+                       <input class="inputField form-control telefono"  id="tel`+ con + `"
                           value="+503 " name="telefono`+ con + `" type="text" oninput="validarInput(this)">
                            <small  style="color:red" class="error-message" id="error-` + con + `"></small>
                   </div>
@@ -100,49 +100,70 @@ $(document).ready(function () {
     //Remover telefono
     $("#telefono-container").on("click", ".remove-telefono", function () {
         var telefonoId = $(this).data("telefono-id");
-
         var contador = parseInt($("#con").val());
 
-        //Revisa si el contador del total de registros del telefono son de la BD y si lo elimina tambien lo hara de la BD
-        if (telefonosBD == contador) {
-            $.ajax({
+        // Obtén el elemento por su ID para eliminarlo de la BD
+        var elemento = document.getElementById('DeleteCell');
 
-                url: "/destroyTelefono/" + telefonoId,
-                method: "DELETE",
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                success: function (response) {
-                    // Eliminar el elemento del DOM si la eliminación en la base de datos fue exitosa
+        //Verifica si el elememto es nulo entonces significa que el telefono no esta guardado en la BD
+        if (elemento != null) {
+            // El elemento existe en el DOM
+            var valor = elemento.value;
+            //Elimina registro
+            if (valor) {
+                $.ajax({
+
+                    url: "/destroyTelefono/" + telefonoId,
+                    method: "DELETE",
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function () {
+                        console.log('Condición cumplida: ');
+                        // Eliminar el div del DOM si la eliminación en el servidor fue exitosa
+                        var divAEliminar = document.getElementById('remove');
+                        console.log(divAEliminar);
+                        divAEliminar.remove();
+                        var contador = $("#con");
+                        var con = parseInt(contador.val());
+                        con = con - 1;
+                        contador.val(con);
+
+                        // Abre el modal
+                        $('#modalEliminacion').modal('show');
+
+                        // Ocultar el modal después de 4 segundos
+                        setTimeout(function () {
+                            $('#modalEliminacion').modal('hide');
+                        }, 2000);
+
+                    },
+                    error: function (xhr, status, error) {
+                        //console.error(error);
+                        console.log(error);
+                        alert("Ocurrió un error al eliminar el teléfono." + xhr.responseText);
+                    }
+                });
+
+            }
+        } else {
+            $('#ModalTelefono').on('show.bs.modal', function () {
+
+                $('body').on('click', '#confirmar', function () {
+                    // Obtener el valor ingresado en el input
+                    var dato = document.getElementById('miInput').value;
+
+                    // Si no se cumple la condición, eliminar el campo de teléfono sin mensaje de la BD de eliminacion de registros
                     $(this).closest("#remove").remove();
                     var contador = $("#con");
                     var con = parseInt(contador.val());
-                    con = con - 1;
-                    contador.val(con);
-                    // Abre el modal
-                    $('#modalEliminacion').modal('show');
 
-                    // Ocultar el modal después de 4 segundos
-                    setTimeout(function () {
-                        $('#modalEliminacion').modal('hide');
-                    }, 2000);
-                },
-                error: function (xhr, status, error) {
-                    //console.error(error);
-                    console.log(error);
-                    alert("Ocurrió un error al eliminar el teléfono." + xhr.responseText);
-                }
+                    con = con - 1; // decrementa el valor de 'con' en 1
+                    contador.val(con); // Actualiza el valor en el campo de entrada
+                });
             });
-
         }
 
-        // Si no se cumple la condición, eliminar el campo de teléfono sin mensaje de la BD de eliminacion de registros
-        $(this).closest("#remove").remove();
-        var contador = $("#con");
-        var con = parseInt(contador.val());
-
-        con = con - 1; // decrementa el valor de 'con' en 1
-        contador.val(con); // Actualiza el valor en el campo de entrada
 
     });
 

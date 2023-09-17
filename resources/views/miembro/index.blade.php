@@ -69,22 +69,24 @@
                                             <td>{{ $item->apellidos }}</td>
                                             <td>{{ $item->correo }} </td>
                                             <td>
-                                                <div style="display: flex; align-items: flex-end; gap: 5px; justify-content: center">
+                                                <div
+                                                    style="display: flex; align-items: flex-end; gap: 5px; justify-content: center">
                                                     <button
                                                         onclick="window.location.href = '{{ url('miembro/' . $item->idMiembro . '/edit') }}';"
-                                                        type="button" class="button button-blue btnUpdate" style="width: 45%"
-                                                        data-id="{{ $item->idMiembro }}"  data-bs-pp="tooltip" data-bs-placement="top" title="Editar">
+                                                        type="button" class="button button-blue btnUpdate"
+                                                        style="width: 45%" data-id="{{ $item->idMiembro }}"
+                                                        data-bs-pp="tooltip" data-bs-placement="top" title="Editar">
                                                         <i class="svg-icon fas fa-pencil"></i>
                                                     </button>
 
 
-                                                    <button type="button" class="button button-red btnDelete" data-bs-pp="tooltip" data-bs-toggle="modal"
-                                                        data-bs-target="#exampleModalToggle"
-                                                        style="width: 45%"
+                                                    <button type="button" class="button button-red btnDelete"
+                                                        data-bs-pp="tooltip" data-bs-toggle="modal"
+                                                        data-bs-target="#exampleModalToggle" style="width: 45%"
                                                         data-id="{{ $item->idMiembro }}" data-nombre="{{ $item->nombres }}"
                                                         data-apellido="{{ $item->apellidos }}"
-                                                        data-dui="{{ $item->dui }}"  data-correo="{{ $item->correo }}"
-                                                         data-bs-placement="top" title="Dar de baja">
+                                                        data-dui="{{ $item->dui }}" data-correo="{{ $item->correo }}"
+                                                        data-bs-placement="top" title="Dar de baja">
                                                         <i class="svg-icon fas fa-trash"></i>
                                                     </button>
 
@@ -181,7 +183,7 @@
                                         </div>
                                         <div class="col-xl-6">
                                             <button type="button" class="button button-pri" id="add-telefono"
-                                            data-bs-pp="tooltip" data-bs-placement="top" title="Añadir teléfono">
+                                                data-bs-pp="tooltip" data-bs-placement="top" title="Añadir teléfono">
                                                 <i class="svg-icon fas fa-plus"></i>
                                             </button>
                                         </div>
@@ -195,15 +197,15 @@
                                         @endphp
 
                                         <!-- Guarda en un data los telefonos para eliminar verificar si el telefono son de la BD  -->
-                                        <div class="row" id="telefono-container"
-                                            data-objeto="{{ json_encode($telefonos) }}">
+                                        <div class="row" id="telefono-container">
 
                                             <!-- Recorre los telefonos que pueda tener el miembro y los muestra-->
                                             @foreach ($telefonos as $item)
-                                                <div class="row" id="remove">
+                                                <div class="row" @if ($contador > 1) id="remove" @endif>
                                                     <div class="col-xl-6">
                                                         <div class="inputContainer">
-                                                            <input class="inputField form-control telefono" id="tel"
+                                                            <input class="inputField form-control telefono"
+                                                                id="tel{{ $contador }}"
                                                                 name="telefono{{ $contador }}" type="text"
                                                                 oninput="validarInput(this)"
                                                                 @if (old('telefono' . $contador) === null) value="{{ $item->telefono }}"
@@ -226,7 +228,8 @@
                                                                 <i class="svg-icon fas fa-plus"></i>
                                                             </button>
                                                         @else
-                                                            <input type="hidden" name="boton{{ $contador }}"
+                                                            <input type="hidden" id="DeleteCell"
+                                                                name="boton{{ $contador }}"
                                                                 value="{{ $item->idTelefono }}">
                                                             <button type="button"
                                                                 class=" button button-sec remove-telefono"
@@ -242,9 +245,6 @@
                                                 @endphp
                                             @endforeach
 
-                                            <script>
-                                                var telefonosBD = {{ $contador - 1 }};
-                                            </script>
                                         </div>
                                         <input type="hidden" name="con" id="con"
                                             value="{{ $contador - 1 }}">
@@ -253,7 +253,7 @@
                                             <div class="col-xl-6">
                                                 <div class="inputContainer">
                                                     <input class="inputField form-control telefono" value="+503 "
-                                                        id="tel" name="telefono1" type="text"
+                                                        id="tel1" name="telefono1" type="text"
                                                         oninput="validarInput(this)">
                                                     <label class="inputFieldLabel" for="telefono">Teléfono</label>
                                                     <i class="inputFieldIcon fas fa-phone"></i>
