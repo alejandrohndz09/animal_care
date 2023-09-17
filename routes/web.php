@@ -1,6 +1,8 @@
 <?php
 
 
+use App\Http\Controllers\EspecieController;
+
 use App\Http\Controllers\MiembroController;
 use Illuminate\Support\Facades\Route;
 
@@ -51,3 +53,16 @@ Route::put('/update/{id}', [MiembroController::class, 'update'])->name('miembros
 
 Route::get('/destroy/{id}', [MiembroController::class,'destroy'])->name('miembros.destroy');
 
+//////////////////////////Mis rutas Nellys
+
+Route::resource('/especie',EspecieController::class);
+
+Route::get('/especie', [EspecieController::class, 'index'])->name('especie.especie');
+Route::post('/store', [EspecieController::class, 'store'])->name('especie.store');
+
+
+
+Route::get('/edit/{id}', [EspecieController::class, 'edit'])->name('especie.edit');
+Route::put('especie/update/{id}', [EspecieController::class, 'update'])->name('especie.update');
+
+Route::get('/destroy/{id}', [EspecieController::class,'destroy'])->name('especie.destroy');
