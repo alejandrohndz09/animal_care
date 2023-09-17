@@ -49,7 +49,8 @@
                                         <td>
                                             <div
                                                 style="display: flex; align-items: flex-end; gap: 5px; justify-content: center">
-                                                <a id="btnmodificar" href="{{ url('AlbergueEdit/' . $item->idAlvergue) }}"
+                                                <a id="btnmodificar"
+                                                    href="{{ url('albergue/' . $item->idAlvergue . '/edit') }}"
                                                     type="button" class="button button-blue"
                                                     data-id="{{ $item->idAlvergue }}" style="width: 45%" data-bs-pp="tooltip" data-bs-placement="top" title="Editar">
                                                     <i class="svg-icon fas fa-pencil"></i>
@@ -76,104 +77,82 @@
                     <div class="col-xl-5">
                         <div class="card  mb-4" style="border:none; padding-bottom: 25px !important; width: 100%">
 
-                            @if (isset($AlbergueEdit))
-                                <h3 style="padding: -5px 0px !important;">Modificar Registro</h3>
-                                <form action="{{ route('albergue.update', $AlbergueEdit) }}" id="miFormulario"
-                                    name="form" method="POST">
-                                    @csrf
+
+                            <h3 style="padding: -5px 0px !important;">
+                                {{ isset($AlbergueEdit) ? 'Editar Registro' : 'Nuevo Registro' }}</h3>
+                            <form
+                                action="{{ isset($AlbergueEdit) ? url('albergue/update/' . $AlbergueEdit->idAlvergue) : '' }}"
+                                id="miFormulario" name="form" method="POST">
+                                @csrf
+                                @if (isset($AlbergueEdit))
                                     @method('PUT') <!-- Utilizar el método PUT para la actualización -->
+                                @endif
 
-                                    <div class="row">
-                                        <div class="col-xl-12">
+                                <div class="row">
+                                    <div class="col-xl-12">
 
-                                            <div class="inputContainer">
-                                                <label class="inputFieldLabel" autocomplete="off"
-                                                    for="direccion">Dirección</label>
-                                                <i class="inputFieldIcon fas fa-house"></i>
-                                                <input value="{{ $AlbergueEdit->direccion }}" class="inputField"
-                                                    name="direccion">
-                                            </div>
-                                            <div class="inputContainer">
-                                                <select id="miembro" name="miembro" class="inputField">
-                                                    <option value="" {{ old('miembro') == '' ? 'selected' : '' }}>
-                                                        Seleccione</option>
-                                                    @foreach ($collection as $miembro)
+                                        <div class="inputContainer">
+                                            <label class="inputFieldLabel" autocomplete="off"
+                                                for="direccion">Dirección</label>
+                                            <i class="inputFieldIcon fas fa-location-dot"></i>
+                                            <input placeholder="Ej. Calle Principal #123, Ciudad"
+                                                value="{{ isset($AlbergueEdit) ? $AlbergueEdit->direccion : old('direccion') }}"
+                                                class="inputField" name="direccion">
+                                            @error('direccion')
+                                                <small style="color:red">{{ $message }}</small>
+                                            @enderror
+                                        </div>
+
+
+                                        <div class="inputContainer">
+                                            <label class="inputFieldLabel" for="dui">Miembro responsable</label>
+                                            <i class="inputFieldIcon fas fa-user"></i>
+                                            <select id="miembro" name="miembro" class="inputField">
+                                                <option value=""
+                                                    {{ old('nombre') == '' && !isset($AlbergueEdit) ? 'selected' : '' }}>
+                                                    Seleccione...
+                                                </option>
+                                                @php use App\Models\Miembro; @endphp
+                                                @foreach (Miembro::all() as $miembro)
+                                                    @if ($miembro->estado == 1)
                                                         <option value="{{ $miembro->idMiembro }}"
-                                                            {{ $AlbergueEdit->idMiembro == $miembro->idMiembro || old('miembro') == $miembro->idMiembro ? 'selected' : '' }}>
-
-                                                            {{ $miembro->nombres }}
-                                                            {{ $miembro->apellidos }}
-
+                                                            {{ isset($AlbergueEdit) ? ($AlbergueEdit->miembro->idMiembro == $miembro->idMiembro ? 'selected' : '') : (old('nombre') == $miembro->idMiembro ? 'selected' : '') }}>
+                                                            {{ $miembro->nombres }} {{ $miembro->apellidos }}
                                                         </option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
+                                                    @endif
+                                                @endforeach
+                                            </select>
+                                            @error('miembro')
+                                                <small style="color:red">{{ $message }}</small>
+                                            @enderror
                                         </div>
-                                        <div
-                                            style="display: flex; align-items: flex-end; gap: 10px; justify-content: center">
-                                            <button type="submit" class="button button-pri">
-                                                <i class="svg-icon fa-regular fa-floppy-disk"></i>
-                                                <span class="lable">Modificar</span>
-                                            </button>
-                                            <button type="reset" class="button button-red">
-                                                <i class="svg-icon fas fa-rotate-right"></i>
-                                                <span class="lable">Cancelar</span>
-                                            </button>
-                                        </div>
-                                </form>
 
-
-                        </div>
-                    @else
-                        <h3 style="padding: -5px 0px !important;">Nuevo Registro</h3>
-                        <form id="miFormulario" action="{{ route('albergueStore.index') }}" method="POST">
-                            @csrf
-                            <div class="row">
-                                <div class="col-xl-12">
-
-                                    <div class="inputContainer">
-                                        <label class="inputFieldLabel" autocomplete="off" for="direccion">Dirección</label>
-                                        <i class="inputFieldIcon fas fa-house"></i>
-                                        <input class="inputField" name="direccion">
-                                        <small style="color:red" class="error-message"></small>
                                     </div>
-
-                                    <div class="inputContainer">
-                                        <label class="inputFieldLabel" for="nombre">Miembro responsable</label>
-                                        <i class="inputFieldIcon fas fa-user"></i>
-                                        <select id="miembro" name="miembro" class="inputField">
-                                            <option value="" {{ old('miembro') == '' ? 'Seleccione' : '' }}>
-                                                Seleccione</option>
-                                            @foreach ($collection as $miembro)
-                                                @if ($miembro->estado === 1)
-                                                    <option value="{{ $miembro->idMiembro }}"
-                                                        {{ old('miembro') == $miembro->idMiembro ? 'Seleccione' : '' }}>
-                                                        {{ $miembro->nombres }}
-                                                        {{ $miembro->apellidos }}
-
-                                                    </option>
+                                    <div style="display: flex; align-items: flex-end; gap: 10px; justify-content: center">
+                                        <button type="submit" class="button button-pri">
+                                            <i class="svg-icon fa-regular fa-floppy-disk"></i>
+                                            <span class="lable">
+                                                @if (isset($AlbergueEdit))
+                                                    Modificar
+                                                @else
+                                                    Guardar
                                                 @endif
-                                            @endforeach
-                                        </select>
+                                            </span>
+                                        </button>
+                                        <button onclick="{{ url('albergue') }}" type="button" id="btnCancelar"
+                                            class="button button-red">
+                                            <i class="svg-icon fas fa-rotate-right"></i>
+                                            <span class="lable">Cancelar</span>
+                                        </button>
                                     </div>
-                                </div>
-                                <div style="display: flex; align-items: flex-end; gap: 10px; justify-content: center">
-                                    <button type="submit" class="button button-pri">
-                                        <i class="svg-icon fa-regular fa-floppy-disk"></i>
-                                        <span class="lable">Guardar</span>
-                                    </button>
-                                    <button type="reset" class="button button-red">
-                                        <i class="svg-icon fas fa-rotate-right"></i>
-                                        <span class="lable">Cancelar</span>
-                                    </button>
-                                </div>
-                        </form>
-                        @endif
-
+                            </form>
+                        </div>
                     </div>
 
                 </div>
+
             </div>
+    </div>
     </div>
 
     <!-- Modal -->
@@ -203,8 +182,6 @@
                 </div>
             </div>
     </form>
-    </main>
-
     </main>
 
     </div>
