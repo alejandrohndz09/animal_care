@@ -25,7 +25,7 @@ Route::get('/home', function () {
     return view('dashboard.dashboard');
 });
 
-Route::resource('animal','App\Http\Controllers\AnimalControlador');
+Route::resource('animal', 'App\Http\Controllers\AnimalControlador');
 Route::put('/animal/update/{id}', 'App\Http\Controllers\AnimalControlador@update');
 
 Route::get('/obtener-razas/{especie}', 'App\Http\Controllers\AnimalControlador@obtenerRazas');
@@ -46,15 +46,13 @@ Route::get('/form3', function () {
 
 
 ////////////////////////////MIS RUTAS PETER////////////////////////////////////////
-Route::resource('/miembro','App\Http\Controllers\MiembroController');
+Route::resource('/miembro', 'App\Http\Controllers\MiembroController');
 Route::put('miembro/update/{id}', [MiembroController::class, 'update'])->name('miembros.update');
 Route::get('miembro/telefonos/{id}', [MiembroController::class, 'ObtenerTelefonos'])->name('miembro.telefono');
-Route::get('/destroy/{id}', [MiembroController::class,'destroy'])->name('miembros.destroy');
-Route::delete('/destroyTelefono/{id}', [MiembroController::class,'destroyTelefono'])->name('miembros.destroyTelefono');
+Route::get('/destroy/{id}', [MiembroController::class, 'destroy'])->name('miembros.destroy');
+Route::delete('/destroyTelefono/{id}', [MiembroController::class, 'destroyTelefono'])->name('miembros.destroyTelefono');
+Route::post('/validar-telefono', 'App\Http\Controllers\AnimalControlador@validarTelefono');
 /////////////////////////////////////////////////////////////////////////////////
-Route::resource('/albergue','App\Http\Controllers\AlbergueController');
+Route::resource('/albergue', 'App\Http\Controllers\AlbergueController');
 Route::put('albergue/update/{id}', [AlbergueController::class, 'update'])->name('albergue.update');
-Route::delete('/destroyAlbergue/{id}', [AlbergueController::class,'destroy'])->name('albergue.destroy');
-
-
-
+Route::delete('/destroyAlbergue/{id}', [AlbergueController::class, 'destroy'])->name('albergue.destroy');

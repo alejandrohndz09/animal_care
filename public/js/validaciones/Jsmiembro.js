@@ -45,7 +45,7 @@ function validarInput(input) {
     input.value = duiValue;
 }
 
-
+//Agregar un input telefono
 $(document).ready(function () {
     $("#add-telefono").click(function () {
         var contador = $("#con");
@@ -92,14 +92,14 @@ $(document).ready(function () {
     });
 
 
-
+    //Remover telefono
     $("#telefono-container").on("click", ".remove-telefono", function () {
         var telefonoId = $(this).data("telefono-id");
 
         var contador = parseInt($("#con").val());
 
+        //Revisa si el contador del total de registros del telefono son de la BD y si lo elimina tambien lo hara de la BD
         if (telefonosBD == contador) {
-            console.log(telefonosBD);
             $.ajax({
 
                 url: "/destroyTelefono/" + telefonoId,
@@ -120,7 +120,7 @@ $(document).ready(function () {
                     // Ocultar el modal después de 4 segundos
                     setTimeout(function () {
                         $('#modalEliminacion').modal('hide');
-                    }, 1000);
+                    }, 2000);
                 },
                 error: function (xhr, status, error) {
                     //console.error(error);
@@ -131,7 +131,7 @@ $(document).ready(function () {
 
         }
 
-        // Si no se cumple la condición, eliminar el campo de teléfono
+        // Si no se cumple la condición, eliminar el campo de teléfono sin mensaje de la BD de eliminacion de registros
         $(this).closest("#remove").remove();
         var contador = $("#con");
         var con = parseInt(contador.val());
@@ -141,6 +141,7 @@ $(document).ready(function () {
 
     });
 
+    //Validacion de campos vacios en el formulario
     $("#miFormulario").submit(function (event) {
         var inputs = $(this).find("input"); // Obtener todos los campos de entrada en el formulario
 
@@ -158,6 +159,7 @@ $(document).ready(function () {
         }
     });
 
+    //Si presiona eliminar abrira el modal con los datos que se daran de baja
     $('#exampleModalToggle').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget); // Botón que desencadenó el modal
         var id = button.data('id'); // Obtiene el valor del atributo data-id
@@ -166,7 +168,6 @@ $(document).ready(function () {
         var correo = button.data('correo'); // Obtiene el valor del atributo data-correo
 
         // Actualiza el contenido del modal con los detalles del registro
-        $('#modalRecordId').text(id);
         $('#modalRecordNombre').text(nombre);
         $('#modalRecordApellido').text(apellido);
         $('#modalRecordCorreo').text(correo);
@@ -184,16 +185,25 @@ $(document).ready(function () {
         window.location.href = '/miembro'
     });
 
+    $(".btnDelete").click(function (event) {
+        // Evitar la propagación del evento al hacer clic en la fila
+        event.stopPropagation();
+    });
+    $(".btnUpdate").click(function (event) {
+        // Evitar la propagación del evento al hacer clic en la fila
+        event.stopPropagation();
+    });
 
-    // Escuchar el clic en una fila
+
+    // Escuchar el click en una fila
     $('.miembro-row').on('click', function (event) {
-
         // Verifica si el clic se realizó en un botón de editar o eliminar
-        if ($(event.target).is('#btn') || $(event.target).is('#btnEliminar')) {
-            console.log('Presiono aqui en los botones')
-            return; // No muestres el modal si se hizo click en un botón
 
+        if ($(event.target).is('a#btnUpdate') || $(event.target).is('a#btnDelete')) {
+            console.log('Presiono aqui en los botones');
+            return; // No muestres el modal si se hizo clic en un botón
         } else {
+
             var idMiembro = $(this).find('[data-id]').data('id');
             var dui = $(this).find('[data-dui]').data('dui');
             var nombres = $(this).find('[data-nombre]').data('nombre');
@@ -218,7 +228,6 @@ $(document).ready(function () {
                             } else {
                                 // Inserta los registros restantes sin el estilo
                                 $('#telefonos').append('<br>' + text);
-
                             }
                         }
                     }
@@ -239,5 +248,6 @@ $(document).ready(function () {
             $('#ModalToggle').modal('show');
         }
     });
+
 
 });

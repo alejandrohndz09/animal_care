@@ -1,7 +1,5 @@
 @extends('layouts.master')
 
-
-
 @section('styles')
     <link rel="stylesheet" href="<?php echo asset('css/f3.css'); ?>" type="text/css">
 @endsection
@@ -9,6 +7,7 @@
 @section('scripts')
     <script src="{{ asset('js/validaciones/Jsmiembro.js') }}"></script>
 @endsection
+
 @section('content')
     <div id="layoutSidenav_content">
         <main>
@@ -72,16 +71,16 @@
                                             <td>
                                                 <div
                                                     style="display: flex; align-items: flex-end; gap: 5px; justify-content: center">
-                                                    <button id="btn"
+                                                    <button
                                                         onclick="window.location.href = '{{ url('miembro/' . $item->idMiembro . '/edit') }}';"
-                                                        type="button" class="button button-blue"
+                                                        type="button" class="button button-blue btnUpdate"
                                                         data-id="{{ $item->idMiembro }}">
                                                         <i class="svg-icon fas fa-pencil"></i>
                                                         <span class="lable"></span>
                                                     </button>
 
-                                                    <button id="btnEliminar" type="button"
-                                                        class="button button-red"data-bs-toggle="modal"
+                                                    <button type="button"
+                                                        class="button button-red btnDelete"data-bs-toggle="modal"
                                                         data-bs-target="#exampleModalToggle"
                                                         data-id="{{ $item->idMiembro }}" data-nombre="{{ $item->nombres }}"
                                                         data-apellido="{{ $item->apellidos }}"
@@ -215,9 +214,6 @@
                                                                     for="telefono">Telefono</label>
                                                                 <i class="inputFieldIcon fas fa-phone"></i>
                                                             @endif
-                                                            @error('telefono' . $contador)
-                                                                <small style="color:red">{{ $message }}</small>
-                                                            @enderror
                                                         </div>
                                                     </div>
                                                     <div class="col-xl-6" id="idTelefonos">
@@ -274,14 +270,10 @@
                                 @endif
                                 <!-- Botones para la vista -->
                                 <div style="display: flex; align-items: flex-end; gap: 10px; justify-content: center">
-                                    <button type="submit" class="button button-pri">
+                                    <button type="submit" class="button button-pri" id="buttonAction">
                                         <i class="svg-icon fa-regular fa-floppy-disk"></i>
                                         <span class="lable">
-                                            @if (isset($miembroEdit))
-                                                Modificar
-                                            @else
-                                                Guardar
-                                            @endif
+                                            {{ isset($miembroEdit) ? 'Modificar' : 'Guardar' }}
                                         </span>
                                     </button>
                                     <button onclick="{{ url('miembro') }}" type="button" id="btnCancelar"
@@ -295,95 +287,6 @@
                     </div>
                 </div>
             </div>
-
-
-            <!-- Modal para dar de baja un elemento de la lista-->
-            <div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel"
-                tabindex="-1">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content text-center">
-                        <div class="modal-header">
-                            <h5 style="margin-left: auto; margin-right: auto;">¿Desea dar de baja este registro?</h5>
-                        </div>
-                        <div class="modal-body text-center">
-                            <!-- Utiliza la clase text-center para centrar los elementos -->
-                            <p><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/2048px-User-avatar.svg.png"
-                                    alt="user" class="picture "
-                                    style="width: 15%; height: auto; margin-left: auto; margin-right: auto;"> </p>
-                            <p>Miembro: <span id="modalRecordNombre"></span> <span id="modalRecordApellido"></span>
-                            </p>
-                            <p>Correo: <span id="modalRecordCorreo"></span></p>
-                        </div>
-                        <div class="modal-footer text-center" style="margin-left: auto; margin-right: auto;">
-
-                            <button id="confirmar" type="submit" class="button button-pri" style="margin-right: 40px">
-                                <i class="svg-icon fas fa-check"></i>
-                                <span class="lable">Dar de baja</span></button>
-                            <button type="button" class="button button-red" data-bs-dismiss="modal"> <i
-                                    class="svg-icon fas fa-xmark"></i>
-                                <span class="lable">Cancelar</span> </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal fade" id="modalEliminacion" aria-hidden="true" aria-labelledby="exampleModalToggleLabel"
-                tabindex="-1">
-                <div class="modal-dialog modal-dialog-centered modal-sm">
-                    <div class="modal-content text-center">
-                        <div class="modal-header">
-                            <h5 style="margin-left: auto; margin-right: auto;">Aviso</h5>
-                        </div>
-                        <div class="modal-body text-center">
-                            <button type="button" class="circle-button-accept" style="margin-right: 4%"
-                                data-bs-dismiss="modal">
-                                <i style="height: 30px;width: 45px;margin-right: 8%"
-                                    class="svg-icon fas fa-check"></i></button>
-
-                        </div>
-                        <p>Registro eliminado de la BD</p>
-                        <br>
-                        <br>
-                    </div>
-                </div>
-            </div>
-    </div>
-
-    <!-- Modal para ver detalles de elementos de la lista-->
-    <div class="modal fade" id="ModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel"
-        tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content text-center">
-                <div class="modal-header">
-                    <h5 style="margin-left: 35%">Detalles de miembro</h5>
-                    <button type="button" class="circle-button" style="margin-right: 4%" data-bs-dismiss="modal">
-                        <i style="height: 30px;width: 45px;margin-right: 8%"
-                            class="svg-icon fas fa-regular fa-circle-xmark"></i></button>
-                </div>
-                <div class="modal-body text-center">
-                    <!-- Utiliza la clase text-center para centrar los elementos -->
-                    <p><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/2048px-User-avatar.svg.png"
-                            alt="user" class="picture "
-                            style="width: 15%; height: auto; margin-left: auto; margin-right: auto;"> </p>
-                    <p>DUI: <span id="modalDui"></span></p>
-                    <p>Miembro: <span id="modalNombres"></span> <span id="modalApellidos"></span></p>
-                    <p>Correo: <span id="modalCorreo"></span></p>
-                    <p>Telefono: <span id="telefonos"></span></p>
-
-
-                </div>
-                {{-- <div class="modal-footer text-center" style="margin-left: auto; margin-right: auto;">
-                            <button id="confirmar" type="submit" class="button button-pri" style="margin-right: 40px">
-                                <i class="svg-icon fas fa-check"></i>
-                                <span class="lable">Dar de baja</span></button>
-                            <button type="button" class="button button-red" data-bs-dismiss="modal"> <i
-                                    class="svg-icon fas fa-xmark"></i>
-                                <span class="lable">Cancelar</span> </button>
-                        </div> --}}
-            </div>
-        </div>
-    </div>
-
-
-    </main>
-    </div>
-@endsection
+        </main>
+        @include('miembro.modalesMiembro')
+    @endsection
