@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $apellidos
  * @property string|null $correo
  * @property int|null $estado
+ * @property string $dui
  * 
  * @property Collection|Adopcion[] $adopcions
  * @property Collection|Alvergue[] $alvergues
@@ -40,7 +41,8 @@ class Miembro extends Model
 		'nombres',
 		'apellidos',
 		'correo',
-		'estado'
+		'estado',
+		'dui'
 	];
 
 	public function adopcions()

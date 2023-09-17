@@ -18,8 +18,9 @@ use Illuminate\Database\Eloquent\Model;
  * @property Carbon|null $fechaNacimiento
  * @property string|null $sexo
  * @property string|null $particularidad
- * @property int|null $idRaza
+ * @property string|null $idRaza
  * @property string|null $imagen
+ * @property int $estado
  * 
  * @property Raza|null $raza
  * @property Collection|Expediente[] $expedientes
@@ -35,7 +36,7 @@ class Animal extends Model
 
 	protected $casts = [
 		'fechaNacimiento' => 'datetime',
-		'idRaza' => 'int'
+		'estado' => 'int'
 	];
 
 	protected $fillable = [
@@ -44,7 +45,8 @@ class Animal extends Model
 		'sexo',
 		'particularidad',
 		'idRaza',
-		'imagen'
+		'imagen',
+		'estado'
 	];
 
 	public function raza()

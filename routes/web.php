@@ -1,7 +1,8 @@
 <?php
 
-
+use App\Http\Controllers\AlbergueController;
 use App\Http\Controllers\MiembroController;
+use Illuminate\Routing\Route as RoutingRoute;
 use Illuminate\Support\Facades\Route;
 
 
@@ -24,10 +25,15 @@ Route::get('/home', function () {
     return view('dashboard.dashboard');
 });
 
-Route::get('/animal', function () {
-    return view('animal.index');
-});
+Route::resource('animal', 'App\Http\Controllers\AnimalControlador');
+Route::put('/animal/update/{id}', 'App\Http\Controllers\AnimalControlador@update');
+Route::get('/animal/destroy/{id}', 'App\Http\Controllers\AnimalControlador@destroy');
+Route::get('/obtener-razas/{especie}', 'App\Http\Controllers\AnimalControlador@obtenerRazas');
 
+Route::resource('miembro1', 'App\Http\Controllers\MiembroController1');
+Route::put('/miembro1/update/{id}', 'App\Http\Controllers\MiembroController1@update');
+
+ 
 Route::get('/form1', function () {
     return view('formularios.form1');
 });
@@ -42,13 +48,15 @@ Route::get('/form3', function () {
 
 
 
-////////////////////////////MIS RUTAS PETER////////////////////////////////////////
-Route::get('/miembro', [MiembroController::class, 'index'])->name('miembros.index');
-Route::post('/store', [MiembroController::class, 'store'])->name('miembros.store');
 
-Route::get('/edit/{id}', [MiembroController::class, 'edit'])->name('miembros.edit');
-Route::put('/update/{id}', [MiembroController::class, 'update'])->name('miembros.update');
+Route::resource('/miembro', 'App\Http\Controllers\MiembroController');
+Route::put('miembro/update/{id}', [MiembroController::class, 'update'])->name('miembros.update');
+Route::get('miembro/telefonos/{id}', [MiembroController::class, 'ObtenerTelefonos'])->name('miembro.telefono');
+Route::get('/destroy/{id}', [MiembroController::class, 'destroy'])->name('miembros.destroy');
+Route::delete('/destroyTelefono/{id}', [MiembroController::class, 'destroyTelefono'])->name('miembros.destroyTelefono');
+Route::post('/validar-telefono', 'App\Http\Controllers\AnimalControlador@validarTelefono');
+/////////////////////////////////////////////////////////////////////////////////
+Route::resource('/albergue', 'App\Http\Controllers\AlbergueController');
+Route::put('albergue/update/{id}', [AlbergueController::class, 'update'])->name('albergue.update');
+Route::delete('/destroyAlbergue/{id}', [AlbergueController::class, 'destroy'])->name('albergue.destroy');
 
-Route::get('/destroy/{id}', [MiembroController::class,'destroy'])->name('miembros.destroy');
-
-/// comentaRAIDSUOI
