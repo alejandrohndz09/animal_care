@@ -29,7 +29,10 @@ Route::resource('animal', 'App\Http\Controllers\AnimalControlador');
 Route::put('/animal/update/{id}', 'App\Http\Controllers\AnimalControlador@update');
 Route::get('/obtener-razas/{especie}', 'App\Http\Controllers\AnimalControlador@obtenerRazas');
 
+Route::resource('miembro1', 'App\Http\Controllers\MiembroController1');
+Route::put('/miembro1/update/{id}', 'App\Http\Controllers\MiembroController1@update');
 
+ 
 Route::get('/form1', function () {
     return view('formularios.form1');
 });

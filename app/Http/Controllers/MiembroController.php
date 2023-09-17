@@ -36,6 +36,9 @@ class MiembroController extends Controller
             'dui' => 'required|unique:miembro',
             'nombres' => 'required|min:3',
             'apellidos' => 'required|min:3',
+        ],[
+            'correo.unique' => 'Este correo ya ha sido ingresado.',
+            'dui.unique' => 'Este DUI ya ha sido ingresado.'
         ]);
 
         // Obtén el último registro de la tabla para determinar el siguiente incremento
@@ -100,6 +103,9 @@ class MiembroController extends Controller
             'dui' => 'required|min:10|unique:miembro,dui,' . $id . ',idMiembro',
             'nombres' => 'required|min:3',
             'apellidos' => 'required|min:3',
+        ],[
+            'correo.unique' => 'Este correo ya ha sido ingresado.',
+            'dui.unique' => 'Este DUI ya ha sido ingresado.'
         ]);
     
         // Actualiza los datos en la BD

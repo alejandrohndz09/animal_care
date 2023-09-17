@@ -96,7 +96,7 @@
                                                 for="direccion">Dirección</label>
                                             <i class="inputFieldIcon fas fa-location-dot"></i>
                                             <input placeholder="Ej. Calle Principal #123, Ciudad"
-                                                value="{{ isset($AlbergueEdit) ? $AlbergueEdit->direccion : old('direccion') }}"
+                                                value="{{ isset($AlbergueEdit) ? old('direccion',$AlbergueEdit->direccion) : old('direccion') }}"
                                                 class="inputField" name="direccion">
                                             @error('direccion')
                                                 <small style="color:red">{{ $message }}</small>
@@ -109,7 +109,7 @@
                                             <i class="inputFieldIcon fas fa-user"></i>
                                             <select id="miembro" name="miembro" class="inputField">
                                                 <option value=""
-                                                    {{ old('nombre') == '' && !isset($AlbergueEdit) ? 'selected' : '' }}>
+                                                    {{ old('miembro') == '' && !isset($AlbergueEdit) ? 'selected' : '' }}>
                                                     Seleccione...
                                                 </option>
                                                 @php use App\Models\Miembro; @endphp

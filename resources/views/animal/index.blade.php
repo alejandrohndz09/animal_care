@@ -40,7 +40,7 @@
                                 @foreach ($animales as $a)
                                     <tr>
                                         <td>
-                                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/2048px-User-avatar.svg.png"
+                                            <img src="{{isset($a->imagen)?asset($a->imagen):'https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/2048px-User-avatar.svg.png'}}"
                                                 alt="user" class="picture" />
                                         </td>
                                         <td>{{ $a->nombre }}</td>
@@ -53,14 +53,15 @@
                                             <div
                                                 style="display: flex; align-items: flex-end; gap: 3px; justify-content: center">
                                                 <a href="{{ url('animal/' . $a->idAnimal . '/edit') }}"
-                                                    class="button button-blue" style="width: 45%;" data-bs-pp="tooltip" data-bs-placement="top" title="Editar">
+                                                    class="button button-blue" style="width: 45%;" data-bs-pp="tooltip"
+                                                    data-bs-placement="top" title="Editar">
                                                     <i class="svg-icon fas fa-pencil"></i>
                                                 </a>
-                                                <button type="button" class="button button-red"  style="width: 45%"
-                                                 data-bs-pp="tooltip" data-bs-placement="top" title="Dar de baja">
+                                                <button type="button" class="button button-red" style="width: 45%"
+                                                    data-bs-pp="tooltip" data-bs-placement="top" title="Dar de baja">
                                                     <i class="svg-icon fas fa-trash"></i>
                                                 </button>
-                                              
+
                                             </div>
                                         </td>
                                     </tr>
@@ -83,15 +84,17 @@
                                 @endif
                                 <div class="row">
                                     <div class="col-xl-4">
-                                        <input type="hidden" value="{{ isset($animal) ? old('imageTemp', $animal->imagen): old('imagenTemp') }}" id="imagenTemp"
-                                            name="imagenTemp">
+                                        <input type="hidden"
+                                            value="{{ isset($animal) ? old('imageTemp', $animal->imagen) : old('imagenTemp') }}"
+                                            id="imagenTemp" name="imagenTemp">
 
                                         <label id="image-preview" class="custum-file-upload"
                                             style="margin-top:-10px; width: auto; height: 75%;
                                         {{ isset($animal)
-                                            ? 'background-image: url(' . asset(old('imagenTemp', $animal->imagen)). ')'
+                                            ? 'background-image: url(' . asset(old('imagenTemp', $animal->imagen)) . ')'
                                             : 'background-image: url(' . old('imagenTemp') . ')' }}"
-                                            for="foto" data-bs-pp="tooltip" data-bs-placement="left" title="Subir imagen">
+                                            for="foto" data-bs-pp="tooltip" data-bs-placement="left"
+                                            title="Subir imagen">
                                             <div class="icon" id="iconContainer" style="color:#c4c4c4;">
                                                 <i style="height: 55px; padding: 10px" class="fas fa-camera"></i>
                                             </div>
@@ -118,7 +121,7 @@
 
                                         <div class="inputContainer">
                                             <input id="fecha" name="fecha"
-                                                value="{{ isset($animal) ? old('fecha',explode(' ', $animal->fechaNacimiento)[0]): old('fecha') }}"
+                                                value="{{ isset($animal) ? old('fecha', explode(' ', $animal->fechaNacimiento)[0]) : old('fecha') }}"
                                                 max="{{ date('Y-m-d') }}" class="inputField" autocomplete="false"
                                                 placeholder="Fecha de nacimiento" type="date">
                                             <label class="inputFieldLabel" for="fecha">Fecha de nacimiento
@@ -175,7 +178,7 @@
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="radio" name="sexo"
                                                 id="inlineRadio1" value="Hembra"
-                                                {{(isset($animal) && old('sexo',$animal->sexo) == 'Hembra') || (old('sexo') == 'Hembra' )? 'checked' : '' }}>
+                                                {{ (isset($animal) && old('sexo', $animal->sexo) == 'Hembra') || old('sexo') == 'Hembra' ? 'checked' : '' }}>
                                             <label class="form-check-label" for="Hembra">Hembra</label>
                                         </div>
                                         <div class="form-check form-check-inline">
@@ -191,8 +194,7 @@
                                 </div>
                                 <div class="inputContainer">
                                     <textarea id="particularidad" name="particularidad" class="inputField"
-                                        placeholder="Ej. Mancha en la panza, ojos de diferente color, etc." rows="2"
-                                        cols="50" >{{ isset($animal) ? old('particularidad',$animal->particularidad ): old('particularidad') }}</textarea>
+                                        placeholder="Ej. Mancha en la panza, ojos de diferente color, etc." rows="2" cols="50">{{ isset($animal) ? old('particularidad', $animal->particularidad) : old('particularidad') }}</textarea>
 
                                     <label class="inputFieldLabel" for="particularidad">Alguna Particularidad</label>
                                     <i class="inputFieldIcon fas fa-magnifying-glass-plus"></i>
@@ -206,7 +208,13 @@
 
                                     <button type="submit" class="button button-pri">
                                         <i class="svg-icon fa-regular fa-floppy-disk"></i>
-                                        <span class="lable">Guardar</span>
+                                        <span class="lable">
+                                            @if (isset($animal))
+                                                Modificar
+                                            @else
+                                                Guardar
+                                            @endif
+                                        </span>
                                     </button>
                                     <button type="button" id="btnCancelar" class="button button-red"
                                         onclick="{{ url('animal') }}">

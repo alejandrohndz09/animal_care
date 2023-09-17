@@ -16,7 +16,7 @@ class MiembroController1 extends Controller
         //Pagina inicio
         $datos = Miembro::all();
         $miembroEdit = null;
-        return view('miembro.index')->with([
+        return view('miembro1.index')->with([
             'miembroEdit' => $miembroEdit,
             'datos' => $datos
         ]);
