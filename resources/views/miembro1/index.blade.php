@@ -141,7 +141,7 @@
                                         <small style="color:red">{{ $message }}</small>
                                     @enderror
                                 </div>
-
+                                <input type="hidden" name="con" id="con" value="0">
                                 <div class="row" id="telefono-container">
                                     <div class="col-xl-6">
                                         <div class="inputContainer">
