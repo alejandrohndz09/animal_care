@@ -15,7 +15,6 @@
         <main>
             <div class="container-fluid px-4 py-4">
 
-
                 <div class="row mt-3">
                     <div class="col-xl-7">
                         <div
@@ -119,7 +118,7 @@
 
 
 
-            </div>
+            
     </div>
 
 
@@ -150,7 +149,7 @@
 
 
             </div>
-        </div>
+        
 
     </form>
 

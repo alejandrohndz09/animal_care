@@ -29,6 +29,15 @@
                     <div class="sb-nav-link-icon"><i class="fas fa-warehouse" ></i></div>
                     Inventario
                 </a>
+                <a class="nav-link" href="/vacuna">
+                    <div class="sb-nav-link-icon"><i class="fas fa-syringe"></i></div>
+                    Vacunas
+                </a>
+                <a class="nav-link" href="/patologia">
+                    <div class="sb-nav-link-icon"> <i class="fas fa-stethoscope"></i></div>
+                    Patologias
+                </a>
+               
 
                 <a class="nav-link" href="/miembro">
                     <div class="sb-nav-link-icon"><i class="fas fa-user" ></i></div>

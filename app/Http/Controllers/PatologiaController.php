@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Vacuna;
+use App\Models\Patologia;
 use Illuminate\Http\Request;
 
-class VacunaController extends Controller
+class PatologiaController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,8 +14,8 @@ class VacunaController extends Controller
      */
     public function index()
     {
-        $vacuna =  Vacuna::all();
-        return view('vacuna.vacuna', ['vacuna' => $vacuna]);
+        $patologia =  Patologia::all();
+        return view('patologia.patologia', ['patologia' => $patologia]);
     }
 
     /**
@@ -25,7 +25,7 @@ class VacunaController extends Controller
      */
     public function create()
     {
-        return view('vacuna.vacuna');
+        return view('patologia.patologia');
     }
 
     /**
@@ -36,25 +36,24 @@ class VacunaController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate(['vacuna' => 'required|unique:vacuna']);
+        $request->validate(['patologia' => 'required|unique:patologia']);
 
-        $ultimoRegistro = Vacuna::latest('idVacuna')->first();
+        $ultimoRegistro = Patologia::latest('idPatologia')->first();
 
-        $siguienteIncremento = $ultimoRegistro ? (int) substr($ultimoRegistro->idVacuna, -4) + 1 : 1;
+        $siguienteIncremento = $ultimoRegistro ? (int) substr($ultimoRegistro->idPatologia, -4) + 1 : 1;
 
-        // Crea el ID personalizado concatenando "MB" y el incremento
-        $idPersonalizado = "MB" . str_pad($siguienteIncremento, 5, '0', STR_PAD_LEFT);
+        // Crea el ID personalizado concatenando "PA" y el incremento
+        $idPersonalizado = "PA" . str_pad($siguienteIncremento, 5, '0', STR_PAD_LEFT);
 
         //guardar en la base
-        $vacuna = new Vacuna();
-        $vacuna->idVacuna = $this->generarId();
-        $vacuna->vacuna = $request->post('vacuna');
+        $patologia = new Patologia();
+        $patologia->idPatologia = $this->generarId();
+        $patologia->patologia = $request->post('patologia');
 
-        $vacuna->save();
+        $patologia->save();
 
        
         return back()->with('success', 'Guardado con éxito');
-   
     }
 
     /**
@@ -76,10 +75,10 @@ class VacunaController extends Controller
      */
     public function edit($id)
     {
-        $vacunaEdit = Vacuna::find($id);
-        $vacuna= Vacuna::all();
-        return view('vacuna.vacuna')->with
-        (['vacunaEdit'=> $vacunaEdit,'vacuna'=>$vacuna ]);
+        $patologiaEdit = Patologia::find($id);
+        $patologia= Patologia::all();
+        return view('patologia.patologia')->with
+        (['patologiaEdit'=> $patologiaEdit,'patologia'=>$patologia ]);
     }
 
     /**
@@ -91,38 +90,38 @@ class VacunaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $vacuna = Vacuna::find($id);
+       
+    $patologia = Patologia::find($id);
     $request->validate([
-        'vacuna'=> 'required|unique:vacuna,vacuna,'.$id.',idVacuna'
+        'patologia'=> 'required|unique:patologia,patologia,'.$id.',idPatologia'
     ]);
     //actualizar datos en bd
-    $vacuna->vacuna=$request->post('vacuna');
-    $vacuna->save();
-    return $this->index();
+    $patologia->patologia=$request->post('patologia');
+    $patologia->save();
+    return redirect()->route("patologia.index");
     }
 
     public function generarId()
     {
         // Obtener el último registro de la tabla "Espacio"
-        $ultimaVacuna = Vacuna::latest('idVacuna')->first();
+        $ultimaPatologia = Patologia::latest('idPatologia')->first();
 
-        if (!$ultimaVacuna) {
-            // Si no hay registros previos, comenzar desde VA0001
-            $nuevoId = 'VA0001';
+        if (!$ultimaPatologia) {
+            // Si no hay registros previos, comenzar desde PA0001
+            $nuevoId = 'PA0001';
         } else {
-            // Obtener el número del último idVacuna
-            $ultimoNumero = intval(substr($ultimaVacuna->idVacuna, 3));
+            // Obtener el número del último idPatologia
+            $ultimoNumero = intval(substr($ultimaPatologia->idPatologia, 3));
 
             // Incrementar el número para el nuevo registro
             $nuevoNumero = $ultimoNumero + 1;
 
-            // Formatear el nuevo idESpecie con ceros a la izquierda
-            $nuevoId = 'VA' . str_pad($nuevoNumero, 4, '0', STR_PAD_LEFT);
+            // Formatear el nuevo idPatologia con ceros a la izquierda
+            $nuevoId = 'PA' . str_pad($nuevoNumero, 4, '0', STR_PAD_LEFT);
         }
 
         return $nuevoId;
     }
-
     /**
      * Remove the specified resource from storage.
      *
@@ -131,11 +130,12 @@ class VacunaController extends Controller
      */
     public function destroy($id)
     {
-        $vacuna=Vacuna::find($id);
-        $vacuna->delete();
+        $patologia=Patologia::find($id);
+        $patologia->delete();
 
         
         return back()->with('success', 'Eliminado con éxito');
                
+              
     }
 }

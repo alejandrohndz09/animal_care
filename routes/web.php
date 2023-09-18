@@ -3,6 +3,7 @@
 use App\Http\Controllers\AlbergueController;
 use App\Http\Controllers\EspecieController;
 use App\Http\Controllers\MiembroController;
+use App\Http\Controllers\PatologiaController;
 use App\Http\Controllers\VacuanaController;
 use App\Http\Controllers\VacunaController;
 use Illuminate\Routing\Route as RoutingRoute;
@@ -73,4 +74,9 @@ Route::get('/especie/destroy/{id}', 'App\Http\Controllers\EspecieController@dest
 Route::resource('/vacuna', 'App\Http\Controllers\VacunaController');
 Route::put('vacuna/update/{id}', [VacunaController::class, 'update'])->name('vacuna.update');
 Route::get('/vacuna/destroy/{id}', 'App\Http\Controllers\VacunaController@destroy');
+
+
+Route::resource('/patologia', 'App\Http\Controllers\PatologiaController');
+Route::put('patologia/update/{id}', [PatologiaController::class, 'update'])->name('patologia.update');
+Route::get('/destroyPatologia/{id}', 'App\Http\Controllers\PatologiaController@destroy');
 
