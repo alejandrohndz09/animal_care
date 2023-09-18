@@ -8,6 +8,11 @@
                     Dashboard
                 </a>
                 <div class="sb-sidenav-menu-heading">Menu</div>
+                <a class="nav-link" href="/especie">
+                    <div class="sb-nav-link-icon"><i class="fas fa-cat" ></i></div>
+                    
+                    Especie
+                </a>
                 <a class="nav-link" href="/animal">
                     <div class="sb-nav-link-icon"><i class="fas fa-dog" ></i></div>
                     Mascotas
@@ -24,6 +29,15 @@
                     <div class="sb-nav-link-icon"><i class="fas fa-warehouse" ></i></div>
                     Inventario
                 </a>
+                <a class="nav-link" href="/vacuna">
+                    <div class="sb-nav-link-icon"><i class="fas fa-syringe"></i></div>
+                    Vacunas
+                </a>
+                <a class="nav-link" href="/patologia">
+                    <div class="sb-nav-link-icon"> <i class="fas fa-stethoscope"></i></div>
+                    Patologias
+                </a>
+               
 
                 <a class="nav-link" href="/miembro">
                     <div class="sb-nav-link-icon"><i class="fas fa-user" ></i></div>

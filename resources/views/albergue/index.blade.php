@@ -11,11 +11,6 @@
     <div id="layoutSidenav_content">
         <main>
             <div class="container-fluid px-4 py-4">
-
-                <div style=" width: 100%;display: flex;align-items: center;justify-content: space-between;">
-
-                </div>
-
                 <div class="row mt-3">
                     <div class="col-xl-7">
                         <div
@@ -28,9 +23,9 @@
                             <thead>
                                 <tr class="head">
                                     <th style="width: 10%"></th>
-                                    <th>No.</th>
+                                    <th>Código</th>
+                                    <th style="width: 40%">Direccion</th>
                                     <th>Responsable</th>
-                                    <th>Direccion</th>
                                     <th></th>
 
                                 </tr>
@@ -38,29 +33,33 @@
                             <tbody id="tableBody">
 
                                 @foreach ($Albergues as $item)
-                                    <tr>
+                                    <tr class="registro-row">
                                         <td style="width: 10%">
                                             <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/2048px-User-avatar.svg.png"
                                                 alt="user" class="picture" />
                                         </td>
                                         <td>{{ $item->idAlvergue }}</td>
+                                        <td style="width: 40%">{{ $item->direccion }} </td>
                                         <td>{{ $item->miembro->nombres }} {{ $item->miembro->apellidos }}</td>
-                                        <td>{{ $item->direccion }} </td>
+
                                         <td>
                                             <div
                                                 style="display: flex; align-items: flex-end; gap: 5px; justify-content: center">
                                                 <a id="btnmodificar"
                                                     href="{{ url('albergue/' . $item->idAlvergue . '/edit') }}"
-                                                    type="button" class="button button-blue"
-                                                    data-id="{{ $item->idAlvergue }}" style="width: 45%" data-bs-pp="tooltip" data-bs-placement="top" title="Editar">
+                                                    type="button" class="button button-blue btnUpdate"
+                                                    data-id="{{ $item->idAlvergue }}" style="width: 45%"
+                                                    data-bs-pp="tooltip" data-bs-placement="top" title="Editar">
                                                     <i class="svg-icon fas fa-pencil"></i>
                                                 </a>
 
-                                                <button type="button" class="button button-red" style="width: 45%" data-bs-toggle="modal"
+                                                <button type="button" class="button button-red btnDelete"
+                                                    style="width: 45%" data-bs-toggle="modal"
                                                     data-bs-target="#exampleModalToggle" data-id="{{ $item->idAlvergue }}"
                                                     data-nombre="{{ $item->miembro->nombres }}"
                                                     data-apellido="{{ $item->miembro->apellidos }}"
-                                                    data-direccion="{{ $item->direccion }}" data-bs-pp="tooltip" data-bs-placement="top" title="Dar de baja">
+                                                    data-direccion="{{ $item->direccion }}" data-bs-pp="tooltip"
+                                                    data-bs-placement="top" title="Dar de baja">
                                                     <i class="svg-icon fas fa-trash"></i>
                                                 </button>
 
@@ -71,13 +70,10 @@
                             </tbody>
                         </table>
                         <div id="pagination">
-
                         </div>
                     </div>
                     <div class="col-xl-5">
                         <div class="card  mb-4" style="border:none; padding-bottom: 25px !important; width: 100%">
-
-
                             <h3 style="padding: -5px 0px !important;">
                                 {{ isset($AlbergueEdit) ? 'Editar Registro' : 'Nuevo Registro' }}</h3>
                             <form
@@ -96,7 +92,7 @@
                                                 for="direccion">Dirección</label>
                                             <i class="inputFieldIcon fas fa-location-dot"></i>
                                             <input placeholder="Ej. Calle Principal #123, Ciudad"
-                                                value="{{ isset($AlbergueEdit) ? old('direccion',$AlbergueEdit->direccion) : old('direccion') }}"
+                                                value="{{ isset($AlbergueEdit) ? old('direccion', $AlbergueEdit->direccion) : old('direccion') }}"
                                                 class="inputField" name="direccion">
                                             @error('direccion')
                                                 <small style="color:red">{{ $message }}</small>
@@ -109,8 +105,7 @@
                                             <i class="inputFieldIcon fas fa-user"></i>
                                             <select id="miembro" name="miembro" class="inputField">
                                                 <option value=""
-                                                    {{ old('miembro') == '' && !isset($AlbergueEdit) ? 'selected' : '' }}>
-                                                    Seleccione...
+                                                    {{ old('miembro') == '' && !isset($AlbergueEdit) ? 'selected' : '' }}>Seleccione...
                                                 </option>
                                                 @php use App\Models\Miembro; @endphp
                                                 @foreach (Miembro::all() as $miembro)
@@ -148,41 +143,35 @@
                             </form>
                         </div>
                     </div>
-
-                </div>
-
-            </div>
-    </div>
-    </div>
-
-    <!-- Modal -->
-    <form action="" id="form-edit" name="form" method="POST">
-        @csrf
-        <div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel"
-            tabindex="-1">
-            <div class="modal-dialog modal-dialog-centered">
-
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalToggleLabel">Desea eliminar este registro?</h5>
-
-                    </div>
-                    <div class="modal-body">
-                        <!-- Aquí puedes mostrar los detalles del registro utilizando el id -->
-                        <p>ID del registro: <span id="modalRecordId"></span></p>
-                        <!-- Otros detalles del registro -->
-                        <p>Nombres: <span id="modalRecordNombre"></span></p>
-                        <p>Apellidos: <span id="modalRecordApellido"></span></p>
-                        <p>direccion: <span id="modalRecorddireccion"></span></p>
-                    </div>
-                    <div class="modal-footer">
-                        <button id="confirmar" type="button" class="btn btn-primary"> Eliminar</button>
-                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-                    </div>
                 </div>
             </div>
-    </form>
-    </main>
+            <!-- Modal -->
+            <form action="" id="form-edit" name="form" method="POST">
+                @csrf
+                <div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel"
+                    tabindex="-1">
+                    <div class="modal-dialog modal-dialog-centered">
 
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalToggleLabel">Desea eliminar este registro?</h5>
+
+                            </div>
+                            <div class="modal-body">
+                                <!-- Aquí puedes mostrar los detalles del registro utilizando el id -->
+                                <p>ID del registro: <span id="modalRecordId"></span></p>
+                                <!-- Otros detalles del registro -->
+                                <p>Nombres: <span id="modalRecordNombre"></span></p>
+                                <p>Apellidos: <span id="modalRecordApellido"></span></p>
+                                <p>direccion: <span id="modalRecorddireccion"></span></p>
+                            </div>
+                            <div class="modal-footer">
+                                <button id="confirmar" type="button" class="btn btn-primary"> Eliminar</button>
+                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                            </div>
+                        </div>
+                    </div>
+            </form>
+        </main>
     </div>
 @endsection

@@ -10,8 +10,6 @@
     <div id="layoutSidenav_content">
         <main>
             <div class="container-fluid px-4 py-4">
-
-
                 <div class="row mt-3">
                     <div class="col-xl-7">
                         <div
@@ -69,9 +67,7 @@
                                 @endforeach
                             </tbody>
                         </table>
-                        <div id="pagination">
-
-                        </div>
+                        <div id="pagination"></div>
                     </div>
                     <div class="col-xl-5">
                         <div class="card  mb-4" style="border:none; padding-bottom: 25px !important; width: 100%">
