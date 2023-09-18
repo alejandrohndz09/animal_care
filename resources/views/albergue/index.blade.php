@@ -35,7 +35,7 @@
                                 @foreach ($Albergues as $item)
                                     <tr class="registro-row">
                                         <td style="width: 10%">
-                                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/2048px-User-avatar.svg.png"
+                                            <img src="{{asset('img/albergue.png')}}"
                                                 alt="user" class="picture" />
                                         </td>
                                         <td>{{ $item->idAlvergue }}</td>

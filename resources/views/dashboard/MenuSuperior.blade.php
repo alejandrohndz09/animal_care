@@ -2,7 +2,7 @@
 
   
     <!-- Navbar Brand-->
-    <a class="navbar-brand ps-3" href="/dashboard">
+    <a class="navbar-brand ps-3" href="/">
         <div style="display: flex; font-size: 24px;  align-items: center; gap: 5px; ">
             <img src="{{ asset('img/logo.png') }}" height="60px;" style="padding-bottom: 3px">
             <strong style="font-family: 'Raleway','More Sugar','Dosis',Arial, sans-serif;">AnimalCare</strong>

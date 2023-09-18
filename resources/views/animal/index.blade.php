@@ -38,7 +38,7 @@
                                 @foreach ($animales as $a)
                                     <tr>
                                         <td>
-                                            <img src="{{isset($a->imagen)?asset($a->imagen):'https://static.vecteezy.com/system/resources/previews/017/783/245/original/pet-shop-silhouette-logo-template-free-vector.jpg'}}"
+                                            <img src="{{isset($a->imagen)?asset($a->imagen):asset('img/especie.png')}}"
                                                 alt="user" class="picture" />
                                         </td>
                                         <td>{{ $a->idAnimal }}</td>
