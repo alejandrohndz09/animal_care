@@ -3,19 +3,15 @@
         <div class="sb-sidenav-menu">
             <div class="nav">
                 <div class="sb-sidenav-menu-heading">Inicio</div>
-                <a class="nav-link" href="/home">
+                <a class="nav-link" href="/">
                     <div class="sb-nav-link-icon"><i class="fas fa-home" ></i></div>
                     Dashboard
                 </a>
                 <div class="sb-sidenav-menu-heading">Menu</div>
-                <a class="nav-link" href="/especie">
-                    <div class="sb-nav-link-icon"><i class="fas fa-cat" ></i></div>
-                    
-                    Especie
-                </a>
+               
                 <a class="nav-link" href="/animal">
                     <div class="sb-nav-link-icon"><i class="fas fa-dog" ></i></div>
-                    Mascotas
+                    Animales
                 </a>
                 <a class="nav-link" href="/persona">
                     <div class="sb-nav-link-icon"><i class="fas fa-file-invoice" ></i></div>
@@ -25,24 +21,7 @@
                     <div class="sb-nav-link-icon"><i class="fa-solid fa-envelopes-bulk" ></i></div>
                     Trámites
                 </a>
-                <a class="nav-link" href="/Inventario">
-                    <div class="sb-nav-link-icon"><i class="fas fa-warehouse" ></i></div>
-                    Inventario
-                </a>
-                <a class="nav-link" href="/vacuna">
-                    <div class="sb-nav-link-icon"><i class="fas fa-syringe"></i></div>
-                    Vacunas
-                </a>
-                <a class="nav-link" href="/patologia">
-                    <div class="sb-nav-link-icon"> <i class="fas fa-stethoscope"></i></div>
-                    Patologias
-                </a>
-               
-
-                <a class="nav-link" href="/miembro">
-                    <div class="sb-nav-link-icon"><i class="fas fa-user" ></i></div>
-                    Miembro
-                </a>
+                
                 <a class="nav-link" href="/albergue">
                     <div class="sb-nav-link-icon"><i class="fas fa-tents" ></i></div>
                     Albergue
@@ -52,29 +31,40 @@
                    aria-expanded="false" aria-controls="collapsePages">
                     <div class="sb-nav-link-icon"><i class="fas fa-folder"></i>
                     </div>
-                    Formularios
+                    Otras Gestiones
                     <div class="sb-sidenav-collapse-arrow"><i 
                                                               class="fas fa-angle-down"></i></div>
                 </a>
                 <div class="collapse" id="collapsePages" aria-labelledby="headingTwo"
                     data-bs-parent="#sidenavAccordion">
                     <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
-                        <a class="nav-link" href="/form1" data-toggle="modal" data-target="#generarcierre">
-                            <div class="sb-nav-link-icon"><i class="fas fa-file"></i></div>
-                            Prototipo 1
+                        <a class="nav-link" href="/especie">
+                            <div class="sb-nav-link-icon"><i class="fas fa-cat" ></i></div>
+                            
+                            Especie
                         </a>
-                        <a class="nav-link" href="/form2">
-                            <div class="sb-nav-link-icon"><i 
-                                    class="fas fa-file"></i></div>
-                                    Prototipo 2
+                        <a class="nav-link" href="/vacuna">
+                            <div class="sb-nav-link-icon"><i class="fas fa-syringe"></i></div>
+                            Vacunas
                         </a>
-                        <a class="nav-link" href="/form3">
-                            <div class="sb-nav-link-icon"><i 
-                                    class="fas fa-file"></i></div>
-                                    Prototipo 3
+                        <a class="nav-link" href="/patologia">
+                            <div class="sb-nav-link-icon"> <i class="fas fa-stethoscope"></i></div>
+                            Patologias
                         </a>
                     </nav>
                 </div>
+                <div class="sb-sidenav-menu-heading">Otros</div>
+                <a class="nav-link" href="/miembro">
+                    <div class="sb-nav-link-icon"><i class="fas fa-user" ></i></div>
+                    Miembros
+                </a>
+                <a class="nav-link" href="/Inventario">
+                    <div class="sb-nav-link-icon"><i class="fas fa-warehouse" ></i></div>
+                    Inventario
+                </a>
+                
+
+               
                
             </div>
         </div>
