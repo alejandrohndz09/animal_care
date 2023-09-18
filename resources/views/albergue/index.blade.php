@@ -19,7 +19,7 @@
                             <input id="searchInput" class="inputField card" style="width: 50% " autocomplete="off"
                                 placeholder="🔍︎ Buscar" type="search">
                         </div>
-                        <table>
+                        <table id="tabla">
                             <thead>
                                 <tr class="head">
                                     <th style="width: 10%"></th>
