@@ -3,10 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Raza;
-use App\Models\Raza;
 use Illuminate\Http\Request;
 
-class RazaControlador extends Controller
+class RazaController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -39,34 +38,18 @@ class RazaControlador extends Controller
     {
         // Validar la solicitud
         $request->validate([
-            'foto' => 'required|image|mimes:jpeg,png,jpg|max:3000', // Puedes ajustar las reglas de validación según tus necesidades
-            'nombre' => 'required|min:3',
             'especie' => 'required',
-            'fecha' => 'required|date|before_or_equal:today',
-            'raza' => 'required',
-            'sexo' => 'required|in:Hembra,Macho',
+            'raza' => 'required|min:3|unique:raza'
+            
         ], [
-            'foto.required' => 'La Fotografía es necesaria.',
-            'fecha.before_or_equal' => 'La fecha ingresada no debe ser mayor a la de ahora.',
+            'raza.unique' => 'Esta raza ya ha sido ingresada.',
         ]);
 
         $raza = new Raza();
         $raza->idRaza = $this->generarId();
-        $raza->nombre = $request->post('nombre');
-        $raza->fechaNacimiento = $request->post('fecha');
-        $raza->idRaza = $request->post('raza');
-        $raza->sexo = $request->post('sexo');
-        $raza->estado = 1;
-        $raza->particularidad = $request->post('particularidad');
-        $raza->estado =1;
-        if ($request->hasFile('foto')) {
-            $imagen = $request->file('foto');
-            $nombreImagen = $raza->idRaza . '.' . $imagen->getClientOriginalExtension();
-            $rutaImagen = public_path('imagenes'); // Ruta donde deseas guardar la imagen
-            $imagen->move($rutaImagen, $nombreImagen);
-            // Aquí puedes guardar $nombreImagen en tu base de datos o realizar otras acciones necesarias.
-            $raza->imagen = 'imagenes/' . $nombreImagen;
-        }
+        $raza->raza = $request->post('raza');
+        $raza->idEspecie = $request->post('especie');
+        
         $raza->save();
 
         return back()->with('success', 'Guardado con éxito');
@@ -92,7 +75,7 @@ class RazaControlador extends Controller
     {
         $raza = Raza::find($id);
         return view('raza.index')->with([
-            'razas' => Raza::where('estado', 1)->get(),
+            'razas' => Raza::all(),
             'raza' => $raza
         ]);
     }
@@ -107,36 +90,22 @@ class RazaControlador extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'foto' => 'image|mimes:jpeg,png,jpg|max:3000', // Puedes ajustar las reglas de validación según tus necesidades
-             'nombre' => 'required|min:3',
              'especie' => 'required',
-             'fecha' => 'required|date|before_or_equal:today',
-             'raza' => 'required',
-             'sexo' => 'required|in:Hembra,Macho',
+             'raza' => 'required|min:3|unique:raza,raza,'.$id.',idRaza'
+             
          ], [
-             'fecha.before_or_equal' => 'La fecha ingresada no debe ser mayor a la de ahora.',
+             'raza.unique' => 'Esta raza ya ha sido ingresada.',
          ]);
  
          $raza = Raza::find($id);
          
-         $raza->nombre = $request->post('nombre');
-         $raza->fechaNacimiento = $request->post('fecha');
-         $raza->idRaza = $request->post('raza');
-         $raza->sexo = $request->post('sexo');
-         $raza->particularidad = $request->post('particularidad');
-         if ($request->hasFile('foto')) {
-             $imagen = $request->file('foto');
-             $nombreImagen = $raza->idRaza . '.' . $imagen->getClientOriginalExtension();
-             $rutaImagen = public_path('imagenes'); // Ruta donde deseas guardar la imagen
-             $imagen->move($rutaImagen, $nombreImagen);
-             // Aquí puedes guardar $nombreImagen en tu base de datos o realizar otras acciones necesarias.
-             $raza->imagen='imagenes/' . $nombreImagen;
-         }
+         $raza->idEspecie = $request->post('especie');
+         $raza->raza = $request->post('raza');
          $raza->save();
  
          return redirect()->route('raza.index')->with([
-            'razas' => Raza::where('estado', 1)->get(),
-            'success' => 'Guardado con éxito'
+            'razas' => Raza::all(),
+            'success' => 'Modificado con éxito'
         ]);
     }
 
@@ -149,11 +118,10 @@ class RazaControlador extends Controller
     public function destroy($id)
     {
         $raza = Raza::find($id);
-        $raza->estado=0;
-        $raza->save();
+        $raza->delete();
         
         return view('raza.index')->with([
-            'razas' => Raza::where('estado', 1)->get()
+            'razas' => Raza::all()
         ]);
     }
 
@@ -164,56 +132,19 @@ class RazaControlador extends Controller
 
         if (!$ultimoRaza) {
             // Si no hay registros previos, comenzar desde AN0001
-            $nuevoId = 'AN0001';
+            $nuevoId = 'RAZ001';
         } else {
             // Obtener el número del último idRaza
-            $ultimoNumero = intval(substr($ultimoRaza->idRaza, 2));
+            $ultimoNumero = intval(substr($ultimoRaza->idRaza, 3));
 
             // Incrementar el número para el nuevo registro
             $nuevoNumero = $ultimoNumero + 1;
 
             // Formatear el nuevo idRaza con ceros a la izquierda
-            $nuevoId = 'AN' . str_pad($nuevoNumero, 4, '0', STR_PAD_LEFT);
+            $nuevoId = 'RAZ' . str_pad($nuevoNumero, 3, '0', STR_PAD_LEFT);
         }
 
         return $nuevoId;
     }
-    public static function calcularEdad($fechaNacimiento)
-    {
-        $fechaNacimiento = new \DateTime($fechaNacimiento);
-        $hoy = new \DateTime();
-
-        $diferencia = $hoy->diff($fechaNacimiento);
-
-        $edadEnAnios = $diferencia->y;
-        $edadEnMeses = $diferencia->m;
-
-        $edadTexto = '';
-
-        if ($edadEnAnios > 0) {
-            $edadTexto .= $edadEnAnios == 1 ? '1 año' : "$edadEnAnios años";
-        }
-
-        if ($edadEnMeses > 0) {
-            if ($edadEnAnios > 0) {
-                $edadTexto .= ' con ';
-            }
-
-            $edadTexto .= $edadEnMeses == 1 ? '1 mes' : "$edadEnMeses meses";
-        }
-
-        if (empty($edadTexto)) {
-            $edadTexto = 'Menos de 1 mes';
-        }
-
-        return $edadTexto;
-    }
-
-    public function obtenerRazas($especie)
-    {
-        // Obtén las razas relacionadas con la especie seleccionada
-        $razas = Raza::where('idEspecie', $especie)->get();
-        // Devuelve las razas en formato JSON
-        return response()->json($razas);
-    }
+   
 }

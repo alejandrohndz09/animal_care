@@ -1,10 +1,5 @@
 $(document).ready(function () {
-    //Habilitar tooltips
-    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-pp="tooltip"]'))
-    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-        return new bootstrap.Tooltip(tooltipTriggerEl)
-    })
-    // Captura el valor anterior de "raza" (puedes obtenerlo de old('raza') o de otra fuente)
+   // Captura el valor anterior de "raza" (puedes obtenerlo de old('raza') o de otra fuente)
     var especieId = $('#especie').val();
     $.ajax({
         url: '/obtener-razas/' + especieId,
@@ -60,18 +55,18 @@ $(document).ready(function () {
         });
     });
     $("#btnCancelar").click(function () {
-        window.location.href = '/animal'
+        window.location.href = '/raza'
     });
 
      //Si presiona eliminar abrira el modal con los datos que se daran de baja
      $('#exampleModalToggle').on('show.bs.modal', function (event) {
          var button = $(event.relatedTarget); // Botón que desencadenó el modal
          // Botón que desencadenó el modal
-         var id = button.data('animal').idAnimal; // Obtiene el valor del atributo data-id
-         var nombre = button.data('animal').nombre; // Obtiene el valor del atributo data-nombre
-         var especie = button.data('animal').raza.especie.especie; // Obtiene el valor del atributo data-apellido
-         var raza = button.data('animal').raza.raza; // Obtiene el valor del atributo data-correo
-         var imagen  = button.data('animal').imagen;
+         var id = button.data('raza').idAnimal; // Obtiene el valor del atributo data-id
+         var nombre = button.data('raza').nombre; // Obtiene el valor del atributo data-nombre
+         var especie = button.data('raza').raza.especie.especie; // Obtiene el valor del atributo data-apellido
+         var raza = button.data('raza').raza.raza; // Obtiene el valor del atributo data-correo
+         var imagen  = button.data('raza').imagen;
          // Actualiza el contenido del modal con los detalles del registro
          $('#modalRecordCodigo').text(id);
          $('#modalRecordNombre').text(nombre);
@@ -84,44 +79,13 @@ $(document).ready(function () {
          }
  
          $('body').on('click', '#confirmar', function () {
-             $.get('{{url(animal/'+ id+'/destroy)}}', function () {
+             $.get('{{url(raza/'+ id+'/destroy)}}', function () {
                  // location.reload();
-                 window.location.href = '/animal'
+                 window.location.href = '/raza'
              });
          });
 
     });
 });
-// Captura el cambio en de subida de foto
-document.addEventListener('DOMContentLoaded', function () {
-    // Obtén referencias a los elementos HTML que necesitas
-    imagenVistaPrevia();
-});
 
-function imagenVistaPrevia() {
-    const fileInput = document.getElementById('foto');
-    const imagePreview = document.getElementById('image-preview');
-    const iconContainer = document.getElementById('iconContainer');
-    
-    $('.inputContainer').on('keypress', 'input[type="text"]', function() {
-        $(this).siblings('.text-danger').text('');
-    });
-    // Escucha el evento change en el input de tipo "file"
-    fileInput.addEventListener('change', function () {
-        // Verifica si se ha seleccionado un archivo
-        if (fileInput.files.length > 0) {
-            const selectedFile = fileInput.files[0];
-            iconContainer.style.display = 'none';
-            // Crea una URL del objeto Blob para la vista previa de la imagen
-            const imageURL = URL.createObjectURL(selectedFile);
-            imagePreview.val = imageURL;
-            // Establece la URL como fondo del label
-            imagePreview.style.backgroundImage = `url('` + imageURL + `')`;
-
-        } else {
-            // No se ha seleccionado ningún archivo, muestra el icono 
-            iconContainer.style.display = 'flex';
-        }
-    });
-}
 

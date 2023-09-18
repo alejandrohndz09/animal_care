@@ -32,24 +32,13 @@ Route::put('/animal/update/{id}', 'App\Http\Controllers\AnimalControlador@update
 Route::get('/animal/destroy/{id}', 'App\Http\Controllers\AnimalControlador@destroy');
 Route::get('/obtener-razas/{especie}', 'App\Http\Controllers\AnimalControlador@obtenerRazas');
 
+Route::resource('raza', 'App\Http\Controllers\RazaController');
+Route::put('/raza/update/{id}', 'App\Http\Controllers\RazaController@update');
+Route::get('/raza/destroy/{id}', 'App\Http\Controllers\RazaController@destroy');
+
+
 Route::resource('miembro1', 'App\Http\Controllers\MiembroController1');
 Route::put('/miembro1/update/{id}', 'App\Http\Controllers\MiembroController1@update');
-
- 
-Route::get('/form1', function () {
-    return view('formularios.form1');
-});
-
-Route::get('/form2', function () {
-    return view('formularios.form2');
-});
-
-Route::get('/form3', function () {
-    return view('formularios.form3');
-});
-
-
-
 
 Route::resource('/miembro', 'App\Http\Controllers\MiembroController');
 Route::put('miembro/update/{id}', [MiembroController::class, 'update'])->name('miembros.update');
