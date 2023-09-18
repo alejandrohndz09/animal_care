@@ -81,7 +81,9 @@ $(document).ready(function () {
                   <div class="inputContainer">
                        <input class="inputField form-control telefono"  
                           value="+503 " name="telefonos[]" type="text" oninput="validarInput(this)">
-                           <small  style="color:red" class="error-message" id="error-` + con + `"></small>
+                           <small  style="color:red" class="error-message" id="telefonoerror`+con+`">
+                        
+                           </small>
                   </div>
                 </div>
              <div class="col-xl-6">
