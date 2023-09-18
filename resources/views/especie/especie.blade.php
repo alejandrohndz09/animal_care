@@ -109,7 +109,33 @@
                     </div>
                 </div>
             </div>
+
+            <!--Modal-->
+            <form action="" id="form-edit" name="form" method="POST">
+                @csrf
+                <div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel"
+                    tabindex="-1">
+                    <div class="modal-dialog modal-dialog-centered">
+
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalToggleLabel">Desea eliminar este registro?</h5>
+
+                            </div>
+                            <div class="modal-body">
+                                <!-- Aquí puedes mostrar los detalles del registro utilizando el id -->
+                                <p>ID del registro: <span id="modalRecordCodigo"></span></p>
+                                <!-- Otros detalles del registro -->
+                                <p>Especie: <span id="modalRecordeEspecie"></span></p>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button id="confirmar" type="button" class="btn btn-primary"> Eliminar</button>
+                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                            </div>
+                        </div>
+                    </div>
+            </form>
         </main>
     </div>
-    @include('especie.modalesEspecie')
 @endsection
