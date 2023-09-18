@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Especie;
-use App\Models\EspecieModelo;
+use App\Models\Vacuna;
 use Illuminate\Http\Request;
 
-class EspecieController extends Controller
+class VacunaController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,8 +14,8 @@ class EspecieController extends Controller
      */
     public function index()
     {
-        $especie =  Especie::all();
-        return view('especie.especie', ['especie' => $especie]);
+        $vacuna =  Vacuna::all();
+        return view('vacuna.vacuna', ['vacuna' => $vacuna]);
     }
 
     /**
@@ -26,7 +25,7 @@ class EspecieController extends Controller
      */
     public function create()
     {
-        return view('especie.especie');
+        return view('vacuna.vacuna');
     }
 
     /**
@@ -37,33 +36,34 @@ class EspecieController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate(['especie' => 'required|unique:especie']);
+        $request->validate(['vacuna' => 'required|unique:vacuna']);
 
-        $ultimoRegistro = Especie::latest('idEspecie')->first();
+        $ultimoRegistro = Vacuna::latest('idVacuna')->first();
 
-        $siguienteIncremento = $ultimoRegistro ? (int) substr($ultimoRegistro->idEspecie, -4) + 1 : 1;
+        $siguienteIncremento = $ultimoRegistro ? (int) substr($ultimoRegistro->idVacuna, -4) + 1 : 1;
 
         // Crea el ID personalizado concatenando "MB" y el incremento
         $idPersonalizado = "MB" . str_pad($siguienteIncremento, 5, '0', STR_PAD_LEFT);
 
         //guardar en la base
-        $especie = new Especie();
-        $especie->idEspecie = $this->generarId();
-        $especie->especie = $request->post('especie');
+        $vacuna = new Vacuna();
+        $vacuna->idVacuna = $this->generarId();
+        $vacuna->vacuna = $request->post('vacuna');
 
-        $especie->save();
+        $vacuna->save();
 
        
         return back()->with('success', 'Guardado con éxito');
+   
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\EspecieModelo  $especieModelo
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(EspecieModelo $especieModelo)
+    public function show($id)
     {
         //
     }
@@ -71,53 +71,53 @@ class EspecieController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\EspecieModelo  $especieModelo
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
-       $especieEdit = Especie::find($id);
-       $especie= Especie::all();
-       return view('especie.especie')->with
-       (['especieEdit'=> $especieEdit,'especie'=>$especie ]);
+        $vacunaEdit = Vacuna::find($id);
+        $vacuna= Vacuna::all();
+        return view('vacuna.vacuna')->with
+        (['vacunaEdit'=> $vacunaEdit,'vacuna'=>$vacuna ]);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\EspecieModelo  $especieModelo
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
-    $especie = Especie::find($id);
+        $vacuna = Vacuna::find($id);
     $request->validate([
-        'especie'=> 'required|unique:especie,especie,'.$id.',idEspecie'
+        'vacuna'=> 'required|unique:vacuna,vacuna,'.$id.',idvacuna'
     ]);
     //actualizar datos en bd
-    $especie->especie=$request->post('especie');
-    $especie->save();
+    $vacuna->vacuna=$request->post('vacuna');
+    $vacuna->save();
     return $this->index();
     }
 
     public function generarId()
     {
         // Obtener el último registro de la tabla "Espacio"
-        $ultimaEspecie = Especie::latest('idEspecie')->first();
+        $ultimaVacuna = Vacuna::latest('idVacuna')->first();
 
-        if (!$ultimaEspecie) {
-            // Si no hay registros previos, comenzar desde AN0001
-            $nuevoId = 'ES0001';
+        if (!$ultimaVacuna) {
+            // Si no hay registros previos, comenzar desde VA0001
+            $nuevoId = 'VA0001';
         } else {
-            // Obtener el número del último idEspecie
-            $ultimoNumero = intval(substr($ultimaEspecie->idEspecie, 3));
+            // Obtener el número del último idVacuna
+            $ultimoNumero = intval(substr($ultimaVacuna->idVacuna, 3));
 
             // Incrementar el número para el nuevo registro
             $nuevoNumero = $ultimoNumero + 1;
 
             // Formatear el nuevo idESpecie con ceros a la izquierda
-            $nuevoId = 'ES' . str_pad($nuevoNumero, 4, '0', STR_PAD_LEFT);
+            $nuevoId = 'VA' . str_pad($nuevoNumero, 4, '0', STR_PAD_LEFT);
         }
 
         return $nuevoId;
@@ -126,13 +126,13 @@ class EspecieController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\EspecieModelo  $especieModelo
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        $especie=Especie::find($id);
-        $especie->delete();
+        $vacuna=Vacuna::find($id);
+        $vacuna->delete();
 
         
         return back()->with('success', 'Eliminado con éxito');

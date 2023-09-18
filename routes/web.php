@@ -1,7 +1,10 @@
 <?php
 
 use App\Http\Controllers\AlbergueController;
+use App\Http\Controllers\EspecieController;
 use App\Http\Controllers\MiembroController;
+use App\Http\Controllers\VacuanaController;
+use App\Http\Controllers\VacunaController;
 use Illuminate\Routing\Route as RoutingRoute;
 use Illuminate\Support\Facades\Route;
 
@@ -59,4 +62,15 @@ Route::post('/validar-telefono', 'App\Http\Controllers\AnimalControlador@validar
 Route::resource('/albergue', 'App\Http\Controllers\AlbergueController');
 Route::put('albergue/update/{id}', [AlbergueController::class, 'update'])->name('albergue.update');
 Route::delete('/destroyAlbergue/{id}', [AlbergueController::class, 'destroy'])->name('albergue.destroy');
+
+
+Route::resource('/especie', 'App\Http\Controllers\EspecieController');
+Route::put('especie/update/{id}', [EspecieController::class, 'update'])->name('especie.update');
+Route::get('/especie/destroy/{id}', 'App\Http\Controllers\EspecieController@destroy');
+
+
+
+Route::resource('/vacuna', 'App\Http\Controllers\VacunaController');
+Route::put('vacuna/update/{id}', [VacunaController::class, 'update'])->name('vacuna.update');
+Route::get('/vacuna/destroy/{id}', 'App\Http\Controllers\VacunaController@destroy');
 
