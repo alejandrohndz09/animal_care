@@ -8,6 +8,11 @@
                     Dashboard
                 </a>
                 <div class="sb-sidenav-menu-heading">Menu</div>
+                <a class="nav-link" href="/especie">
+                    <div class="sb-nav-link-icon"><i class="fas fa-cat" ></i></div>
+                    
+                    Especie
+                </a>
                 <a class="nav-link" href="/animal">
                     <div class="sb-nav-link-icon"><i class="fas fa-dog" ></i></div>
                     Mascotas

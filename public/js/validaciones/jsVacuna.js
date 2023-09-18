@@ -2,16 +2,16 @@ $('#exampleModalToggle').on('show.bs.modal', function (event) {
     var button = $(event.relatedTarget); // Botón que desencadenó el modal
      // Botón que desencadenó el modal
      var id = button.data('id'); // Obtiene el valor del atributo data-id
-     var especie = button.data('especie'); // Obtiene el valor del atributo data-nombre
+     var vacuna = button.data('vacuna'); // Obtiene el valor del atributo data-nombre
       console.log(id);
       // Actualiza el contenido del modal con los detalles del registro
       $('#modalRecordCodigo').text(id);
-      $('#modalRecordeEspecie').text(especie);
+      $('#modalRecordeVacuna').text(vacuna);
 
       $('body').on('click', '#confirmar', function () {
-        $.get('especie/destroy/'+ id, function () {
+        $.get('vacuna/destroy/'+ id, function () {
             // location.reload();
-            window.location.href = '/especie'
+            window.location.href = '/vacuna'
         });
     });
     
