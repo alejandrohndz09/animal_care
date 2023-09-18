@@ -34,13 +34,16 @@ class MiembroController extends Controller
     {
         $request->validate([
             'correo' => 'required|unique:miembro',
-            'dui' => 'unique:miembro',
             'nombres' => 'required|min:3',
             'apellidos' => 'required|min:3',
         ], [
             'correo.unique' => 'Este correo ya ha sido ingresado.',
             'dui.unique' => 'Este DUI ya ha sido ingresado.'
         ]);
+
+        if ($request->post('dui')) {
+            $rules['dui'] = 'unique:miembro';
+        }
 
         // Obtén el último registro de la tabla para determinar el siguiente incremento
         $ultimoRegistro = Miembro::latest('idMiembro')->first();
@@ -64,9 +67,9 @@ class MiembroController extends Controller
         $contador = $request->post('con');
 
 
-        for ($i = 1; $i <= $contador; $i++) {
+        for ($i = 0; $i < $contador; $i++) {
             $telefonos = new TelefonoMiembro();
-            $telefonos->telefono = $request->post('telefono' . $i);
+            $telefonos->telefono = $request->post('telefono' . $i + 1);
             $telefonos->idMiembro = $idPersonalizado;
             $telefonos->save();
         }

@@ -56,9 +56,11 @@ function validarTexto(input) {
 
 //Agregar un input telefono
 $(document).ready(function () {
+
     document.getElementById("iconDui").style.color = '#cdcbcd';
     // Escucha el evento de cambio del checkbox
-    $("#esMayorDeEdad").change(function () {
+    $("#esMayorDeEdad").change(function (event) {
+        event.stopPropagation();
         document.getElementById("iconDui").style.color = '#cdcbcd';
 
         // Obtén el campo DUI
@@ -117,7 +119,8 @@ $(document).ready(function () {
                   <button type="button" class="button button-sec remove-telefono"
                   data-telefono="telefono${con}"
                   data-remove="remove${con}"
-                  data-telefono-id="vacio">
+                  data-telefono-id="vacio" data-bs-pp="tooltip"
+                  data-bs-placement="top" title="Eliminar telefono">
                    <i class="svg-icon fas fa-minus"></i>
                   </button>
             </div>
@@ -265,67 +268,60 @@ $(document).ready(function () {
         window.location.href = '/miembro'
     });
 
-    $(".btnDelete").click(function (event) {
-        // Evitar la propagación del evento al hacer clic en la fila
-        event.stopPropagation();
+    $(".btnUpdate").click(function () {
+        var dui = $(this).data('dui');
+        console.log(dui);
+        if (dui != null) {
+            $('#esMayorDeEdad').prop('checked', true);
+        }
     });
-    $(".btnUpdate").click(function (event) {
-        // Evitar la propagación del evento al hacer clic en la fila
-        event.stopPropagation();
-    });
 
 
-    // Escuchar el click en una fila
-    $('.miembro-row').on('click', function (event) {
-        // Verifica si el clic se realizó en un botón de editar o eliminar
+    $('#table').on('click', '.ver-button', function () {
+        var idMiembro = $(this).data('id');
+        var dui = $(this).data('dui');
+        var nombres = $(this).data('nombre');
+        var apellidos = $(this).data('apellido');
+        var correo = $(this).data('correo');
 
-        if ($(event.target).is('a#btnUpdate') || $(event.target).is('a#btnDelete')) {
-            return; // No muestres el modal si se hizo clic en un botón
-        } else {
-            console.log('Presiono aqui en los botones');
-            var idMiembro = $(this).find('[data-id]').data('id');
-            var dui = $(this).find('[data-dui]').data('dui');
-            var nombres = $(this).find('[data-nombre]').data('nombre');
-            var apellidos = $(this).find('[data-apellido]').data('apellido');
-            var correo = $(this).find('[data-correo]').data('correo');
+        console.log(idMiembro)
 
-            $.ajax({
-                url: 'miembro/telefonos/' + idMiembro, // La URL de la ruta definida en Laravel
-                type: 'GET',
-                dataType: 'json',
-                success: function (data) {
-                    var isFirst = true; // Variable para rastrear si es el primer registro
-                    $('#telefonos').empty();
-                    for (var key in data) {
-                        if (data.hasOwnProperty(key)) {
-                            var text = data[key]; // Obtén el valor actual
+        $.ajax({
+            url: 'miembro/telefonos/' + idMiembro, // La URL de la ruta definida en Laravel
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                var isFirst = true; // Variable para rastrear si es el primer registro
+                $('#telefonos').empty();
+                for (var key in data) {
+                    if (data.hasOwnProperty(key)) {
+                        var text = data[key]; // Obtén el valor actual
 
-                            // Aplica el estilo CSS solo al primer registro
-                            if (isFirst) {
-                                $('#telefonos').append('<br>' + text);
-                                isFirst = false; // Cambia el valor de isFirst para que los siguientes registros no apliquen el estilo
-                            } else {
-                                // Inserta los registros restantes sin el estilo
-                                $('#telefonos').append('<br>' + text);
-                            }
+                        // Aplica el estilo CSS solo al primer registro
+                        if (isFirst) {
+                            $('#telefonos').append('<br>' + text);
+                            isFirst = false; // Cambia el valor de isFirst para que los siguientes registros no apliquen el estilo
+                        } else {
+                            // Inserta los registros restantes sin el estilo
+                            $('#telefonos').append('<br>' + text);
                         }
                     }
-                },
-                error: function (error) {
-                    console.error('Error en la solicitud:', error);
                 }
-            });
+            },
+            error: function (error) {
+                console.error('Error en la solicitud:', error);
+            }
+        });
 
-            // Llena el modal con los datos correspondientes
-            $('#modalIdMiembro').text(idMiembro);
-            $('#modalDui').text(dui);
-            $('#modalNombres').text(nombres);
-            $('#modalApellidos').text(apellidos);
-            $('#modalCorreo').text(correo);
+        // Llena el modal con los datos correspondientes
+        $('#modalIdMiembro').text(idMiembro);
+        $('#modalDui').text(dui);
+        $('#modalNombres').text(nombres);
+        $('#modalApellidos').text(apellidos);
+        $('#modalCorreo').text(correo);
 
-            // Abre el modal
-            $('#ModalToggle').modal('show');
-        }
+        // Abre el modal
+        $('#ModalToggle').modal('show');
     });
 
 });
