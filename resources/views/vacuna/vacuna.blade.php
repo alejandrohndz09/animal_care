@@ -119,7 +119,7 @@
                 </div>
             </div>
 
-
+{{-- 
             <!--Modal-->
             <form action="" id="form-edit" name="form" method="POST">
                 @csrf
@@ -129,14 +129,14 @@
 
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalToggleLabel">Desea eliminar este registro?</h5>
+                                <h5 class="modal-title" id="exampleModalToggleLabel">Desea eliminar este registro de vacuna?</h5>
 
                             </div>
                             <div class="modal-body">
                                 <!-- Aquí puedes mostrar los detalles del registro utilizando el id -->
                                 <p>ID del registro: <span id="modalRecordCodigo"></span></p>
                                 <!-- Otros detalles del registro -->
-                                <p>Vacuna: <span id="modalRecordeVacuna"></span></p>
+                                <p> <span id="modalRecordeVacuna"></span></p>
 
                             </div>
                             <div class="modal-footer">
@@ -145,8 +145,9 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> --}}
             </form>
         </main>
     </div>
+    @include('vacuna.modalesVacuna')
 @endsection
