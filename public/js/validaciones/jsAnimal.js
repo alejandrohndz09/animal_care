@@ -84,7 +84,7 @@ $(document).ready(function () {
          }
  
          $('body').on('click', '#confirmar', function () {
-             $.get('{{url(animal/'+ id+'/destroy)}}', function () {
+             $.get('/animal/destroy/'+id, function () {
                  // location.reload();
                  window.location.href = '/animal'
              });
