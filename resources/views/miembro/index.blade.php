@@ -81,8 +81,8 @@
                                                         <i class="svg-icon fas fa-trash"></i>
                                                     </button>
 
-                                                    <button type="button"
-                                                        class="button button-primary ver-button"
+                                                    {{-- Boton detalles de los miembros --}}
+                                                    <button type="button" class="button button-primary ver-button"
                                                         data-bs-pp="tooltip" data-bs-toggle="modal"
                                                         data-bs-target="#ModalToggle" style="width: 45%"
                                                         data-id="{{ $item->idMiembro }}"
@@ -283,7 +283,8 @@
                                                 </div>
                                             </div>
                                             <div class="col-xl-6">
-                                                <button type="button" style="width: 20px" class="button button-pri" id="add-telefono">
+                                                <button type="button" style="width: 20px" class="button button-pri"
+                                                    id="add-telefono">
                                                     <i class="svg-icon fas fa-plus"></i>
                                                 </button>
                                             </div>

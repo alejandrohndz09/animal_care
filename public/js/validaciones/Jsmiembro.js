@@ -276,7 +276,7 @@ $(document).ready(function () {
         }
     });
 
-
+//Muestra el modal con los detalles del miembro
     $('#table').on('click', '.ver-button', function () {
         var idMiembro = $(this).data('id');
         var dui = $(this).data('dui');
@@ -284,8 +284,7 @@ $(document).ready(function () {
         var apellidos = $(this).data('apellido');
         var correo = $(this).data('correo');
 
-        console.log(idMiembro)
-
+    
         $.ajax({
             url: 'miembro/telefonos/' + idMiembro, // La URL de la ruta definida en Laravel
             type: 'GET',

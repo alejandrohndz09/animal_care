@@ -149,7 +149,7 @@
 </div>
 
 
-<!-- Modal para ver detalles de elementos de la lista-->
+<!-- Modal para ver detalles de los elementos de la lista-->
 <div class="modal fade" id="ModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel"
     tabindex="-1">
     <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
