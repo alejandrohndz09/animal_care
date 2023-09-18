@@ -22,19 +22,20 @@
                             <h1>Miembros </h1>
                             <input id="searchInput" class="inputField card" style="width: 50%; margin-left: 20% "
                                 autocomplete="off" placeholder="🔍︎ Buscar" type="search">
+
                             <div class="dropdown">
                                 <button class="button btn-transparent" style="width: 30px;padding: 15px 5px" type="button"
                                     id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                                     <i class="svg-icon fas fa-ellipsis-vertical" style="color: #4c4c4c"></i>
                                 </button>
                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                    <li><a class="dropdown-item" data-bs-toggle="modal"
-                                            data-bs-target="#miembroBajas">Miembro de baja</a></li>
-
+                                    <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#tabla">Miembro de
+                                            baja</a></li>
                                 </ul>
                             </div>
+
                         </div>
-                        <table>
+                        <table id="table">
                             <thead>
                                 <tr class="head">
                                     <th style="width: 10%"></th>
@@ -64,7 +65,8 @@
                                                         onclick="window.location.href = '{{ url('miembro/' . $item->idMiembro . '/edit') }}';"
                                                         type="button" class="button button-blue btnUpdate"
                                                         style="width: 45%" data-id="{{ $item->idMiembro }}"
-                                                        data-bs-pp="tooltip" data-bs-placement="top" title="Editar">
+                                                        data-dui="{{ $item->dui }}" data-bs-pp="tooltip"
+                                                        data-bs-placement="top" title="Editar">
                                                         <i class="svg-icon fas fa-pencil"></i>
                                                     </button>
 
@@ -79,6 +81,17 @@
                                                         <i class="svg-icon fas fa-trash"></i>
                                                     </button>
 
+                                                    {{-- Boton detalles de los miembros --}}
+                                                    <button type="button" class="button button-primary ver-button"
+                                                        data-bs-pp="tooltip" data-bs-toggle="modal"
+                                                        data-bs-target="#ModalToggle" style="width: 45%"
+                                                        data-id="{{ $item->idMiembro }}"
+                                                        data-nombre="{{ $item->nombres }}"
+                                                        data-apellido="{{ $item->apellidos }}"
+                                                        data-dui="{{ $item->dui }}" data-correo="{{ $item->correo }}"
+                                                        data-bs-placement="top" title="Ver detalles">
+                                                        <i class="svg-icon fas fa-eye"></i>
+                                                    </button>
                                                 </div>
                                             </td>
                                         </tr>
@@ -229,13 +242,15 @@
                                                             <input type="hidden" name="boton{{ $contador }}"
                                                                 value="{{ $item->idTelefono }}">
                                                             <button type="button" class="button button-pri"
-                                                                id="add-telefono">
+                                                                id="add-telefono" data-bs-pp="tooltip"
+                                                                data-bs-placement="top" title="Añadir telefono">
                                                                 <i class="svg-icon fas fa-plus"></i>
                                                             </button>
                                                         @else
                                                             <input type="hidden" name="boton{{ $contador }}"
                                                                 value="{{ $item->idTelefono }}">
-                                                            <button type="button"
+                                                            <button type="button" data-bs-pp="tooltip"
+                                                                data-bs-placement="top" title="Eliminar telefono"
                                                                 class=" button button-sec remove-telefono"
                                                                 data-remove="remove{{ $contador }}"
                                                                 data-telefono-id="{{ $item->idTelefono }}"
@@ -268,7 +283,8 @@
                                                 </div>
                                             </div>
                                             <div class="col-xl-6">
-                                                <button type="button" class="button button-pri" id="add-telefono">
+                                                <button type="button" style="width: 20px" class="button button-pri"
+                                                    id="add-telefono">
                                                     <i class="svg-icon fas fa-plus"></i>
                                                 </button>
                                             </div>
