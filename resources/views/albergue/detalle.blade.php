@@ -21,13 +21,13 @@
                                     <div class="col-xl-5">
                                         <div class="inputContainer">
                                             <input name="nombres" id="nombres" class="inputField" type="text"
-                                                value="{{ $albergue->idAlvergue }}" disabled>
-                                            <label class="inputFieldLabel" for="nombre">Código</label>
+                                                value="{{ $albergue->idAlvergue }}" readonly>
+                                            <label class="inputFieldLabel" for="nombre">Código:</label>
                                             <i class="inputFieldIcon fas fa-house"></i>
                                         </div>
                                         <div class="inputContainer">
                                             <input name="nombres" id="nombres" class="inputField" type="text"
-                                                autocomplete="off" value="{{ $albergue->direccion }}" disabled>
+                                                autocomplete="off" value="{{ $albergue->direccion }}" readonly>
                                             <label class="inputFieldLabel" for="nombre">Dirección: </label>
                                             <i class="inputFieldIcon fas fa-location-dot"></i>
                                             <small style="color:red" class="error-message"></small>
@@ -37,7 +37,7 @@
                                         <div class="inputContainer">
                                             <input name="nombres" id="nombres" class="inputField" type="text"
                                                 value="{{ $albergue->miembro->nombres . ' ' . $albergue->miembro->apellidos }}"
-                                                disabled>
+                                                readonly>
                                             <label class="inputFieldLabel" for="nombre">Miembro a cargo:</label>
                                             <i class="inputFieldIcon fas fa-user"></i>
                                         </div>

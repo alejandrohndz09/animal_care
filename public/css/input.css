@@ -135,6 +135,9 @@
   .button-red >.svg-icon{
     color:  #d02929;
   }
+  .button-transparent{
+    background: transparent;
+  }
 
   .button-blue{
     background: #0015ff27;

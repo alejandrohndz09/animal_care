@@ -40,8 +40,11 @@
                     <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
                         <a class="nav-link" href="/especie">
                             <div class="sb-nav-link-icon"><i class="fas fa-cat" ></i></div>
-                            
-                            Especie
+                            Especies
+                        </a>
+                        <a class="nav-link" href="/raza">
+                            <div class="sb-nav-link-icon"><i class="fas fa-paw" ></i></div>    
+                            Razas
                         </a>
                         <a class="nav-link" href="/vacuna">
                             <div class="sb-nav-link-icon"><i class="fas fa-syringe"></i></div>
@@ -49,7 +52,7 @@
                         </a>
                         <a class="nav-link" href="/patologia">
                             <div class="sb-nav-link-icon"> <i class="fas fa-stethoscope"></i></div>
-                            Patologias
+                            Patologías
                         </a>
                     </nav>
                 </div>
