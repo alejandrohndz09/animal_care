@@ -16,3 +16,8 @@ $('#exampleModalToggle').on('show.bs.modal', function (event) {
     });
     
     });
+
+    
+$("#btnCancelar").click(function () {
+    window.location.href = '/vacuna'
+});
