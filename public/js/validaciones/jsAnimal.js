@@ -81,16 +81,16 @@ $(document).ready(function () {
             document.getElementById("imagenModal").src = imagen;
         } else {
             document.getElementById("imagenModal").src = 'https://static.vecteezy.com/system/resources/previews/017/783/245/original/pet-shop-silhouette-logo-template-free-vector.jpg';
-        }
 
-        $('body').on('click', '#confirmar', function () {
-            $.get('{{url(animal/' + id + '/destroy)}}', function () {
-                // location.reload();
-                window.location.href = '/animal'
-            });
-        });
+         }
+ 
+         $('body').on('click', '#confirmar', function () {
+             $.get('/animal/destroy/'+id, function () {
+                 // location.reload();
+                 window.location.href = '/animal'
+             });
+         });
 
-    });
 
 
     //Muestra el modal con los detalles del miembro
