@@ -132,6 +132,12 @@ class EspecieController extends Controller
     public function destroy($id)
     {
         $especie=Especie::find($id);
+        if ($especie->raza->isEmpty()) {
+            $especie->delete();
+            return back()->with('success', 'Eliminado con éxito');
+        } else {
+            return back()->with('success', 'No se puede eliminar');
+        }
         $especie->delete();
 
         
