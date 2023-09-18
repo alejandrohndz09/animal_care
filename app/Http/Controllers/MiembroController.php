@@ -7,6 +7,7 @@ use App\Models\Miembro;
 use App\Models\TelefonoMiembro;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator; // Importa la fachada Validator
 
 
@@ -33,10 +34,10 @@ class MiembroController extends Controller
     {
         $request->validate([
             'correo' => 'required|unique:miembro',
-            'dui' => 'required|unique:miembro',
+            'dui' => 'unique:miembro',
             'nombres' => 'required|min:3',
             'apellidos' => 'required|min:3',
-        ],[
+        ], [
             'correo.unique' => 'Este correo ya ha sido ingresado.',
             'dui.unique' => 'Este DUI ya ha sido ingresado.'
         ]);
@@ -71,8 +72,6 @@ class MiembroController extends Controller
         }
 
         $datos = Miembro::all();
-        // Configura la variable de sesión de éxito
-        Session::flash('success', 'Agregado exitosamente!');
         return view('miembro.index')->with([
             'datos' => $datos,
         ]);
@@ -95,61 +94,67 @@ class MiembroController extends Controller
     public function update(Request $request, $id)
     {
         $miembro = Miembro::find($id);
-    
+
         // Valida si los campos únicos (correo y dui) están en la BD
         $request->validate([
 
             'correo' => 'required|unique:miembro,correo,' . $id . ',idMiembro',
-            'dui' => 'required|min:10|unique:miembro,dui,' . $id . ',idMiembro',
+            'dui' => 'min:10|unique:miembro,dui,' . $id . ',idMiembro',
             'nombres' => 'required|min:3',
             'apellidos' => 'required|min:3',
-        ],[
+        ], [
             'correo.unique' => 'Este correo ya ha sido ingresado.',
             'dui.unique' => 'Este DUI ya ha sido ingresado.'
         ]);
-    
+
         // Actualiza los datos en la BD
         $miembro->dui = $request->post('dui');
         $miembro->nombres = $request->post('nombres');
         $miembro->apellidos = $request->post('apellidos');
         $miembro->correo = $request->post('correo');
         $miembro->save();
-    
+
+
         $contador = $request->post('con');
+
         for ($i = 1; $i <= $contador; $i++) {
             $nuevoTelefono = $request->post('telefono' . $i);
             $telefonoId = $request->input('boton' . $i);
-            // Genera dinámicamente la regla de validación para cada campo de teléfono
-            $validationRules['telefono' . $i] = 'unique:telefono_miembro,telefono,' . $telefonoId . ',idTelefono';
-    
-            // Aplica las reglas de validación generadas dinámicamente
-            try {
-                $request->validate($validationRules);
-    
-                // Busca el teléfono por su ID en la base de datos
-                $telefono = TelefonoMiembro::find($telefonoId);
-    
-                if ($telefono) {
-                    // El teléfono existe en la base de datos, actualiza su valor
-                    $telefono->telefono = $nuevoTelefono;
-                    $telefono->save();
-                } else {
-                    // Sino, entonces crea un nuevo registro
-                    $telefonos = new TelefonoMiembro();
-                    $telefonos->telefono = $request->post('telefono' . $i);
-                    $telefonos->idMiembro = $id;
-                    $telefonos->save();
-                }
-            } catch (ValidationException $e) {
-                // Captura la excepción de validación
-                $errors = $e->validator->getMessageBag();
-                return redirect()->route("miembro.edit", $id)->withErrors($errors)->withInput();
+
+            // Valida si el número de teléfono es único en la tabla "telefono_miembro"
+            $request->validate([
+                'telefono' . $i => 'unique:telefono_miembro,telefono,' . $telefonoId . ',idTelefono'
+            ], [
+                'telefono' . $i . '.unique' => 'El número de teléfono ' . $nuevoTelefono . ' ya ha sido ingresado.'
+            ]);
+
+
+            // Busca el teléfono por su ID en la base de datos
+            $telefono = TelefonoMiembro::find($telefonoId);
+
+            if ($telefono) {
+                // El teléfono existe en la base de datos, actualiza su valor
+                $telefono->telefono = $nuevoTelefono;
+                $telefono->save();
+            } else {
+                // Sino, entonces crea un nuevo registro
+                $telefonos = new TelefonoMiembro();
+                $telefonos->telefono = $request->post('telefono' . $i);
+                $telefonos->idMiembro = $id;
+                $telefonos->save();
             }
         }
-    
-        return redirect()->route("miembro.index");
+        if (!empty($errors)) {
+            return response()->json(['errors' => $errors]);
+        } else {
+            //Pagina inicio
+            $datos = Miembro::all();
+            return redirect()->route('miembro.index')->with([
+                'datos' => $datos
+            ]);
+        }
     }
-    
+
 
     public function destroy($id)
     {
@@ -194,5 +199,13 @@ class MiembroController extends Controller
         }
 
         return response()->json(['message' => 'Número de teléfono válido']); // Si la validación es exitosa
+    }
+
+    public function alta($id)
+    {
+        $miembros = Miembro::find($id);
+        $miembros->estado = '1';
+        $miembros->save();
+        return redirect()->route('miembro.index');
     }
 }

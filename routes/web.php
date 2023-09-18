@@ -55,6 +55,7 @@ Route::get('/form3', function () {
 
 Route::resource('/miembro', 'App\Http\Controllers\MiembroController');
 Route::put('miembro/update/{id}', [MiembroController::class, 'update'])->name('miembros.update');
+Route::get('miembro/Alta/{id}', [MiembroController::class, 'alta'])->name('miembros.alta');
 Route::get('miembro/telefonos/{id}', [MiembroController::class, 'ObtenerTelefonos'])->name('miembro.telefono');
 Route::get('/destroy/{id}', [MiembroController::class, 'destroy'])->name('miembros.destroy');
 Route::delete('/destroyTelefono/{id}', [MiembroController::class, 'destroyTelefono'])->name('miembros.destroyTelefono');

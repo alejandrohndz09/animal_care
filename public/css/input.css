@@ -212,8 +212,9 @@
     
 }
 
-.modal-content p {
-  margin-bottom: 5px;
+.modal-content  {
+  margin-bottom: 10px;
+  line-height: 1.2;
   /* Puedes ajustar este valor según tus necesidades para reducir el interlineado */
 }
 
@@ -246,4 +247,30 @@
   text-align: center;
   line-height: 30px;
   /* Para centrar el texto verticalmente en el círculo */
+}
+
+.circle-button-warning{
+  width: 30px;
+  /* Ajusta el ancho y alto según tu preferencia */
+  height: 30px;
+  background-color: #ffffff;
+  color: #bacb2188;
+  border: none;
+  border-radius: 50%;
+  /* El valor debe ser la mitad del ancho o alto para lograr un círculo */
+  cursor: pointer;
+  text-align: center;
+  line-height: 30px;
+  /* Para centrar el texto verticalmente en el círculo */
+}
+
+input[type="checkbox"]:checked{
+  border-color: #6067eb;  
+  transform: translateZ(0px);
+  background-color: #6067eb;
+}
+/* Estilo para el campo de entrada deshabilitado */
+input[disabled] + label,
+input[disabled]  {
+  opacity: 0.2; /* Cambia la opacidad a un valor menor (0.6 en este ejemplo) */
 }
