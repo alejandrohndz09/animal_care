@@ -5,10 +5,11 @@
 @section('styles')
     <link rel="stylesheet" href="<?php echo asset('css/f3.css'); ?>" type="text/css">
 @endsection
-{{--
+
 @section('scripts')
-    <script src="{{ asset('js/Jsmiembro.js') }}"></script>
-@endsection --}}
+    <script src="{{ asset('js/validaciones/JsEspecie.js') }}"></script>
+@endsection
+
 @section('content')
     <div id="layoutSidenav_content">
         <main>
