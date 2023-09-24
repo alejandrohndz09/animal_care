@@ -33,16 +33,21 @@ class MiembroController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'correo' => 'required|unique:miembro',
+
+            'correo' => 'required|unique:miembro,correo',
             'nombres' => 'required|min:3',
             'apellidos' => 'required|min:3',
         ], [
             'correo.unique' => 'Este correo ya ha sido ingresado.',
-            'dui.unique' => 'Este DUI ya ha sido ingresado.'
         ]);
-
-        if ($request->post('dui')) {
-            $rules['dui'] = 'unique:miembro';
+        if ($request->has('esMayorDeEdad') == true) {
+            // Si la casilla de verificación está marcada, habilita la validación del campo 'dui'.
+            $request->validate([
+                'dui' => 'required|unique:miembro',
+            ], [
+                'dui.required' => 'El campo DUI es requerido.',
+                'dui.unique' => 'Este DUI ya ha sido ingresado.',
+            ]);
         }
 
         // Obtén el último registro de la tabla para determinar el siguiente incremento
@@ -68,10 +73,12 @@ class MiembroController extends Controller
 
 
         for ($i = 0; $i < $contador; $i++) {
-            $telefonos = new TelefonoMiembro();
-            $telefonos->telefono = $request->post('telefono' . $i + 1);
-            $telefonos->idMiembro = $idPersonalizado;
-            $telefonos->save();
+            if ($request->post('telefono' . $i + 1) != "503 ") {
+                $telefonos = new TelefonoMiembro();
+                $telefonos->telefono = $request->post('telefono' . $i + 1);
+                $telefonos->idMiembro = $idPersonalizado;
+                $telefonos->save();
+            }
         }
 
         $datos = Miembro::all();
@@ -124,27 +131,29 @@ class MiembroController extends Controller
             $nuevoTelefono = $request->post('telefono' . $i);
             $telefonoId = $request->input('boton' . $i);
 
-            // Valida si el número de teléfono es único en la tabla "telefono_miembro"
-            $request->validate([
-                'telefono' . $i => 'unique:telefono_miembro,telefono,' . $telefonoId . ',idTelefono'
-            ], [
-                'telefono' . $i . '.unique' => 'El número de teléfono ' . $nuevoTelefono . ' ya ha sido ingresado.'
-            ]);
+            if ($nuevoTelefono != "503 ") {
+                // Valida si el número de teléfono es único en la tabla "telefono_miembro"
+                $request->validate([
+                    'telefono' . $i => 'unique:telefono_miembro,telefono,' . $telefonoId . ',idTelefono'
+                ], [
+                    'telefono' . $i . '.unique' => 'El número de teléfono ' . $nuevoTelefono . ' ya ha sido ingresado.'
+                ]);
 
 
-            // Busca el teléfono por su ID en la base de datos
-            $telefono = TelefonoMiembro::find($telefonoId);
+                // Busca el teléfono por su ID en la base de datos
+                $telefono = TelefonoMiembro::find($telefonoId);
 
-            if ($telefono) {
-                // El teléfono existe en la base de datos, actualiza su valor
-                $telefono->telefono = $nuevoTelefono;
-                $telefono->save();
-            } else {
-                // Sino, entonces crea un nuevo registro
-                $telefonos = new TelefonoMiembro();
-                $telefonos->telefono = $request->post('telefono' . $i);
-                $telefonos->idMiembro = $id;
-                $telefonos->save();
+                if ($telefono) {
+                    // El teléfono existe en la base de datos, actualiza su valor
+                    $telefono->telefono = $nuevoTelefono;
+                    $telefono->save();
+                } else {
+                    // Sino, entonces crea un nuevo registro
+                    $telefonos = new TelefonoMiembro();
+                    $telefonos->telefono = $request->post('telefono' . $i);
+                    $telefonos->idMiembro = $id;
+                    $telefonos->save();
+                }
             }
         }
         if (!empty($errors)) {

@@ -77,6 +77,84 @@
 </div>
 
 
+<!-- Modal para los registros dados de baja-->
+<div class="modal fade" id="tabla" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-lg ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" style="margin-left: auto; margin-right: auto;">Lista de miembros de baja</h5>
+            </div>
+            <div class="modal-body">
+                <!-- Aquí puedes agregar tu tabla -->
+                <table id="table">
+                    <thead>
+                        <tr class="head">
+                            <th></th>
+                            <th>Código</th>
+                            <th>Nombre</th>
+                            <th>Especie</th>
+                            <th>Raza</th>
+                            <th>Edad</th>
+                            <th>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+
+                        @php
+                            use App\Http\Controllers\AnimalControlador;
+                            use App\Models\Animal;
+                            $animalesBaja = Animal::where('estado', 0)->get();
+                        @endphp
+
+                        @foreach ($animalesBaja as $a)
+                            @if ($e->estado == 0)
+                                <tr>
+                                    <td>
+                                        <img src="{{ isset($a->imagen) ? asset($a->imagen) : asset('img/especie.png') }}"
+                                            alt="user" class="picture" />
+                                    </td>
+                                    <td>{{ $a->idAnimal }}</td>
+                                    <td>{{ $a->nombre }}</td>
+                                    <td>{{ $a->raza->especie->especie }}</td>
+                                    <td>{{ $a->raza->raza }}</td>
+                                    <td>{{ AnimalControlador::calcularEdad(explode(' ', $a->fechaNacimiento)[0]) }}
+                                    </td>
+                                    <td>
+                                        <div
+                                            style="display: flex; align-items: flex-end; gap: 3px; justify-content: center">
+                                            <a href="{{ url('animal/alta/' . $a->idAnimal) }}"
+                                                class="button button-blue" style="width: 45%;" data-bs-pp="tooltip"
+                                                data-bs-placement="top" title="Dar de alta">
+                                                <i class="svg-icon fas fa-up-long"></i>
+                                            </a>
+                                            <button type="button" class="button button-primary ver-button"
+                                                data-bs-pp="tooltip" data-bs-toggle="modal"
+                                                data-bs-target="#ModalToggle" style="width: 45%"
+                                                data-foto="{{ isset($a->imagen) ? asset($a->imagen) : asset('img/especie.png') }}"
+                                                data-id="{{ $a->idAnimal }}" data-nombre="{{ $a->nombre }}"
+                                                data-especie="{{ $a->raza->especie->especie }}"
+                                                data-raza="{{ $a->raza->raza }}"
+                                                data-fecha="{{ AnimalControlador::calcularEdad(explode(' ', $a->fechaNacimiento)[0]) }}"
+                                                data-bs-placement="top" title="Ver detalles">
+                                                <i class="svg-icon fas fa-eye"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                            @endif
+
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+                <div id="pagination"></div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+
 <!-- Modal para ver detalles de elementos de la lista-->
 <div class="modal fade" id="ModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">

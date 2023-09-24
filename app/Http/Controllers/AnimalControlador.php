@@ -58,7 +58,7 @@ class AnimalControlador extends Controller
         $animal->sexo = $request->post('sexo');
         $animal->estado = 1;
         $animal->particularidad = $request->post('particularidad');
-        $animal->estado =1;
+        $animal->estado = 1;
         if ($request->hasFile('foto')) {
             $imagen = $request->file('foto');
             $nombreImagen = $animal->idAnimal . '.' . $imagen->getClientOriginalExtension();
@@ -159,10 +159,9 @@ class AnimalControlador extends Controller
      */
     public function destroy($id)
     {
-        $animal = Animal::find($id);
-        $animal->estado=0;
-        
+        $animal = Animal::find($id);        
         if($animal->expedientes->isEmpty()){
+          $animal->estado=0;
            $animal->save(); 
            $alert = array(
             'type' => 'success',
@@ -177,8 +176,6 @@ class AnimalControlador extends Controller
             
             session()->flash('alert',$alert);
         }
-     
-        
         return view('animal.index')->with([
             'animales' => Animal::where('estado', 1)->get()
         ]);
@@ -242,5 +239,15 @@ class AnimalControlador extends Controller
         $razas = Raza::where('idEspecie', $especie)->get();
         // Devuelve las razas en formato JSON
         return response()->json($razas);
+    }
+
+    public function alta($id)
+    {
+        $miembros = Animal::find($id);
+        $miembros->estado = '1';
+        $miembros->save();
+        return view('animal.index')->with([
+            'animales' => Animal::where('estado', 1)->get()
+        ]);
     }
 }
