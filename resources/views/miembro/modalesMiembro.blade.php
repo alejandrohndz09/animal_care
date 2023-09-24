@@ -28,7 +28,7 @@
 </div>
 
 <!-- Modal para los registros dados de baja-->
-<div class="modal fade" id="tabla" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="tabla" tabindex="-5" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-lg ">
         <div class="modal-content">
             <div class="modal-header">
@@ -73,9 +73,7 @@
                                             <button type="button" class="button button-primary btnDelete ver-button"
                                                 data-bs-pp="tooltip" data-bs-toggle="modal"
                                                 data-bs-target="#ModalToggle" style="width: 45%"
-                                                data-id="{{ $item->idMiembro }}" data-nombre="{{ $item->nombres }}"
-                                                data-apellido="{{ $item->apellidos }}" data-dui="{{ $item->dui }}"
-                                                data-correo="{{ $item->correo }}" data-bs-placement="top"
+                                                data-miembro="{{ json_encode($item) }}" data-bs-placement="top"
                                                 title="Ver detalles">
                                                 <i class="svg-icon fas fa-eye"></i>
                                             </button>
@@ -147,12 +145,6 @@
         </div>
     </div>
 </div>
-@php
-    $datoDesdeJS = '<script>
-        document.write(modalIdMiembro);
-    </script>';
-@endphp
-
 
 <!-- Modal para ver detalles de los elementos de la lista-->
 <div class="modal fade" id="ModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel"

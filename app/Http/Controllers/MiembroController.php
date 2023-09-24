@@ -62,11 +62,7 @@ class MiembroController extends Controller
         //Guardar en BD
         $miembros = new Miembro();
         $miembros->idMiembro = $idPersonalizado;
-        if ($request->post('dui') == null) {
-            $miembros->dui = null;
-        } else {
-            $miembros->dui = $request->post('dui');
-        }
+        $miembros->dui = $request->post('dui');
         $miembros->nombres = $request->post('nombres');
         $miembros->apellidos = $request->post('apellidos');
         $miembros->correo = $request->post('correo');

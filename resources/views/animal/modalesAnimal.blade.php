@@ -100,8 +100,13 @@
                     </thead>
                     <tbody id="tableBody">
 
-                        @php use App\Http\Controllers\AnimalControlador; @endphp
-                        @foreach ($animales as $a)
+                        @php
+                            use App\Http\Controllers\AnimalControlador;
+                            use App\Models\Animal;
+                            $animalesBaja = Animal::where('estado', 0)->get();
+                        @endphp
+
+                        @foreach ($animalesBaja as $a)
                             @if ($e->estado == 0)
                                 <tr>
                                     <td>
@@ -117,10 +122,10 @@
                                     <td>
                                         <div
                                             style="display: flex; align-items: flex-end; gap: 3px; justify-content: center">
-                                            <a href="{{ url('animal/' . $a->idAnimal . '/edit') }}"
+                                            <a href="{{ url('animal/alta/' . $a->idAnimal) }}"
                                                 class="button button-blue" style="width: 45%;" data-bs-pp="tooltip"
-                                                data-bs-placement="top" title="Editar">
-                                                <i class="svg-icon fas fa-pencil"></i>
+                                                data-bs-placement="top" title="Dar de alta">
+                                                <i class="svg-icon fas fa-up-long"></i>
                                             </a>
                                             <button type="button" class="button button-primary ver-button"
                                                 data-bs-pp="tooltip" data-bs-toggle="modal"
