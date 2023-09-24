@@ -122,7 +122,6 @@
                                         <div class="inputContainer">
                                             <input name="nombres" id="nombres" class="inputField" placeholder="Nombres"
                                                 type="text" autocomplete="off" oninput="validarTexto(this)"
-                                                autocomplete="off"
                                                 value="{{ isset($miembroEdit) ? $miembroEdit->nombres : old('nombres') }}">
                                             <label class="inputFieldLabel" for="nombre">Nombres*</label>
                                             <i class="inputFieldIcon fas fa-user"></i>
@@ -134,7 +133,6 @@
                                         <div class="inputContainer">
                                             <input name="apellidos" class="inputField" autocomplete="off"
                                                 placeholder="Apellidos" type="text" oninput="validarTexto(this)"
-                                                autocomplete="off"
                                                 value="{{ isset($miembroEdit) ? $miembroEdit->apellidos : old('apellidos') }}">
                                             <small style="color:red" class="error-message"></small>
                                         </div>
@@ -145,7 +143,7 @@
                                     <!-- Input DUI -->
                                     <div class="col-xl-6">
                                         <div class="inputContainer col-xl-6">
-                                            <input name="dui" type="text" id="dui"
+                                            <input name="dui" type="text"
                                                 value="{{ isset($miembroEdit) ? $miembroEdit->dui : old('dui') }}"
                                                 class="inputField" placeholder="00000000-0" type="text"
                                                 autocomplete="off"
@@ -162,8 +160,7 @@
                                         <div class="inputContainer">
                                             <div style="padding: 3px 15px">
                                                 <div class="form-check form-switch">
-                                                    <input class="form-check-input" name="esMayorDeEdad" type="checkbox"
-                                                        id="esMayorDeEdad">
+                                                    <input class="form-check-input" type="checkbox" id="esMayorDeEdad">
                                                     <label class="form-check-label" for="esMayorDeEdad">¿Es mayor de
                                                         edad?</label>
                                                 </div>
@@ -194,7 +191,7 @@
                                         <div class="col-xl-6">
                                             <div class="inputContainer">
                                                 <input class="inputField form-control telefono" value="+503 "
-                                                    id="tel" name="telefono1" type="text" autocomplete="off"
+                                                    id="tel" name="telefono1" type="text"
                                                     oninput="validarInput(this)">
                                                 <label class="inputFieldLabel" for="telefono">Teléfono</label>
                                                 <i class="inputFieldIcon fas fa-phone"></i>
@@ -226,7 +223,7 @@
                                                     <div class="col-xl-6">
                                                         <div class="inputContainer">
                                                             <input class="inputField form-control telefono"
-                                                                id="tel{{ $contador }}" autocomplete="off"
+                                                                id="tel{{ $contador }}"
                                                                 name="telefono{{ $contador }}" type="text"
                                                                 oninput="validarInput(this)"
                                                                 @if (old('telefono' . $contador) === null) value="{{ $item->telefono }}"
@@ -279,7 +276,7 @@
                                                 <div class="inputContainer">
                                                     <input class="inputField form-control telefono" value="+503 "
                                                         id="tel1" name="telefono1" type="text"
-                                                        autocomplete="off" oninput="validarInput(this)"> 
+                                                        oninput="validarInput(this)">
                                                     <label class="inputFieldLabel" for="telefono">Teléfono</label>
                                                     <i class="inputFieldIcon fas fa-phone"></i>
                                                     <small style="color:red" class="error-message"></small>
