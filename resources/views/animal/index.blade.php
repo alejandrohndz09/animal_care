@@ -17,17 +17,6 @@
                             <h1>Animales </h1>
                             <input id="searchInput" class="inputField card" style="width: 50% " autocomplete="off"
                                 placeholder="🔍︎ Buscar" type="search">
-
-                                <div class="dropdown">
-                                    <button class="button btn-transparent" style="width: 30px;padding: 15px 5px" type="button"
-                                        id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                        <i class="svg-icon fas fa-ellipsis-vertical" style="color: #4c4c4c"></i>
-                                    </button>
-                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                        <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#tabla">Animales de
-                                                baja</a></li>
-                                    </ul>
-                                </div>
                         </div>
 
                         <table>
