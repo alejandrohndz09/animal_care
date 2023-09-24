@@ -224,20 +224,14 @@ $(document).ready(function () {
         }
     });
 
+    //Validacion de campos vacios en el formulario
     $("#miFormulario").submit(function (event) {
         var inputs = $(this).find("input"); // Obtener todos los campos de entrada en el formulario
 
         // Iterar a través de los campos de entrada
         for (var i = 0; i < inputs.length; i++) {
-            var input = inputs[i];
-            var inputValue = input.value.trim();
-            var inputName = input.name;
-            var errorSpan = $(input).siblings(".error-message");
-
-            // Excluir el campo DUI del proceso de validación de campos vacíos
-            if (inputName === "dui") {
-                continue;
-            }
+            var inputValue = inputs[i].value.trim();
+            var errorSpan = $(inputs[i]).siblings(".error-message");
 
             if (inputValue === "") {
                 event.preventDefault(); // Detener el envío del formulario
@@ -282,7 +276,7 @@ $(document).ready(function () {
         }
     });
 
-    //Muestra el modal con los detalles del miembro
+//Muestra el modal con los detalles del miembro
     $('#table').on('click', '.ver-button', function () {
         var idMiembro = $(this).data('id');
         var dui = $(this).data('dui');
@@ -290,7 +284,7 @@ $(document).ready(function () {
         var apellidos = $(this).data('apellido');
         var correo = $(this).data('correo');
 
-
+    
         $.ajax({
             url: 'miembro/telefonos/' + idMiembro, // La URL de la ruta definida en Laravel
             type: 'GET',

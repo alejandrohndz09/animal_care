@@ -31,7 +31,6 @@ Route::resource('animal', 'App\Http\Controllers\AnimalControlador');
 Route::put('/animal/update/{id}', 'App\Http\Controllers\AnimalControlador@update');
 Route::get('/animal/destroy/{id}', 'App\Http\Controllers\AnimalControlador@destroy');
 Route::get('/obtener-razas/{especie}', 'App\Http\Controllers\AnimalControlador@obtenerRazas');
-Route::get('/animal/alta/{id}', 'App\Http\Controllers\AnimalControlador@alta');
 
 Route::resource('raza', 'App\Http\Controllers\RazaController');
 Route::put('/raza/update/{id}', 'App\Http\Controllers\RazaController@update');
@@ -48,8 +47,7 @@ Route::get('miembro/telefonos/{id}', [MiembroController::class, 'ObtenerTelefono
 Route::get('/destroy/{id}', [MiembroController::class, 'destroy'])->name('miembros.destroy');
 Route::delete('/destroyTelefono/{id}', [MiembroController::class, 'destroyTelefono'])->name('miembros.destroyTelefono');
 Route::post('/validar-telefono', 'App\Http\Controllers\AnimalControlador@validarTelefono');
-
-
+/////////////////////////////////////////////////////////////////////////////////
 Route::resource('/albergue', 'App\Http\Controllers\AlbergueController');
 Route::put('albergue/update/{id}', [AlbergueController::class, 'update'])->name('albergue.update');
 Route::delete('/destroyAlbergue/{id}', [AlbergueController::class, 'destroy'])->name('albergue.destroy');
