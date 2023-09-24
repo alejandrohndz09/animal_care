@@ -28,7 +28,7 @@
 </div>
 
 <!-- Modal para los registros dados de baja-->
-<div class="modal fade" id="tabla" tabindex="-5" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="tabla" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-lg ">
         <div class="modal-content">
             <div class="modal-header">
@@ -73,7 +73,9 @@
                                             <button type="button" class="button button-primary btnDelete ver-button"
                                                 data-bs-pp="tooltip" data-bs-toggle="modal"
                                                 data-bs-target="#ModalToggle" style="width: 45%"
-                                                data-miembro="{{ json_encode($item) }}" data-bs-placement="top"
+                                                data-id="{{ $item->idMiembro }}" data-nombre="{{ $item->nombres }}"
+                                                data-apellido="{{ $item->apellidos }}" data-dui="{{ $item->dui }}"
+                                                data-correo="{{ $item->correo }}" data-bs-placement="top"
                                                 title="Ver detalles">
                                                 <i class="svg-icon fas fa-eye"></i>
                                             </button>
@@ -146,6 +148,7 @@
     </div>
 </div>
 
+
 <!-- Modal para ver detalles de los elementos de la lista-->
 <div class="modal fade" id="ModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel"
     tabindex="-1">
@@ -162,11 +165,11 @@
                 <p><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/2048px-User-avatar.svg.png"
                         alt="user" class="picture "
                         style="width: 15%; height: auto; margin-left: auto; margin-right: auto;"> </p>
-
                 <p>DUI: <span id="modalDui"></span></p>
                 <p>Miembro: <span id="modalNombres"></span> <span id="modalApellidos"></span></p>
                 <p>Correo: <span id="modalCorreo"></span></p>
                 <p>Telefono: <span id="telefonos"></span></p>
+
 
             </div>
         </div>
