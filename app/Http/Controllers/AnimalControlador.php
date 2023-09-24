@@ -243,4 +243,15 @@ class AnimalControlador extends Controller
         // Devuelve las razas en formato JSON
         return response()->json($razas);
     }
+
+    public function alta($id)
+    {
+        $miembros = Animal::find($id);
+        $miembros->estado = '1';
+        $miembros->save();
+        return view('animal.index')->with([
+            'animales' => Animal::where('estado',1)->get()
+        ]);
+    }
+
 }
