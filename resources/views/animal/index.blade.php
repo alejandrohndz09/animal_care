@@ -228,4 +228,16 @@
         </main>
         @include('animal.modalesAnimal')
     </div>
+    @if (session()->has('alert'))
+    <script>
+        Toast.fire({
+            icon: "{{ session()->get('alert')['type'] }}",
+            title: "{{ session()->get('alert')['message'] }}",
+        });
+
+        @php
+            session()->keep('alert');
+        @endphp
+    </script>
+@endif
 @endsection

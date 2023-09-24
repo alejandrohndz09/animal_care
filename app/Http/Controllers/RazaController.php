@@ -118,8 +118,23 @@ class RazaController extends Controller
     public function destroy($id)
     {
         $raza = Raza::find($id);
-        $raza->delete();
         
+        
+        if($raza->animals->isEmpty()){
+            $raza->delete();
+            $alert = array(
+             'type' => 'success',
+             'message' =>'El registro se ha eliminado exitosamente'
+             );
+         session()->flash('alert',$alert);
+         }else{
+             $alert = array(
+                 'type' => 'errror',
+                 'message' =>'No se puede eliminar el registro porque tiene datos asociados'
+             );
+             
+             session()->flash('alert',$alert);
+         }
         return view('raza.index')->with([
             'razas' => Raza::all()
         ]);
