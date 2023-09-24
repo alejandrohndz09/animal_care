@@ -84,7 +84,7 @@
                                     <i class="inputFieldIcon fas fa-syringe"></i>
                                     <input placeholder="Ej. Hepatitis, moquillo, herpes, etc."
                                         value="{{ isset($patologiaEdit) ? $patologiaEdit->patologia : old('patologia') }}"
-                                        class="inputField" autocomplete="off" name="Patología">
+                                            class="inputField" autocomplete="off" name="patologia">
                                     @error('patologia')
                                         <small style="color:red">{{ $message }}</small>
                                     @enderror

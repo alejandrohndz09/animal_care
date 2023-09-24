@@ -9,7 +9,7 @@ $('#exampleModalToggle').on('show.bs.modal', function (event) {
     $('#modalRecordePatologia').text(patologia);
 
     $('body').on('click', '#confirmar', function () {
-        $.get('destroyPatologia/' + id, function () {
+        $.get('/destroyPatologia/' + id, function () {
             // location.reload();
             window.location.href = '/patologia'
         });

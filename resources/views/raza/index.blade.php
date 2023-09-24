@@ -4,7 +4,19 @@
 @endsection
 
 @section('scripts')
+    <script src="{{ url('https://cdn.jsdelivr.net/npm/sweetalert2@10.3.5/dist/sweetalert2.min.js') }}"></script>
     <script src="{{ asset('js/validaciones/jsRaza.js') }}"></script>
+    @if (session()->has('alert'))
+        <script>
+            Toast.fire({
+                icon: "{{ session()->get('alert')['type'] }}",
+                title: "{{ session()->get('alert')['message'] }}",
+            });
+            @php
+                session()->keep('alert');
+            @endphp
+        </script>
+    @endif
 @endsection
 @section('content')
     <div id="layoutSidenav_content">
@@ -23,8 +35,8 @@
                                 <tr class="head">
                                     <th></th>
                                     <th>Código</th>
-                                    <th >Nombre de la raza</th>
-                                    <th >Especie perteneciente</th>
+                                    <th>Nombre de la raza</th>
+                                    <th>Especie perteneciente</th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -73,8 +85,7 @@
 
                                 <div class="inputContainer">
                                     <input id="raza" name="raza" class="inputField" placeholder="Ingrese acá"
-                                        type="text"
-                                        value="{{ isset($raza) ? old('raza', $raza->raza) : old('raza') }}"
+                                        type="text" value="{{ isset($raza) ? old('raza', $raza->raza) : old('raza') }}"
                                         autocomplete="off">
                                     <label class="inputFieldLabel" for="raza">Nombre de la raza*</label>
                                     <i class="inputFieldIcon fas fa-pen"></i>
