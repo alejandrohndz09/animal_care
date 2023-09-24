@@ -147,6 +147,11 @@
         </div>
     </div>
 </div>
+@php
+    $datoDesdeJS = '<script>
+        document.write(modalIdMiembro);
+    </script>';
+@endphp
 
 
 <!-- Modal para ver detalles de los elementos de la lista-->
@@ -165,11 +170,11 @@
                 <p><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/2048px-User-avatar.svg.png"
                         alt="user" class="picture "
                         style="width: 15%; height: auto; margin-left: auto; margin-right: auto;"> </p>
+
                 <p>DUI: <span id="modalDui"></span></p>
                 <p>Miembro: <span id="modalNombres"></span> <span id="modalApellidos"></span></p>
                 <p>Correo: <span id="modalCorreo"></span></p>
                 <p>Telefono: <span id="telefonos"></span></p>
-
 
             </div>
         </div>
