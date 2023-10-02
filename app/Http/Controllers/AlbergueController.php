@@ -24,16 +24,17 @@ class AlbergueController extends Controller
         $request->validate([
             'direccion' => 'required|unique:alvergue',
             'miembro' => 'required'
-        ],[
+        ], [
             'direccion.unique' => 'Esta dirección ya ha sido utilizada.',
         ]);
 
         //Guardar en BD
-        $miembros = new Alvergue();
-        $miembros->idAlvergue = $this->generarId();
-        $miembros->direccion = $request->post('direccion');
-        $miembros->idMiembro = $request->post('miembro');
-        $miembros->save();
+        $Albergue = new Alvergue();
+        $Albergue->idAlvergue = $this->generarId();
+        $Albergue->direccion = $request->post('direccion');
+        $Albergue->idMiembro = $request->post('miembro');
+        $Albergue->estado = 1;
+        $Albergue->save();
 
         $miembros = Miembro::all();
         $Albergues = Alvergue::all();
@@ -44,7 +45,8 @@ class AlbergueController extends Controller
         ]);
     }
 
-    public function show($id){
+    public function show($id)
+    {
         return view('albergue.detalle')->with([
             'albergue' => Alvergue::find($id),
         ]);
@@ -65,13 +67,11 @@ class AlbergueController extends Controller
 
     public function update(Request $request, $id)
     {
-
-
         //Valida si estan en la BD excluyendo al registro modificado
         $request->validate([
-            'direccion' => 'required|unique:alvergue,direccion,'. $id . ',idAlvergue',
+            'direccion' => 'required|unique:alvergue,direccion,' . $id . ',idAlvergue',
             'miembro' => 'required'
-        ],[
+        ], [
             'direccion.unique' => 'Esta dirección ya ha sido utilizada.',
         ]);
 
@@ -88,13 +88,18 @@ class AlbergueController extends Controller
     public function destroy($id)
     {
         $Albergue = Alvergue::find($id);
-        if (!$Albergue) {
-            return response()->json(['message' => 'El teléfono no se encontró o ya fue eliminado.'], 404);
-        }
+        $Albergue->estado = 0;
+        $Albergue->save();
 
-        $Albergue->delete();
+        return redirect()->route('albergue.index');
+    }
 
-        return response()->json(['message' => 'Teléfono eliminado con éxito.']);
+    public function alta($id)
+    {
+        $Albergue = Alvergue::find($id);
+        $Albergue->estado = 1;
+        $Albergue->save();
+        return redirect()->route('albergue.index');
     }
 
     public function generarId()

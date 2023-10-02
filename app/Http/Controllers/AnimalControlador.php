@@ -58,7 +58,7 @@ class AnimalControlador extends Controller
         $animal->sexo = $request->post('sexo');
         $animal->estado = 1;
         $animal->particularidad = $request->post('particularidad');
-        $animal->estado =1;
+        $animal->estado = 1;
         if ($request->hasFile('foto')) {
             $imagen = $request->file('foto');
             $nombreImagen = $animal->idAnimal . '.' . $imagen->getClientOriginalExtension();
@@ -69,31 +69,17 @@ class AnimalControlador extends Controller
         }
         $alert = array(
             'type' => 'success',
-            'message' =>'El registro se ha guardado exitosamente'
+            'message' => 'El registro se ha guardado exitosamente'
         );
-        
-        session()->flash('alert',$alert);
+
+        session()->flash('alert', $alert);
         $animal->save();
 
         return back()->with('success', 'Guardado con éxito');
     }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
     }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
         $animal = Animal::find($id);
@@ -102,83 +88,68 @@ class AnimalControlador extends Controller
             'animal' => $animal
         ]);
     }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         $request->validate([
             'foto' => 'image|mimes:jpeg,png,jpg|max:3000', // Puedes ajustar las reglas de validación según tus necesidades
-             'nombre' => 'required|min:3',
-             'especie' => 'required',
-             'fecha' => 'required|date|before_or_equal:today',
-             'raza' => 'required',
-             'sexo' => 'required|in:Hembra,Macho',
-         ], [
-             'fecha.before_or_equal' => 'La fecha ingresada no debe ser mayor a la de ahora.',
-         ]);
- 
-         $animal = Animal::find($id);
-         
-         $animal->nombre = $request->post('nombre');
-         $animal->fechaNacimiento = $request->post('fecha');
-         $animal->idRaza = $request->post('raza');
-         $animal->sexo = $request->post('sexo');
-         $animal->particularidad = $request->post('particularidad');
-         if ($request->hasFile('foto')) {
-             $imagen = $request->file('foto');
-             $nombreImagen = $animal->idAnimal . '.' . $imagen->getClientOriginalExtension();
-             $rutaImagen = public_path('imagenes'); // Ruta donde deseas guardar la imagen
-             $imagen->move($rutaImagen, $nombreImagen);
-             // Aquí puedes guardar $nombreImagen en tu base de datos o realizar otras acciones necesarias.
-             $animal->imagen='imagenes/' . $nombreImagen;
-         }
-         $animal->save();
-         $alert = array(
+            'nombre' => 'required|min:3',
+            'especie' => 'required',
+            'fecha' => 'required|date|before_or_equal:today',
+            'raza' => 'required',
+            'sexo' => 'required|in:Hembra,Macho',
+        ], [
+            'fecha.before_or_equal' => 'La fecha ingresada no debe ser mayor a la de ahora.',
+        ]);
+
+        $animal = Animal::find($id);
+
+        $animal->nombre = $request->post('nombre');
+        $animal->fechaNacimiento = $request->post('fecha');
+        $animal->idRaza = $request->post('raza');
+        $animal->sexo = $request->post('sexo');
+        $animal->particularidad = $request->post('particularidad');
+        if ($request->hasFile('foto')) {
+            $imagen = $request->file('foto');
+            $nombreImagen = $animal->idAnimal . '.' . $imagen->getClientOriginalExtension();
+            $rutaImagen = public_path('imagenes'); // Ruta donde deseas guardar la imagen
+            $imagen->move($rutaImagen, $nombreImagen);
+            // Aquí puedes guardar $nombreImagen en tu base de datos o realizar otras acciones necesarias.
+            $animal->imagen = 'imagenes/' . $nombreImagen;
+        }
+        $animal->save();
+        $alert = array(
             'type' => 'success',
-            'message' =>'El registro se ha actualizado exitosamente'
+            'message' => 'El registro se ha actualizado exitosamente'
         );
-        
-        session()->flash('alert',$alert);
-         return redirect()->route('animal.index')->with([
+
+        session()->flash('alert', $alert);
+        return redirect()->route('animal.index')->with([
             'animales' => Animal::where('estado', 1)->get(),
             'success' => 'Guardado con éxito'
         ]);
     }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         $animal = Animal::find($id);
-        $animal->estado=0;
+        $animal->estado = 0;
         
-        if($animal->expedientes->isEmpty()){
-           $animal->save(); 
-           $alert = array(
-            'type' => 'success',
-            'message' =>'El registro se ha eliminado exitosamente'
+        if ($animal->expedientes->isEmpty()) {
+            $animal->save();
+            $alert = array(
+                'type' => 'success',
+                'message' => 'El registro se ha eliminado exitosamente'
             );
-        session()->flash('alert',$alert);
-        }else{
+            session()->flash('alert', $alert);
+        } else {
             $alert = array(
                 'type' => 'errror',
-                'message' =>'No se puede eliminar el registro porque tiene datos asociados'
+                'message' => 'No se puede eliminar el registro porque tiene datos asociados'
             );
-            
-            session()->flash('alert',$alert);
+
+            session()->flash('alert', $alert);
         }
-     
-        
+
+
         return view('animal.index')->with([
             'animales' => Animal::where('estado', 1)->get()
         ]);
@@ -250,8 +221,7 @@ class AnimalControlador extends Controller
         $miembros->estado = '1';
         $miembros->save();
         return view('animal.index')->with([
-            'animales' => Animal::where('estado',1)->get()
+            'animales' => Animal::where('estado', 1)->get()
         ]);
     }
-
 }

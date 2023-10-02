@@ -21,8 +21,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-
-
 Route::get('/', function () {
     return view('dashboard.dashboard');
 });
@@ -47,17 +45,15 @@ Route::get('miembro/telefonos/{id}', [MiembroController::class, 'ObtenerTelefono
 Route::get('/destroy/{id}', [MiembroController::class, 'destroy'])->name('miembros.destroy');
 Route::delete('/destroyTelefono/{id}', [MiembroController::class, 'destroyTelefono'])->name('miembros.destroyTelefono');
 Route::post('/validar-telefono', 'App\Http\Controllers\AnimalControlador@validarTelefono');
-/////////////////////////////////////////////////////////////////////////////////
+
 Route::resource('/albergue', 'App\Http\Controllers\AlbergueController');
 Route::put('albergue/update/{id}', [AlbergueController::class, 'update'])->name('albergue.update');
-Route::delete('/destroyAlbergue/{id}', [AlbergueController::class, 'destroy'])->name('albergue.destroy');
-
+Route::get('/destroyAlbergue/{id}', [AlbergueController::class, 'destroy'])->name('albergue.destroy');
+Route::get('/albergue/alta/{id}', [AlbergueController::class, 'alta'])->name('albergue.alta');
 
 Route::resource('/especie', 'App\Http\Controllers\EspecieController');
 Route::put('especie/update/{id}', [EspecieController::class, 'update'])->name('especie.update');
 Route::get('/especie/destroy/{id}', 'App\Http\Controllers\EspecieController@destroy');
-
-
 
 Route::resource('/vacuna', 'App\Http\Controllers\VacunaController');
 Route::put('vacuna/update/{id}', [VacunaController::class, 'update'])->name('vacuna.update');
@@ -68,3 +64,4 @@ Route::resource('/patologia', 'App\Http\Controllers\PatologiaController');
 Route::put('patologia/update/{id}', [PatologiaController::class, 'update'])->name('patologia.update');
 Route::get('/destroyPatologia/{id}', 'App\Http\Controllers\PatologiaController@destroy');
 
+Route::resource('expediente', 'App\Http\Controllers\ExpedienteController');

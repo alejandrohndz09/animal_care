@@ -14,7 +14,7 @@
                     <div class="col-xl-7">
                         <div
                             style="width:100%; display: flex;  justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                            <h1>Miembros </h1>
+                            <h1>Animales </h1>
                             <input id="searchInput" class="inputField card" style="width: 50%; margin-left: 20% "
                                 autocomplete="off" placeholder="🔍︎ Buscar" type="search">
 
@@ -217,11 +217,7 @@
                                     <button type="submit" class="button button-pri">
                                         <i class="svg-icon fa-regular fa-floppy-disk"></i>
                                         <span class="lable">
-                                            @if (isset($animal))
-                                                Modificar
-                                            @else
-                                                Guardar
-                                            @endif
+                                            {{ isset($animal) ? 'Modificar' : 'Guardar' }}
                                         </span>
                                     </button>
                                     <button type="button" id="btnCancelar" class="button button-red"
