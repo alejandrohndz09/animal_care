@@ -44,6 +44,12 @@ class AlbergueController extends Controller
         ]);
     }
 
+    public function show($id){
+        return view('albergue.detalle')->with([
+            'albergue' => Alvergue::find($id),
+        ]);
+    }
+
     public function edit($id)
     {
         $AlbergueEdit = Alvergue::find($id);
@@ -94,14 +100,14 @@ class AlbergueController extends Controller
     public function generarId()
     {
         // Obtener el último registro de la tabla "animal"
-        $ultimoAnimal = Alvergue::latest('idAlvergue')->first();
+        $ultimoRegistro = Alvergue::latest('idAlvergue')->first();
 
-        if (!$ultimoAnimal) {
+        if (!$ultimoRegistro) {
             // Si no hay registros previos, comenzar desde AN0001
             $nuevoId = 'AL0001';
         } else {
-            // Obtener el número del último idAnimal
-            $ultimoNumero = intval(substr($ultimoAnimal->idAnimal, 2));
+            // Obtener el número del último id
+            $ultimoNumero = intval(substr($ultimoRegistro->idAlvergue, 2));
 
             // Incrementar el número para el nuevo registro
             $nuevoNumero = $ultimoNumero + 1;

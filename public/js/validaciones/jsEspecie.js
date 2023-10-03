@@ -9,7 +9,7 @@ $('#exampleModalToggle').on('show.bs.modal', function (event) {
       $('#modalRecordeEspecie').text(especie);
 
       $('body').on('click', '#confirmar', function () {
-        $.get('especie/destroy/'+ id, function () {
+        $.get('/especie/destroy/'+ id, function () {
             // location.reload();
             window.location.href = '/especie'
         });

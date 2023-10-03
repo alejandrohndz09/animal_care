@@ -40,6 +40,29 @@ $(document).ready(function () {
         window.location.href = '/albergue'
     });
 
+    $(".btnDelete").click(function (event) {
+        // Evitar la propagación del evento al hacer clic en la fila
+        event.stopPropagation();
+    });
+    $(".btnUpdate").click(function (event) {
+        // Evitar la propagación del evento al hacer clic en la fila
+        event.stopPropagation();
+    });
+
+
+    // Escuchar el click en una fila
+    $('.registro-row').on('click', function (event) {
+        // Verifica si el clic se realizó en un botón de editar o eliminar
+
+        if ($(event.target).is('a#btnUpdate') || $(event.target).is('a#btnDelete')) {
+            console.log('Presiono aqui en los botones');
+            return; // No muestres el modal si se hizo clic en un botón
+        } else {
+            var id = $(this).find('[data-id]').data('id');
+            window.location.href = '/albergue/' + id;
+        }
+    });
+
 });
 
 $(document).ready(function () {

@@ -23,7 +23,6 @@ function validarInput(input) {
 
 } function validarDui(input) {
     let duiValue = input.value;
-    const formatoDUI = /^\d{8}-\d$/;
 
     // Eliminar caracteres no válidos
     duiValue = duiValue.replace(/[^\d-]/g, '');
@@ -45,13 +44,46 @@ function validarInput(input) {
     input.value = duiValue;
 }
 
+function validarTexto(input) {
+    let duiValue = input.value;
+
+    // Eliminar caracteres no válidos (dejar solo letras y espacios)
+    duiValue = duiValue.replace(/[^a-zA-ZñÑáéíóúÁÉÍÓÚ\s]/g, '');
+
+    // Asignar el valor al campo de entrada
+    input.value = duiValue;
+}
+
 //Agregar un input telefono
 $(document).ready(function () {
+
+    document.getElementById("iconDui").style.color = '#cdcbcd';
+    // Escucha el evento de cambio del checkbox
+    $("#esMayorDeEdad").change(function (event) {
+        event.stopPropagation();
+        document.getElementById("iconDui").style.color = '#cdcbcd';
+
+        // Obtén el campo DUI
+        var duiInput = $("input[name='dui']");
+
+        // Habilitar o deshabilitar el campo DUI en función del estado del checkbox
+        if ($(this).is(":checked")) {
+            duiInput.prop("disabled", false);
+            duiInput.val(''); // Borra el contenido del campo DUI
+            document.getElementById("iconDui").style.color = "#6067eb";
+        } else {
+            duiInput.prop("disabled", true);
+            duiInput.val(''); // Borra el contenido del campo DUI
+            document.getElementById("iconDui").style.color = '#cdcbcd';
+        }
+    });
+
     //Habilitar tooltips
     var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-pp="tooltip"]'))
-    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+    tooltipTriggerList.map(function (tooltipTriggerEl) {
         return new bootstrap.Tooltip(tooltipTriggerEl)
     })
+
     $("#add-telefono").click(function () {
         var contador = $("#con");
         var con = parseInt(contador.val());
@@ -75,7 +107,7 @@ $(document).ready(function () {
 
             // Si pasa ambas validaciones, puedes agregar el nuevo campo de teléfono
             var newTelefonoField = `
-        <div  class="row" id="remove">
+        <div  class="row" id="remove${con}">
                <div class="col-xl-6">
                   <div class="inputContainer">
                        <input class="inputField form-control telefono"  id="tel`+ con + `"
@@ -85,7 +117,10 @@ $(document).ready(function () {
                 </div>
              <div class="col-xl-6">
                   <button type="button" class="button button-sec remove-telefono"
-                  data-bs-toggle="modal" >
+                  data-telefono="telefono${con}"
+                  data-remove="remove${con}"
+                  data-telefono-id="vacio" data-bs-pp="tooltip"
+                  data-bs-placement="top" title="Eliminar telefono">
                    <i class="svg-icon fas fa-minus"></i>
                   </button>
             </div>
@@ -96,75 +131,97 @@ $(document).ready(function () {
 
     });
 
-
-    //Remover telefono
     $("#telefono-container").on("click", ".remove-telefono", function () {
-        var telefonoId = $(this).data("telefono-id");
-        var contador = parseInt($("#con").val());
+        var telefonoId = $(this).data("telefono-id"); // Almacenar telefonoId
+        var removeList = $(this).data("remove"); // Almacenar el id que se eliminara
 
-        // Obtén el elemento por su ID para eliminarlo de la BD
-        var elemento = document.getElementById('DeleteCell');
+        var telefono = $(this).data("telefono"); // Obtener el name del input dinamico agregado por el usuario para obtener el valor
+        var valorGuardado = $("input[name='" + telefono + "']").val();//Guardar valor del input en especifico que se selecciono
+        var telefonoBD = $(this).data("telefono-e"); // Numero de BD para mostrar en el modal si quiere eliminarlo o no
 
-        //Verifica si el elememto es nulo entonces significa que el telefono no esta guardado en la BD
-        if (elemento != null) {
-            // El elemento existe en el DOM
-            var valor = elemento.value;
-            //Elimina registro
-            if (valor) {
-                $.ajax({
+        //Verifica si el input esta vacio entonces no mostrara el modal sino solo lo eliminara
+        if (valorGuardado === "+503 ") {
 
-                    url: "/destroyTelefono/" + telefonoId,
-                    method: "DELETE",
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    success: function () {
-                        console.log('Condición cumplida: ');
-                        // Eliminar el div del DOM si la eliminación en el servidor fue exitosa
-                        var divAEliminar = document.getElementById('remove');
-                        console.log(divAEliminar);
-                        divAEliminar.remove();
-                        var contador = $("#con");
-                        var con = parseInt(contador.val());
-                        con = con - 1;
-                        contador.val(con);
+            // Elimina input
+            $("#" + removeList).remove();
+            var contador = $("#con");
+            var con = parseInt(contador.val());
+            con = con - 1; // decrementa el valor de 'con' en 1
+            contador.val(con); // Actualiza el valor en el campo de entrada
 
-                        // Abre el modal
-                        $('#modalEliminacion').modal('show');
+        }//Sino entonces esta con un registro pregunta al usuario 
+        else {
 
-                        // Ocultar el modal después de 4 segundos
-                        setTimeout(function () {
-                            $('#modalEliminacion').modal('hide');
-                        }, 2000);
-
-                    },
-                    error: function (xhr, status, error) {
-                        //console.error(error);
-                        console.log(error);
-                        alert("Ocurrió un error al eliminar el teléfono." + xhr.responseText);
-                    }
-                });
-
+            //Si hay datos en telefono signica que estamos eliminando un registro de la BD y para confirmacion obtenemos el data 
+            if (telefono != null) {
+                // Actualiza el contenido del modal con los detalles del registro
+                $('#telefono').text(valorGuardado);
+            } else {
+                // Actualiza el contenido del modal con los detalles del registro
+                $('#telefono').text(telefonoBD);
             }
-        } else {
-            $('#ModalTelefono').on('show.bs.modal', function () {
 
-                $('body').on('click', '#confirmar', function () {
-                    // Obtener el valor ingresado en el input
-                    var dato = document.getElementById('miInput').value;
 
-                    // Si no se cumple la condición, eliminar el campo de teléfono sin mensaje de la BD de eliminacion de registros
-                    $(this).closest("#remove").remove();
+            // Abrir el modal de confirmación
+            $("#modalTelefono").modal("show");
+
+
+            $("#confirmarCell").on("click", function () {
+                // Cerrar el modal de confirmación
+
+                $("#modalTelefono").modal("hide");
+
+                console.log(telefonoId);
+
+                // Si esta vacio significa que no esta guardado el telefono en la BD
+                if (telefonoId === "vacio") {
+                    console.log('Aqui el if de eliminar sin AJAX');
+
+                    // Elimina input
+                    $("#" + removeList).remove();
                     var contador = $("#con");
                     var con = parseInt(contador.val());
-
                     con = con - 1; // decrementa el valor de 'con' en 1
                     contador.val(con); // Actualiza el valor en el campo de entrada
-                });
+
+                } else {
+                    // Realizar la eliminación del registro utilizando AJAX
+                    $.ajax({
+                        url: "/destroyTelefono/" + telefonoId,
+                        method: "DELETE",
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function () {
+                            // Eliminar el elemento del DOM si la eliminación en el servidor fue exitosa
+                            var divAEliminar = $("#" + removeList);
+                            divAEliminar.remove();
+
+                            // Restar 1 al contador
+                            var contador = $("#con");
+                            var con = parseInt(contador.val());
+                            con = con - 1;
+                            contador.val(con);
+
+                            // Abre el modal
+                            $('#modalEliminacion').modal('show');
+
+                            // Ocultar el modal después de 4 segundos
+                            setTimeout(function () {
+                                $('#modalEliminacion').modal('hide');
+                            }, 1050);
+
+                            telefonoId = "";
+                        },
+                        error: function (xhr, status, error) {
+                            console.log(error);
+
+                        }
+                    });
+                }
             });
+
         }
-
-
     });
 
     //Validacion de campos vacios en el formulario
@@ -211,69 +268,60 @@ $(document).ready(function () {
         window.location.href = '/miembro'
     });
 
-    $(".btnDelete").click(function (event) {
-        // Evitar la propagación del evento al hacer clic en la fila
-        event.stopPropagation();
-    });
-    $(".btnUpdate").click(function (event) {
-        // Evitar la propagación del evento al hacer clic en la fila
-        event.stopPropagation();
-    });
-
-
-    // Escuchar el click en una fila
-    $('.miembro-row').on('click', function (event) {
-        // Verifica si el clic se realizó en un botón de editar o eliminar
-
-        if ($(event.target).is('a#btnUpdate') || $(event.target).is('a#btnDelete')) {
-            console.log('Presiono aqui en los botones');
-            return; // No muestres el modal si se hizo clic en un botón
-        } else {
-
-            var idMiembro = $(this).find('[data-id]').data('id');
-            var dui = $(this).find('[data-dui]').data('dui');
-            var nombres = $(this).find('[data-nombre]').data('nombre');
-            var apellidos = $(this).find('[data-apellido]').data('apellido');
-            var correo = $(this).find('[data-correo]').data('correo');
-
-            $.ajax({
-                url: 'miembro/telefonos/' + idMiembro, // La URL de la ruta definida en Laravel
-                type: 'GET',
-                dataType: 'json',
-                success: function (data) {
-                    var isFirst = true; // Variable para rastrear si es el primer registro
-                    $('#telefonos').empty();
-                    for (var key in data) {
-                        if (data.hasOwnProperty(key)) {
-                            var text = data[key]; // Obtén el valor actual
-
-                            // Aplica el estilo CSS solo al primer registro
-                            if (isFirst) {
-                                $('#telefonos').append('<br>' + text);
-                                isFirst = false; // Cambia el valor de isFirst para que los siguientes registros no apliquen el estilo
-                            } else {
-                                // Inserta los registros restantes sin el estilo
-                                $('#telefonos').append('<br>' + text);
-                            }
-                        }
-                    }
-                },
-                error: function (error) {
-                    console.error('Error en la solicitud:', error);
-                }
-            });
-
-            // Llena el modal con los datos correspondientes
-            $('#modalIdMiembro').text(idMiembro);
-            $('#modalDui').text(dui);
-            $('#modalNombres').text(nombres);
-            $('#modalApellidos').text(apellidos);
-            $('#modalCorreo').text(correo);
-
-            // Abre el modal
-            $('#ModalToggle').modal('show');
+    $(".btnUpdate").click(function () {
+        var dui = $(this).data('dui');
+        console.log(dui);
+        if (dui != null) {
+            $('#esMayorDeEdad').prop('checked', true);
         }
     });
 
+//Muestra el modal con los detalles del miembro
+    $('#table').on('click', '.ver-button', function () {
+        var idMiembro = $(this).data('id');
+        var dui = $(this).data('dui');
+        var nombres = $(this).data('nombre');
+        var apellidos = $(this).data('apellido');
+        var correo = $(this).data('correo');
+
+    
+        $.ajax({
+            url: 'miembro/telefonos/' + idMiembro, // La URL de la ruta definida en Laravel
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                var isFirst = true; // Variable para rastrear si es el primer registro
+                $('#telefonos').empty();
+                for (var key in data) {
+                    if (data.hasOwnProperty(key)) {
+                        var text = data[key]; // Obtén el valor actual
+
+                        // Aplica el estilo CSS solo al primer registro
+                        if (isFirst) {
+                            $('#telefonos').append('<br>' + text);
+                            isFirst = false; // Cambia el valor de isFirst para que los siguientes registros no apliquen el estilo
+                        } else {
+                            // Inserta los registros restantes sin el estilo
+                            $('#telefonos').append('<br>' + text);
+                        }
+                    }
+                }
+            },
+            error: function (error) {
+                console.error('Error en la solicitud:', error);
+            }
+        });
+
+        // Llena el modal con los datos correspondientes
+        $('#modalIdMiembro').text(idMiembro);
+        $('#modalDui').text(dui);
+        $('#modalNombres').text(nombres);
+        $('#modalApellidos').text(apellidos);
+        $('#modalCorreo').text(correo);
+
+        // Abre el modal
+        $('#ModalToggle').modal('show');
+    });
 
 });
+

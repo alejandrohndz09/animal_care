@@ -131,9 +131,8 @@ class PatologiaController extends Controller
     public function destroy($id)
     {
         $patologia=Patologia::find($id);
-        $patologia->delete();
-
         
+        $patologia->delete();        
         return back()->with('success', 'Eliminado con éxito');
                
               

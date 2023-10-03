@@ -67,6 +67,12 @@ class AnimalControlador extends Controller
             // Aquí puedes guardar $nombreImagen en tu base de datos o realizar otras acciones necesarias.
             $animal->imagen = 'imagenes/' . $nombreImagen;
         }
+        $alert = array(
+            'type' => 'success',
+            'message' =>'El registro se ha guardado exitosamente'
+        );
+        
+        session()->flash('alert',$alert);
         $animal->save();
 
         return back()->with('success', 'Guardado con éxito');
@@ -133,7 +139,12 @@ class AnimalControlador extends Controller
              $animal->imagen='imagenes/' . $nombreImagen;
          }
          $animal->save();
- 
+         $alert = array(
+            'type' => 'success',
+            'message' =>'El registro se ha actualizado exitosamente'
+        );
+        
+        session()->flash('alert',$alert);
          return redirect()->route('animal.index')->with([
             'animales' => Animal::where('estado', 1)->get(),
             'success' => 'Guardado con éxito'
@@ -150,7 +161,23 @@ class AnimalControlador extends Controller
     {
         $animal = Animal::find($id);
         $animal->estado=0;
-        $animal->save();
+        
+        if($animal->expedientes->isEmpty()){
+           $animal->save(); 
+           $alert = array(
+            'type' => 'success',
+            'message' =>'El registro se ha eliminado exitosamente'
+            );
+        session()->flash('alert',$alert);
+        }else{
+            $alert = array(
+                'type' => 'errror',
+                'message' =>'No se puede eliminar el registro porque tiene datos asociados'
+            );
+            
+            session()->flash('alert',$alert);
+        }
+     
         
         return view('animal.index')->with([
             'animales' => Animal::where('estado', 1)->get()
@@ -216,4 +243,15 @@ class AnimalControlador extends Controller
         // Devuelve las razas en formato JSON
         return response()->json($razas);
     }
+
+    public function alta($id)
+    {
+        $miembros = Animal::find($id);
+        $miembros->estado = '1';
+        $miembros->save();
+        return view('animal.index')->with([
+            'animales' => Animal::where('estado',1)->get()
+        ]);
+    }
+
 }

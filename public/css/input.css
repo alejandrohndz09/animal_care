@@ -78,20 +78,9 @@
   input[type="radio"]:checked{
     border-color: #6c36b2;  
     transform: translateZ(0px);
-    background-color: #9b4eff;
+    background-color: #6067eb;
   }
-  .inputContainer>[type="date"]::-webkit-calendar-picker-indicator {
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    color: transparent;
-    background: 0 0;
-    margin: 0;
-    opacity: 0;
-    pointer-events: auto;
-    }
+  
 
   .button {
     display: flex;
@@ -134,6 +123,9 @@
   }
   .button-red >.svg-icon{
     color:  #d02929;
+  }
+  .button-transparent{
+    background: transparent;
   }
 
   .button-blue{
@@ -212,8 +204,9 @@
     
 }
 
-.modal-content p {
-  margin-bottom: 5px;
+.modal-content  {
+  margin-bottom: 10px;
+  line-height: 1.2;
   /* Puedes ajustar este valor según tus necesidades para reducir el interlineado */
 }
 
@@ -246,4 +239,30 @@
   text-align: center;
   line-height: 30px;
   /* Para centrar el texto verticalmente en el círculo */
+}
+
+.circle-button-warning{
+  width: 30px;
+  /* Ajusta el ancho y alto según tu preferencia */
+  height: 30px;
+  background-color: #ffffff;
+  color: #bacb2188;
+  border: none;
+  border-radius: 50%;
+  /* El valor debe ser la mitad del ancho o alto para lograr un círculo */
+  cursor: pointer;
+  text-align: center;
+  line-height: 30px;
+  /* Para centrar el texto verticalmente en el círculo */
+}
+
+input[type="checkbox"]:checked{
+  border-color: #6067eb;  
+  transform: translateZ(0px);
+  background-color: #6067eb;
+}
+/* Estilo para el campo de entrada deshabilitado */
+input[disabled] + label,
+input[disabled]  {
+  opacity: 0.2; /* Cambia la opacidad a un valor menor (0.6 en este ejemplo) */
 }

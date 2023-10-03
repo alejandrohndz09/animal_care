@@ -21,11 +21,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
 
-Route::get('/home', function () {
+
+Route::get('/', function () {
     return view('dashboard.dashboard');
 });
 
@@ -34,27 +32,17 @@ Route::put('/animal/update/{id}', 'App\Http\Controllers\AnimalControlador@update
 Route::get('/animal/destroy/{id}', 'App\Http\Controllers\AnimalControlador@destroy');
 Route::get('/obtener-razas/{especie}', 'App\Http\Controllers\AnimalControlador@obtenerRazas');
 
+Route::resource('raza', 'App\Http\Controllers\RazaController');
+Route::put('/raza/update/{id}', 'App\Http\Controllers\RazaController@update');
+Route::get('/raza/destroy/{id}', 'App\Http\Controllers\RazaController@destroy');
+
+
 Route::resource('miembro1', 'App\Http\Controllers\MiembroController1');
 Route::put('/miembro1/update/{id}', 'App\Http\Controllers\MiembroController1@update');
 
- 
-Route::get('/form1', function () {
-    return view('formularios.form1');
-});
-
-Route::get('/form2', function () {
-    return view('formularios.form2');
-});
-
-Route::get('/form3', function () {
-    return view('formularios.form3');
-});
-
-
-
-
 Route::resource('/miembro', 'App\Http\Controllers\MiembroController');
 Route::put('miembro/update/{id}', [MiembroController::class, 'update'])->name('miembros.update');
+Route::get('miembro/Alta/{id}', [MiembroController::class, 'alta'])->name('miembros.alta');
 Route::get('miembro/telefonos/{id}', [MiembroController::class, 'ObtenerTelefonos'])->name('miembro.telefono');
 Route::get('/destroy/{id}', [MiembroController::class, 'destroy'])->name('miembros.destroy');
 Route::delete('/destroyTelefono/{id}', [MiembroController::class, 'destroyTelefono'])->name('miembros.destroyTelefono');

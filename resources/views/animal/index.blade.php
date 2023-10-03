@@ -10,8 +10,6 @@
     <div id="layoutSidenav_content">
         <main>
             <div class="container-fluid px-4 py-4">
-
-
                 <div class="row mt-3">
                     <div class="col-xl-7">
                         <div
@@ -25,11 +23,11 @@
                             <thead>
                                 <tr class="head">
                                     <th></th>
+                                    <th>Código</th>
                                     <th>Nombre</th>
-                                    <th>Edad</th>
                                     <th>Especie</th>
                                     <th>Raza</th>
-                                    <th>Sexo</th>
+                                    <th>Edad</th>
                                     <th>
                                     </th>
                                 </tr>
@@ -40,15 +38,15 @@
                                 @foreach ($animales as $a)
                                     <tr>
                                         <td>
-                                            <img src="{{isset($a->imagen)?asset($a->imagen):'https://static.vecteezy.com/system/resources/previews/017/783/245/original/pet-shop-silhouette-logo-template-free-vector.jpg'}}"
+                                            <img src="{{isset($a->imagen)?asset($a->imagen):asset('img/especie.png')}}"
                                                 alt="user" class="picture" />
                                         </td>
+                                        <td>{{ $a->idAnimal }}</td>
                                         <td>{{ $a->nombre }}</td>
-                                        <td>{{ AnimalControlador::calcularEdad(explode(' ', $a->fechaNacimiento)[0]) }}
-                                        </td>
                                         <td>{{ $a->raza->especie->especie }}</td>
                                         <td>{{ $a->raza->raza }}</td>
-                                        <td>{{ $a->sexo }}</td>
+                                        <td>{{ AnimalControlador::calcularEdad(explode(' ', $a->fechaNacimiento)[0]) }}
+                                        </td>
                                         <td>
                                             <div
                                                 style="display: flex; align-items: flex-end; gap: 3px; justify-content: center">
@@ -69,9 +67,7 @@
                                 @endforeach
                             </tbody>
                         </table>
-                        <div id="pagination">
-
-                        </div>
+                        <div id="pagination"></div>
                     </div>
                     <div class="col-xl-5">
                         <div class="card  mb-4" style="border:none; padding-bottom: 25px !important; width: 100%">
@@ -232,4 +228,16 @@
         </main>
         @include('animal.modalesAnimal')
     </div>
+    @if (session()->has('alert'))
+    <script>
+        Toast.fire({
+            icon: "{{ session()->get('alert')['type'] }}",
+            title: "{{ session()->get('alert')['message'] }}",
+        });
+
+        @php
+            session()->keep('alert');
+        @endphp
+    </script>
+@endif
 @endsection

@@ -19,7 +19,7 @@
                     <div class="col-xl-7">
                         <div
                             style="width:100%; display: flex;  justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                            <h1>Vacuna </h1>
+                            <h1>Vacunas</h1>
                             <input id="searchInput" class="inputField card" style="width: 50% " autocomplete="off"
                                 placeholder="🔍︎ Buscar" type="search">
                         </div>
@@ -27,10 +27,11 @@
                         <table>
                             <thead>
                                 <tr class="head">
-                                    <th style="width: 10%"></th>
-                                    Vacuna
-                                    </th>
                                     <th></th>
+                                    <th>Código</th>
+                                    <th style="width: 40%">
+                                        Nombre de vacuna
+                                    </th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -38,9 +39,11 @@
 
                                 @foreach ($vacuna as $v)
                                     <tr>
-
+                                        <td>
+                                            <img src="{{ asset('img/vacuna.png') }}" alt="vacuna" class="picture" />
+                                        </td>
                                         <td>{{ $v->idVacuna }}</td>
-                                        <td>{{ $v->vacuna }}</td>
+                                        <td style="width: 40%">{{ $v->vacuna }}</td>
                                         <td>
 
                                             <div
@@ -53,7 +56,8 @@
                                                 </a>
                                                 <button type="button" class="button button-red" style="width: 45%"
                                                     data-bs-toggle="modal" data-bs-target="#exampleModalToggle"
-                                                    data-id="{{ $v->idVacuna }}" data-vacuna="{{ $v->vacuna }}">
+                                                    data-id="{{ $v->idVacuna }}" data-vacuna="{{ $v->vacuna }}"
+                                                    data-bs-pp="tooltip" data-bs-placement="top" title="Eliminar">
                                                     <i class="svg-icon fas fa-trash"></i>
                                                 </button>
                                             </div>
@@ -64,9 +68,7 @@
                             </tbody>
                         </table>
 
-                        <div id="pagination">
-
-                        </div>
+                        <div id="pagination"></div>
                     </div>
                     <div class="col-xl-5">
                         <div class="card  mb-4" style="border:none; padding-bottom: 25px !important; width: 100%">
@@ -80,80 +82,71 @@
                                 @if (isset($vacunaEdit))
                                     @method('PUT') <!-- Utilizar el método PUT para la actualización -->
                                 @endif
-                                <div class="row">
-                                    <div class="col-xl-12">
-                                        <div class="inputContainer">
-                                            <label class="inputFieldLabel" autocomplete="off" for="vacuna">Vacuna</label>
-                                            <i class="inputFieldIcon fas fa-syringe"></i>
-                                            <input placeholder="Vacuna"
-                                                value="{{ isset($vacunaEdit) ? $vacunaEdit->vacuna : old('vacuna') }}"
-                                                class="inputField" name="vacuna">
-                                            @error('vacuna')
-                                                <small style="color:red">{{ $message }}</small>
-                                            @enderror
-                                        </div>
-                                    </div>
 
-                                    <div style="display: flex; align-items: flex-end; gap: 10px; justify-content: center">
-                                        <button type="submit" class="button button-pri">
-                                            <i class="svg-icon fa-regular fa-floppy-disk"></i>
-                                            <span class="lable">
-                                                @if (isset($vacunaEdit))
-                                                    Modificar
-                                                @else
-                                                    Guardar
-                                                @endif
-                                            </span>
-                                        </button>
-                                        <button onclick="{{ url('vacuna') }}" type="button" id="btnCancelar"
-                                            class="button button-red">
-                                            <i class="svg-icon fas fa-rotate-right"></i>
-                                            <span class="lable">Cancelar</span>
-                                        </button>
-                                    </div>
+                                <div class="inputContainer">
+                                    <label class="inputFieldLabel" autocomplete="off" for="vacuna">Nombre de
+                                        vacuna*</label>
+                                    <i class="inputFieldIcon fas fa-syringe"></i>
+                                    <input placeholder="Ingrese acá"
+                                        value="{{ isset($vacunaEdit) ? $vacunaEdit->vacuna : old('vacuna') }}"
+                                        class="inputField" name="vacuna">
+                                    @error('vacuna')
+                                        <small style="color:red">{{ $message }}</small>
+                                    @enderror
+                                </div>
+
+                                <p style="margin-top: -25px;">(*)Campos Obligatorios</p>
+                                <div style="display: flex; align-items: flex-end; gap: 10px; justify-content: center">
+                                    <button type="submit" class="button button-pri">
+                                        <i class="svg-icon fa-regular fa-floppy-disk"></i>
+                                        <span class="lable">
+                                            @if (isset($vacunaEdit))
+                                                Modificar
+                                            @else
+                                                Guardar
+                                            @endif
+                                        </span>
+                                    </button>
+                                    <button onclick="{{ url('vacuna') }}" type="button" id="btnCancelar"
+                                        class="button button-red">
+                                        <i class="svg-icon fas fa-rotate-right"></i>
+                                        <span class="lable">Cancelar</span>
+                                    </button>
+                                </div>
                             </form>
                         </div>
                     </div>
                 </div>
+            </div>
 
 
+            <!--Modal-->
+            <form action="" id="form-edit" name="form" method="POST">
+                @csrf
+                <div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel"
+                    tabindex="-1">
+                    <div class="modal-dialog modal-dialog-centered">
 
-            
-    </div>
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalToggleLabel">Desea eliminar este registro?</h5>
 
+                            </div>
+                            <div class="modal-body">
+                                <!-- Aquí puedes mostrar los detalles del registro utilizando el id -->
+                                <p>ID del registro: <span id="modalRecordCodigo"></span></p>
+                                <!-- Otros detalles del registro -->
+                                <p>Vacuna: <span id="modalRecordeVacuna"></span></p>
 
-    <!--Modal-->
-    <form action="" id="form-edit" name="form" method="POST">
-        @csrf
-        <div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel"
-            tabindex="-1">
-            <div class="modal-dialog modal-dialog-centered">
-
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalToggleLabel">Desea eliminar este registro?</h5>
-
-                    </div>
-                    <div class="modal-body">
-                        <!-- Aquí puedes mostrar los detalles del registro utilizando el id -->
-                        <p>ID del registro: <span id="modalRecordCodigo"></span></p>
-                        <!-- Otros detalles del registro -->
-                        <p>Vacuna: <span id="modalRecordeVacuna"></span></p>
-
-                    </div>
-                    <div class="modal-footer">
-                        <button id="confirmar" type="button" class="btn btn-primary"> Eliminar</button>
-                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                            </div>
+                            <div class="modal-footer">
+                                <button id="confirmar" type="button" class="btn btn-primary"> Eliminar</button>
+                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
-
-
-            </div>
-        
-
-    </form>
-
-
-    </main>
+            </form>
+        </main>
     </div>
-    @endsection
+@endsection
