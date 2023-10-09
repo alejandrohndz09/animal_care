@@ -77,9 +77,16 @@ class AnimalControlador extends Controller
 
         return back()->with('success', 'Guardado con éxito');
     }
-    public function show($id)
+
+
+      public function show($id)
     {
+        return view('animal.detalles')->with([
+            'animal' => Animal::find($id),
+        ]);
     }
+
+
     public function edit($id)
     {
         $animal = Animal::find($id);
@@ -88,6 +95,7 @@ class AnimalControlador extends Controller
             'animal' => $animal
         ]);
     }
+
     public function update(Request $request, $id)
     {
         $request->validate([

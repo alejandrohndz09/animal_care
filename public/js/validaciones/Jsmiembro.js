@@ -57,7 +57,6 @@ function validarTexto(input) {
 //Agregar un input telefono
 $(document).ready(function () {
 
-    document.getElementById("iconDui").style.color = '#cdcbcd';
     // Escucha el evento de cambio del checkbox
     $("#esMayorDeEdad").change(function (event) {
         event.stopPropagation();
@@ -281,15 +280,6 @@ $(document).ready(function () {
     $("#btnCancelar").click(function () {
         window.location.href = '/miembro'
     });
-
-    $(".btnUpdate").click(function () {
-        var dui = $(this).data('dui');
-        console.log(dui);
-        if (dui != null) {
-            $('#esMayorDeEdad').prop('checked', true);
-        }
-    });
-
 
     $(".btnDelete").click(function (event) {
         // Evitar la propagación del evento al hacer clic en la fila

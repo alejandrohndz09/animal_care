@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AlbergueController;
 use App\Http\Controllers\EspecieController;
+use App\Http\Controllers\ExpedienteController;
 use App\Http\Controllers\MiembroController;
 use App\Http\Controllers\PatologiaController;
 use App\Http\Controllers\VacuanaController;
@@ -65,3 +66,6 @@ Route::put('patologia/update/{id}', [PatologiaController::class, 'update'])->nam
 Route::get('/destroyPatologia/{id}', 'App\Http\Controllers\PatologiaController@destroy');
 
 Route::resource('expediente', 'App\Http\Controllers\ExpedienteController');
+Route::put('/expediente/update/{id}', [ExpedienteController::class, 'update']);
+Route::get('/expedientedestroy/{id}', 'App\Http\Controllers\ExpedienteController@destroy');
+Route::get('/expedienteAlta/{id}', 'App\Http\Controllers\ExpedienteController@alta');

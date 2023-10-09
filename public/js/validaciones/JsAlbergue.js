@@ -42,7 +42,6 @@ $(document).ready(function () {
         event.stopPropagation();
     });
 
-
     // Escuchar el click en una fila
     $('.registro-row').on('click', function (event) {
         // //     // Verifica si el clic se realizó en un botón de editar o eliminar

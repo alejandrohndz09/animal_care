@@ -134,33 +134,19 @@ function imagenVistaPrevia() {
         event.stopPropagation();
     });
 
+
+    // Escuchar el click en una fila
     $('.animal-row').on('click', function (event) {
-        // Verifica si el clic fue en un botón dentro de la fila
-        if ($(event.target).is('.btnUpdate, .btnDelete')) {
-            return; // Evita abrir el modal si se hizo clic en un botón
-        }
+        // //     // Verifica si el clic se realizó en un botón de editar o eliminar
 
-        var button = $(this); // Fila de la tabla que se hizo clic
-        var id = button.data('animal').idAnimal; // Obtiene el valor del atributo data-id
-        var nombre = button.data('animal').nombre; // Obtiene el valor del atributo data-nombre
-        console.log(imagen);
-        //var especie = button.data('animal').raza.especie.especie; // Obtiene el valor del atributo data-especie
-       // var raza = button.data('animal').raza.raza; // Obtiene el valor del atributo data-raza
-        var imagen = button.data('animal').imagen;
+        if ($(event.target).is('a#btnUpdate') || $(event.target).is('a#btnDelete')) {
 
-        // Actualiza el contenido del modal con los detalles del registro
-        $('#modalCodigo').text(id);
-        $('#modalNombre').text(nombre);
-        $('#modalEspecie').text(especie);
-        $('#modalRaza').text(raza);
-        if (imagen != null) {
-            document.getElementById("imagenModal").src = imagen;
+            return; // No muestres el modal si se hizo clic en un botón
         } else {
-            document.getElementById("imagenModal").src = 'https://static.vecteezy.com/system/resources/previews/017/783/245/original/pet-shop-silhouette-logo-template-free-vector.jpg';
+            var button = $(this); // Fila de la tabla que se hizo clic
+            var id = button.data('animal').idAnimal; // Obtiene el valor del atributo data-id
+            window.location.href = '/animal/' + id;
         }
-
-        // Abre el modal
-        $('#ModalDetalle').modal('show');
     });
 
 }

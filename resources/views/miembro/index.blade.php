@@ -135,7 +135,7 @@
                                                 {{ isset($miembroEdit) ? (empty($miembroEdit->dui) ? 'disabled' : '') : (old('dui') == '' ? 'disabled' : '') }}
                                                 oninput="validarDui(this)">
                                             <label class="inputFieldLabel" name="texto">DUI*</label>
-                                            <i class="inputFieldIcon fas fa-id-card" id="iconDui" name="logoDui"></i>
+                                            <i class="inputFieldIcon fas fa-id-card" id="iconDui" style="color:  {{ isset($miembroEdit) ? (empty($miembroEdit->dui) ? '#cdcbcd' : '#6067eb') : (old('dui') == '' ? '#cdcbcd' : '#6067eb') }}" name="logoDui"></i>
                                             @error('dui')
                                                 <small style="color:red">{{ $message }}</small>
                                             @enderror
@@ -146,7 +146,8 @@
                                         <div class="inputContainer">
                                             <div style="padding: 3px 15px">
                                                 <div class="form-check form-switch">
-                                                    <input class="form-check-input" name="esMayorDeEdad" type="checkbox" id="esMayorDeEdad">
+                                                    <input class="form-check-input" name="esMayorDeEdad" type="checkbox" id="esMayorDeEdad"
+                                                    {{ isset($miembroEdit) ? (empty($miembroEdit->dui) ? '' : 'checked') : (old('dui') == '' ? '' : 'checked') }} >
                                                     <label class="form-check-label" for="esMayorDeEdad">¿Es mayor de
                                                         edad?</label>
                                                 </div>
@@ -177,7 +178,7 @@
                                         <div class="col-xl-6">
                                             <div class="inputContainer">
                                                 <input class="inputField form-control telefono" value="+503 "
-                                                    id="tel" name="telefono1" type="text"
+                                                    id="tel" name="telefono1" type="text" autocomplete="off"
                                                     oninput="validarInput(this)">
                                                 <label class="inputFieldLabel" for="telefono">Teléfono</label>
                                                 <i class="inputFieldIcon fas fa-phone"></i>
