@@ -33,7 +33,6 @@
                                             baja</a></li>
                                 </ul>
                             </div>
-
                         </div>
                         <table id="table">
                             <thead>
@@ -50,7 +49,7 @@
 
                                 @foreach ($datos as $item)
                                     @if ($item->estado == 1)
-                                        <tr class="miembro-row">
+                                        <tr class="miembro-row" data-miembro="{{ json_encode($item) }}">
                                             <td style="width: 10%">
                                                 <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/2048px-User-avatar.svg.png"
                                                     alt="user" class="picture" />
@@ -74,23 +73,9 @@
                                                     <button type="button" class="button button-red btnDelete"
                                                         data-bs-pp="tooltip" data-bs-toggle="modal"
                                                         data-bs-target="#exampleModalToggle" style="width: 45%"
-                                                        data-id="{{ $item->idMiembro }}" data-nombre="{{ $item->nombres }}"
-                                                        data-apellido="{{ $item->apellidos }}"
-                                                        data-dui="{{ $item->dui }}" data-correo="{{ $item->correo }}"
-                                                        data-bs-placement="top" title="Dar de baja">
+                                                        data-miembro="{{ json_encode($item) }}" data-bs-placement="top"
+                                                        title="Dar de baja">
                                                         <i class="svg-icon fas fa-trash"></i>
-                                                    </button>
-
-                                                    {{-- Boton detalles de los miembros --}}
-                                                    <button type="button" class="button button-primary ver-button"
-                                                        data-bs-pp="tooltip" data-bs-toggle="modal"
-                                                        data-bs-target="#ModalToggle" style="width: 45%"
-                                                        data-id="{{ $item->idMiembro }}"
-                                                        data-nombre="{{ $item->nombres }}"
-                                                        data-apellido="{{ $item->apellidos }}"
-                                                        data-dui="{{ $item->dui }}" data-correo="{{ $item->correo }}"
-                                                        data-bs-placement="top" title="Ver detalles">
-                                                        <i class="svg-icon fas fa-eye"></i>
                                                     </button>
                                                 </div>
                                             </td>
@@ -143,24 +128,26 @@
                                     <!-- Input DUI -->
                                     <div class="col-xl-6">
                                         <div class="inputContainer col-xl-6">
-                                            <input name="dui" type="text"
+                                            <input name="dui" id="dui"
                                                 value="{{ isset($miembroEdit) ? $miembroEdit->dui : old('dui') }}"
                                                 class="inputField" placeholder="00000000-0" type="text"
                                                 autocomplete="off"
                                                 {{ isset($miembroEdit) ? (empty($miembroEdit->dui) ? 'disabled' : '') : (old('dui') == '' ? 'disabled' : '') }}
                                                 oninput="validarDui(this)">
                                             <label class="inputFieldLabel" name="texto">DUI*</label>
-                                            <i class="inputFieldIcon fas fa-id-card" id="iconDui" name="logoDui"></i>
+                                            <i class="inputFieldIcon fas fa-id-card" id="iconDui" style="color:  {{ isset($miembroEdit) ? (empty($miembroEdit->dui) ? '#cdcbcd' : '#6067eb') : (old('dui') == '' ? '#cdcbcd' : '#6067eb') }}" name="logoDui"></i>
                                             @error('dui')
                                                 <small style="color:red">{{ $message }}</small>
                                             @enderror
+                                            <small style="color:red" class="error-message"></small>
                                         </div>
                                     </div>
                                     <div class="col-xl-6">
                                         <div class="inputContainer">
                                             <div style="padding: 3px 15px">
                                                 <div class="form-check form-switch">
-                                                    <input class="form-check-input" type="checkbox" id="esMayorDeEdad">
+                                                    <input class="form-check-input" name="esMayorDeEdad" type="checkbox" id="esMayorDeEdad"
+                                                    {{ isset($miembroEdit) ? (empty($miembroEdit->dui) ? '' : 'checked') : (old('dui') == '' ? '' : 'checked') }} >
                                                     <label class="form-check-label" for="esMayorDeEdad">¿Es mayor de
                                                         edad?</label>
                                                 </div>
@@ -191,7 +178,7 @@
                                         <div class="col-xl-6">
                                             <div class="inputContainer">
                                                 <input class="inputField form-control telefono" value="+503 "
-                                                    id="tel" name="telefono1" type="text"
+                                                    id="tel" name="telefono1" type="text" autocomplete="off"
                                                     oninput="validarInput(this)">
                                                 <label class="inputFieldLabel" for="telefono">Teléfono</label>
                                                 <i class="inputFieldIcon fas fa-phone"></i>

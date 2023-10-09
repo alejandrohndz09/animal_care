@@ -13,7 +13,7 @@
                     <div class="sb-nav-link-icon"><i class="fas fa-dog" ></i></div>
                     Animales
                 </a>
-                <a class="nav-link" href="/persona">
+                <a class="nav-link" href="/expediente">
                     <div class="sb-nav-link-icon"><i class="fas fa-file-invoice" ></i></div>
                     Expedientes
                 </a>

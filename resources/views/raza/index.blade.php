@@ -42,7 +42,7 @@
                             </thead>
                             <tbody id="tableBody">
                                 @foreach ($razas as $a)
-                                    <tr>
+                                    <tr class="raza-row" data-raza="{{ json_encode($a) }}">
                                         <td>
                                             <img src="{{ asset('img/huella.png') }}" alt="Raza" class="picture" />
                                         </td>
