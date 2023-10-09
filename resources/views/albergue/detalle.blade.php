@@ -89,9 +89,9 @@
                                             alt="user" class="picture" />
                                     </td>
                                     <td>{{ $a->idAnimal }}</td>
-                                    <td>{{ $a->nombre }}</td>
-                                    <td>{{ $a->raza->especie->especie }}</td>
-                                    <td>{{ $a->raza->raza }}</td>
+                                    <td>{{ $a->animal->nombre }}</td>
+                                    <td>{{ $a->animal->raza->especie->especie }}</td>
+                                    <td>{{ $a->animal->raza->raza }}</td>
                                     <td>{{ AnimalControlador::calcularEdad(explode(' ', $a->fechaNacimiento)[0]) }}
                                     </td>
                                     <td>

@@ -1,7 +1,13 @@
 
 $(document).ready(function () {
+    //Habilitar tooltips
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-pp="tooltip"]'))
+    tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl)
+    });
 
-    $('#exampleModalToggle').on('show.bs.modal', function (event) {
+    //Si presiona eliminar abrira el modal con los datos que se daran de baja
+    $('#modalDetalle').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget); // Botón que desencadenó el modal
         var id = button.data('id'); // Obtiene el valor del atributo data-id
         var nombre = button.data('nombre'); // Obtiene el valor del atributo data-nombre
@@ -15,22 +21,9 @@ $(document).ready(function () {
         $('#modalRecorddireccion').text(direccion);
 
         $('body').on('click', '#confirmar', function () {
-            $.ajax({
-                url: "/destroyAlbergue/" + id,
-                method: "DELETE",
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                success: function (response) {
-                    // Eliminar el elemento del DOM si la eliminación en la base de datos fue exitosa
-                    location.reload();
-                    alert(response.message);
-                },
-                error: function (xhr, status, error) {
-                    //console.error(error);
-                    console.log(xhr.responseText);
-                    alert("Error al eliminar el albergue: " + xhr.responseText);
-                }
+            $.get('/destroyAlbergue/' + id, function () {
+                // location.reload();
+                window.location.href = '/albergue'
             });
         });
 
@@ -49,13 +42,12 @@ $(document).ready(function () {
         event.stopPropagation();
     });
 
-
     // Escuchar el click en una fila
     $('.registro-row').on('click', function (event) {
-        // Verifica si el clic se realizó en un botón de editar o eliminar
+        // //     // Verifica si el clic se realizó en un botón de editar o eliminar
 
         if ($(event.target).is('a#btnUpdate') || $(event.target).is('a#btnDelete')) {
-            console.log('Presiono aqui en los botones');
+           
             return; // No muestres el modal si se hizo clic en un botón
         } else {
             var id = $(this).find('[data-id]').data('id');
@@ -63,12 +55,4 @@ $(document).ready(function () {
         }
     });
 
-});
-
-$(document).ready(function () {
-    //Habilitar tooltips
-    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-pp="tooltip"]'))
-    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-        return new bootstrap.Tooltip(tooltipTriggerEl)
-    });
 });

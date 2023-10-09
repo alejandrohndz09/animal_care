@@ -15,8 +15,19 @@
                         <div
                             style="width:100%; display: flex;  justify-content: space-between; align-items: center; margin-bottom: 15px;">
                             <h1>Animales </h1>
-                            <input id="searchInput" class="inputField card" style="width: 50% " autocomplete="off"
-                                placeholder="🔍︎ Buscar" type="search">
+                            <input id="searchInput" class="inputField card" style="width: 50%; margin-left: 20% "
+                                autocomplete="off" placeholder="🔍︎ Buscar" type="search">
+
+                            <div class="dropdown">
+                                <button class="button btn-transparent" style="width: 30px;padding: 15px 5px" type="button"
+                                    id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="svg-icon fas fa-ellipsis-vertical" style="color: #4c4c4c"></i>
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                    <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#tabla">Animales de
+                                            baja</a></li>
+                                </ul>
+                            </div>
                         </div>
 
                         <table>
@@ -36,7 +47,7 @@
 
                                 @php use App\Http\Controllers\AnimalControlador; @endphp
                                 @foreach ($animales as $a)
-                                    <tr>
+                                    <tr class="animal-row"  data-animal="{{json_encode($a)}}">
                                         <td>
                                             <img src="{{isset($a->imagen)?asset($a->imagen):asset('img/especie.png')}}"
                                                 alt="user" class="picture" />
@@ -51,11 +62,11 @@
                                             <div
                                                 style="display: flex; align-items: flex-end; gap: 3px; justify-content: center">
                                                 <a href="{{ url('animal/' . $a->idAnimal . '/edit') }}"
-                                                    class="button button-blue" style="width: 45%;" data-bs-pp="tooltip"
+                                                    class="button button-blue btnUpdate" style="width: 45%;" data-bs-pp="tooltip"
                                                     data-bs-placement="top" title="Editar">
                                                     <i class="svg-icon fas fa-pencil"></i>
                                                 </a>
-                                                <button type="button" class="button button-red" style="width: 45%"
+                                                <button type="button" class="button button-red btnDelete" style="width: 45%"
                                                 data-bs-toggle="modal" data-bs-target="#exampleModalToggle" data-animal="{{json_encode($a)}}"
                                                     data-bs-pp="tooltip" data-bs-placement="top" title="Dar de baja">
                                                     <i class="svg-icon fas fa-trash"></i>
@@ -206,11 +217,7 @@
                                     <button type="submit" class="button button-pri">
                                         <i class="svg-icon fa-regular fa-floppy-disk"></i>
                                         <span class="lable">
-                                            @if (isset($animal))
-                                                Modificar
-                                            @else
-                                                Guardar
-                                            @endif
+                                            {{ isset($animal) ? 'Modificar' : 'Guardar' }}
                                         </span>
                                     </button>
                                     <button type="button" id="btnCancelar" class="button button-red"
