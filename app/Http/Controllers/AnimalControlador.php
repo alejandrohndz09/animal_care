@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Animal;
+use App\Models\Expediente;
 use App\Models\Raza;
 use Illuminate\Http\Request;
 
@@ -79,12 +80,14 @@ class AnimalControlador extends Controller
     }
 
 
-      public function show($id)
+    public function show($id)
     {
         return view('animal.detalles')->with([
             'animal' => Animal::find($id),
+            'registrado' => Expediente::where('idAnimal', $id)->get()
         ]);
     }
+    
 
 
     public function edit($id)
