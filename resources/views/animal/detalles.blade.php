@@ -111,8 +111,8 @@
                     </div>
                     
                 </div>
-                <div class="row mt-3" style="padding-left: 0%">
-                    <div class="col-xl-6 ">
+                <div class="row mt-3" >
+                    <div class="col-xl-6 " style="padding-left: 0%">
                         <div class="card mb-4" style="border:none; padding-bottom: 25px !important; width: 100%"></div>
                     </div>
                   
