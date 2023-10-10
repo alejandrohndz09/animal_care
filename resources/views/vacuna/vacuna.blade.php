@@ -38,7 +38,7 @@
                             <tbody id="tableBody">
 
                                 @foreach ($vacuna as $v)
-                                    <tr>
+                                    <tr class="vacuna-row"  data-vacuna="{{ json_encode($v) }}">
                                         <td>
                                             <img src="{{ asset('img/vacuna.png') }}" alt="vacuna" class="picture" />
                                         </td>
@@ -49,14 +49,14 @@
                                             <div
                                                 style="display: flex; align-items: flex-end; gap: 5px; justify-content: center">
                                                 <a id="btnmodificar" href="{{ url('vacuna/' . $v->idVacuna . '/edit') }}"
-                                                    type="button" class="button button-blue" data-id="{{ $v->idVacuna }}"
+                                                    type="button" class="button button-blue btnUpdate" data-id="{{ $v->idVacuna }}"
                                                     style="width: 45%" data-bs-pp="tooltip" data-bs-placement="top"
                                                     title="Editar">
                                                     <i class="svg-icon fas fa-pencil"></i>
                                                 </a>
-                                                <button type="button" class="button button-red" style="width: 45%"
-                                                    data-bs-toggle="modal" data-bs-target="#exampleModalToggle"
-                                                    data-id="{{ $v->idVacuna }}" data-vacuna="{{ $v->vacuna }}"
+                                                <button type="button" class="button button-red btnDelete" style="width: 45%"
+                                                    data-bs-toggle="modal" data-bs-target="#modalEliminacion"
+                                                    data-vacuna="{{ json_encode($v) }}"
                                                     data-bs-pp="tooltip" data-bs-placement="top" title="Eliminar">
                                                     <i class="svg-icon fas fa-trash"></i>
                                                 </button>
@@ -118,35 +118,7 @@
                     </div>
                 </div>
             </div>
-
-
-            <!--Modal-->
-            <form action="" id="form-edit" name="form" method="POST">
-                @csrf
-                <div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel"
-                    tabindex="-1">
-                    <div class="modal-dialog modal-dialog-centered">
-
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalToggleLabel">Desea eliminar este registro?</h5>
-
-                            </div>
-                            <div class="modal-body">
-                                <!-- Aquí puedes mostrar los detalles del registro utilizando el id -->
-                                <p>ID del registro: <span id="modalRecordCodigo"></span></p>
-                                <!-- Otros detalles del registro -->
-                                <p>Vacuna: <span id="modalRecordeVacuna"></span></p>
-
-                            </div>
-                            <div class="modal-footer">
-                                <button id="confirmar" type="button" class="btn btn-primary"> Eliminar</button>
-                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </form>
         </main>
     </div>
+    @include('vacuna.modalesVacuna')
 @endsection

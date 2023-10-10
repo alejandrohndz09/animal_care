@@ -34,7 +34,7 @@
                             <tbody id="tableBody">
 
                                 @foreach ($patologia as $p)
-                                    <tr>
+                                    <tr class="patologia-row" data-patologia="{{ json_encode($p) }}">
                                         <td>
                                             <img src="{{ asset('img/patologia.png') }}" alt="user" class="picture" />
                                         </td>
@@ -45,14 +45,14 @@
                                                 style="display: flex; align-items: flex-end; gap: 5px; justify-content: center">
                                                 <a id="btnmodificar"
                                                     href="{{ url('patologia/' . $p->idPatologia . '/edit') }}"
-                                                    type="button" class="button button-blue"
+                                                    type="button" class="button button-blue btnUpdate"
                                                     data-id="{{ $p->idPatologia }}" style="width: 45%" data-bs-pp="tooltip"
                                                     data-bs-placement="top" title="Editar">
                                                     <i class="svg-icon fas fa-pencil"></i>
                                                 </a>
-                                                <button type="button" class="button button-red" style="width: 45%"
-                                                    data-bs-toggle="modal" data-bs-target="#exampleModalToggle"
-                                                    data-id="{{ $p->idPatologia }}" data-patologia="{{ $p->patologia }}"
+                                                <button type="button" class="button button-red btnDelete"
+                                                    style="width: 45%" data-bs-toggle="modal"
+                                                    data-bs-target="#modalEliminar" data-patologia="{{ json_encode($p) }}"
                                                     data-bs-pp="tooltip" data-bs-placement="top" title="Eliminar">
                                                     <i class="svg-icon fas fa-trash"></i>
                                                 </button>
@@ -80,11 +80,12 @@
                                 @endif
 
                                 <div class="inputContainer">
-                                    <label class="inputFieldLabel" autocomplete="off" for="patologia">Nombre de patología*</label>
+                                    <label class="inputFieldLabel" autocomplete="off" for="patologia">Nombre de
+                                        patología*</label>
                                     <i class="inputFieldIcon fas fa-syringe"></i>
                                     <input placeholder="Ej. Hepatitis, moquillo, herpes, etc."
                                         value="{{ isset($patologiaEdit) ? $patologiaEdit->patologia : old('patologia') }}"
-                                            class="inputField" autocomplete="off" name="patologia">
+                                        class="inputField" autocomplete="off" name="patologia">
                                     @error('patologia')
                                         <small style="color:red">{{ $message }}</small>
                                     @enderror
@@ -113,36 +114,7 @@
                     </div>
                 </div>
             </div>
-            <!--Modal-->
-            <form action="" id="form-edit" name="form" method="POST">
-                @csrf
-                <div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel"
-                    tabindex="-1">
-                    <div class="modal-dialog modal-dialog-centered">
-
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalToggleLabel">Desea eliminar este registro?</h5>
-
-                            </div>
-                            <div class="modal-body">
-                                <!-- Aquí puedes mostrar los detalles del registro utilizando el id -->
-                                <p>ID del registro: <span id="modalRecordCodigo"></span></p>
-                                <!-- Otros detalles del registro -->
-                                <p>Patologia: <span id="modalRecordePatologia"></span></p>
-
-                            </div>
-                            <div class="modal-footer">
-                                <button id="confirmar" type="button" class="btn btn-primary"> Eliminar</button>
-                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-                            </div>
-                        </div>
-
-
-                    </div>
-                </div>
-
-            </form>
         </main>
     </div>
+    @include('patologia.modalesPatologia')
 @endsection

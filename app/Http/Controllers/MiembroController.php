@@ -38,13 +38,18 @@ class MiembroController extends Controller
             'apellidos' => 'required|min:3',
         ], [
             'correo.unique' => 'Este correo ya ha sido ingresado.',
-            'dui.unique' => 'Este DUI ya ha sido ingresado.'
         ]);
 
-        if ($request->post('dui')) {
-            $rules['dui'] = 'unique:miembro';
+        if ($request->has('esMayorDeEdad') == '1') {
+            // Si el campo 'esMayorDeEdad' está marcado, habilita la validación del campo 'dui'.
+            $request->validate([
+                'dui' => 'required|unique:miembro',
+            ], [
+                'dui.required' => 'El campo DUI es requerido.',
+                'dui.unique' => 'Este DUI ya ha sido ingresado.',
+            ]);
         }
-
+        
         // Obtén el último registro de la tabla para determinar el siguiente incremento
         $ultimoRegistro = Miembro::latest('idMiembro')->first();
 
@@ -68,10 +73,12 @@ class MiembroController extends Controller
 
 
         for ($i = 0; $i < $contador; $i++) {
-            $telefonos = new TelefonoMiembro();
-            $telefonos->telefono = $request->post('telefono' . $i + 1);
-            $telefonos->idMiembro = $idPersonalizado;
-            $telefonos->save();
+            if (!$request->post('telefono' . $i + 1) == "503 ") {
+                $telefonos = new TelefonoMiembro();
+                $telefonos->telefono = $request->post('telefono' . $i + 1);
+                $telefonos->idMiembro = $idPersonalizado;
+                $telefonos->save();
+            }
         }
 
         $datos = Miembro::all();
@@ -152,7 +159,7 @@ class MiembroController extends Controller
         } else {
             //Pagina inicio
             $datos = Miembro::all();
-            return redirect()->route('miembro.index')->with([
+            return  redirect()->route('miembro.index')->with([
                 'datos' => $datos
             ]);
         }

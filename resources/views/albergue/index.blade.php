@@ -16,10 +16,21 @@
                         <div
                             style="width:100%; display: flex;  justify-content: space-between; align-items: center; margin-bottom: 15px;">
                             <h1>Albergues </h1>
-                            <input id="searchInput" class="inputField card" style="width: 50% " autocomplete="off"
-                                placeholder="🔍︎ Buscar" type="search">
+                            <input id="searchInput" class="inputField card" style="width: 50%; margin-left: 20% "
+                                autocomplete="off" placeholder="🔍︎ Buscar" type="search">
+
+                            <div class="dropdown">
+                                <button class="button btn-transparent" style="width: 30px;padding: 15px 5px" type="button"
+                                    id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="svg-icon fas fa-ellipsis-vertical" style="color: #4c4c4c"></i>
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                    <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#tabla">Albergue de
+                                            baja</a></li>
+                                </ul>
+                            </div>
                         </div>
-                        <table id="tabla">
+                        <table>
                             <thead>
                                 <tr class="head">
                                     <th style="width: 10%"></th>
@@ -33,39 +44,40 @@
                             <tbody id="tableBody">
 
                                 @foreach ($Albergues as $item)
-                                    <tr class="registro-row">
-                                        <td style="width: 10%">
-                                            <img src="{{asset('img/albergue.png')}}"
-                                                alt="user" class="picture" />
-                                        </td>
-                                        <td>{{ $item->idAlvergue }}</td>
-                                        <td style="width: 40%">{{ $item->direccion }} </td>
-                                        <td>{{ $item->miembro->nombres }} {{ $item->miembro->apellidos }}</td>
+                                    @if ($item->estado == 1)
+                                        <tr class="registro-row">
+                                            <td style="width: 10%">
+                                                <img src="{{ asset('img/albergue.png') }}" alt="user" class="picture" />
+                                            </td>
+                                            <td>{{ $item->idAlvergue }}</td>
+                                            <td style="width: 40%">{{ $item->direccion }} </td>
+                                            <td>{{ $item->miembro->nombres }} {{ $item->miembro->apellidos }}</td>
 
-                                        <td>
-                                            <div
-                                                style="display: flex; align-items: flex-end; gap: 5px; justify-content: center">
-                                                <a id="btnmodificar"
-                                                    href="{{ url('albergue/' . $item->idAlvergue . '/edit') }}"
-                                                    type="button" class="button button-blue btnUpdate"
-                                                    data-id="{{ $item->idAlvergue }}" style="width: 45%"
-                                                    data-bs-pp="tooltip" data-bs-placement="top" title="Editar">
-                                                    <i class="svg-icon fas fa-pencil"></i>
-                                                </a>
+                                            <td>
+                                                <div
+                                                    style="display: flex; align-items: flex-end; gap: 5px; justify-content: center">
+                                                    <a id="btnmodificar"
+                                                        href="{{ url('albergue/' . $item->idAlvergue . '/edit') }}"
+                                                        type="button" class="button button-blue btnUpdate"
+                                                        data-id="{{ $item->idAlvergue }}" style="width: 45%"
+                                                        data-bs-pp="tooltip" data-bs-placement="top" title="Editar">
+                                                        <i class="svg-icon fas fa-pencil"></i>
+                                                    </a>
 
-                                                <button type="button" class="button button-red btnDelete"
-                                                    style="width: 45%" data-bs-toggle="modal"
-                                                    data-bs-target="#exampleModalToggle" data-id="{{ $item->idAlvergue }}"
-                                                    data-nombre="{{ $item->miembro->nombres }}"
-                                                    data-apellido="{{ $item->miembro->apellidos }}"
-                                                    data-direccion="{{ $item->direccion }}" data-bs-pp="tooltip"
-                                                    data-bs-placement="top" title="Dar de baja">
-                                                    <i class="svg-icon fas fa-trash"></i>
-                                                </button>
+                                                    <button type="button" class="button button-red btnDelete"
+                                                        style="width: 45%" data-bs-toggle="modal"
+                                                        data-bs-target="#modalDetalle" data-id="{{ $item->idAlvergue }}"
+                                                        data-nombre="{{ $item->miembro->nombres }}"
+                                                        data-apellido="{{ $item->miembro->apellidos }}"
+                                                        data-direccion="{{ $item->direccion }}" data-bs-pp="tooltip"
+                                                        data-bs-placement="top" title="Dar de baja">
+                                                        <i class="svg-icon fas fa-trash"></i>
+                                                    </button>
 
-                                            </div>
-                                        </td>
-                                    </tr>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endif
                                 @endforeach
                             </tbody>
                         </table>
@@ -105,7 +117,8 @@
                                             <i class="inputFieldIcon fas fa-user"></i>
                                             <select id="miembro" name="miembro" class="inputField">
                                                 <option value=""
-                                                    {{ old('miembro') == '' && !isset($AlbergueEdit) ? 'selected' : '' }}>Seleccione...
+                                                    {{ old('miembro') == '' && !isset($AlbergueEdit) ? 'selected' : '' }}>
+                                                    Seleccione...
                                                 </option>
                                                 @php use App\Models\Miembro; @endphp
                                                 @foreach (Miembro::all() as $miembro)
@@ -145,33 +158,7 @@
                     </div>
                 </div>
             </div>
-            <!-- Modal -->
-            <form action="" id="form-edit" name="form" method="POST">
-                @csrf
-                <div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel"
-                    tabindex="-1">
-                    <div class="modal-dialog modal-dialog-centered">
-
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalToggleLabel">Desea eliminar este registro?</h5>
-
-                            </div>
-                            <div class="modal-body">
-                                <!-- Aquí puedes mostrar los detalles del registro utilizando el id -->
-                                <p>ID del registro: <span id="modalRecordId"></span></p>
-                                <!-- Otros detalles del registro -->
-                                <p>Nombres: <span id="modalRecordNombre"></span></p>
-                                <p>Apellidos: <span id="modalRecordApellido"></span></p>
-                                <p>direccion: <span id="modalRecorddireccion"></span></p>
-                            </div>
-                            <div class="modal-footer">
-                                <button id="confirmar" type="button" class="btn btn-primary"> Eliminar</button>
-                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-                            </div>
-                        </div>
-                    </div>
-            </form>
         </main>
     </div>
+    @include('albergue.modalesAlbergue')
 @endsection

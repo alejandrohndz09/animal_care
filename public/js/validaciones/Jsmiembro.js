@@ -57,7 +57,6 @@ function validarTexto(input) {
 //Agregar un input telefono
 $(document).ready(function () {
 
-    document.getElementById("iconDui").style.color = '#cdcbcd';
     // Escucha el evento de cambio del checkbox
     $("#esMayorDeEdad").change(function (event) {
         event.stopPropagation();
@@ -161,7 +160,6 @@ $(document).ready(function () {
                 $('#telefono').text(telefonoBD);
             }
 
-
             // Abrir el modal de confirmación
             $("#modalTelefono").modal("show");
 
@@ -227,11 +225,25 @@ $(document).ready(function () {
     //Validacion de campos vacios en el formulario
     $("#miFormulario").submit(function (event) {
         var inputs = $(this).find("input"); // Obtener todos los campos de entrada en el formulario
+        var esMayorDeEdadCheckbox = $("#esMayorDeEdad"); // Obtener el checkbox "Es mayor de edad"
 
         // Iterar a través de los campos de entrada
         for (var i = 0; i < inputs.length; i++) {
-            var inputValue = inputs[i].value.trim();
-            var errorSpan = $(inputs[i]).siblings(".error-message");
+            var input = inputs[i];
+            var inputValue = input.value.trim();
+            var errorSpan = $(input).siblings(".error-message");
+
+            // Verificar si el campo actual es el campo "dui"
+            if (input.id === "dui") {
+                // Verificar si el checkbox "Es mayor de edad" está desmarcado y el campo "dui" está vacío
+                if (esMayorDeEdadCheckbox.prop("checked") && inputValue === "") {
+                    event.preventDefault(); // Detener el envío del formulario
+                    errorSpan.text("Este campo no puede estar vacío.");
+                } else {
+                    errorSpan.text(""); // Limpiar el mensaje de error para el campo "dui"
+                }
+                continue;
+            }
 
             if (inputValue === "") {
                 event.preventDefault(); // Detener el envío del formulario
@@ -245,10 +257,11 @@ $(document).ready(function () {
     //Si presiona eliminar abrira el modal con los datos que se daran de baja
     $('#exampleModalToggle').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget); // Botón que desencadenó el modal
-        var id = button.data('id'); // Obtiene el valor del atributo data-id
-        var nombre = button.data('nombre'); // Obtiene el valor del atributo data-nombre
-        var apellido = button.data('apellido'); // Obtiene el valor del atributo data-apellido
-        var correo = button.data('correo'); // Obtiene el valor del atributo data-correo
+        // Botón que desencadenó el modal
+        var id = button.data('miembro').idMiembro; // Obtiene el valor del atributo data-id
+        var nombre = button.data('miembro').nombres; // Obtiene el valor del atributo data-nombre
+        var apellido = button.data('miembro').apellidos; // Obtiene el valor del atributo data-apellido
+        var correo = button.data('miembro').correo; // Obtiene el valor del atributo data-correo
 
         // Actualiza el contenido del modal con los detalles del registro
         $('#modalRecordNombre').text(nombre);
@@ -268,23 +281,30 @@ $(document).ready(function () {
         window.location.href = '/miembro'
     });
 
-    $(".btnUpdate").click(function () {
-        var dui = $(this).data('dui');
-        console.log(dui);
-        if (dui != null) {
-            $('#esMayorDeEdad').prop('checked', true);
-        }
+    $(".btnDelete").click(function (event) {
+        // Evitar la propagación del evento al hacer clic en la fila
+        event.stopPropagation();
+    });
+    $(".btnUpdate").click(function (event) {
+        // Evitar la propagación del evento al hacer clic en la fila
+        event.stopPropagation();
     });
 
-//Muestra el modal con los detalles del miembro
-    $('#table').on('click', '.ver-button', function () {
-        var idMiembro = $(this).data('id');
-        var dui = $(this).data('dui');
-        var nombres = $(this).data('nombre');
-        var apellidos = $(this).data('apellido');
-        var correo = $(this).data('correo');
 
-    
+    $('.miembro-row').on('click', function (event) {
+        // Verifica si el clic fue en un botón dentro de la fila
+        if ($(event.target).is('.btnUpdate, .btnDelete')) {
+            return; // Evita abrir el modal si se hizo clic en un botón
+        }
+
+        var miembroData = $(this).data('miembro');
+        var idMiembro = miembroData.idMiembro;
+        var dui = miembroData.dui;
+        var nombres = miembroData.nombres;
+        var apellidos = miembroData.apellidos;
+        var correo = miembroData.correo;
+
+
         $.ajax({
             url: 'miembro/telefonos/' + idMiembro, // La URL de la ruta definida en Laravel
             type: 'GET',
@@ -313,7 +333,6 @@ $(document).ready(function () {
         });
 
         // Llena el modal con los datos correspondientes
-        $('#modalIdMiembro').text(idMiembro);
         $('#modalDui').text(dui);
         $('#modalNombres').text(nombres);
         $('#modalApellidos').text(apellidos);
@@ -322,6 +341,4 @@ $(document).ready(function () {
         // Abre el modal
         $('#ModalToggle').modal('show');
     });
-
 });
-

@@ -1,12 +1,11 @@
-$('#exampleModalToggle').on('show.bs.modal', function (event) {
+$('#modalEliminar').on('show.bs.modal', function (event) {
     var button = $(event.relatedTarget); // Botón que desencadenó el modal
-     // Botón que desencadenó el modal
-     var id = button.data('id'); // Obtiene el valor del atributo data-id
-     var especie = button.data('especie'); // Obtiene el valor del atributo data-nombre
-      console.log(id);
+
+     var id = button.data('especie').idEspecie; // Obtiene el valor del atributo data-id
+     var especie = button.data('especie').especie; // Obtiene el valor del atributo data-nombre
+
       // Actualiza el contenido del modal con los detalles del registro
-      $('#modalRecordCodigo').text(id);
-      $('#modalRecordeEspecie').text(especie);
+      $('#especie').text(especie);
 
       $('body').on('click', '#confirmar', function () {
         $.get('/especie/destroy/'+ id, function () {
@@ -20,4 +19,31 @@ $('#exampleModalToggle').on('show.bs.modal', function (event) {
     
 $("#btnCancelar").click(function () {
     window.location.href = '/especie'
+});
+
+$(".btnDelete").click(function (event) {
+    // Evitar la propagación del evento al hacer clic en la fila
+    event.stopPropagation();
+});
+$(".btnUpdate").click(function (event) {
+    // Evitar la propagación del evento al hacer clic en la fila
+    event.stopPropagation();
+});
+
+$('.especie-row').on('click', function (event) {
+    // Verifica si el clic fue en un botón dentro de la fila
+    if ($(event.target).is('.btnUpdate, .btnDelete')) {
+        return; // Evita abrir el modal si se hizo clic en un botón
+    }
+
+    var button = $(this); // Fila de la tabla que se hizo clic
+    var id = button.data('especie').idEspecie; // Obtiene el valor del atributo data-id
+    var especie = button.data('especie').especie; // Obtiene el valor del atributo data-especie
+
+    // Actualiza el contenido del modal con los detalles del registro
+    $('#modalCodigo').text(id);
+    $('#modalEspecie').text(especie);
+
+    // Abre el modal
+    $('#ModalDetalle').modal('show');
 });

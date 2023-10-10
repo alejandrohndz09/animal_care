@@ -63,32 +63,32 @@ $(document).ready(function () {
         window.location.href = '/animal'
     });
 
-     //Si presiona eliminar abrira el modal con los datos que se daran de baja
-     $('#exampleModalToggle').on('show.bs.modal', function (event) {
-         var button = $(event.relatedTarget); // Botón que desencadenó el modal
-         // Botón que desencadenó el modal
-         var id = button.data('animal').idAnimal; // Obtiene el valor del atributo data-id
-         var nombre = button.data('animal').nombre; // Obtiene el valor del atributo data-nombre
-         var especie = button.data('animal').raza.especie.especie; // Obtiene el valor del atributo data-apellido
-         var raza = button.data('animal').raza.raza; // Obtiene el valor del atributo data-correo
-         var imagen  = button.data('animal').imagen;
-         // Actualiza el contenido del modal con los detalles del registro
-         $('#modalRecordCodigo').text(id);
-         $('#modalRecordNombre').text(nombre);
-         $('#modalRecordEspecie').text(especie);
-         $('#modalRecordRaza').text(raza);
-         if (imagen != null) {
-             document.getElementById("imagenModal").src = imagen;
-         } else {
+    //Si presiona eliminar abrira el modal con los datos que se daran de baja
+    $('#exampleModalToggle').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget); // Botón que desencadenó el modal
+        // Botón que desencadenó el modal
+        var id = button.data('animal').idAnimal; // Obtiene el valor del atributo data-id
+        var nombre = button.data('animal').nombre; // Obtiene el valor del atributo data-nombre
+        var especie = button.data('animal').raza.especie.especie; // Obtiene el valor del atributo data-apellido
+        var raza = button.data('animal').raza.raza; // Obtiene el valor del atributo data-correo
+        var imagen = button.data('animal').imagen;
+        // Actualiza el contenido del modal con los detalles del registro
+        $('#modalRecordCodigo').text(id);
+        $('#modalRecordNombre').text(nombre);
+        $('#modalRecordEspecie').text(especie);
+        $('#modalRecordRaza').text(raza);
+        if (imagen != null) {
+            document.getElementById("imagenModal").src = imagen;
+        } else {
             document.getElementById("imagenModal").src = 'https://static.vecteezy.com/system/resources/previews/017/783/245/original/pet-shop-silhouette-logo-template-free-vector.jpg';
-         }
- 
-         $('body').on('click', '#confirmar', function () {
-             $.get('/animal/destroy/'+id, function () {
-                 // location.reload();
-                 window.location.href = '/animal'
-             });
-         });
+        }
+
+        $('body').on('click', '#confirmar', function () {
+            $.get('/animal/destroy/' + id, function () {
+                // location.reload();
+                window.location.href = '/animal'
+            });
+        });
 
     });
 });
@@ -102,8 +102,8 @@ function imagenVistaPrevia() {
     const fileInput = document.getElementById('foto');
     const imagePreview = document.getElementById('image-preview');
     const iconContainer = document.getElementById('iconContainer');
-    
-    $('.inputContainer').on('keypress', 'input[type="text"]', function() {
+
+    $('.inputContainer').on('keypress', 'input[type="text"]', function () {
         $(this).siblings('.text-danger').text('');
     });
     // Escucha el evento change en el input de tipo "file"
@@ -123,5 +123,31 @@ function imagenVistaPrevia() {
             iconContainer.style.display = 'flex';
         }
     });
+
+
+    $(".btnDelete").click(function (event) {
+        // Evitar la propagación del evento al hacer clic en la fila
+        event.stopPropagation();
+    });
+    $(".btnUpdate").click(function (event) {
+        // Evitar la propagación del evento al hacer clic en la fila
+        event.stopPropagation();
+    });
+
+
+    // Escuchar el click en una fila
+    $('.animal-row').on('click', function (event) {
+        // //     // Verifica si el clic se realizó en un botón de editar o eliminar
+
+        if ($(event.target).is('a#btnUpdate') || $(event.target).is('a#btnDelete')) {
+
+            return; // No muestres el modal si se hizo clic en un botón
+        } else {
+            var button = $(this); // Fila de la tabla que se hizo clic
+            var id = button.data('animal').idAnimal; // Obtiene el valor del atributo data-id
+            window.location.href = '/animal/' + id;
+        }
+    });
+
 }
 
