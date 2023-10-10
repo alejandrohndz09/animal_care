@@ -115,7 +115,6 @@
 
                     </div>
                 </div>
-
                 @if ($registrado->count() > 0)
                     <div class="row mt-3">
                         <div class="col-xl-6 " style="padding-left: 0%">
@@ -239,7 +238,6 @@
                             </div>
 
                         </div>
-
                     </div>
                 @endif
 

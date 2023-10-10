@@ -159,7 +159,7 @@ class MiembroController extends Controller
         } else {
             //Pagina inicio
             $datos = Miembro::all();
-            return redirect()->route('miembro.index')->with([
+            return  redirect()->route('miembro.index')->with([
                 'datos' => $datos
             ]);
         }
