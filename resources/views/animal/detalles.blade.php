@@ -93,7 +93,7 @@
 
 
                                     <button type="submit" class="button button-pri" style="margin-left: 180%"
-                                        onclick="window.location.href = '{{ url('expediente/' . $item->idMiembro . '/edit') }}';" @method(POST)>
+                                       >
                                         {{-- <i class="svg-icon fa-regular fa-floppy-disk"></i> --}}
                                         <span class="lable">
                                             Crear expediente
