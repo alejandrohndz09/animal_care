@@ -173,7 +173,6 @@ $(document).ready(function () {
 
                 // Si esta vacio significa que no esta guardado el telefono en la BD
                 if (telefonoId === "vacio") {
-                    console.log('Aqui el if de eliminar sin AJAX');
 
                     // Elimina input
                     $("#" + removeList).remove();
