@@ -130,6 +130,7 @@
                                         <i class="svg-icon fas fa-plus"></i>
                                     </button>
                                 </div>
+                                
                                 <style>
                                     .vaccine-container {
                                         padding: 10px;
