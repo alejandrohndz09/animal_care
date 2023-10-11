@@ -102,14 +102,14 @@
     <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
         <div class="modal-content text-center">
             <div class="modal-header">
-                <h5 style="margin-left: 35%">Detalles de miembro</h5>
+                <h5 style="margin-left: 35%">Detalles de Animal</h5>
                 <button type="button" class="circle-button" style="margin-right: 4%" data-bs-dismiss="modal">
                     <i style="height: 30px;width: 45px;margin-right: 8%"
                         class="svg-icon fas fa-regular fa-circle-xmark"></i></button>
             </div>
             <div class="modal-body text-center">
 
-                <p><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/2048px-User-avatar.svg.png"
+                <p><img src="{{ isset($a->imagen) ? asset($a->imagen) : asset('img/especie.png') }}"
                         alt="user" class="picture " id="imagenModal"
                         style="width: 35%; height: auto; margin-left: auto; margin-right: auto;"> </p>
                 <p>Código: <span id="modalCodigo"></span></p>
