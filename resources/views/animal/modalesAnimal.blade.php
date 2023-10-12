@@ -36,58 +36,57 @@
                 <h5 class="modal-title" style="margin-left: auto; margin-right: auto;">Lista de miembros de baja</h5>
             </div>
             <div class="modal-body">
-                @if (!asset($animales))
-                    <table>
-                        <thead>
-                            <tr class="head">
-                                <th></th>
-                                <th>Código</th>
-                                <th>Nombre</th>
-                                <th>Especie</th>
-                                <th>Raza</th>
-                                <th>Edad</th>
-                                <th>
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody id="tableBody">
-                            @php
-                                $animalControlador = app()->make('App\Http\Controllers\AnimalControlador');
-                            @endphp
-                            @foreach ($animales as $a)
-                                <tr>
-                                    <td>
-                                        <img src="{{ isset($a->imagen) ? asset($a->imagen) : asset('img/especie.png') }}"
-                                            alt="user" class="picture" />
-                                    </td>
-                                    <td>{{ $a->idAnimal }}</td>
-                                    <td>{{ $a->nombre }}</td>
-                                    <td>{{ $a->raza->especie->especie }}</td>
-                                    <td>{{ $a->raza->raza }}</td>
-                                    <td>{{ AnimalControlador::calcularEdad(explode(' ', $a->fechaNacimiento)[0]) }}
-                                    </td>
-                                    <td>
-                                        <div
-                                            style="display: flex; align-items: flex-end; gap: 3px; justify-content: center">
-                                            <a href="{{ url('animal/' . $a->idAnimal . '/edit') }}"
-                                                class="button button-blue" style="width: 45%;" data-bs-pp="tooltip"
-                                                data-bs-placement="top" title="Editar">
-                                                <i class="svg-icon fas fa-pencil"></i>
-                                            </a>
-                                            <button type="button" class="button button-red" style="width: 45%"
-                                                data-bs-toggle="modal" data-bs-target="#exampleModalToggle"
-                                                data-animal="{{ json_encode($a) }}" data-bs-pp="tooltip"
-                                                data-bs-placement="top" title="Dar de baja">
-                                                <i class="svg-icon fas fa-trash"></i>
-                                            </button>
 
-                                        </div>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                @endif
+                <table>
+                    <thead>
+                        <tr class="head">
+                            <th></th>
+                            <th>Código</th>
+                            <th>Nombre</th>
+                            <th>Especie</th>
+                            <th>Raza</th>
+                            <th>Edad</th>
+                            <th>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                        @php
+                            $animalControlador = app()->make('App\Http\Controllers\AnimalControlador');
+                        @endphp
+                        @foreach ($animales as $a)
+                            <tr>
+                                <td>
+                                    <img src="{{ isset($a->imagen) ? asset($a->imagen) : asset('img/especie.png') }}"
+                                        alt="user" class="picture" />
+                                </td>
+                                <td>{{ $a->idAnimal }}</td>
+                                <td>{{ $a->nombre }}</td>
+                                <td>{{ $a->raza->especie->especie }}</td>
+                                <td>{{ $a->raza->raza }}</td>
+                                <td>{{ AnimalControlador::calcularEdad(explode(' ', $a->fechaNacimiento)[0]) }}
+                                </td>
+                                <td>
+                                    <div
+                                        style="display: flex; align-items: flex-end; gap: 3px; justify-content: center">
+                                        <a href="{{ url('animal/' . $a->idAnimal . '/edit') }}"
+                                            class="button button-blue" style="width: 45%;" data-bs-pp="tooltip"
+                                            data-bs-placement="top" title="Editar">
+                                            <i class="svg-icon fas fa-pencil"></i>
+                                        </a>
+                                        <button type="button" class="button button-red" style="width: 45%"
+                                            data-bs-toggle="modal" data-bs-target="#exampleModalToggle"
+                                            data-animal="{{ json_encode($a) }}" data-bs-pp="tooltip"
+                                            data-bs-placement="top" title="Dar de baja">
+                                            <i class="svg-icon fas fa-trash"></i>
+                                        </button>
+
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
@@ -109,8 +108,8 @@
             </div>
             <div class="modal-body text-center">
 
-                <p><img src="{{ isset($a->imagen) ? asset($a->imagen) : asset('img/especie.png') }}"
-                        alt="user" class="picture " id="imagenModal"
+                <p><img src="{{ isset($a->imagen) ? asset($a->imagen) : asset('img/especie.png') }}" alt="user"
+                        class="picture " id="imagenModal"
                         style="width: 35%; height: auto; margin-left: auto; margin-right: auto;"> </p>
                 <p>Código: <span id="modalCodigo"></span></p>
                 <p>Nombre: <span id="modalNombre"></span></p>
