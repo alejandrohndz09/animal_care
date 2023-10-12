@@ -67,5 +67,6 @@ Route::get('/destroyPatologia/{id}', 'App\Http\Controllers\PatologiaController@d
 
 Route::resource('expediente', 'App\Http\Controllers\ExpedienteController');
 Route::put('/expediente/update/{id}', [ExpedienteController::class, 'update']);
+Route::get('/getExpedientes', 'App\Http\Controllers\ExpedienteController@getExpedientes');
 Route::get('/expedientedestroy/{id}', 'App\Http\Controllers\ExpedienteController@destroy');
 Route::get('/expedienteAlta/{id}', 'App\Http\Controllers\ExpedienteController@alta');

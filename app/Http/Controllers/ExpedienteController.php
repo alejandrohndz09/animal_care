@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Animal;
 use App\Models\Expediente;
 use Illuminate\Http\Request;
 
@@ -17,11 +16,15 @@ class ExpedienteController extends Controller
     {
         //Formulario donde se agrega datos
         $expedientes = Expediente::all();
-        $expediente = null;
         return view('expediente.index')->with([
             'expedientes' => $expedientes,
-            'expediente' => $expediente
         ]);
+    }
+    public function getExpedientes()
+    {
+        $expedientes = Expediente::with('animal')->where('estado', 1)->get();
+        
+        return response()->json($expedientes);
     }
     public function store(Request $request)
     {
@@ -68,7 +71,7 @@ class ExpedienteController extends Controller
         $expedientes = Expediente::all();
         return view('expediente.index')->with([
             'expediente' => $expediente,
-            'expedientes' => $expedientes
+            'expedientes' => $expedientes,
         ]);
     }
 
@@ -104,7 +107,7 @@ class ExpedienteController extends Controller
         $expediente->save();
         return redirect()->route('expediente.index');
     }
-    
+
     public function alta($id)
     {
         $expediente = Expediente::find($id);
