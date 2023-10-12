@@ -187,21 +187,43 @@
                                     }
 
                                     ul li {
-                                        margin-left: 20px;
+                                        margin-left: 60px;
+                                    }
+
+                                    /* Clases de estado personalizadas */
+                                    .estado-de-alta {
+                                        background-color: rgb(129, 246, 100);
+                                        color: rgb(72, 189, 78);
+                                        padding: 3px 6px;
+                                        border-radius: 5px;
+                                        font-weight: bold;
+                                    }
+
+                                    .estado-tratamiento {
+                                        background-color: rgb(242, 242, 89);
+                                        color: rgb(182, 171, 99);
+                                        padding: 3px 6px;
+                                        border-radius: 5px;
+                                        font-weight: bold;
+                                    }
+
+                                    .estado-espera {
+                                        background-color: rgb(231, 186, 186);
+                                        color: rgb(198, 37, 37);
+                                        padding: 3px 6px;
+                                        border-radius: 5px;
+                                        font-weight: bold;
                                     }
                                 </style>
 
                                 @php
-                                    $currentVacuna = null;
-                                    $dosisInfo = [];
-                                    $contador = 1;
                                     $exp = $animal->expedientes->get(0);
                                     $historialesAgrupados = [];
                                 @endphp
 
                                 @foreach ($exp->historialVacunas as $historial)
                                     @php
-                                        $nombreVacuna = $historial->vacuna->vacuna; // Asegúrate de que el nombre esté en una propiedad llamada "nombre"
+                                        $nombreVacuna = $historial->vacuna->vacuna;
                                         if (!isset($historialesAgrupados[$nombreVacuna])) {
                                             $historialesAgrupados[$nombreVacuna] = [];
                                         }
@@ -212,19 +234,16 @@
                                 @foreach ($historialesAgrupados as $nombreVacuna => $historiales)
                                     <div class="vaccine-container">
                                         <div class="vaccine-content">
-                                            <i class="inputFieldIcon fas fa-syringe"></i> <span
-                                                class="vaccine-title">{{ $nombreVacuna }}</span>
+                                            <span class="vaccine-title">{{ $nombreVacuna }}</span>
                                         </div>
                                         <ul>
                                             @foreach ($historiales as $historial)
                                                 <li>Dosis #{{ $loop->iteration }} aplicada el
-                                                    {{ $historial->fechaAplicacion }}</li>
+                                                    {{ date('d/m/Y', strtotime($historial->fechaAplicacion)) }}</li>
                                             @endforeach
                                         </ul>
                                     </div>
                                 @endforeach
-
-
 
                                 <br>
                             </div>
@@ -234,64 +253,61 @@
                         <div class="col-xl-6 " style="padding-right: 0%">
                             <div class="card mb-4" style="border:none; padding-bottom: 25px !important; width: 100%">
                                 <div
-                                    style="width:100%; display: flex;  justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                                    <h5>Historial de Patologías</h5>
-
-                                    <button type="submit" class="button button-pri"
-                                        style="width: 40px;padding: 15px 5px">
+                                    style="width:100%; display: flex;  justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                                    <h5 style="margin-left: 30px;font-size: 34px; color: #333;">Historial de patologías
+                                    </h5>
+                                    <button type="submit" class="button button-pri" data-bs-toggle="modal"
+                                        data-bs-target="#newHistorial" style="width: 80px;padding: 7px 3px">
                                         <i class="svg-icon fas fa-plus"></i>
                                     </button>
                                 </div>
 
-                                <table>
-                                    <thead>
-                                        <tr class="head">
-                                            <th>Patología</th>
-                                            <th>Fecha diagnóstico</th>
-                                            <th>Detalles</th>
-                                            <th>Estado</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="tableBody">
 
-                                        {{-- @php use App\Http\Controllers\AnimalControlador; @endphp
-                                    @foreach ($animales as $a)
-                                        <tr class="animal-row"  data-animal="{{json_encode($a)}}">
-                                            <td>
-                                                <img src="{{isset($a->imagen)?asset($a->imagen):asset('img/especie.png')}}"
-                                                    alt="user" class="picture" />
-                                            </td>
-                                            <td>{{ $a->idAnimal }}</td>
-                                            <td>{{ $a->nombre }}</td>
-                                            <td>{{ $a->raza->especie->especie }}</td>
-                                            <td>{{ $a->raza->raza }}</td>
-                                            <td>{{ AnimalControlador::calcularEdad(explode(' ', $a->fechaNacimiento)[0]) }}
-                                            </td>
-                                            <td>
-                                                <div
-                                                    style="display: flex; align-items: flex-end; gap: 3px; justify-content: center">
-                                                    <a href="{{ url('animal/' . $a->idAnimal . '/edit') }}"
-                                                        class="button button-blue btnUpdate" style="width: 45%;" data-bs-pp="tooltip"
-                                                        data-bs-placement="top" title="Editar">
-                                                        <i class="svg-icon fas fa-pencil"></i>
-                                                    </a>
-                                                    <button type="button" class="button button-red btnDelete" style="width: 45%"
-                                                    data-bs-toggle="modal" data-bs-target="#exampleModalToggle" data-animal="{{json_encode($a)}}"
-                                                        data-bs-pp="tooltip" data-bs-placement="top" title="Dar de baja">
-                                                        <i class="svg-icon fas fa-trash"></i>
-                                                    </button>
-    
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    @endforeach --}}
-                                    </tbody>
-                                </table>
+                                @php
+                                    $exp = $animal->expedientes->get(0);
+                                    $historialesAgrupados = [];
+                                @endphp
 
+                                @foreach ($exp->historialPatologia as $historial)
+                                    @php
+                                        $nombrePatologia = $historial->idPatologia;
+                                        if (!isset($historialesAgrupados[$nombrePatologia])) {
+                                            $historialesAgrupados[$nombrePatologia] = [];
+                                        }
+                                        $historialesAgrupados[$nombrePatologia][] = $historial;
+                                    @endphp
+                                @endforeach
+
+                                @foreach ($historialesAgrupados as $nombrePatologia => $historiales)
+                                    <div class="vaccine-container">
+                                        <div class="vaccine-content">
+                                            <span class="vaccine-title">{{ $nombrePatologia }} Moquillo</span>
+                                        </div>
+                                        <ul>
+                                            @foreach ($historiales as $historial)
+                                                <ul>
+                                                    <li>
+                                                        Diagnosticado el
+                                                        <span>
+                                                            {{ date('d/m/Y', strtotime($historial->fechaDiagnostico)) }}
+                                                        </span>
+                                                    </li>
+                                                    <li>
+                                                        Estado:
+                                                        <span
+                                                            class="@if ($historial->estado == 'De alta') estado-de-alta @elseif($historial->estado == 'En tratamiento') estado-tratamiento @elseif($historial->estado == 'En espera de tratamiento') estado-espera @endif">
+                                                            {{ $historial->estado }}
+                                                        </span>
+                                                    </li>
+                                                </ul>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                @endforeach
+
+                                <br>
                             </div>
-
                         </div>
-                    </div>
                 @endif
                 @include('animal.historial')
         </main>

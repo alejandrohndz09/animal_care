@@ -41,14 +41,13 @@
                         @enderror
                     </div>
 
-
                     <div class="inputContainer">
-                        <input id="fechaAplicacion" name="fechaAplicacion"
+                        <input id="fecha" name="fecha"
                             value="{{ isset($historialV) ? old('fecha', explode(' ', $historialV->fechaAplicacion)[0]) : old('fechaAplicacion') }}"
                             max="{{ date('Y-m-d') }}" class="inputField" autocomplete="false" type="date">
-                        <label class="inputFieldLabel" for="fechaAplicacion">Fecha de aplicación*</label>
+                        <label class="inputFieldLabel" for="fecha">Fecha de aplicación*</label>
                         <i class="inputFieldIcon fas fa-calendar"></i>
-                        @error('fechaAplicacion')
+                        @error('fecha')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
@@ -59,12 +58,12 @@
                             autocomplete="off">
                         <label class="inputFieldLabel" for="dosis">Dosis*</label>
                         <i class="inputFieldIcon fas fa-vial-circle-check"></i>
-                        @error('nombre')
+                        @error('dosis')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
                 </div>
-                <div class="modal-footer " style="justify-content: center;">
+                <div class="modal-footer " id="ButtonAction" style="justify-content: center;">
                     <button type="submit" class="button button-pri">
                         <i class="svg-icon fa-regular fa-floppy-disk"></i>
                         <span class="lable">

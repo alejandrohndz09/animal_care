@@ -273,6 +273,15 @@ class AnimalControlador extends Controller
 
     public function historialstore(Request $request)
     {
+        // Validar la solicitud
+        $request->validate([
+            'vacuna' => 'required', // Puedes ajustar las reglas de validación según tus necesidades
+            'fecha' => 'required|before_or_equal:today',
+            'dosis' => 'required',
+        ], [
+            'foto.required' => 'La Fotografía es necesaria.',
+            'fecha.before_or_equal' => 'La fecha ingresada no debe ser mayor a la de ahora.',
+        ]);
 
         // Obtén el último registro de la tabla para determinar el siguiente incremento
         $ultimoRegistro = Historialvacuna::latest('idHistVacuna')->first();
