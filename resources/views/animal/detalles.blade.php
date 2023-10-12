@@ -16,7 +16,9 @@
                     <div class="card  mb-4" style="border:none; padding-bottom: 25px !important; width: 100%">
                         <div class="row">
                             <div class="col-xl-8">
-                                <h1 class="mb-4">{{ $registrado->count() > 0 ? 'Expediente No'.$animal->expedientes->get(0)->idExpediente : 'Detalles de animal' }}</h1>
+                                <h1 class="mb-4">
+                                    {{ $registrado->count() > 0 ? 'Expediente No' . $animal->expedientes->get(0)->idExpediente : 'Detalles de animal' }}
+                                </h1>
                                 <br>
                                 <div class="row mt-1" style="justify-content: center;">
 
@@ -129,7 +131,7 @@
                                         <i class="svg-icon fas fa-plus"></i>
                                     </button>
                                 </div>
-                                
+
                                 <style>
                                     .vaccine-container {
                                         padding: 10px;
@@ -193,53 +195,37 @@
                                     $currentVacuna = null;
                                     $dosisInfo = [];
                                     $contador = 1;
-                                    $exp= $animal->expedientes->get(0)
+                                    $exp = $animal->expedientes->get(0);
+                                    $historialesAgrupados = [];
                                 @endphp
 
                                 @foreach ($exp->historialVacunas as $historial)
-                                    @if ($currentVacuna !== $historial->vacuna)
-                                        @if ($currentVacuna !== null)
-                                            <div class="vaccine-container">
-                                                <div class="vaccine-content">
-                                                    <i class="inputFieldIcon fas fa-syringe"></i> <span
-                                                        class="vaccine-title">   <i class="inputFieldIcon fas fa-syringe"></i> {{ $historial->vacuna }}</span>
-                                                </div>
-                                                <ul>
-                                                    @foreach ($dosisInfo as $info)
-                                                        <li>{!! $info !!}</li>
-                                                    @endforeach
-                                                </ul>
-                                            </div>
-                                        @endif
-                                        @php
-                                            $dosisInfo = [];
-                                            $contador = 1;
-                                        @endphp
-                                    @endif
-
                                     @php
-                                        $dosisInfo[] = 'Dosis #' . $contador . ' aplicada el ' . $historial->fechaAplicacion;
-                                        $contador++;
-                                    @endphp
-
-                                    @if ($loop->last)
-                                        <div class="vaccine-container">
-                                            <div class="vaccine-content">
-                                                <i class="inputFieldIcon fas fa-syringe"></i> <span
-                                                    class="vaccine-title">{{ $historial->vacuna }}</span>
-                                            </div>
-                                            <ul>
-                                                @foreach ($dosisInfo as $info)
-                                                    <li>{!! $info !!}</li>
-                                                @endforeach
-                                            </ul>
-                                        </div>
-                                    @endif
-
-                                    @php
-                                        $currentVacuna = $historial->vacuna;
+                                        $nombreVacuna = $historial->vacuna->vacuna; // Asegúrate de que el nombre esté en una propiedad llamada "nombre"
+                                        if (!isset($historialesAgrupados[$nombreVacuna])) {
+                                            $historialesAgrupados[$nombreVacuna] = [];
+                                        }
+                                        $historialesAgrupados[$nombreVacuna][] = $historial;
                                     @endphp
                                 @endforeach
+
+                                @foreach ($historialesAgrupados as $nombreVacuna => $historiales)
+                                    <div class="vaccine-container">
+                                        <div class="vaccine-content">
+                                            <i class="inputFieldIcon fas fa-syringe"></i> <span
+                                                class="vaccine-title">{{ $nombreVacuna }}</span>
+                                        </div>
+                                        <ul>
+                                            @foreach ($historiales as $historial)
+                                                <li>Dosis #{{ $loop->iteration }} aplicada el
+                                                    {{ $historial->fechaAplicacion }}</li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                @endforeach
+
+
+
                                 <br>
                             </div>
                         </div>

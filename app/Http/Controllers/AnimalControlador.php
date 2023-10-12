@@ -90,14 +90,6 @@ class AnimalControlador extends Controller
             'registrado' => Expediente::where('idAnimal', $id)->get(),
             'estado' => Expediente::where('idAnimal', $id)->value('estadoGeneral'),
             'idExpediente' => Expediente::where('idAnimal', $id)->value('idExpediente'),
-            'historialVacunas' => DB::table('historialvacuna')
-                ->join('vacuna', 'historialvacuna.idVacuna', '=', 'vacuna.idVacuna')
-                ->where('historialvacuna.idExpediente', DB::table('expediente')
-                    ->where('idAnimal', $id)
-                    ->value('idExpediente'))
-                ->select('vacuna.vacuna', 'historialvacuna.fechaAplicacion')
-                ->groupBy('vacuna.vacuna', 'historialvacuna.fechaAplicacion') // Agrupa por nombre de vacuna y fecha de aplicación
-                ->get()
         ]);
     }
 
@@ -275,19 +267,13 @@ class AnimalControlador extends Controller
             'animal' => Animal::find($id),
             'registrado' => Expediente::where('idAnimal', $id)->get(),
             'estado' => Expediente::where('idAnimal', $id)->value('estadoGeneral'),
-            'idExpediente' => Expediente::where('idAnimal', $id)->value('idExpediente'),
-            'historialVacunas' => DB::table('historialvacuna')
-                ->join('vacuna', 'historialvacuna.idVacuna', '=', 'vacuna.idVacuna')
-                ->where('historialvacuna.idExpediente', $id)
-                ->select('vacuna.vacuna', 'historialvacuna.fechaAplicacion')
-                ->groupBy('vacuna.vacuna', 'historialvacuna.fechaAplicacion') // Agrupa por nombre de vacuna y fecha de aplicación
-                ->get()
+            'idExpediente' => Expediente::where('idAnimal', $id)->value('idExpediente')
         ]);
     }
 
     public function historialstore(Request $request)
     {
-     
+
         // Obtén el último registro de la tabla para determinar el siguiente incremento
         $ultimoRegistro = Historialvacuna::latest('idHistVacuna')->first();
 
@@ -310,12 +296,6 @@ class AnimalControlador extends Controller
             'registrado' => Expediente::where('idAnimal', $request->input('idAnimal'))->get(),
             'estado' => Expediente::where('idAnimal', $request->input('idAnimal'))->value('estadoGeneral'),
             'idExpediente' => Expediente::where('idAnimal', $request->input('idAnimal'))->value('idExpediente'),
-            'historialVacunas' => DB::table('historialvacuna')
-                ->join('vacuna', 'historialvacuna.idVacuna', '=', 'vacuna.idVacuna')
-                ->where('historialvacuna.idExpediente', $request->input('idExpediente'))
-                ->select('vacuna.vacuna', 'historialvacuna.fechaAplicacion')
-                ->groupBy('vacuna.vacuna', 'historialvacuna.fechaAplicacion') // Agrupa por nombre de vacuna y fecha de aplicación
-                ->get()
         ]);
     }
 }
