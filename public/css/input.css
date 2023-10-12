@@ -187,14 +187,14 @@
     }
   }
 
-  #pagination {
+  #pagination,#paginationGrid {
     display: flex;
     text-align: center;
-    justify-content: end;
+    justify-content: center;
     margin-top: 1px;
 }
 
-#pagination a {
+#pagination a,#paginationGrid a {
   color: #6067eb;
     display: inline-block;
     padding: 10px 20px;
