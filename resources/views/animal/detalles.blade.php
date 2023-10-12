@@ -16,7 +16,7 @@
                     <div class="card  mb-4" style="border:none; padding-bottom: 25px !important; width: 100%">
                         <div class="row">
                             <div class="col-xl-8">
-                                <h1 class="mb-4">{{ $registrado->count() > 0 ? 'Expediente' : 'Detalles de animal' }}</h1>
+                                <h1 class="mb-4">{{ $registrado->count() > 0 ? 'Expediente No'.$animal->expedientes->get(0)->idExpediente : 'Detalles de animal' }}</h1>
                                 <br>
                                 <div class="row mt-1" style="justify-content: center;">
 
@@ -193,9 +193,10 @@
                                     $currentVacuna = null;
                                     $dosisInfo = [];
                                     $contador = 1;
+                                    $exp= $animal->expedientes->get(0)
                                 @endphp
 
-                                @foreach ($historialVacunas as $historial)
+                                @foreach ($exp->historialVacunas as $historial)
                                     @if ($currentVacuna !== $historial->vacuna)
                                         @if ($currentVacuna !== null)
                                             <div class="vaccine-container">
