@@ -51,9 +51,7 @@
                         </tr>
                     </thead>
                     <tbody id="tableBody">
-                        @php
-                            $animalControlador = app()->make('App\Http\Controllers\AnimalControlador');
-                        @endphp
+                        @php use App\Http\Controllers\AnimalControlador; @endphp
                         @foreach ($animales as $a)
                             <tr>
                                 <td>

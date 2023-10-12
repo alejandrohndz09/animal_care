@@ -28,7 +28,7 @@
                             @php use App\Models\vacuna; @endphp
                             @foreach (Vacuna::all() as $v)
                                 <option value="{{ $v->idVacuna }}"
-                                    {{ isset($historialV) ? ($historialV->vacuna->vacuna == $v->idVacuna ? 'selected' : '') : (old('vacuna') == $v->idVacuna ? 'selected' : '') }}>
+                                    {{ isset($historialV) ? ($historialV->vacuna->idVacuna == $v->idVacuna ? 'selected' : '') : (old('vacuna') == $v->idVacuna ? 'selected' : '') }}>
                                     {{ $v->vacuna }}
                                 </option>
                             @endforeach
