@@ -1,21 +1,17 @@
+@section('scripts')
+    <script src="{{ asset('js/validaciones/jsHistorialV.js') }}"></script>
+@endsection
 <!-- Modal para agregar o modificar vacunas al historial de vacunas-->
 <div class="modal fade" id="newHistorial" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content text-center">
+        <div class="modal-content ">
             <div class="modal-header">
                 <h5 style="margin-left: 35%"> {{ isset($HistorialV) ? 'Editar Registro' : 'Nuevo Registro' }}</h5>
-                <button type="button" class="circle-button" style="margin-right: 4%" data-bs-dismiss="modal">
-                    <i style="height: 30px;width: 45px;margin-right: 8%"
-                        class="svg-icon fas fa-regular fa-circle-xmark"></i></button>
+
             </div>
-            <form
-                action="{{ isset($HistorialV) ? url('historialVacunas/update/' . $HistorialV->idHistVacuna) : '' }}"
-                enctype="multipart/form-data" method="POST">
+            <form id="formulario">
                 @csrf
-                @if (isset($historialV))
-                    @method('PUT')
-                @endif
-                <div class="modal-body text-center">
+                <div class="modal-body ">
                     <br>
                     <input type="hidden" name="idAnimal" value="{{ $animal->idAnimal }}">
                     <input type="hidden" name="idExpediente" value="{{ $idExpediente }}">
@@ -33,23 +29,18 @@
                                 </option>
                             @endforeach
                         </select>
-
                         <label class="inputFieldLabel" for="vacuna">Vacuna*</label>
                         <i class="inputFieldIcon fas fa-syringe"></i>
-                        @error('vacuna')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
+                        <small id="vacuna-error" style="color: red;"></small>
                     </div>
 
                     <div class="inputContainer">
-                        <input id="fecha" name="fecha"
-                            value="{{ isset($historialV) ? old('fecha', explode(' ', $historialV->fechaAplicacion)[0]) : old('fechaAplicacion') }}"
+                        <input id="fechaAplicacion" name="fechaAplicacion"
+                            value="{{ isset($historialV) ? old('fechaAplicacion', explode(' ', $historialV->fechaAplicacion)[0]) : old('fechaAplicacion') }}"
                             max="{{ date('Y-m-d') }}" class="inputField" autocomplete="false" type="date">
-                        <label class="inputFieldLabel" for="fecha">Fecha de aplicación*</label>
+                        <label class="inputFieldLabel" for="fechaAplicacion">Fecha de aplicación*</label>
                         <i class="inputFieldIcon fas fa-calendar"></i>
-                        @error('fecha')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
+                        <small id="fechaAplicacion-error" style="color: red;"></small>
                     </div>
 
                     <div class="inputContainer">
@@ -58,13 +49,12 @@
                             autocomplete="off">
                         <label class="inputFieldLabel" for="dosis">Dosis*</label>
                         <i class="inputFieldIcon fas fa-vial-circle-check"></i>
-                        @error('dosis')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
+                        <small id="dosis-error" style="color: red;"></small>
                     </div>
                 </div>
-                <div class="modal-footer " id="ButtonAction" style="justify-content: center;">
-                    <button type="submit" class="button button-pri">
+
+                <div class="modal-footer " id="btnGuardar" style="justify-content: center;">
+                    <button type="button" class="button button-pri">
                         <i class="svg-icon fa-regular fa-floppy-disk"></i>
                         <span class="lable">
                             {{ isset($historialV) ? 'Modificar' : 'Guardar' }}
@@ -76,6 +66,8 @@
                     </button>
                 </div>
             </form>
+
+
         </div>
     </div>
 </div>

@@ -8,6 +8,7 @@ use App\Http\Controllers\MiembroController;
 use App\Http\Controllers\PatologiaController;
 use App\Http\Controllers\VacuanaController;
 use App\Http\Controllers\VacunaController;
+use App\Models\Historialvacuna;
 use Illuminate\Routing\Route as RoutingRoute;
 use Illuminate\Support\Facades\Route;
 
@@ -68,7 +69,7 @@ Route::get('/destroyPatologia/{id}', 'App\Http\Controllers\PatologiaController@d
 
 
 Route::resource('/historialVacunas', 'App\Http\Controllers\HistorialVacunasController');
-
+Route::post('/historialVacunas/store', 'App\Http\Controllers\HistorialVacunasController@store');
 
 Route::resource('expediente', 'App\Http\Controllers\ExpedienteController');
 Route::get('/crearExpediente/{id}', 'App\Http\Controllers\ExpedienteController@crearExpediente');

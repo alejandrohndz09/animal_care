@@ -126,7 +126,7 @@
                                 <div
                                     style="width:100%; display: flex;  justify-content: space-between; align-items: center; margin-bottom: 5px;">
                                     <h5 style="margin-left: 30px;font-size: 34px; color: #333;">Historial de vacunas</h5>
-                                    <button type="submit" class="button button-pri" data-bs-toggle="modal"
+                                    <button type="submit" id="mostrar" class="button button-pri" data-bs-toggle="modal"
                                         data-bs-target="#newHistorial" style="width: 80px;padding: 7px 3px">
                                         <i class="svg-icon fas fa-plus"></i>
                                     </button>
@@ -232,8 +232,11 @@
                                 @endforeach
 
                                 @foreach ($historialesAgrupados as $nombreVacuna => $historiales)
-                                    <div class="vaccine-container" data-vacuna="{{json_encode($historialesAgrupados)}}">
-                                        <div class="vaccine-content">
+                                    <div class="vaccine-container historialv-row"
+                                        data-vacuna="{{ json_encode($historialesAgrupados) }}">
+                                        <div class="vaccine-content"
+                                            style="margin: 0; display: flex; align-items: center">
+                                            <i class="fas fa-syringe" style="margin-right: 3px;color:#6067eb"></i>
                                             <span class="vaccine-title">{{ $nombreVacuna }}</span>
                                         </div>
                                         <ul>
@@ -280,7 +283,10 @@
 
                                 @foreach ($historialesAgrupados as $nombrePatologia => $historiales)
                                     <div class="vaccine-container">
-                                        <div class="vaccine-content">
+                                        <div class="vaccine-content"style="margin: 0; display: flex; align-items: center">
+
+                                            <img src="{{asset('img/suero.svg')}}" alt="triangle with all three sides equal"
+                                                height="25" width="25" style="margin-right: 3px" />
                                             <span class="vaccine-title">{{ $nombrePatologia }}</span>
                                         </div>
                                         <ul>

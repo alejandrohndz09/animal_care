@@ -22,6 +22,7 @@ class ExpedienteController extends Controller
             'expedientes' => $expedientes,
         ]);
     }
+    
     public function getExpedientes()
     {
         $expedientes = Expediente::with('animal')->where('estado', 1)->get();

@@ -19,6 +19,11 @@ class HistorialVacunasController extends Controller
         //
     }
 
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function create()
     {
         //
@@ -28,11 +33,10 @@ class HistorialVacunasController extends Controller
     {
         // Validar la solicitud
         $request->validate([
-            'vacuna' => 'required', // Puedes ajustar las reglas de validación según tus necesidades
-            'fecha' => 'required|before_or_equal:today',
+            'vacuna' => 'required',
+            'fechaAplicacion' => 'required|before_or_equal:today',
             'dosis' => 'required',
         ], [
-            'foto.required' => 'La Fotografía es necesaria.',
             'fecha.before_or_equal' => 'La fecha ingresada no debe ser mayor a la de ahora.',
         ]);
 
@@ -53,12 +57,12 @@ class HistorialVacunasController extends Controller
         $newHistorialVacuna->idExpediente = $request->input('idExpediente');
         $newHistorialVacuna->save();
 
-        return view('animal.detalles')->with([
-            'animal' => Animal::find($request->input('idAnimal')),
-            'registrado' => Expediente::where('idAnimal', $request->input('idAnimal'))->get(),
-            'estado' => Expediente::where('idAnimal', $request->input('idAnimal'))->value('estadoGeneral'),
-            'idExpediente' => Expediente::where('idAnimal', $request->input('idAnimal'))->value('idExpediente'),
-        ]);
+        // Redirige al usuario a la página deseada
+        $expController = new ExpedienteController();
+        $expController->show($request->input('idAnimal'));
+
+        // Devuelve una respuesta JSON de éxito
+        return response()->json(['success' => true, 'message' => 'Guardado con éxito']);
     }
 
 
