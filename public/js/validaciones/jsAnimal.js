@@ -145,7 +145,7 @@ function imagenVistaPrevia() {
         } else {
             var button = $(this); // Fila de la tabla que se hizo clic
             var id = button.data('animal').idAnimal; // Obtiene el valor del atributo data-id
-            window.location.href = '/animal/' + id;
+            window.location.href = '/expediente/' + id;
         }
     });
 

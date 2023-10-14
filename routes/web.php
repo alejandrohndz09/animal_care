@@ -31,9 +31,6 @@ Route::resource('animal', 'App\Http\Controllers\AnimalControlador');
 Route::put('/animal/update/{id}', 'App\Http\Controllers\AnimalControlador@update');
 Route::get('/animal/destroy/{id}', 'App\Http\Controllers\AnimalControlador@destroy');
 Route::get('/obtener-razas/{especie}', 'App\Http\Controllers\AnimalControlador@obtenerRazas');
-Route::get('/crearExpediente/{id}','App\Http\Controllers\AnimalControlador@expediente');
-Route::post('animal/{id}/historialVacuna', 'App\Http\Controllers\AnimalControlador@historialstore');
-
 
 Route::resource('raza', 'App\Http\Controllers\RazaController');
 Route::put('/raza/update/{id}', 'App\Http\Controllers\RazaController@update');
@@ -69,9 +66,12 @@ Route::resource('/patologia', 'App\Http\Controllers\PatologiaController');
 Route::put('patologia/update/{id}', [PatologiaController::class, 'update'])->name('patologia.update');
 Route::get('/destroyPatologia/{id}', 'App\Http\Controllers\PatologiaController@destroy');
 
-Route::resource('/historialV', 'App\Http\Controllers\HistorialVacunaController');
+
+Route::resource('/historialVacunas', 'App\Http\Controllers\HistorialVacunasController');
+
+
 Route::resource('expediente', 'App\Http\Controllers\ExpedienteController');
+Route::get('/crearExpediente/{id}', 'App\Http\Controllers\ExpedienteController@crearExpediente');
 Route::put('/expediente/update/{id}', [ExpedienteController::class, 'update']);
-Route::get('/getExpedientes', 'App\Http\Controllers\ExpedienteController@getExpedientes');
 Route::get('/expedientedestroy/{id}', 'App\Http\Controllers\ExpedienteController@destroy');
 Route::get('/expedienteAlta/{id}', 'App\Http\Controllers\ExpedienteController@alta');

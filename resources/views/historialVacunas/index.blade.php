@@ -9,7 +9,7 @@
                         class="svg-icon fas fa-regular fa-circle-xmark"></i></button>
             </div>
             <form
-                action="{{ isset($historialV) ? url('historialV/update/' . $historialV->idHistVacuna) : url('animal/' . $animal->idAnimal . '/historialVacuna') }}"
+                action="{{ isset($HistorialV) ? url('historialVacunas/update/' . $HistorialV->idHistVacuna) : '' }}"
                 enctype="multipart/form-data" method="POST">
                 @csrf
                 @if (isset($historialV))

@@ -17,7 +17,7 @@
                         <div class="row">
                             <div class="col-xl-8">
                                 <h1 class="mb-4">
-                                    {{ $registrado->count() > 0 ? 'Expediente No' . $animal->expedientes->get(0)->idExpediente : 'Detalles de animal' }}
+                                    {{ $registrado->count() > 0 ? 'Expediente No. ' . $animal->expedientes->get(0)->idExpediente : 'Detalles de animal' }}
                                 </h1>
                                 <br>
                                 <div class="row mt-1" style="justify-content: center;">
@@ -232,7 +232,7 @@
                                 @endforeach
 
                                 @foreach ($historialesAgrupados as $nombreVacuna => $historiales)
-                                    <div class="vaccine-container">
+                                    <div class="vaccine-container" data-vacuna="{{json_encode($historialesAgrupados)}}">
                                         <div class="vaccine-content">
                                             <span class="vaccine-title">{{ $nombreVacuna }}</span>
                                         </div>
@@ -281,7 +281,7 @@
                                 @foreach ($historialesAgrupados as $nombrePatologia => $historiales)
                                     <div class="vaccine-container">
                                         <div class="vaccine-content">
-                                            <span class="vaccine-title">{{ $nombrePatologia }} Moquillo</span>
+                                            <span class="vaccine-title">{{ $nombrePatologia }}</span>
                                         </div>
                                         <ul>
                                             @foreach ($historiales as $historial)
@@ -309,7 +309,7 @@
                             </div>
                         </div>
                 @endif
-                @include('animal.historial')
+                @include('historialVacunas.index')
         </main>
     </div>
 @endsection
