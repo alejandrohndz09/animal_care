@@ -46,7 +46,7 @@ $(document).ready(function () {
     $('.registro-row').on('click', function (event) {
         // //     // Verifica si el clic se realizó en un botón de editar o eliminar
 
-        if ($(event.target).is('a#btnUpdate') || $(event.target).is('a#btnDelete')) {
+        if ($(event.target).is('#btnUpdate') || $(event.target).is('a#btnDelete')) {
            
             return; // No muestres el modal si se hizo clic en un botón
         } else {

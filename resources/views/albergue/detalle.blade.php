@@ -62,6 +62,11 @@
                     <div
                         style="width:100%; display: flex;  justify-content: space-between; align-items: center; margin-bottom: 15px;">
                         <h3>Animales albergados </h3>
+
+                        <button type="button" class="button button-pri" data-bs-toggle="modal" data-bs-target="#modalAlvergar">
+                            <i class="svg-icon fa-regular fa-floppy-disk"></i>Nuevo
+                        </button>    
+
                         <input id="searchInput" class="inputField card" style="width: 50% " autocomplete="off"
                             placeholder="🔍︎ Buscar" type="search">
                     </div>
@@ -95,17 +100,11 @@
                                     <td>{{ AnimalControlador::calcularEdad(explode(' ', $a->fechaNacimiento)[0]) }}
                                     </td>
                                     <td>
-                                        <div
-                                            style="display: flex; align-items: flex-end; gap: 3px; justify-content: center">
-                                            <a href="{{ url('animal/' . $a->idAnimal . '/edit') }}"
-                                                class="button button-blue" style="width: 45%;" data-bs-pp="tooltip"
-                                                data-bs-placement="top" title="Editar">
-                                                <i class="svg-icon fas fa-pencil"></i>
-                                            </a>
+                                        <div>
                                             <button type="button" class="button button-red" style="width: 45%"
-                                                data-bs-toggle="modal" data-bs-target="#exampleModalToggle"
+                                                data-bs-toggle="modal" data-bs-target="#modaldeBaja"
                                                 data-animal="{{ json_encode($a) }}" data-bs-pp="tooltip"
-                                                data-bs-placement="top" title="Dar de baja">
+                                                data-bs-placement="top" title="Dar de baja del albergue">
                                                 <i class="svg-icon fas fa-trash"></i>
                                             </button>
 
@@ -120,4 +119,5 @@
             </div>
         </main>
     </div>
+     @include('albergue.modalDetalle')
 @endsection

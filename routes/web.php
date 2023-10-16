@@ -75,3 +75,11 @@ Route::put('/expediente/update/{id}', [ExpedienteController::class, 'update']);
 Route::get('/getExpedientes', 'App\Http\Controllers\ExpedienteController@getExpedientes');
 Route::get('/expedientedestroy/{id}', 'App\Http\Controllers\ExpedienteController@destroy');
 Route::get('/expedienteAlta/{id}', 'App\Http\Controllers\ExpedienteController@alta');
+
+
+Route::get('/albergar/{idExpediente}/{idAlvergue}', 'App\Http\Controllers\AlbergueController@albergar');
+Route::get('/dardeBajadeAlvergue/{idExpediente}', 'App\Http\Controllers\AlbergueController@dardeBajadeAlvergue');
+
+
+
+
