@@ -75,3 +75,8 @@ Route::put('/expediente/update/{id}', [ExpedienteController::class, 'update']);
 Route::get('/getExpedientes', 'App\Http\Controllers\ExpedienteController@getExpedientes');
 Route::get('/expedientedestroy/{id}', 'App\Http\Controllers\ExpedienteController@destroy');
 Route::get('/expedienteAlta/{id}', 'App\Http\Controllers\ExpedienteController@alta');
+
+Route::resource('adopcion', 'App\Http\Controllers\AdopcionController');
+Route::get('form-adopcion', function () {
+    return view('adopcion.form');
+});

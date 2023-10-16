@@ -43,7 +43,7 @@ $(document).ready(function () {
     });
 
     // Escuchar el click en una fila
-    $('.registro-row').on('click', function (event) {
+    $('#tableBody').on('click', '.registro-row', function (event) {
         // //     // Verifica si el clic se realizó en un botón de editar o eliminar
 
         if ($(event.target).is('a#btnUpdate') || $(event.target).is('a#btnDelete')) {

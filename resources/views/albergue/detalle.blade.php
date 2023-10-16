@@ -62,6 +62,11 @@
                     <div
                         style="width:100%; display: flex;  justify-content: space-between; align-items: center; margin-bottom: 15px;">
                         <h3>Animales albergados </h3>
+                        <a href=""
+                            class="button button-blue btnUpdate" style="width: 45%;" data-bs-pp="tooltip"
+                            data-bs-placement="top" title="Albergar nuevo animal">
+                            <i class="svg-icon fas fa-plus"></i>
+                        </a>
                         <input id="searchInput" class="inputField card" style="width: 50% " autocomplete="off"
                             placeholder="🔍︎ Buscar" type="search">
                     </div>
