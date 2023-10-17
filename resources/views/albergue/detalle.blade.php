@@ -7,6 +7,7 @@
 
 @section('scripts')
     <script src="{{ asset('js/validaciones/JsAlbergue.js') }}"></script>
+
 @endsection
 @section('content')
     <div id="layoutSidenav_content">
@@ -62,11 +63,13 @@
                     <div
                         style="width:100%; display: flex;  justify-content: space-between; align-items: center; margin-bottom: 15px;">
                         <h3>Animales albergados </h3>
-                        <a href=""
-                            class="button button-blue btnUpdate" style="width: 45%;" data-bs-pp="tooltip"
-                            data-bs-placement="top" title="Albergar nuevo animal">
+
+
+                        <button type="button" class="button button-pri" data-bs-toggle="modal" data-bs-target="#modalAlvergar"
+                        style="width: 45%;" data-bs-pp="tooltip" data-bs-placement="top" title="Albergar nuevo animal">
                             <i class="svg-icon fas fa-plus"></i>
-                        </a>
+                        </button>    
+
                         <input id="searchInput" class="inputField card" style="width: 50% " autocomplete="off"
                             placeholder="🔍︎ Buscar" type="search">
                     </div>
@@ -100,17 +103,11 @@
                                     <td>{{ AnimalControlador::calcularEdad(explode(' ', $a->fechaNacimiento)[0]) }}
                                     </td>
                                     <td>
-                                        <div
-                                            style="display: flex; align-items: flex-end; gap: 3px; justify-content: center">
-                                            <a href="{{ url('animal/' . $a->idAnimal . '/edit') }}"
-                                                class="button button-blue" style="width: 45%;" data-bs-pp="tooltip"
-                                                data-bs-placement="top" title="Editar">
-                                                <i class="svg-icon fas fa-pencil"></i>
-                                            </a>
-                                            <button type="button" class="button button-red" style="width: 45%"
-                                                data-bs-toggle="modal" data-bs-target="#exampleModalToggle"
-                                                data-animal="{{ json_encode($a) }}" data-bs-pp="tooltip"
-                                                data-bs-placement="top" title="Dar de baja">
+                                        <div>
+                                            <button type="button" class="button button-red btnDelete" style="width: 45%"
+                                                data-bs-toggle="modal" data-bs-target="#modaldeBaja"
+                                                data-expediente="{{ json_encode($a) }}" data-bs-pp="tooltip"
+                                                data-bs-placement="top" title="Dar de baja del albergue">
                                                 <i class="svg-icon fas fa-trash"></i>
                                             </button>
 
@@ -125,4 +122,5 @@
             </div>
         </main>
     </div>
+     @include('albergue.modalDetalle')
 @endsection

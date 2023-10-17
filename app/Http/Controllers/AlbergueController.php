@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Alvergue;
+use App\Models\Expediente;
 use App\Models\Miembro;
 use Illuminate\Http\Request;
 
@@ -16,6 +17,11 @@ class AlbergueController extends Controller
         return view('albergue.index')->with([
             'Albergues' => $albergues
         ]);
+    }
+    public function Create()
+    {
+        
+        return view('detalleAlbergue.Create');
     }
 
     public function store(Request $request)
@@ -83,6 +89,25 @@ class AlbergueController extends Controller
         $albergue->save();
 
         return redirect()->route("albergue.index");
+    }
+
+    public function albergar($idExpediente,$idAlvergue)
+    {
+        $expediente = Expediente::find($idExpediente);
+
+        //Actualiza los datos en la BD
+        $expediente->idAlvergue = $idAlvergue;
+        $expediente->save();
+            return back();
+    }
+    public function desalbergar($idExpediente,$idAlvergue)
+    {
+        $expediente = Expediente::find($idExpediente);
+
+        //Actualiza los datos en la BD
+        $expediente->idAlvergue = null;
+        $expediente->save();
+            return back();
     }
 
     public function destroy($id)
