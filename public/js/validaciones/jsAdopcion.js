@@ -21,7 +21,8 @@ function validarInput(input) {
     // Asignar el valor al campo de entrada
     input.value = telefonoValue;
 
-} function validarDui(input) {
+}
+function validarDui(input) {
     let duiValue = input.value;
 
     // Eliminar caracteres no válidos
@@ -53,35 +54,19 @@ function validarTexto(input) {
     // Asignar el valor al campo de entrada
     input.value = duiValue;
 }
-
-//Agregar un input telefono
-$(document).ready(function () {
-
-    // Escucha el evento de cambio del checkbox
-    $("#esMayorDeEdad").change(function (event) {
-        event.stopPropagation();
-        document.getElementById("iconDui").style.color = '#cdcbcd';
-
-        // Obtén el campo DUI
-        var duiInput = $("input[name='dui']");
-
-        // Habilitar o deshabilitar el campo DUI en función del estado del checkbox
-        if ($(this).is(":checked")) {
-            duiInput.prop("disabled", false);
-            duiInput.val(''); // Borra el contenido del campo DUI
-            document.getElementById("iconDui").style.color = "#6067eb";
-        } else {
-            duiInput.prop("disabled", true);
-            duiInput.val(''); // Borra el contenido del campo DUI
-            document.getElementById("iconDui").style.color = '#cdcbcd';
-        }
-    });
-
-    //Habilitar tooltips
+function tooltips() {
     var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-pp="tooltip"]'))
     tooltipTriggerList.map(function (tooltipTriggerEl) {
         return new bootstrap.Tooltip(tooltipTriggerEl)
     })
+}
+//Agregar un input telefono
+$(document).ready(function () {
+   
+    //Habilitar tooltips
+    tooltips();
+
+
 
     $("#add-telefono").click(function () {
         var contador = $("#con");
@@ -106,120 +91,44 @@ $(document).ready(function () {
 
             // Si pasa ambas validaciones, puedes agregar el nuevo campo de teléfono
             var newTelefonoField = `
-        <div  class="row" id="remove${con}">
+            <div class="row" id="remove${con}">
                <div class="col-xl-6">
                   <div class="inputContainer">
                        <input class="inputField form-control telefono"  id="tel`+ con + `"
-                          value="+503 " name="telefono`+ con + `" type="text" oninput="validarInput(this)">
+                          value="+503 " name="telefonosAd[]" type="text" oninput="validarInput(this)">
                            <small  style="color:red" class="error-message" id="error-` + con + `"></small>
                   </div>
                 </div>
-             <div class="col-xl-6">
-                  <button type="button" class="button button-sec remove-telefono"
-                  data-telefono="telefono${con}"
-                  data-remove="remove${con}"
-                  data-telefono-id="vacio" data-bs-pp="tooltip"
-                  data-bs-placement="top" title="Eliminar telefono">
-                   <i class="svg-icon fas fa-minus"></i>
-                  </button>
-            </div>
-        </div>
-        `;
+                <div class="col-xl-6">
+                    <button type="button" class="button button-sec remove-telefono"
+                    data-telefono="telefono${con}"
+                    data-remove="remove${con}"
+                    data-telefono-id="vacio" data-bs-pp="tooltip"
+                    data-bs-placement="top" title="Eliminar telefono">
+                    <i class="svg-icon fas fa-minus"></i>
+                    </button>
+                </div>
+            </div>`;
             $("#telefono-container").append(newTelefonoField);
+            // Cierra el tooltip si está abierto
+            $(this).tooltip('hide');
+            tooltips();
         }
 
     });
 
     $("#telefono-container").on("click", ".remove-telefono", function () {
-        var telefonoId = $(this).data("telefono-id"); // Almacenar telefonoId
-        var removeList = $(this).data("remove"); // Almacenar el id que se eliminara
-
-        var telefono = $(this).data("telefono"); // Obtener el name del input dinamico agregado por el usuario para obtener el valor
-        var valorGuardado = $("input[name='" + telefono + "']").val();//Guardar valor del input en especifico que se selecciono
-        var telefonoBD = $(this).data("telefono-e"); // Numero de BD para mostrar en el modal si quiere eliminarlo o no
-
-        //Verifica si el input esta vacio entonces no mostrara el modal sino solo lo eliminara
-        if (valorGuardado === "+503 ") {
-
-            // Elimina input
-            $("#" + removeList).remove();
-            var contador = $("#con");
-            var con = parseInt(contador.val());
-            con = con - 1; // decrementa el valor de 'con' en 1
-            contador.val(con); // Actualiza el valor en el campo de entrada
-
-        }//Sino entonces esta con un registro pregunta al usuario 
-        else {
-
-            //Si hay datos en telefono signica que estamos eliminando un registro de la BD y para confirmacion obtenemos el data 
-            if (telefono != null) {
-                // Actualiza el contenido del modal con los detalles del registro
-                $('#telefono').text(valorGuardado);
-            } else {
-                // Actualiza el contenido del modal con los detalles del registro
-                $('#telefono').text(telefonoBD);
-            }
-
-            // Abrir el modal de confirmación
-            $("#modalTelefono").modal("show");
-
-
-            $("#confirmarCell").on("click", function () {
-                // Cerrar el modal de confirmación
-
-                $("#modalTelefono").modal("hide");
-
-                console.log(telefonoId);
-
-                // Si esta vacio significa que no esta guardado el telefono en la BD
-                if (telefonoId === "vacio") {
-
-                    // Elimina input
-                    $("#" + removeList).remove();
-                    var contador = $("#con");
-                    var con = parseInt(contador.val());
-                    con = con - 1; // decrementa el valor de 'con' en 1
-                    contador.val(con); // Actualiza el valor en el campo de entrada
-
-                } else {
-                    // Realizar la eliminación del registro utilizando AJAX
-                    $.ajax({
-                        url: "/destroyTelefono/" + telefonoId,
-                        method: "DELETE",
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        },
-                        success: function () {
-                            // Eliminar el elemento del DOM si la eliminación en el servidor fue exitosa
-                            var divAEliminar = $("#" + removeList);
-                            divAEliminar.remove();
-
-                            // Restar 1 al contador
-                            var contador = $("#con");
-                            var con = parseInt(contador.val());
-                            con = con - 1;
-                            contador.val(con);
-
-                            // Abre el modal
-                            $('#modalEliminacion').modal('show');
-
-                            // Ocultar el modal después de 4 segundos
-                            setTimeout(function () {
-                                $('#modalEliminacion').modal('hide');
-                            }, 1050);
-
-                            telefonoId = "";
-                        },
-                        error: function (xhr, status, error) {
-                            console.log(error);
-
-                        }
-                    });
-                }
-            });
-
-        }
+        $(this).closest('.row').remove();
+        $(this).remove();
+        var contador = $("#con");
+        var con = parseInt(contador.val());
+        con = con - 1; // decrementa el valor de 'con' en 1
+        contador.val(con); // Actualiza el valor en el campo de entrada
+        // Cierra el tooltip si está abierto
+        $(this).tooltip('hide');
     });
+
+
 
     //Validacion de campos vacios en el formulario
     $("#miFormulario").submit(function (event) {
@@ -274,6 +183,9 @@ $(document).ready(function () {
             });
         });
 
+    });
+
+    $('#buscarExpediente').on('show.bs.modal', function (event) {
     });
 
     $("#btnCancelar").click(function () {

@@ -49,7 +49,7 @@
                     </thead>
                     <tbody>
 
-                        @foreach ($expedientes as $item)
+                        {{-- @foreach ($expedientes as $item)
                             @if ($item->estado == 0)
                                 <tr>
                                     <td style="width: 10%">
@@ -84,7 +84,8 @@
                                     </td>
                                 </tr>
                             @endif
-                        @endforeach
+                        @endforeach --}}
+                    </tbody>
                 </table>
                 <div id="pagination">
 
@@ -129,16 +130,14 @@
 </div>
 
 <!-- Modal de eliminacion exitosa-->
-<div class="modal fade" id="Eliminacion" aria-hidden="true" aria-labelledby="exampleModalToggleLabel"
-    tabindex="-1">
+<div class="modal fade" id="Eliminacion" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered modal-sm">
         <div class="modal-content text-center">
             <div class="modal-header">
                 <h5 style="margin-left: auto; margin-right: auto;">Aviso</h5>
             </div>
             <div class="modal-body text-center">
-                <button type="button" class="circle-button-accept" style="margin-right: 4%"
-                    data-bs-dismiss="modal">
+                <button type="button" class="circle-button-accept" style="margin-right: 4%" data-bs-dismiss="modal">
                     <i style="height: 30px;width: 45px;margin-right: 8%" class="svg-icon fas fa-check"></i></button>
             </div>
             <p>Registro eliminado de la BD exitosamente!</p>
@@ -149,29 +148,32 @@
 </div>
 
 
-<!-- Modal para ver detalles de los elementos de la lista-->
-<div class="modal fade" id="ModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel"
-    tabindex="-1">
-    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
-        <div class="modal-content text-center">
+<!-- Modal para ver detalles de los expedientes disponibles-->
+<div class="modal fade" id="buscarExpediente" tabindex="-1"  aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-lg ">
+        <div class="modal-content"  style="min-height: 80vh !important">
             <div class="modal-header">
-                <h5 style="margin-left: 35%">Detalles de expediente</h5>
-                <button type="button" class="circle-button" style="margin-right: 4%" data-bs-dismiss="modal">
-                    <i style="height: 30px;width: 45px;margin-right: 8%"
-                        class="svg-icon fas fa-regular fa-circle-xmark"></i></button>
+                <h3 class="modal-title" style="">Seleccione un expediente:</h3>
+                <button type="button" class="btn-close" aria-label="Close" data-bs-dismiss="modal"></button>
             </div>
-            <div class="modal-body text-center">
-                <!-- Utiliza la clase text-center para centrar los elementos -->
-                <p><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/2048px-User-avatar.svg.png"
-                        alt="user" class="picture "
-                        style="width: 15%; height: auto; margin-left: auto; margin-right: auto;"> </p>
-                <p>DUI: <span id="modalDui"></span></p>
-                <p>Expediente: <span id="modalNombres"></span> <span id="modalApellidos"></span></p>
-                <p>Correo: <span id="modalCorreo"></span></p>
-                <p>Telefono: <span id="telefonos"></span></p>
+            
+            <div class="modal-body">
+                <div class="d-flex justify-content-end mb-2">
+                    
+                    <input id="searchInputGrid" class="inputField card" style="width: 50%; margin-right: 8px; " autocomplete="off"
+                        placeholder="🔍︎ Buscar" type="search">
+                </div>
 
+                <!-- Aquí puedes agregar tu tabla -->
+                <div id="grid" class="d-flex justify-content-center">
+                    <div class="row col-xl-12">
+                    </div>
+                </div>
+                <div id="paginationGrid">
 
+                </div>
             </div>
+
         </div>
     </div>
 </div>

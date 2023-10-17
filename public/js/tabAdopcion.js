@@ -28,6 +28,14 @@ function cargarRegistros(pagina, filtro) {
     table.innerHTML = '<p>No se entregaron registros</p>';
     return;
   }
+  // Obtiene la URL actual
+  var urlActual = window.location.href;
+
+  // Divide la URL en segmentos usando el carácter '/'
+  var segmentos = urlActual.split('/');
+  // Accede al último segmento (la última palabra en la URL)
+  var ultimaPalabra = segmentos[segmentos.length - 1];
+
 
   registrosMostrados.forEach(function (expediente) {
     // Crea la estructura HTML de cada registro y agrega al contenedor
@@ -39,19 +47,34 @@ function cargarRegistros(pagina, filtro) {
     } else {
       img = expediente.animal.imagen;
     }
-
-    columna.innerHTML =
-      '<div class="card mb-1 panelGrid d-flex flex-row " style="align-items:center; border: none; padding:.5rem; justify-content:start; gap: 0.7rem !important; width: 100%">' +
+    if (ultimaPalabra == 'adopcion') {
+      columna.innerHTML =
+        '<div class="card mb-1 panelGrid d-flex flex-row " style="align-items:center; border: none; padding:.5rem; justify-content:start; gap: 0.7rem !important; width: 100%">' +
         '<a href="/animal/' + expediente.idAnimal + '" class="stretched-link"></a>' +
         '<div class="picture" style="width:60px; height: 60px; overflow: hidden;">' +
-          '<img src="' + img + '" style="width:100%; height:100%; object-fit: cover;">' +
-          '</div>' +
-        '<div style="margin: 0; display: flex; flex-direction:column;">' +
-          '<div style="margin: 0; display: flex; align-items: center; font-weight: bold;"> Cod. ' + expediente.idExpediente + '</div>' +
-          '<div style="margin: 0; display: flex; align-items: center;color:#6067eb; font-size: 14px"> <i class="fas fa-paw" style="margin-right: 3px;"></i>' + expediente.animal.nombre + '</div>' +
-          '<div style="margin: 0; display: flex; align-items: center; color:#867596; font-size: 12px "> <i class="fas fa-calendar" style="margin-right: 3px;"></i>Desde el ' + dateFormat(expediente.fechaIngreso) + '</div>' +
+        '<img src="' + img + '" style="width:100%; height:100%; object-fit: cover;">' +
         '</div>' +
-      '</div>';
+        '<div style="margin: 0; display: flex; flex-direction:column;">' +
+        '<div style="margin: 0; display: flex; align-items: center; font-weight: bold;"> Cod. ' + expediente.idExpediente + '</div>' +
+        '<div style="margin: 0; display: flex; align-items: center;color:#6067eb; font-size: 14px"> <i class="fas fa-paw" style="margin-right: 3px;"></i>' + expediente.animal.nombre + '</div>' +
+        '<div style="margin: 0; display: flex; align-items: center; color:#867596; font-size: 12px "> <i class="fas fa-calendar" style="margin-right: 3px;"></i>Desde el ' + dateFormat(expediente.fechaIngreso) + '</div>' +
+        '</div>' +
+        '</div>';
+    } else {
+      columna.innerHTML =
+        '<div class="card mb-1 panelGrid d-flex flex-row " style="align-items:center; border: none; padding:.5rem; justify-content:start; gap: 0.7rem !important; width: 100%">' +
+        '<a href="/expElegido/' + expediente.idExpediente + '" class="stretched-link"></a>' +
+        '<div class="picture" style="width:60px; height: 60px; overflow: hidden;">' +
+        '<img src="' + img + '" style="width:100%; height:100%; object-fit: cover;">' +
+        '</div>' +
+        '<div style="margin: 0; display: flex; flex-direction:column;">' +
+        '<div style="margin: 0; display: flex; align-items: center; font-weight: bold;"> Cod. ' + expediente.idExpediente + '</div>' +
+        '<div style="margin: 0; display: flex; align-items: center;color:#6067eb; font-size: 14px"> <i class="fas fa-paw" style="margin-right: 3px;"></i>' + expediente.animal.nombre + '</div>' +
+        '<div style="margin: 0; display: flex; align-items: center; color:#867596; font-size: 12px "> <i class="fas fa-calendar" style="margin-right: 3px;"></i>Desde el ' + dateFormat(expediente.fechaIngreso) + '</div>' +
+        '</div>' +
+        '</div>';
+    }
+
     table.appendChild(columna);
   });
 

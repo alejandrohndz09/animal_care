@@ -76,6 +76,6 @@
                 </div>
             </div>
         </main>
+        {{-- @include('adopcion.modalesAdopcion') --}}
     </div>
-    {{-- @include('adopcion.modalesAdopcion') --}}
 @endsection
