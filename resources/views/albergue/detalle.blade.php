@@ -64,8 +64,10 @@
                         style="width:100%; display: flex;  justify-content: space-between; align-items: center; margin-bottom: 15px;">
                         <h3>Animales albergados </h3>
 
-                        <button type="button" class="button button-pri" data-bs-toggle="modal" data-bs-target="#modalAlvergar">
-                            <i class="svg-icon fa-regular fa-floppy-disk"></i>Nuevo
+
+                        <button type="button" class="button button-pri" data-bs-toggle="modal" data-bs-target="#modalAlvergar"
+                        style="width: 45%;" data-bs-pp="tooltip" data-bs-placement="top" title="Albergar nuevo animal">
+                            <i class="svg-icon fas fa-plus"></i>
                         </button>    
 
                         <input id="searchInput" class="inputField card" style="width: 50% " autocomplete="off"

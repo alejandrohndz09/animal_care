@@ -218,7 +218,7 @@
                                                                     value="{{ old('telefono' . $contador) }}" @endif>
                                                             @if ($contador == 1)
                                                                 <label class="inputFieldLabel"
-                                                                    for="telefono">Telefono</label>
+                                                                    for="telefono">Teléfono(s):</label>
                                                                 <i class="inputFieldIcon fas fa-phone"></i>
                                                             @endif
                                                         </div>
@@ -264,14 +264,14 @@
                                                     <input class="inputField form-control telefono" value="+503 "
                                                         id="tel1" name="telefono1" type="text"
                                                         oninput="validarInput(this)">
-                                                    <label class="inputFieldLabel" for="telefono">Teléfono</label>
+                                                    <label class="inputFieldLabel" for="telefono">Teléfono(s):</label>
                                                     <i class="inputFieldIcon fas fa-phone"></i>
                                                     <small style="color:red" class="error-message"></small>
                                                 </div>
                                             </div>
                                             <div class="col-xl-6">
                                                 <button type="button" style="width: 20px" class="button button-pri"
-                                                    id="add-telefono">
+                                                    id="add-telefono">  
                                                     <i class="svg-icon fas fa-plus"></i>
                                                 </button>
                                             </div>

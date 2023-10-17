@@ -32,7 +32,7 @@ function cargarRegistros(pagina, filtro) {
   registrosMostrados.forEach(function (expediente) {
     // Crea la estructura HTML de cada registro y agrega al contenedor
     var columna = document.createElement("div");
-    columna.classList.add("col-xl-3", "col-md-6");
+    columna.classList.add("col-xl-2", "col-md-6");
     let img;
     if (expediente.animal.imagen == null) {
       img = 'img/especie.png'
