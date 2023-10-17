@@ -78,8 +78,7 @@ Route::get('/expedienteAlta/{id}', 'App\Http\Controllers\ExpedienteController@al
 
 
 Route::get('/albergar/{idExpediente}/{idAlvergue}', 'App\Http\Controllers\AlbergueController@albergar');
-Route::get('/dardeBajadeAlvergue/{idExpediente}', 'App\Http\Controllers\AlbergueController@dardeBajadeAlvergue');
-
+Route::get('/desalbergar/{idExpediente}/{idAlvergue}', 'App\Http\Controllers\AlbergueController@desalbergar');
 
 
 

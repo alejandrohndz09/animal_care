@@ -7,6 +7,7 @@
 
 @section('scripts')
     <script src="{{ asset('js/validaciones/JsAlbergue.js') }}"></script>
+
 @endsection
 @section('content')
     <div id="layoutSidenav_content">
@@ -101,9 +102,9 @@
                                     </td>
                                     <td>
                                         <div>
-                                            <button type="button" class="button button-red" style="width: 45%"
+                                            <button type="button" class="button button-red btnDelete" style="width: 45%"
                                                 data-bs-toggle="modal" data-bs-target="#modaldeBaja"
-                                                data-animal="{{ json_encode($a) }}" data-bs-pp="tooltip"
+                                                data-expediente="{{ json_encode($a) }}" data-bs-pp="tooltip"
                                                 data-bs-placement="top" title="Dar de baja del albergue">
                                                 <i class="svg-icon fas fa-trash"></i>
                                             </button>

@@ -29,6 +29,8 @@ $(document).ready(function () {
 
     });
 
+
+
     $("#btnCancelar").click(function () {
         window.location.href = '/albergue'
     });
@@ -55,4 +57,26 @@ $(document).ready(function () {
         }
     });
 
+
+      //Si presiona El dar de baja abrira el modal con los datos que se daran de baja
+      $('#modaldeBaja').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget); // Botón que desencadenó el modal
+       
+        var idExpediente = button.data('expediente').idExpediente; // Obtiene el valor del atributo data-id
+        var idAlvergue = button.data('expediente').idAlvergue;
+        var Animal = button.data('expediente').animal.nombre; // Obtiene el valor del atribut
+        // Actualiza el contenido del modal con los detalles del registro
+        $('#modalRecordi').text(idExpediente);
+        $('#modalRecordAni').text(Animal);
+    
+      
+    
+        $('body').on('click', '#confirmarOperacion', function () {
+            $.get('/desalbergar/'+ idExpediente + '/'+ idAlvergue, function () {
+                 location.reload();
+      //          window.location.href = '/expediente'
+            });
+        });
+    
+    });
 });

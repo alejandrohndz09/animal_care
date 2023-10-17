@@ -63,33 +63,5 @@ $(document).ready(function () {
     });
 
 
-    //Si presiona El daar de baja abrira el modal con los datos que se daran de baja
-    $('#modaldeBaja').on('show.bs.modal', function (event) {
-        var button = $(event.relatedTarget); // Botón que desencadenó el modal
-       
-        var id = button.data('expediente').idExpediente; // Obtiene el valor del atributo data-id
-        var Animal = button.data('expediente').Animal.nombre; // Obtiene el valor del atributo data-apellido
-       // var alvergue = button.data('expediente').alvergue.idlvergue; // Obtiene el valor del atributo data-nombre
-        //var fechaIngreso = button.data('expediente').fechaIngreso; // Obtiene el valor del atributo data-apellido
-        //var estadoGeneral = button.data('expediente').estadoGeneral; // Obtiene el valor del atributo data-apellido
-       //var estado = button.data('expediente').estado; // Obtiene el valor del atributo data-apellido
-       
-        // Actualiza el contenido del modal con los detalles del registro
-        $('#modalRecordCodigo').text(id);
-        $('#modalRecordAnimal').text(Animal);
-       // $('#modalRecordAlvergue').text(alvergue);
-       // $('#modalRecordCFechaIngreso').text(fechaIngreso);
-       // $('#modalRecordEstadoGeneral').text(estadoGeneral);
-      //  $('#modalRecordEstado').text(estado);
-
-      
-
-        $('body').on('click', '#confirmar', function () {
-            $.get('/expediente/destroy/'+ id, function () {
-                // location.reload();
-                window.location.href = '/expediente'
-            });
-        });
-
-   });
+    
 });

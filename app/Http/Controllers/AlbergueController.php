@@ -100,7 +100,7 @@ class AlbergueController extends Controller
         $expediente->save();
             return back();
     }
-    public function dardeBajadeAlvergue($idExpediente)
+    public function desalbergar($idExpediente,$idAlvergue)
     {
         $expediente = Expediente::find($idExpediente);
 
