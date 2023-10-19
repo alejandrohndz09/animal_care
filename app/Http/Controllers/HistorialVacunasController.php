@@ -2,28 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Animal;
-use App\Models\Expediente;
 use App\Models\Historialvacuna;
+use App\Models\Vacuna;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use PHPUnit\TextUI\XmlConfiguration\Group;
 
 class HistorialVacunasController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         //
     }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         //
@@ -40,50 +30,91 @@ class HistorialVacunasController extends Controller
             'fecha.before_or_equal' => 'La fecha ingresada no debe ser mayor a la de ahora.',
         ]);
 
-        // Obtén el último registro de la tabla para determinar el siguiente incremento
-        $ultimoRegistro = Historialvacuna::latest('idHistVacuna')->first();
+        if ($request->input('operacion') == 'Agregar') {
 
-        // Calcula el siguiente incremento
-        $siguienteIncremento = $ultimoRegistro ? (int) substr($ultimoRegistro->idHistVacuna, -4) + 1 : 1;
+            // Obtén el último registro de la tabla para determinar el siguiente incremento
+            $ultimoRegistro = Historialvacuna::latest('idHistVacuna')->first();
 
-        // Crea el ID personalizado concatenando "HV" y el incremento
-        $idPersonalizado = "HV" . str_pad($siguienteIncremento, 5, '0', STR_PAD_LEFT);
+            // Calcula el siguiente incremento
+            $siguienteIncremento = $ultimoRegistro ? (int) substr($ultimoRegistro->idHistVacuna, -4) + 1 : 1;
 
-        $newHistorialVacuna = new Historialvacuna();
-        $newHistorialVacuna->idHistVacuna = $idPersonalizado;
-        $newHistorialVacuna->fechaAplicacion = $request->input('fechaAplicacion');
-        $newHistorialVacuna->dosis = $request->input('dosis');
-        $newHistorialVacuna->idVAcuna = $request->input('vacuna');
-        $newHistorialVacuna->idExpediente = $request->input('idExpediente');
-        $newHistorialVacuna->save();
+            // Crea el ID personalizado concatenando "HV" y el incremento
+            $idPersonalizado = "HV" . str_pad($siguienteIncremento, 5, '0', STR_PAD_LEFT);
 
-        // Redirige al usuario a la página deseada
-        $expController = new ExpedienteController();
-        $expController->show($request->input('idAnimal'));
+            $newHistorialVacuna = new Historialvacuna();
+            $newHistorialVacuna->idHistVacuna = $idPersonalizado;
+            $newHistorialVacuna->fechaAplicacion = $request->input('fechaAplicacion');
+            $newHistorialVacuna->dosis = $request->input('dosis');
+            $newHistorialVacuna->idVAcuna = $request->input('vacuna');
+            $newHistorialVacuna->idExpediente = $request->input('idExpediente');
+            $newHistorialVacuna->save();
 
-        // Devuelve una respuesta JSON de éxito
-        return response()->json(['success' => true, 'message' => 'Guardado con éxito']);
+            // // Redirige al usuario a la página deseada
+            // return redirect()->action([ExpedienteController::class, 'show'], ['expediente' => $request->input('idAnimal')]);
+
+        } elseif ($request->input('operacion') == 'modificar') {
+
+            $HistorialVacuna = Historialvacuna::find($request->input('idHistVacuna'));
+
+            // Actualiza los datos en la BD
+            $HistorialVacuna->fechaAplicacion = $request->post('fechaAplicacion');
+            $HistorialVacuna->dosis = $request->post('dosis');
+            $HistorialVacuna->idVAcuna = $request->input('vacuna');
+            $HistorialVacuna->save();
+
+            $expController = new ExpedienteController();
+            $expController->show($request->input('idAnimal'));
+
+            //   // Redirige al usuario a la página deseada
+            //   return redirect()->action([ExpedienteController::class, 'show'], ['expediente' => $request->input('idAnimal')]);
+        }
     }
 
 
     public function show($id)
     {
-        //
     }
 
 
     public function edit($id)
     {
-        //
-    }
+        $historial = HistorialVacuna::with('vacuna')->find($id);
 
-    public function update(Request $request, $id)
-    {
-        //
+        return response()->json($historial);
     }
 
     public function destroy($id)
     {
-        //
+        $HistorialVacuna = Historialvacuna::find($id);
+        $HistorialVacuna->delete();
+    }
+
+    public function cargarListaDatos($id)
+    {
+        $datos = HistorialVacuna::where('idVacuna', $id)
+            ->select('dosis', 'fechaAplicacion','idHistVacuna')
+            ->get();
+
+        return response()->json($datos);
+    }
+
+    public function cargarHistoriales($id)
+    {
+
+        $datos = DB::table('historialVacuna')
+            ->join('vacuna', 'historialVacuna.idVacuna', '=', 'vacuna.idVacuna')
+            ->where('historialVacuna.idExpediente', $id)
+            ->select('vacuna.vacuna', 'vacuna.idVacuna', 'historialVacuna.idHistVacuna', 'historialVacuna.fechaAplicacion', 'historialVacuna.dosis', 'historialVacuna.idExpediente', 'historialVacuna.idHistVacuna')
+            ->groupBy('vacuna.vacuna', 'vacuna.idVacuna', 'historialVacuna.idHistVacuna', 'historialVacuna.fechaAplicacion', 'historialVacuna.dosis', 'historialVacuna.idExpediente')
+            ->get();
+
+        return response()->json($datos);
+    }
+
+    public function ObtenerVacunas()
+    {
+        $datos = Vacuna::all();
+
+        return response()->json($datos);
     }
 }

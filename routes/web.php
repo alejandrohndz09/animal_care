@@ -69,7 +69,11 @@ Route::get('/destroyPatologia/{id}', 'App\Http\Controllers\PatologiaController@d
 
 
 Route::resource('/historialVacunas', 'App\Http\Controllers\HistorialVacunasController');
-Route::post('/historialVacunas/store', 'App\Http\Controllers\HistorialVacunasController@store');
+Route::post('/historialVacunas/store', 'App\Http\Controllers\HistorialVacunasController@store')->name('historial.store');
+Route::get('/cargarListaDatos/{id}', 'App\Http\Controllers\HistorialVacunasController@cargarListaDatos');
+Route::get('/cargarHistoriales/{id}', 'App\Http\Controllers\HistorialVacunasController@cargarHistoriales');
+Route::delete('/destroyHistorialVacunas/{id}', 'App\Http\Controllers\HistorialVacunasController@destroy');
+Route::get('/obtener-vacunas', 'App\Http\Controllers\HistorialVacunasController@ObtenerVacunas');
 
 Route::resource('expediente', 'App\Http\Controllers\ExpedienteController');
 Route::get('/crearExpediente/{id}', 'App\Http\Controllers\ExpedienteController@crearExpediente');

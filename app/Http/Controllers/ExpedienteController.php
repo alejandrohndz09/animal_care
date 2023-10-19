@@ -101,6 +101,7 @@ class ExpedienteController extends Controller
             'registrado' => Expediente::where('idAnimal', $id)->get(),
             'estado' => Expediente::where('idAnimal', $id)->value('estadoGeneral'),
             'idExpediente' => Expediente::where('idAnimal', $id)->value('idExpediente'),
+            'accion' => false
         ]);
     }
     public function edit($id)
