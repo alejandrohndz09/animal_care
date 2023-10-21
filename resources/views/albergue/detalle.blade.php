@@ -7,7 +7,6 @@
 
 @section('scripts')
     <script src="{{ asset('js/validaciones/JsAlbergue.js') }}"></script>
-
 @endsection
 @section('content')
     <div id="layoutSidenav_content">
@@ -60,19 +59,23 @@
                     </div>
                 </div>
                 <div class="row mt-3">
-                    <div
-                        style="width:100%; display: flex;  justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                        <h3>Animales albergados </h3>
+                    <div class="d-flex flex-row  align-items-center" style="margin-bottom: 15px;">
+                        <h3 class="me-auto">Animales albergados</h3>
 
+                        <div class="d-flex" style="gap:8px">
+                            <button type="button" class="button button-pri" data-bs-toggle="modal"
+                                data-bs-target="#modalAlvergar" style="width: 40px;" data-bs-pp="tooltip"
+                                data-bs-placement="top" title="Albergar nuevo animal">
+                                <i class="svg-icon fas fa-plus"></i>
+                            </button>
 
-                        <button type="button" class="button button-pri" data-bs-toggle="modal" data-bs-target="#modalAlvergar"
-                        style="width: 45%;" data-bs-pp="tooltip" data-bs-placement="top" title="Albergar nuevo animal">
-                            <i class="svg-icon fas fa-plus"></i>
-                        </button>    
+                            <input id="searchInput" class="inputField card" style="width:80%" autocomplete="off"
+                                placeholder="🔍︎ Buscar" type="search">
+                        </div>
 
-                        <input id="searchInput" class="inputField card" style="width: 50% " autocomplete="off"
-                            placeholder="🔍︎ Buscar" type="search">
                     </div>
+
+                  
 
                     <table>
                         <thead>
@@ -122,5 +125,5 @@
             </div>
         </main>
     </div>
-     @include('albergue.modalDetalle')
+    @include('albergue.modalDetalle')
 @endsection

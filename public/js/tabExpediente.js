@@ -1,17 +1,17 @@
 var registrosPorPagina = 7;
 var paginaActual = 1;
-var adopciones = []; // Almacena todos los adopciones
+var expedientes = []; // Almacena todos los expedientes
 
 function cargarRegistros(pagina, filtro) {
-  var registrosFiltrados = adopciones;
+  var registrosFiltrados = expedientes;
 
   if (filtro) {
     filtro = filtro.toLowerCase();
-    registrosFiltrados = adopciones.filter(function (adopcion) {
+    registrosFiltrados = expedientes.filter(function (expediente) {
       return (
-        adopcion.idAdopcion.toLowerCase().includes(filtro) ||
-        adopcion.expediente.animal.nombre.toLowerCase().includes(filtro) ||
-        adopcion.fechaTramiteInicio.includes(filtro)
+        expediente.idExpediente.toLowerCase().includes(filtro) ||
+        expediente.animal.nombre.toLowerCase().includes(filtro) ||
+        expediente.fechaIngreso.includes(filtro)
       );
     });
   }
@@ -37,42 +37,46 @@ function cargarRegistros(pagina, filtro) {
   var ultimaPalabra = segmentos[segmentos.length - 1];
 
 
-  registrosMostrados.forEach(function (adopcion) {
+  registrosMostrados.forEach(function (expediente) {
     // Crea la estructura HTML de cada registro y agrega al contenedor
     var columna = document.createElement("div");
     columna.classList.add("col-xl-12", "col-md-6");
     let img;
-    if (adopcion.expediente.animal.imagen == null) {
+    if (expediente.animal.imagen == null) {
       img = '/img/especie.png'
     } else {
-      img = '/'+adopcion.expediente.animal.imagen;
+      img = '/'+expediente.animal.imagen;
     }
-    if (ultimaPalabra == 'adopcion') {
+    if (ultimaPalabra == 'expediente') {
       columna.innerHTML =
         '<div class="card mb-1 panelGrid d-flex flex-row " style="align-items:center; border: none; padding:.5rem; justify-content:start; gap: 0.7rem !important; width: 100%">' +
-        '<a href="/adopcion/' + adopcion.idAdopcion + '" class="stretched-link"></a>' +
-          '<div class="picture" style="width:60px; height: 60px; overflow: hidden;">' +
-            '<img src="' + img + '" style="width:100%; height:100%; object-fit: cover;">' +
-          '</div>' +
-          '<div style="margin: 0; display: flex; flex-direction:column;">' +
-            '<div style="margin: 0; display: flex; align-items: center; font-weight: bold;"> Cod. ' + adopcion.idAdopcion + '</div>' +
-            '<div style="margin: 0; display: flex; align-items: center;color:#6067eb; font-size: 14px"> <i class="fas fa-paw" style="margin-right: 3px;"></i>' + adopcion.expediente.animal.nombre + '</div>' +
-            '<div style="margin: 0; display: flex; align-items: center; color:#867596; font-size: 12px "> <i class="fas fa-calendar" style="margin-right: 3px;"></i>Desde el ' + dateFormat(adopcion.fechaTramiteInicio) + '</div>' +
-          '</div>' +
-        '</div>';
-    } else {
-      columna.innerHTML =
-        '<div class="card mb-1 panelGrid d-flex flex-row " style="align-items:center; border: none; padding:.5rem; justify-content:start; gap: 0.7rem !important; width: 100%">' +
-        '<a href="/expElegido/' + expediente.idExpediente + '" class="stretched-link"></a>' +
+        '<a href="/animal/' + expediente.idAnimal + '" class="stretched-link"></a>' +
         '<div class="picture" style="width:60px; height: 60px; overflow: hidden;">' +
         '<img src="' + img + '" style="width:100%; height:100%; object-fit: cover;">' +
         '</div>' +
         '<div style="margin: 0; display: flex; flex-direction:column;">' +
-        '<div style="margin: 0; display: flex; align-items: center; font-weight: bold;"> Cod. ' + adopcion.idExpediente + '</div>' +
-        '<div style="margin: 0; display: flex; align-items: center;color:#6067eb; font-size: 14px"> <i class="fas fa-paw" style="margin-right: 3px;"></i>' + adopcion.animal.nombre + '</div>' +
-        '<div style="margin: 0; display: flex; align-items: center; color:#867596; font-size: 12px "> <i class="fas fa-calendar" style="margin-right: 3px;"></i>Desde el ' + dateFormat(adopcion.fechaIngreso) + '</div>' +
+        '<div style="margin: 0; display: flex; align-items: center; font-weight: bold;"> Cod. ' + expediente.idExpediente + '</div>' +
+        '<div style="margin: 0; display: flex; align-items: center;color:#6067eb; font-size: 14px"> <i class="fas fa-paw" style="margin-right: 3px;"></i>' + expediente.animal.nombre + '</div>' +
+        '<div style="margin: 0; display: flex; align-items: center; color:#867596; font-size: 12px "> <i class="fas fa-calendar" style="margin-right: 3px;"></i>Desde el ' + dateFormat(expediente.fechaIngreso) + '</div>' +
         '</div>' +
         '</div>';
+    } else {
+        var idAd = null;
+        if ($("input[name='idAdoptante']").val() != "") {
+          idAd = $("input[name='idAdoptante']").val();
+        }
+        columna.innerHTML =
+          '<div class="card mb-1 panelGrid d-flex flex-row " style="align-items:center; border: none; padding:.5rem; justify-content:start; gap: 0.7rem !important; width: 100%">' +
+          '<a href="/get-exp-ad-elegido/' + expediente.idExpediente + '/'+idAd+'" class="stretched-link"></a>' +
+          '<div class="picture" style="width:60px; height: 60px; overflow: hidden;">' +
+          '<img src="' + img + '" style="width:100%; height:100%; object-fit: cover;">' +
+          '</div>' +
+          '<div style="margin: 0; display: flex; flex-direction:column;">' +
+          '<div style="margin: 0; display: flex; align-items: center; font-weight: bold;"> Cod. ' + expediente.idExpediente + '</div>' +
+          '<div style="margin: 0; display: flex; align-items: center;color:#6067eb; font-size: 14px"> <i class="fas fa-paw" style="margin-right: 3px;"></i>' + expediente.animal.nombre + '</div>' +
+          '<div style="margin: 0; display: flex; align-items: center; color:#867596; font-size: 12px "> <i class="fas fa-calendar" style="margin-right: 3px;"></i>Desde el ' + dateFormat(expediente.fechaIngreso) + '</div>' +
+          '</div>' +
+          '</div>';
     }
 
     table.appendChild(columna);
@@ -101,13 +105,13 @@ function generarPaginador(totalRegistros) {
 }
 
 
-// Realizar la primera carga de adopciones usando una solicitud AJAX
+// Realizar la primera carga de expedientes usando una solicitud AJAX
 $.ajax({
-  url: '/getAdopciones', // URL de la API en tu servidor
+  url: '/getExpedientes', // URL de la API en tu servidor
   type: 'GET',
   dataType: 'json',
   success: function (response) {
-    adopciones = response;
+    expedientes = response;
     console.log(response);
     cargarRegistros(1, ''); // Cargar registros iniciales sin filtro
   },

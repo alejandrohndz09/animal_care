@@ -3,7 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Adopcion;
+use App\Models\Adoptante;
+use App\Models\Expediente;
+use App\Models\Hogar;
+use App\Rules\EmptyIf503;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
 
 class AdopcionController extends Controller
 {
@@ -22,49 +28,168 @@ class AdopcionController extends Controller
     }
     public function getAdopciones()
     {
-        $adopciones = Adopcion::with('animal')->where('estado', 1)->get();
-        
+        $adopciones = Adopcion::with('expediente.animal')->where('estado', 1)->get();
         return response()->json($adopciones);
     }
     public function store(Request $request)
     {
+        
         $request->validate([
-            // 'idAnimal' => 'required|unique:adopcion,idAnimal',
-            // 'albergue' => 'required',
-            'fecha' => 'required|date|before_or_equal:today',
-            'estado' => 'required',
+            'expA' => 'required|exists:expediente,idExpediente',
+            'idAdoptante'=> 'exists:adoptante,idAdoptante',
+            'nombres' => 'required|min:3',
+            'apellidos' => 'required|min:3',
+            'DUI' => [
+                'required',
+                Rule::unique('adoptante', 'dui'),
+                Rule::unique('miembro', 'dui'),
+                Rule::unique('donante', 'dui'),
+            ],
+            'telefonosAd' => 'required|array|distinct',
+            'telefonosAd.*' => [
+                'required',
+                Rule::unique('telefono_adoptante', 'telefono'),
+                Rule::unique('telefono_miembro', 'telefono'),
+                Rule::unique('telefono_donante', 'telefono'),
+                new EmptyIf503,
+            ],
+            'direccion' => 'required|unique:hogar,direccion',
+            'tamanioHogar' => 'required|in:Grande,Mediano,Pequeño',
+            'companiaHumana' => 'required|numeric|min:1',
+            'isCompaniaAnimal' => 'required|in:Sí,No',
+            'companiaAnimal' => 'required_if:isCompaniaAnimal,Sí|numeric|min:1',
+
         ], [
-            'idAnimal.unique' => 'Ya existe un adopcion de este animal.',
-            'idAnimal.required' => 'El campo animal es requerido.',
-            'albergue.required' => 'El campo albergue es requerido.',
-            'fecha.before_or_equal' => 'La fecha ingresada no debe ser mayor a la de ahora.',
+            'required' => 'Este campo es requerido.',
+            'expA.required' => 'No ha seleccionado nigún expediente.',
+            'expA.exist' => 'El expediente especificado no se ha encontrado, seleccione uno de nuevo.',
+            'idAdoptante.exist' => 'El adoptante especificado no se ha encontrado, seleccione uno de nuevo o regístrelo.',
+            'telefonosAd.*.unique' => 'Este número ya ha sido ingresado.',
+            'DUI.unique' => 'Este DUI ya ha sido ingresado.',
+            'direccion.unique' => 'Esta dirección ya ha sido ingresada.',
         ]);
+        DB::beginTransaction();
 
-        // Obtén el último registro de la tabla para determinar el siguiente incremento
-        $ultimoRegistro = Adopcion::latest('idAdopcion')->first();
+        try {
+            // Crea un nuevo registro en la tabla de hogar
+            
+            $hogar = Hogar::create([
+                'idHogar' => $this->generarIdHogar(),
+                'direccion' => $request->input('direccion'),
+                'companiaHumana' => $request->input('companiaHumana'),
+                'companiaAnimal' => $request->input('isCompaniaAnimal') == 'Sí' ? $request->input('companiaAnimal') : 0,
+                'tamanioHogar' => $request->input('tamanioHogar'),
+                'estado' => 1,
+            ]);
+            // Crea un nuevo registro en la tabla de adoptantes
+            $adoptante = Adoptante::create([
+                'idAdoptante' => $this->generarIdAdoptante(),
+                'nombres' => $request->input('nombres'),
+                'apellidos' => $request->input('apellidos'),
+                'dui' => $request->input('dui'),
+                'idHogar' => $hogar->idHogar,
+                'estado' => 1,
+                // Otros atributos de la tabla de adoptantes
+            ]);
+            // Crea un nuevo registro en la tabla de adopciones
+            $adoption = Adopcion::create([
+                'idAdopcion' => $this->generarIdAdopcion(),
+                'fechaTramiteInicio' => date('Y-m-d'),
+                'idAdoptante' => $adoptante->idAdoptante,
+                'idExpediente' => $request->input('expA'),
+                'aceptacion' => 0,
+                'estado' => 1,
+            ]);
+            // Confirma la transacción
+            DB::commit();
 
-        // Calcula el siguiente incremento
-        $siguienteIncremento = $ultimoRegistro ? (int) substr($ultimoRegistro->idMiembro, -4) + 1 : 1;
-
-        // Crea el ID personalizado concatenando "MB" y el incremento
-        $idPersonalizado = "EX" . str_pad($siguienteIncremento, 5, '0', STR_PAD_LEFT);
-
-        //Guardar en BD
-        $adopcion = new Adopcion();
-        $adopcion->idAdopcion = $idPersonalizado;
-        $adopcion->idAnimal = $request->post('animal');
-        $adopcion->idAlvergue = $request->post('albergue');
-        $adopcion->fechaIngreso = $request->post('fecha');
-        $adopcion->estadoGeneral = $request->post('estado');
-        $adopcion->estado = 1;
-        $adopcion->save();
-
-        return redirect()->route('adopcion.index');
+            return redirect('/adopcion')
+                ->with('success', 'Registro de adopción y adoptante guardados con éxito.');
+        } catch (\Exception $e) {
+            // En caso de error, realiza un rollback de la transacción
+            DB::rollBack();
+            dd($e->getMessage());
+            return back()
+                ->withInput()
+                ->with('error', 'Error al guardar los registros.');
+        }
     }
+
+    public function generarIdAdoptante()
+    {
+        // Obtener el último registro de la tabla "ADOPTANTE"
+        $ultimoAdoptante = Adoptante::latest('idAdoptante')->first();
+        if (!$ultimoAdoptante) {
+            // Si no hay registros previos, comenzar desde AD0001
+            $nuevoId = 'AD0001';
+        } else {
+            // Obtener el número del último idAdoptante
+            $ultimoNumero = intval(substr($ultimoAdoptante->idAdoptante, 2));
+            // Incrementar el número para el nuevo registro
+            $nuevoNumero = $ultimoNumero + 1;
+            // Formatear el nuevo idAnimal con ceros a la izquierda
+            $nuevoId = 'AD' . str_pad($nuevoNumero, 4, '0', STR_PAD_LEFT);
+        }
+
+        return $nuevoId;
+    }
+    public function generarIdHogar()
+    {
+        // Obtener el último registro de la tabla "ADOPTANTE"
+        $ultimoHogar = Hogar::latest('idHogar')->first();
+        if (!$ultimoHogar) {
+            // Si no hay registros previos, comenzar desde AD0001
+            $nuevoId = 'HG0001';
+        } else {
+            // Obtener el número del último idHogar
+            $ultimoNumero = intval(substr($ultimoHogar->idHogar, 2));
+            // Incrementar el número para el nuevo registro
+            $nuevoNumero = $ultimoNumero + 1;
+            // Formatear el nuevo idAnimal con ceros a la izquierda
+            $nuevoId = 'HG' . str_pad($nuevoNumero, 4, '0', STR_PAD_LEFT);
+        }
+        
+        return $nuevoId;
+    }
+    public function generarIdAdopcion()
+    {
+        // Obtener el último registro de la tabla "ADOPCION"
+        $ultimoAnimal = Adopcion::latest('idAdopcion')->first();
+
+        if (!$ultimoAnimal) {
+            // Si no hay registros previos, comenzar desde AN0001
+            $nuevoId = 'ADC0001';
+        } else {
+            // Obtener el número del último idAdopcion
+            $ultimoNumero = intval(substr($ultimoAnimal->idAdoptante, 3));
+
+            // Incrementar el número para el nuevo registro
+            $nuevoNumero = $ultimoNumero + 1;
+
+            // Formatear el nuevo idAnimal con ceros a la izquierda
+            $nuevoId = 'ADC' . str_pad($nuevoNumero, 4, '0', STR_PAD_LEFT);
+        }
+
+        return $nuevoId;
+    }
+
     public function show($id)
     {
         //
     }
+
+    public function getExp_AdDElegido($idExpediente, $idAdoptante)
+    {
+
+        $expediente = Expediente::find($idExpediente);
+        $adoptante = Adoptante::find($idAdoptante);
+        return redirect()->route('adopcion.form')->with(
+            [
+                'expElegido' => $expediente,
+                'adElegido' => $adoptante,
+            ]);
+    }
+
     public function edit($id)
     {
         $adopcion = Adopcion::find($id);

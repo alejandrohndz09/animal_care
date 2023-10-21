@@ -62,7 +62,7 @@ function tooltips() {
 }
 //Agregar un input telefono
 $(document).ready(function () {
-   
+
     //Habilitar tooltips
     tooltips();
 
@@ -130,7 +130,7 @@ $(document).ready(function () {
 
 
 
-    //Validacion de campos vacios en el formulario
+    //-Validacion de campos vacios en el formulario
     $("#miFormulario").submit(function (event) {
         var inputs = $(this).find("input"); // Obtener todos los campos de entrada en el formulario
         var esMayorDeEdadCheckbox = $("#esMayorDeEdad"); // Obtener el checkbox "Es mayor de edad"
@@ -201,55 +201,34 @@ $(document).ready(function () {
         event.stopPropagation();
     });
 
-
-    $('.miembro-row').on('click', function (event) {
-        // Verifica si el clic fue en un botón dentro de la fila
-        if ($(event.target).is('.btnUpdate, .btnDelete')) {
-            return; // Evita abrir el modal si se hizo clic en un botón
+    $('#tableBody').on('click', '.adoptante-row', function (event) {
+        var idAd = $(this).data('id');
+        var idExp = ''
+        if ($("input[name='expA']").val() == "") {
+            idExp = 0
+        } else {
+            idExp = $("input[name='expA']").val();
         }
 
-        var miembroData = $(this).data('miembro');
-        var idMiembro = miembroData.idMiembro;
-        var dui = miembroData.dui;
-        var nombres = miembroData.nombres;
-        var apellidos = miembroData.apellidos;
-        var correo = miembroData.correo;
+        console.log(idAd + ' - ' + idExp);
+        window.location.href = '/get-exp-ad-elegido/' + idExp + '/' + idAd;
+
+    });
 
 
-        $.ajax({
-            url: 'miembro/telefonos/' + idMiembro, // La URL de la ruta definida en Laravel
-            type: 'GET',
-            dataType: 'json',
-            success: function (data) {
-                var isFirst = true; // Variable para rastrear si es el primer registro
-                $('#telefonos').empty();
-                for (var key in data) {
-                    if (data.hasOwnProperty(key)) {
-                        var text = data[key]; // Obtén el valor actual
-
-                        // Aplica el estilo CSS solo al primer registro
-                        if (isFirst) {
-                            $('#telefonos').append('<br>' + text);
-                            isFirst = false; // Cambia el valor de isFirst para que los siguientes registros no apliquen el estilo
-                        } else {
-                            // Inserta los registros restantes sin el estilo
-                            $('#telefonos').append('<br>' + text);
-                        }
-                    }
-                }
-            },
-            error: function (error) {
-                console.error('Error en la solicitud:', error);
-            }
-        });
-
-        // Llena el modal con los datos correspondientes
-        $('#modalDui').text(dui);
-        $('#modalNombres').text(nombres);
-        $('#modalApellidos').text(apellidos);
-        $('#modalCorreo').text(correo);
-
-        // Abre el modal
-        $('#ModalToggle').modal('show');
+    // Agrega un evento de cambio al radio button
+    $('input[name="isCompaniaAnimal"]').on('change',function () {
+        var companiaAnimalInput = $('input[name="companiaAnimal"]');
+        var lbCant = $('#lb-cant');
+        if ($(this).val() === 'No') {
+            // Si el valor es 'No', deshabilita el input y cambia el color del componente
+            companiaAnimalInput.prop('disabled', true);
+            lbCant.css('color', '#878787');
+        } else if ($(this).val() === 'Sí') {
+            // Si el valor es 'Sí', habilita el input y cambia el color del componente
+            companiaAnimalInput.prop('disabled', false);
+            lbCant.css('color', '#000000');
+        }
     });
 });
+
