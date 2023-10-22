@@ -1,16 +1,12 @@
 <?php
 
 use App\Http\Controllers\AlbergueController;
-use App\Http\Controllers\AnimalControlador;
 use App\Http\Controllers\EspecieController;
 use App\Http\Controllers\ExpedienteController;
 use App\Http\Controllers\MiembroController;
 use App\Http\Controllers\PatologiaController;
-use App\Http\Controllers\VacuanaController;
 use App\Http\Controllers\VacunaController;
-use Illuminate\Routing\Route as RoutingRoute;
 use Illuminate\Support\Facades\Route;
-
 
 /*
 |--------------------------------------------------------------------------
@@ -21,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 | routes are loaded by the RouteServiceProvider within a group which
 | contains the "web" middleware group. Now create something great!
 |
-*/
+ */
 
 Route::get('/', function () {
     return view('dashboard.dashboard');
@@ -31,14 +27,12 @@ Route::resource('animal', 'App\Http\Controllers\AnimalControlador');
 Route::put('/animal/update/{id}', 'App\Http\Controllers\AnimalControlador@update');
 Route::get('/animal/destroy/{id}', 'App\Http\Controllers\AnimalControlador@destroy');
 Route::get('/obtener-razas/{especie}', 'App\Http\Controllers\AnimalControlador@obtenerRazas');
-Route::get('/crearExpediente/{id}','App\Http\Controllers\AnimalControlador@expediente');
+Route::get('/crearExpediente/{id}', 'App\Http\Controllers\AnimalControlador@expediente');
 Route::post('animal/{id}/historialVacuna', 'App\Http\Controllers\AnimalControlador@historialstore');
-
 
 Route::resource('raza', 'App\Http\Controllers\RazaController');
 Route::put('/raza/update/{id}', 'App\Http\Controllers\RazaController@update');
 Route::get('/raza/destroy/{id}', 'App\Http\Controllers\RazaController@destroy');
-
 
 Route::resource('miembro1', 'App\Http\Controllers\MiembroController1');
 Route::put('/miembro1/update/{id}', 'App\Http\Controllers\MiembroController1@update');
@@ -64,7 +58,6 @@ Route::resource('/vacuna', 'App\Http\Controllers\VacunaController');
 Route::put('vacuna/update/{id}', [VacunaController::class, 'update'])->name('vacuna.update');
 Route::get('/vacuna/destroy/{id}', 'App\Http\Controllers\VacunaController@destroy');
 
-
 Route::resource('/patologia', 'App\Http\Controllers\PatologiaController');
 Route::put('patologia/update/{id}', [PatologiaController::class, 'update'])->name('patologia.update');
 Route::get('/destroyPatologia/{id}', 'App\Http\Controllers\PatologiaController@destroy');
@@ -76,17 +69,29 @@ Route::get('/getExpedientes', 'App\Http\Controllers\ExpedienteController@getExpe
 Route::get('/expedientedestroy/{id}', 'App\Http\Controllers\ExpedienteController@destroy');
 Route::get('/expedienteAlta/{id}', 'App\Http\Controllers\ExpedienteController@alta');
 
-
-
 Route::get('/albergar/{idExpediente}/{idAlvergue}', 'App\Http\Controllers\AlbergueController@albergar');
 Route::get('/desalbergar/{idExpediente}/{idAlvergue}', 'App\Http\Controllers\AlbergueController@desalbergar');
-
-
 Route::get('/albergarDeExpediente/{idAlvergue}/{idExpediente}', 'App\Http\Controllers\AnimalControlador@albergarDeExpediente');
-Route::resource('adopcion', 'App\Http\Controllers\AdopcionController');
-Route::get('form-adopcion', function () {
-    return view('adopcion.form');
-});
-Route::get('/expElegido/{id}', 'App\Http\Controllers\AdopcionController@getExpElegido');
-Route::get('/adElegido/{id}', 'App\Http\Controllers\AdopcionController@getAdElegido');
 
+Route::get('/adopcion', 'App\Http\Controllers\AdopcionController@index');
+Route::get('/getAdopciones', 'App\Http\Controllers\AdopcionController@getAdopciones');
+Route::get('/adopcion/nueva', function () {
+    if (session('expElegido')) {
+        $expElegido = session('expElegido');
+    } else {
+        $expElegido = null;
+    }
+
+    if (session('adElegido')) {
+        $adElegido = session('adElegido');
+    } else {
+        $adElegido = null;
+    }
+    return view('adopcion.form')->with(
+        [
+            'expElegido' => $expElegido,
+            'adElegido' => $adElegido,
+        ]);
+})->name('adopcion.form');
+Route::post('/adopcion/nueva', 'App\Http\Controllers\AdopcionController@store');
+Route::get('/get-exp-ad-elegido/{idAdoptante}/{idExpediente}', 'App\Http\Controllers\AdopcionController@getExp_AdDElegido');

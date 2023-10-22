@@ -149,19 +149,19 @@
 
 
 <!-- Modal para ver detalles de los expedientes disponibles-->
-<div class="modal fade" id="buscarExpediente" tabindex="-1"  aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="buscarExpediente" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-lg ">
-        <div class="modal-content"  style="min-height: 80vh !important">
+        <div class="modal-content" style="min-height: 80vh !important">
             <div class="modal-header">
                 <h3 class="modal-title" style="">Seleccione un expediente:</h3>
                 <button type="button" class="btn-close" aria-label="Close" data-bs-dismiss="modal"></button>
             </div>
-            
+
             <div class="modal-body">
                 <div class="d-flex justify-content-end mb-2">
-                    
-                    <input id="searchInputGrid" class="inputField card" style="width: 50%; margin-right: 8px; " autocomplete="off"
-                        placeholder="🔍︎ Buscar" type="search">
+
+                    <input id="searchInputGrid" class="inputField card" style="width: 50%; margin-right: 8px; "
+                        autocomplete="off" placeholder="🔍︎ Buscar" type="search">
                 </div>
 
                 <!-- Aquí puedes agregar tu tabla -->
@@ -170,6 +170,60 @@
                     </div>
                 </div>
                 <div id="paginationGrid">
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- Modal para ver detalles de los Adoptantes disponibles-->
+<div class="modal fade" id="buscarAdoptante" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-lg ">
+        <div class="modal-content" style="min-height: 80vh !important; overflow: scroll;">
+            <div class="modal-header">
+                <h3 class="modal-title" style="">Seleccione un adoptante:</h3>
+                <button type="button" class="btn-close" aria-label="Close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+                <div class="d-flex justify-content-end mb-2">
+
+                    <input id="searchInput" class="inputField card" style="width: 50%; margin-right: 8px; "
+                        autocomplete="off" placeholder="🔍︎ Buscar" type="search">
+                </div>
+
+                <!-- Aquí puedes agregar tu tabla -->
+                <table id="tablaBaja">
+                    <thead>
+                        <tr class="head">
+                            <th style="width: 10%"></th>
+                            <th>Nombres</th>
+                            <th>Apellidos</th>
+                            <th>Dui</th>
+                            <th></th>
+
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                        @php
+                            use App\Models\Adoptante;
+                            $datos = Adoptante::where('estado', 1)->get();
+                        @endphp
+                        @foreach ($datos as $item)
+                            <tr data-id="{{ $item->idAdoptante }}" class="adoptante-row">
+                                <td style="width: 10%">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/2048px-User-avatar.svg.png"
+                                        alt="user" class="picture" />
+                                </td>
+                                <td>{{ $item->nombres }}</td>
+                                <td>{{ $item->apellidos }}</td>
+                                <td>{{ $item->dui }} </td>
+                            </tr>
+                        @endforeach
+                </table>
+                <div id="pagination">
 
                 </div>
             </div>
