@@ -271,14 +271,14 @@
                                             <div class="row">
                                                 <div class="col-xl-12">
                                                     <div class="inputContainer ">
-                                                        <input name="DUI" id="DUI"
-                                                            value="{{ isset($adopcion) ? old('DUI', $adopcion->adoptante->dui) : (isset($adElegido) ? old('DUI', $adElegido->dui) : old('DUI')) }}"
+                                                        <input name="dui" id="dui"
+                                                            value="{{ isset($adopcion) ? old('dui', $adopcion->adoptante->dui) : (isset($adElegido) ? old('dui', $adElegido->dui) : old('dui')) }}"
                                                             class="inputField" placeholder="00000000-0" type="text"
                                                             autocomplete="off" oninput="validarDui(this)">
                                                         <label class="inputFieldLabel" name="texto">DUI:*</label>
                                                         <i class="inputFieldIcon fas fa-id-card" id="iconDui"
                                                             name="logoDui"></i>
-                                                        @error('DUI')
+                                                        @error('dui')
                                                             <small style="color:red">{{ $message }}</small>
                                                         @enderror
 
@@ -441,9 +441,24 @@
                                         <h3 style="margin: 0;">Hogar</h3>
                                     </div>
                                 </div>
-
+                                @if ($errors->any())
+                                <div class="alert alert-danger">
+                                    <ul>
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif
+                        
+                                @error('idHogar')
+                                    <span style="margin-top:-25px;" class="text-danger px-2">{{ $message }}</span>
+                                @enderror
                                 <div class="row mt-2">
                                     <div class="row">
+                                        <input name="idHogar" id="idHogar" class="inputField" type="hidden"
+                                            value="{{ isset($adopcion) ? old('idHogar', $adopcion->adoptante->idHogar) : (isset($adElegido) ? old('idHogar', $adElegido->idHogar) : old('idHogar')) }}">
+
                                         <div class="col-xl-12">
                                             <div class="inputContainer">
                                                 <label class="inputFieldLabel" autocomplete="off"
@@ -458,6 +473,7 @@
                                             </div>
                                         </div>
                                     </div>
+
                                     <div class="row">
                                         <div class="col-xl-12">
                                             <div class="inputContainer">

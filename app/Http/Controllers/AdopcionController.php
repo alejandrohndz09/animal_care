@@ -21,7 +21,7 @@ class AdopcionController extends Controller
     public function index()
     {
         //Formulario donde se agrega datos
-        $adopciones = Adopcion::all();
+        $adopciones = Adopcion::where('estado', 1)->get();
         return view('adopcion.index')->with([
             'adopciones' => $adopciones,
         ]);
@@ -33,85 +33,160 @@ class AdopcionController extends Controller
     }
     public function store(Request $request)
     {
-        
-        $request->validate([
-            'expA' => 'required|exists:expediente,idExpediente',
-            'idAdoptante'=> 'exists:adoptante,idAdoptante',
-            'nombres' => 'required|min:3',
-            'apellidos' => 'required|min:3',
-            'DUI' => [
-                'required',
-                Rule::unique('adoptante', 'dui'),
-                Rule::unique('miembro', 'dui'),
-                Rule::unique('donante', 'dui'),
-            ],
-            'telefonosAd' => 'required|array|distinct',
-            'telefonosAd.*' => [
-                'required',
-                Rule::unique('telefono_adoptante', 'telefono'),
-                Rule::unique('telefono_miembro', 'telefono'),
-                Rule::unique('telefono_donante', 'telefono'),
-                new EmptyIf503,
-            ],
-            'direccion' => 'required|unique:hogar,direccion',
-            'tamanioHogar' => 'required|in:Grande,Mediano,Pequeño',
-            'companiaHumana' => 'required|numeric|min:1',
-            'isCompaniaAnimal' => 'required|in:Sí,No',
-            'companiaAnimal' => 'required_if:isCompaniaAnimal,Sí|numeric|min:1',
+        if (empty($request->input('idAdoptante'))) {
 
-        ], [
-            'required' => 'Este campo es requerido.',
-            'expA.required' => 'No ha seleccionado nigún expediente.',
-            'expA.exist' => 'El expediente especificado no se ha encontrado, seleccione uno de nuevo.',
-            'idAdoptante.exist' => 'El adoptante especificado no se ha encontrado, seleccione uno de nuevo o regístrelo.',
-            'telefonosAd.*.unique' => 'Este número ya ha sido ingresado.',
-            'DUI.unique' => 'Este DUI ya ha sido ingresado.',
-            'direccion.unique' => 'Esta dirección ya ha sido ingresada.',
-        ]);
-        DB::beginTransaction();
+            $request->validate([
+                'expA' => 'required|exists:expediente,idExpediente',
+                'required_if:idAdoptante,' . request('idAdoptante') . '|exists:adoptante,idAdoptante',
+                'nombres' => 'required|min:3',
+                'apellidos' => 'required|min:3',
+                'dui' => [
+                    'required',
+                    Rule::unique('adoptante', 'dui'),
+                    Rule::unique('miembro', 'dui'),
+                    Rule::unique('donante', 'dui'),
+                ],
+                'telefonosAd' => 'required|array|distinct',
+                'telefonosAd.*' => [
+                    'required',
+                    Rule::unique('telefono_adoptante', 'telefono'),
+                    Rule::unique('telefono_miembro', 'telefono'),
+                    Rule::unique('telefono_donante', 'telefono'),
+                    new EmptyIf503,
+                ],
+                'direccion' => 'required|unique:hogar,direccion',
+                'tamanioHogar' => 'required|in:Grande,Mediano,Pequeño',
+                'companiaHumana' => 'required|numeric|min:1',
+                'isCompaniaAnimal' => 'required|in:Sí,No',
+                'companiaAnimal' => 'required_if:isCompaniaAnimal,Sí|numeric|min:1',
 
-        try {
-            // Crea un nuevo registro en la tabla de hogar
+            ], [
+                'required' => 'Este campo es requerido.',
+                'expA.required' => 'No ha seleccionado nigún expediente.',
+                'expA.exist' => 'El expediente especificado no se ha encontrado, seleccione uno de nuevo.',
+                'idAdoptante.exist' => 'El adoptante especificado no se ha encontrado, seleccione uno de nuevo o regístrelo.',
+                'telefonosAd.*.unique' => 'Este número ya ha sido ingresado.',
+                'dui.unique' => 'Este dui ya ha sido ingresado.',
+                'direccion.unique' => 'Esta dirección ya ha sido ingresada.',
+            ]);
+        } else {
+            $request->validate([
+                'expA' => 'required|exists:expediente,idExpediente',
+                'idAdoptante'=>'required_if:idAdoptante,' . request('idAdoptante') . '|exists:adoptante,idAdoptante',
+                'nombres' => 'required|min:3',
+                'apellidos' => 'required|min:3',
+                'dui' => [
+                    'required',
+                    'unique:adoptante,dui,' . request('idAdoptante') . ',idAdoptante',
+                    'unique:miembro,dui',
+                    'unique:donante,dui',
+                ],
+                'telefonosAd' => 'required|array|distinct',
+                'telefonosAd.*' => [
+                    'required',
+                    'unique:telefono_adoptante,telefono,' . request('idAdoptante') . ',idAdoptante',
+                    'unique:telefono_miembro,telefono',
+                    'unique:telefono_donante,telefono',
+                    new EmptyIf503,
+                ],
+                'direccion' => 'required|unique:hogar,direccion,' . request('idHogar') . ',idHogar',
+                'tamanioHogar' => 'required|in:Grande,Mediano,Pequeño',
+                'companiaHumana' => 'required|numeric|min:1',
+                'isCompaniaAnimal' => 'required|in:Sí,No',
+                'companiaAnimal' => 'required_if:isCompaniaAnimal,Sí|numeric|min:1',
+
+            ], [
+                'required' => 'Este campo es requerido.',
+                'expA.required' => 'No ha seleccionado nigún expediente.',
+                'expA.exist' => 'El expediente especificado no se ha encontrado, seleccione uno de nuevo.',
+                'idAdoptante.exist' => 'El adoptante especificado no se ha encontrado, seleccione uno de nuevo o regístrelo.',
+                'telefonosAd.*.unique' => 'Este número ya ha sido ingresado.',
+                'dui.unique' => 'Este dui ya ha sido ingresado.',
+                'direccion.unique' => 'Esta dirección ya ha sido ingresada.',
+            ]);
+        }
+      
+        // si no se ha elegido un adoptante registrado...
+        if (empty($request->input('idAdoptante'))) {
             
-            $hogar = Hogar::create([
-                'idHogar' => $this->generarIdHogar(),
-                'direccion' => $request->input('direccion'),
-                'companiaHumana' => $request->input('companiaHumana'),
-                'companiaAnimal' => $request->input('isCompaniaAnimal') == 'Sí' ? $request->input('companiaAnimal') : 0,
-                'tamanioHogar' => $request->input('tamanioHogar'),
-                'estado' => 1,
-            ]);
-            // Crea un nuevo registro en la tabla de adoptantes
-            $adoptante = Adoptante::create([
-                'idAdoptante' => $this->generarIdAdoptante(),
-                'nombres' => $request->input('nombres'),
-                'apellidos' => $request->input('apellidos'),
-                'dui' => $request->input('dui'),
-                'idHogar' => $hogar->idHogar,
-                'estado' => 1,
-                // Otros atributos de la tabla de adoptantes
-            ]);
-            // Crea un nuevo registro en la tabla de adopciones
-            $adoption = Adopcion::create([
-                'idAdopcion' => $this->generarIdAdopcion(),
-                'fechaTramiteInicio' => date('Y-m-d'),
-                'idAdoptante' => $adoptante->idAdoptante,
-                'idExpediente' => $request->input('expA'),
-                'aceptacion' => 0,
-                'estado' => 1,
-            ]);
-            // Confirma la transacción
-            DB::commit();
+            DB::beginTransaction();
+            try {
+                // Crea un nuevo registro en la tabla de hogar
+                $hogar = Hogar::create([
+                    'idHogar' => $this->generarIdHogar(),
+                    'direccion' => $request->input('direccion'),
+                    'companiaHumana' => $request->input('companiaHumana'),
+                    'companiaAnimal' => $request->input('isCompaniaAnimal') == 'Sí' ? $request->input('companiaAnimal') : 0,
+                    'tamanioHogar' => $request->input('tamanioHogar'),
+                    'estado' => 1,
+                ]);
+                // Crea un nuevo registro en la tabla de adoptantes
+                $adoptante = Adoptante::create([
+                    'idAdoptante' => $this->generarIdAdoptante(),
+                    'nombres' => $request->input('nombres'),
+                    'apellidos' => $request->input('apellidos'),
+                    'dui' => $request->input('dui'),
+                    'idHogar' => $hogar->idHogar,
+                    'estado' => 1,
+                    // Otros atributos de la tabla de adoptantes
+                ]);
+                $telefonosAd = $request->input('telefonosAd');
+                $telefonosAAsociar = [];
+                
+                foreach ($telefonosAd as $telefono) {
+                    $telefonosAAsociar[] = ['telefono' => $telefono];
+                }
+                
+                $adoptante->telefono_adoptantes()->createMany($telefonosAAsociar);
+                
+                // Crea un nuevo registro en la tabla de adopciones
+                $adoption = Adopcion::create([
+                    'idAdopcion' => $this->generarIdAdopcion(),
+                    'fechaTramiteInicio' => date('Y-m-d'),
+                    'idAdoptante' => $adoptante->idAdoptante,
+                    'idExpediente' => $request->input('expA'),
+                    'aceptacion' => 0,
+                    'estado' => 1,
+                ]);
 
-            return redirect('/adopcion')
-                ->with('success', 'Registro de adopción y adoptante guardados con éxito.');
-        } catch (\Exception $e) {
-            // En caso de error, realiza un rollback de la transacción
-            DB::rollBack();
-            dd($e->getMessage());
-            return back()
-                ->withInput()
-                ->with('error', 'Error al guardar los registros.');
+                // Confirma la transacción
+                DB::commit();
+
+                return redirect('/adopcion/')
+                    ->with('success', 'Registro de adopción y adoptante guardados con éxito.');
+            } catch (\Exception $e) {
+                // En caso de error, realiza un rollback de la transacción
+                DB::rollBack();
+                dd($e->getMessage());
+                return back()
+                    ->withInput()
+                    ->with('error', 'Error al guardar los registros.');
+            }
+        } else {
+            DB::beginTransaction();
+            try {
+                $adoption = Adopcion::create([
+                    'idAdopcion' => $this->generarIdAdopcion(),
+                    'fechaTramiteInicio' => date('Y-m-d'),
+                    'idAdoptante' => $request->input('idAdoptante'),
+                    'idExpediente' => $request->input('expA'),
+                    'aceptacion' => 0,
+                    'estado' => 1,
+                ]);
+                 // Confirma la transacción
+                 DB::commit();
+
+                 return redirect('/adopcion/')
+                     ->with('success', 'Registro de adopción y adoptante guardados con éxito.');
+            } catch (\Exception $e) {
+                // En caso de error, realiza un rollback de la transacción
+                DB::rollBack();
+                dd($e->getMessage());
+                return back()
+                    ->withInput()
+                    ->with('error', 'Error al guardar los registros.');
+            
+            }
         }
     }
 
@@ -125,6 +200,7 @@ class AdopcionController extends Controller
         } else {
             // Obtener el número del último idAdoptante
             $ultimoNumero = intval(substr($ultimoAdoptante->idAdoptante, 2));
+            
             // Incrementar el número para el nuevo registro
             $nuevoNumero = $ultimoNumero + 1;
             // Formatear el nuevo idAnimal con ceros a la izquierda
@@ -148,21 +224,20 @@ class AdopcionController extends Controller
             // Formatear el nuevo idAnimal con ceros a la izquierda
             $nuevoId = 'HG' . str_pad($nuevoNumero, 4, '0', STR_PAD_LEFT);
         }
-        
+
         return $nuevoId;
     }
     public function generarIdAdopcion()
     {
         // Obtener el último registro de la tabla "ADOPCION"
         $ultimoAnimal = Adopcion::latest('idAdopcion')->first();
-
+        
         if (!$ultimoAnimal) {
             // Si no hay registros previos, comenzar desde AN0001
             $nuevoId = 'ADC0001';
         } else {
             // Obtener el número del último idAdopcion
-            $ultimoNumero = intval(substr($ultimoAnimal->idAdoptante, 3));
-
+            $ultimoNumero = intval(substr($ultimoAnimal->idAdopcion, 3));
             // Incrementar el número para el nuevo registro
             $nuevoNumero = $ultimoNumero + 1;
 

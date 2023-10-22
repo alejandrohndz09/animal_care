@@ -181,7 +181,7 @@
 <!-- Modal para ver detalles de los Adoptantes disponibles-->
 <div class="modal fade" id="buscarAdoptante" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-lg ">
-        <div class="modal-content" style="min-height: 80vh !important">
+        <div class="modal-content" style="min-height: 80vh !important; overflow: scroll;">
             <div class="modal-header">
                 <h3 class="modal-title" style="">Seleccione un adoptante:</h3>
                 <button type="button" class="btn-close" aria-label="Close" data-bs-dismiss="modal"></button>
