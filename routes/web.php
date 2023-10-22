@@ -71,6 +71,7 @@ Route::get('/expedienteAlta/{id}', 'App\Http\Controllers\ExpedienteController@al
 
 Route::get('/albergar/{idExpediente}/{idAlvergue}', 'App\Http\Controllers\AlbergueController@albergar');
 Route::get('/desalbergar/{idExpediente}/{idAlvergue}', 'App\Http\Controllers\AlbergueController@desalbergar');
+Route::get('/albergarDeExpediente/{idAlvergue}/{idExpediente}', 'App\Http\Controllers\AnimalControlador@albergarDeExpediente');
 
 Route::get('/adopcion', 'App\Http\Controllers\AdopcionController@index');
 Route::get('/getAdopciones', 'App\Http\Controllers\AdopcionController@getAdopciones');

@@ -6,7 +6,7 @@ use App\Models\Animal;
 use App\Models\Expediente;
 use App\Models\Historialvacuna;
 use App\Models\Raza;
-use App\Models\Vacuna;
+use App\Models\Alvergue;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -298,4 +298,16 @@ class AnimalControlador extends Controller
             'idExpediente' => Expediente::where('idAnimal', $request->input('idAnimal'))->value('idExpediente'),
         ]);
     }
+
+    
+    public function albergarDeExpediente($idAlvergue, $idExpediente)
+    {
+        $expe = Expediente::find($idExpediente);
+
+        //Actualiza los datos en la BD
+        $expe->idAlvergue = $idAlvergue;
+        $expe->save();
+        return back();
+    }
+
 }

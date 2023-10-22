@@ -22,31 +22,14 @@
                             <div
                                 style=" width:100%;margin: 0; display: flex; gap: 5px; align-items: center; ">
                                 <button class="button btn-transparent" style="width: 30px;padding: 15px 5px" type="button"
-                                    id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"  data-bs-pp="tooltip"
-                                    data-bs-placement="top" title="Volver" onclick="window.location.href='/'">
-                                    <i class="svg-icon fas fa-chevron-left" style="color: #4c4c4c"></i>
+                                    id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="svg-icon fas fa-ellipsis-vertical" style="color: #4c4c4c"></i>
                                 </button>
-                                <h1>Expedientes </h1>
-                            </div>
-                            <div
-                                style=" width:100%;margin: 0; display: flex; gap: 5px; justify-content: end ;align-items: center; ">
-                                <input id="searchInputGrid" class="inputField card" style="width: 50%;" autocomplete="off"
-                                    placeholder="🔍︎ Buscar" type="search">
-
-                                <div class="dropdown">
-                                    <button class="button btn-transparent" style="width: 30px;padding: 15px 5px"
-                                        type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown"
-                                        aria-expanded="false"  data-bs-pp="tooltip"
-                                        data-bs-placement="top" title="Opciones">
-                                        <i class="svg-icon fas fa-ellipsis-vertical" style="color: #4c4c4c"></i>
-                                    </button>
-                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                        <li><a class="dropdown-item" data-bs-toggle="modal"
-                                                data-bs-target="#tabla">Expedientes
-                                                dados de
-                                                baja</a></li>
-                                    </ul>
-                                </div>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                    <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#tabla">Expedientes
+                                            dados de
+                                            baja</a></li>
+                                </ul>
                             </div>
                         </div>
                         <div id="grid" class="d-flex justify-content-center">
