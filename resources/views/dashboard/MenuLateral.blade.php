@@ -17,9 +17,9 @@
                     <div class="sb-nav-link-icon"><i class="fas fa-file-invoice" ></i></div>
                     Expedientes
                 </a>
-                <a class="nav-link" href="">
+                <a class="nav-link" href="/adopcion">
                     <div class="sb-nav-link-icon"><i class="fa-solid fa-envelopes-bulk" ></i></div>
-                    Trámites
+                    Adopciones
                 </a>
                 
                 <a class="nav-link" href="/albergue">

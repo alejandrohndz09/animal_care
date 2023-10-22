@@ -47,7 +47,7 @@
 
                                 @php use App\Http\Controllers\AnimalControlador; @endphp
                                 @foreach ($animales as $a)
-                                    <tr class="animal-row"  data-animal="{{json_encode($a)}}">
+                                    <tr class="animal-row" data-animal="{{json_encode($a)}}">
                                         <td>
                                             <img src="{{isset($a->imagen)?asset($a->imagen):asset('img/especie.png')}}"
                                                 alt="user" class="picture" />

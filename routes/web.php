@@ -77,6 +77,7 @@ Route::get('/expedientedestroy/{id}', 'App\Http\Controllers\ExpedienteController
 Route::get('/expedienteAlta/{id}', 'App\Http\Controllers\ExpedienteController@alta');
 
 
+
 Route::get('/albergar/{idExpediente}/{idAlvergue}', 'App\Http\Controllers\AlbergueController@albergar');
 Route::get('/desalbergar/{idExpediente}/{idAlvergue}', 'App\Http\Controllers\AlbergueController@desalbergar');
 
@@ -84,4 +85,12 @@ Route::get('/desalbergar/{idExpediente}/{idAlvergue}', 'App\Http\Controllers\Alb
 Route::get('/albergarDeExpediente/{idAlvergue}/{idExpediente}', 'App\Http\Controllers\AnimalControlador@albergarDeExpediente');
 
 
+
+
+Route::resource('adopcion', 'App\Http\Controllers\AdopcionController');
+Route::get('form-adopcion', function () {
+    return view('adopcion.form');
+});
+Route::get('/expElegido/{id}', 'App\Http\Controllers\AdopcionController@getExpElegido');
+Route::get('/adElegido/{id}', 'App\Http\Controllers\AdopcionController@getAdElegido');
 
