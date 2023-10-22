@@ -83,10 +83,6 @@ Route::get('/desalbergar/{idExpediente}/{idAlvergue}', 'App\Http\Controllers\Alb
 
 
 Route::get('/albergarDeExpediente/{idAlvergue}/{idExpediente}', 'App\Http\Controllers\AnimalControlador@albergarDeExpediente');
-
-
-
-
 Route::resource('adopcion', 'App\Http\Controllers\AdopcionController');
 Route::get('form-adopcion', function () {
     return view('adopcion.form');
