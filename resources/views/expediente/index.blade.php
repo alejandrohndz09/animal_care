@@ -30,9 +30,7 @@
                                     <i class="svg-icon fas fa-ellipsis-vertical" style="color: #4c4c4c"></i>
                                 </button>
                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                    <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#tabla">Expedientes
-                                            dados de
-                                            baja</a></li>
+                                    <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#tabla">Expedientes dados de baja</a></li>
                                 </ul>
                             </div>
                         </div>

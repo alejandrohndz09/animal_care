@@ -96,14 +96,11 @@
                                             </div>
                                         @endif
                                     </div>
-
-                                    <button type="submit" class="button button-pri" style="margin-left: 180%"
-                                        onclick="window.location.href = '{{ $registrado->count() > 0 ? 'AQUI EL URL PARA ALBERGARLO' : url('crearExpediente/' . $animal->idAnimal) }} '">
-                                        <span class="lable">
-                                            {{ $registrado->count() > 0 ? 'Albergar animal' : 'Crear expediente' }}
-                                        </span>
-                                    </button>
-
+                                <div>
+                                    <button type="button" class="button button-pri" data-bs-toggle="modal" data-bs-target="#ModalALbergarExpediente" tyle="margin-left: 180%">
+                                        <i class="svg-icon fa-regular fa-floppy-disk"></i>Albergar 
+                                    </button> 
+                                </div>
                                 </div>
 
                             </div>
@@ -293,7 +290,62 @@
                         </div>
                     </div>
                 @endif
-                @include('animal.historial')
+
+                <!--Modal alberlgar desde expediente-->
+                <div class="modal fade" id="ModalALbergarExpediente" tabindex="-1" aria-labelledby="ModalALbergarExpediente" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-lg ">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" style="margin-left: auto; margin-right: auto;">Lista de Albergues disponibles</h5>
+                            </div>
+                            <div class="modal-body">
+                
+                                <table>
+                                    <thead>
+                                        <tr class="head">        
+                                            <th></th>
+                                            <th>Código</th>
+                                            <th>Encargado</th>
+                                            <th>direccion</th>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tableBody">
+                                        @php use App\Http\Controllers\AlbergueController; @endphp
+                                        @php use App\Models\Alvergue; @endphp
+                                        @php use App\Models\Miembro; @endphp
+                                        @php $albergueDisponible = Alvergue::where('estado','1')->get();@endphp
+                                        @foreach ($albergueDisponible as $a)
+                                            <tr>
+                                                <td>{{ $a->idAlvergue }}</td>
+                                                <td>{{ $a->miembro->nombres }} {{ $a->miembro->apellidos }}</td>
+                                                <td>{{ $a->direccion }}</td>  
+                                               
+                                                </td>
+                                                <td>
+                                                    <div
+                                                        style="display: flex; align-items: flex-end; gap: 3px; justify-content: center">
+                                                        <a  href="{{ url('albergarDeExpediente/' . $a->idAlvergue . '/'.$animal->expedientes->get(0)->idExpediente) }}"
+                                                            class="button button-blue" style="width: 45%;" data-bs-pp="tooltip"
+                                                            data-bs-placement="top" title="Albergar en este albergue">
+                                                            <i class="svg-icon fas fa-pencil"></i>
+                                                        </a>
+                                                       
+                
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
         </main>
     </div>
 @endsection

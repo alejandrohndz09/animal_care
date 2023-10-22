@@ -81,4 +81,7 @@ Route::get('/albergar/{idExpediente}/{idAlvergue}', 'App\Http\Controllers\Alberg
 Route::get('/desalbergar/{idExpediente}/{idAlvergue}', 'App\Http\Controllers\AlbergueController@desalbergar');
 
 
+Route::get('/albergarDeExpediente/{idAlvergue}/{idExpediente}', 'App\Http\Controllers\AnimalControlador@albergarDeExpediente');
+
+
 

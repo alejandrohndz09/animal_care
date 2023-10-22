@@ -143,3 +143,8 @@
         </div>
     </div>
 </div>
+
+<!-- Modal para ver albergar desde el expediente que muestra los albergues disponibles-->
+
+
+
