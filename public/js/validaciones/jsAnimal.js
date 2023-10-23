@@ -150,5 +150,3 @@ $('#tableBody').on('click', '.animal-row', function (event) {
         }
     });
 
-}
-
