@@ -42,7 +42,7 @@
                             </thead>
                             <tbody id="tableBody">
                                 @foreach ($razas as $a)
-                                    <tr class="raza-row" data-raza="{{ json_encode($a) }}">
+                                    <tr class="raza-row"  data-raza="{{ json_encode($a) }}">
                                         <td>
                                             <img src="{{ asset('img/huella.png') }}" alt="Raza" class="picture" />
                                         </td>
@@ -53,11 +53,11 @@
                                             <div
                                                 style="display: flex; align-items: flex-end; gap: 3px; justify-content: center">
                                                 <a href="{{ url('raza/' . $a->idRaza . '/edit') }}"
-                                                    class="button button-blue" style="width: 45%;" data-bs-pp="tooltip"
+                                                    class="button button-blue btnUpdate" style="width: 45%;" data-bs-pp="tooltip"
                                                     data-bs-placement="top" title="Editar">
                                                     <i class="svg-icon fas fa-pencil"></i>
                                                 </a>
-                                                <button type="button" class="button button-red" style="width: 45%"
+                                                <button type="button" class="button button-red btnDelete" style="width: 45%"
                                                     data-bs-toggle="modal" data-bs-target="#exampleModalToggle"
                                                     data-raza="{{ json_encode($a) }}" data-bs-pp="tooltip"
                                                     data-bs-placement="top" title="Eliminar">

@@ -47,11 +47,11 @@ $('.raza-row').on('click', function (event) {
     var id = button.data('raza').idRaza; // Obtiene el valor del atributo data-id
     var nombre = button.data('raza').raza; // Obtiene el valor del atributo data-nombre
     //var especie = button.data('raza').especie.especie; // Obtiene el valor del atributo data-apellido
-   
+   console.log(button.data('raza'))
     // Actualiza el contenido del modal con los detalles del registro
     $('#codigo').text(id);
     $('#Raza').text(nombre);
-    $('#Especie').text(especie);
+    $('#especie').text(especie);
 
     // Abre el modal
     $('#modalDetalle').modal('show');

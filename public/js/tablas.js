@@ -25,7 +25,7 @@ function updatePagination() {
   if (totalPages > 1) {
     for (let i = 1; i <= totalPages; i++) {
       const pageLink = document.createElement('a');
-        pageLink.href = 'javascript:void(0)';
+        pageLink.href = '#'+i;
         pageLink.classList.add('button');
         pageLink.classList.add('button-pri');
       pageLink.textContent = i;
@@ -39,28 +39,8 @@ function updatePagination() {
   }
 
   if (currentData.length === 0) {
-    const newRow = document.createElement('tr');
-    
-    // Crear un nuevo elemento <td> 
-    const newCell = document.createElement('td');
-    
-    // Realizar una solicitud AJAX para cargar el contenido del archivo
-    fetch('/html/loader.html')
-        .then(response => response.text())
-        .then(data => {
-            // Establecer el contenido del <td> con el HTML cargado del archivo
-            newCell.innerHTML = data;
-        })
-        .catch(error => {
-            console.error('Error al cargar.', error);
-        });
-    
-        newCell.style.width = '100%';
-    // Agregar el <td> como hijo del <tr>
-    newRow.appendChild(newCell);
-    
-    // Agregar el <tr> al <tbody> de la tabla
-    tableBody.appendChild(newRow);
+    tableBody.innerHTML =
+      '<tr><td colspan="3">No se encontraron resultados.</td></tr>';
   } else {
     displayData(currentData);
   }

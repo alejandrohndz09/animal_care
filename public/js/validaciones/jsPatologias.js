@@ -38,11 +38,11 @@ $('.patologia-row').on('click', function (event) {
 
     var button = $(this); // Fila de la tabla que se hizo clic
     var id = button.data('patologia').idPatologia; // Obtiene el valor del atributo data-id
-    var patologia = button.data('patologia').patologia; // Obtiene el valor del atributo data-nombre
-   
+    var p= button.data('patologia').patologia; // Obtiene el valor del atributo data-nombre
+    
     // Actualiza el contenido del modal con los detalles del registro
     $('#codigo').text(id);
-    $('#patologia').text(patologia);
+    $('#p').text(button.data('patologia').patologia);
 
     // Abre el modal
     $('#modalDetalle').modal('show');

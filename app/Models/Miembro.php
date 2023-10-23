@@ -13,11 +13,11 @@ use Illuminate\Database\Eloquent\Model;
  * Class Miembro
  * 
  * @property string $idMiembro
+ * @property string|null $dui
  * @property string|null $nombres
  * @property string|null $apellidos
  * @property string|null $correo
  * @property int|null $estado
- * @property string $dui
  * 
  * @property Collection|Adopcion[] $adopcions
  * @property Collection|Alvergue[] $alvergues
@@ -38,11 +38,11 @@ class Miembro extends Model
 	];
 
 	protected $fillable = [
+		'dui',
 		'nombres',
 		'apellidos',
 		'correo',
-		'estado',
-		'dui'
+		'estado'
 	];
 
 	public function adopcions()

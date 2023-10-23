@@ -43,7 +43,7 @@
                 <p> <img src="{{ asset('img/vacuna.png') }}" alt="vacuna" class="picture"
                         style="width: 15%; height: auto; margin-left: auto; margin-right: auto;"> </p>
                 <p>Código: <span id="codigo"></span></p>
-                <p>Vacuna: <span id="vacuna"></span></p>
+                <p>Vacuna: <span id="v"></span></p>
 
             </div>
         </div>

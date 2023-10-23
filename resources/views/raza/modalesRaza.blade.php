@@ -12,7 +12,7 @@
                         style="width: 15%; height: auto; margin-left: auto; margin-right: auto;"> </p>
                 <p>Código: <span id="modalRecordCodigo"></span></p>
                 <p>Nombre: <span id="modalRecordNombre"></span></p>
-                <p>Especie: <span id="modalRecordEspecie"></span></p>
+                <p>Especie: <span id="especie"></span></p>
                 
             </div>
             <div class="modal-footer text-center" style="margin-left: auto; margin-right: auto;">
