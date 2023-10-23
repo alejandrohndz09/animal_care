@@ -39,13 +39,6 @@ class EspecieController extends Controller
     {
         $request->validate(['especie' => 'required|unique:especie']);
 
-        $ultimoRegistro = Especie::latest('idEspecie')->first();
-
-        $siguienteIncremento = $ultimoRegistro ? (int) substr($ultimoRegistro->idEspecie, -4) + 1 : 1;
-
-        // Crea el ID personalizado concatenando "MB" y el incremento
-        $idPersonalizado = "MB" . str_pad($siguienteIncremento, 5, '0', STR_PAD_LEFT);
-
         //guardar en la base
         $especie = new Especie();
         $especie->idEspecie = $this->generarId();

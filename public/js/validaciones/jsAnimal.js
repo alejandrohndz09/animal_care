@@ -142,11 +142,13 @@ $('#tableBody').on('click', '.animal-row', function (event) {
     // Verifica si el clic se realizó en un botón de editar o eliminar
     if ($(event.target).is('a#btnUpdate') || $(event.target).is('a#btnDelete')) {
 
-        return; // No muestres el modal si se hizo clic en un botón
-    } else {
-        var button = $(this); // Fila de la tabla que se hizo clic
-        var id = button.data('animal').idAnimal; // Obtiene el valor del atributo data-id
-        window.location.href = '/animal/' + id;
-    }
-});
+            return; // No muestres el modal si se hizo clic en un botón
+        } else {
+            var button = $(this); // Fila de la tabla que se hizo clic
+            var id = button.data('animal').idAnimal; // Obtiene el valor del atributo data-id
+            window.location.href = '/expediente/' + id;
+        }
+    });
+
+}
 

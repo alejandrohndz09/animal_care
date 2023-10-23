@@ -3,9 +3,11 @@
 use App\Http\Controllers\AlbergueController;
 use App\Http\Controllers\EspecieController;
 use App\Http\Controllers\ExpedienteController;
+use App\Http\Controllers\HistorialPatologiasController;
 use App\Http\Controllers\MiembroController;
 use App\Http\Controllers\PatologiaController;
 use App\Http\Controllers\VacunaController;
+use App\Models\Historialvacuna;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -62,13 +64,24 @@ Route::resource('/patologia', 'App\Http\Controllers\PatologiaController');
 Route::put('patologia/update/{id}', [PatologiaController::class, 'update'])->name('patologia.update');
 Route::get('/destroyPatologia/{id}', 'App\Http\Controllers\PatologiaController@destroy');
 
-Route::resource('/historialV', 'App\Http\Controllers\HistorialVacunaController');
+
+Route::resource('/historialVacunas', 'App\Http\Controllers\HistorialVacunasController');
+Route::post('/historialVacunas/store', 'App\Http\Controllers\HistorialVacunasController@store')->name('historial.store');
+Route::get('/cargarListaDatos/{id}', 'App\Http\Controllers\HistorialVacunasController@cargarListaDatos');
+Route::get('/cargarHistoriales/{id}', 'App\Http\Controllers\HistorialVacunasController@cargarHistoriales');
+Route::delete('/destroyHistorialVacunas/{id}', 'App\Http\Controllers\HistorialVacunasController@destroy');
+Route::get('/obtener-vacunas', 'App\Http\Controllers\HistorialVacunasController@ObtenerVacunas');
+
 Route::resource('expediente', 'App\Http\Controllers\ExpedienteController');
+Route::get('/crearExpediente/{id}', 'App\Http\Controllers\ExpedienteController@crearExpediente');
 Route::put('/expediente/update/{id}', [ExpedienteController::class, 'update']);
-Route::get('/getExpedientes', 'App\Http\Controllers\ExpedienteController@getExpedientes');
 Route::get('/expedientedestroy/{id}', 'App\Http\Controllers\ExpedienteController@destroy');
 Route::get('/expedienteAlta/{id}', 'App\Http\Controllers\ExpedienteController@alta');
 
+Route::resource('historialPatologias', 'App\Http\Controllers\HistorialPatologiasController');
+Route::post('/historialPatologias/store', [HistorialPatologiasController::class, 'store'])->name('historialP.store');
+Route::get('/obtener-patologias', 'App\Http\Controllers\HistorialPatologiasController@ObtenerPatologias');
+Route::get('/obtener-registros-guardados/{id}', 'App\Http\Controllers\HistorialPatologiasController@obtenerPatologiasGuardadas');
 Route::get('/albergar/{idExpediente}/{idAlvergue}', 'App\Http\Controllers\AlbergueController@albergar');
 Route::get('/desalbergar/{idExpediente}/{idAlvergue}', 'App\Http\Controllers\AlbergueController@desalbergar');
 Route::get('/albergarDeExpediente/{idAlvergue}/{idExpediente}', 'App\Http\Controllers\AnimalControlador@albergarDeExpediente');
