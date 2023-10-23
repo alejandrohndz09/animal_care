@@ -73,25 +73,7 @@ Route::get('/albergar/{idExpediente}/{idAlvergue}', 'App\Http\Controllers\Alberg
 Route::get('/desalbergar/{idExpediente}/{idAlvergue}', 'App\Http\Controllers\AlbergueController@desalbergar');
 Route::get('/albergarDeExpediente/{idAlvergue}/{idExpediente}', 'App\Http\Controllers\AnimalControlador@albergarDeExpediente');
 
-Route::get('/adopcion', 'App\Http\Controllers\AdopcionController@index');
+Route::resource('/adopcion', 'App\Http\Controllers\AdopcionController');
 Route::get('/getAdopciones', 'App\Http\Controllers\AdopcionController@getAdopciones');
-Route::get('/adopcion/nueva', function () {
-    if (session('expElegido')) {
-        $expElegido = session('expElegido');
-    } else {
-        $expElegido = null;
-    }
-
-    if (session('adElegido')) {
-        $adElegido = session('adElegido');
-    } else {
-        $adElegido = null;
-    }
-    return view('adopcion.form')->with(
-        [
-            'expElegido' => $expElegido,
-            'adElegido' => $adElegido,
-        ]);
-})->name('adopcion.form');
-Route::post('/adopcion/nueva', 'App\Http\Controllers\AdopcionController@store');
+Route::get('/getExpedientesSinAdopcion', 'App\Http\Controllers\AdopcionController@getExpedientesSinAdopcion');
 Route::get('/get-exp-ad-elegido/{idAdoptante}/{idExpediente}', 'App\Http\Controllers\AdopcionController@getExp_AdDElegido');

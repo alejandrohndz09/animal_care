@@ -39,8 +39,28 @@ function updatePagination() {
   }
 
   if (currentData.length === 0) {
-    tableBody.innerHTML =
-      '<tr><td colspan="3">No se encontraron resultados.</td></tr>';
+    const newRow = document.createElement('tr');
+    
+    // Crear un nuevo elemento <td> 
+    const newCell = document.createElement('td');
+    
+    // Realizar una solicitud AJAX para cargar el contenido del archivo
+    fetch('/html/loader.html')
+        .then(response => response.text())
+        .then(data => {
+            // Establecer el contenido del <td> con el HTML cargado del archivo
+            newCell.innerHTML = data;
+        })
+        .catch(error => {
+            console.error('Error al cargar.', error);
+        });
+    
+        newCell.style.width = '100%';
+    // Agregar el <td> como hijo del <tr>
+    newRow.appendChild(newCell);
+    
+    // Agregar el <tr> al <tbody> de la tabla
+    tableBody.appendChild(newRow);
   } else {
     displayData(currentData);
   }

@@ -306,6 +306,7 @@ class AnimalControlador extends Controller
 
         //Actualiza los datos en la BD
         $expe->idAlvergue = $idAlvergue;
+        $expe->estadoGeneral = 'Albergado';
         $expe->save();
         return back();
     }

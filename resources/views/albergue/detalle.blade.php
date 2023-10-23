@@ -75,13 +75,13 @@
 
                     </div>
 
-                  
+
 
                     <table>
                         <thead>
                             <tr class="head">
-                                <th></th>
-                                <th>Código</th>
+                                <th style="width: 15%"></th>
+                                <th>Cod. Expediente</th>
                                 <th>Nombre</th>
                                 <th>Especie</th>
                                 <th>Raza</th>
@@ -95,26 +95,26 @@
                             @php use App\Http\Controllers\AnimalControlador; @endphp
                             @foreach ($albergue->expedientes as $a)
                                 <tr>
-                                    <td>
-                                        <img src="{{ isset($a->imagen) ? asset($a->imagen) : 'https://static.vecteezy.com/system/resources/previews/017/783/245/original/pet-shop-silhouette-logo-template-free-vector.jpg' }}"
+                                    <td style="width: 15%">
+                                        <img src="{{ isset($a->animal->imagen) ? asset($a->animal->imagen) : 'https://static.vecteezy.com/system/resources/previews/017/783/245/original/pet-shop-silhouette-logo-template-free-vector.jpg' }}"
                                             alt="user" class="picture" />
                                     </td>
-                                    <td>{{ $a->idAnimal }}</td>
+                                    <td>{{ $a->idExpediente }}</td>
                                     <td>{{ $a->animal->nombre }}</td>
                                     <td>{{ $a->animal->raza->especie->especie }}</td>
                                     <td>{{ $a->animal->raza->raza }}</td>
                                     <td>{{ AnimalControlador::calcularEdad(explode(' ', $a->fechaNacimiento)[0]) }}
                                     </td>
                                     <td>
-                                        <div>
-                                            <button type="button" class="button button-red btnDelete" style="width: 45%"
-                                                data-bs-toggle="modal" data-bs-target="#modaldeBaja"
-                                                data-expediente="{{ json_encode($a) }}" data-bs-pp="tooltip"
-                                                data-bs-placement="top" title="Dar de baja del albergue">
-                                                <i class="svg-icon fas fa-trash"></i>
-                                            </button>
 
-                                        </div>
+                                        <button type="button" class="button button-red btnDelete" style="width: 45%"
+                                            data-bs-toggle="modal" data-bs-target="#modaldeBaja"
+                                            data-expediente="{{ json_encode($a) }}" data-bs-pp="tooltip"
+                                            data-bs-placement="top" title="Dar de baja del albergue">
+                                            <i class="svg-icon fas fa-house-circle-xmark"></i>
+                                        </button>
+
+
                                     </td>
                                 </tr>
                             @endforeach

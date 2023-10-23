@@ -32,7 +32,7 @@
                         </div>
                     </div>
                 </div>
-                <form action="{{ isset($adopcion) ? url('adopcion/update/' . $adopcion->idAdopcion) : '' }}" method="POST"
+                <form action="{{ isset($adopcion) ? url('/adopcion/update/' . $adopcion->idAdopcion) : route('adopcion.store') }}" method="POST"
                     enctype="multipart/form-data">
                     @csrf
                     @if (isset($adopcion))
@@ -658,7 +658,7 @@
                             <i class="svg-icon fas fa-save"></i>
                             <span class="lable">Guardar<span>
                         </button>
-                        <button type="button" onclick="window.location.href='/adopcion/nueva'" class="button button-red"
+                        <button type="button" onclick="window.location.href='{{route('adopcion.create')}}'" class="button button-red"
                             style="width: 20%;padding: 7px 7px; justify-items: end">
                             <i class="svg-icon fas fa-rotate-right"></i>
                             <span class="lable">Cancelar<span>
