@@ -144,22 +144,32 @@ $(document).ready(function () {
             var estadoClase = ''; // Clase de estado por defecto
 
             if (dato.estado === 'De alta') {
-                estadoClase = 'estado-de-alta';
+                estadoClase = 'badge rounded-pill alert-success';
             } else if (dato.estado === 'En tratamiento') {
-                estadoClase = 'estado-tratamiento';
+                estadoClase = 'badge rounded-pill alert-warning"';
             } else if (dato.estado === 'En espera de tratamiento') {
-                estadoClase = 'estado-espera';
+                estadoClase = 'badge rounded-pill alert-danger';
             }
 
             var fila = document.createElement('tr');
             fila.innerHTML = `
-        <td style="width: 10%">${index + 1}</td>
-        <td>${new Date(dato.fechaDiagnostico).toLocaleDateString()}</td>
-        <td style="width: 30%">${dato.datalles}</td>
-        <td class="${estadoClase}">${dato.estado}</td>
-        <td></td>
-    `;
-            tableBody.append(fila);
+                <td style="width: 5%;">${index + 1}</td>
+                <td>${new Date(dato.fechaDiagnostico).toLocaleDateString()}</td>
+                <td style="width: 25%;" class="text-wrap">${dato.datalles}</td>
+                <td style="width: 20%;">
+                    <span style="font-size: 15px;" class="${estadoClase}">${dato.estado}</span>
+                </td>
+                <td style="width: 10%;"> 
+                    <button type="button" class="button button-red delete-button" style="width: 30px" id="HistVacuna" value="${dato.idHistPatologia}" data-bs-pp="tooltip" data-bs-placement="top" title="Eliminar">
+                        <i class="svg-icon fas fa-trash"></i>
+                    </button>
+                </td>
+            `;
+
+            // Luego, agrega la fila a la tabla
+            var tablaBody = document.getElementById("detallepatologiaTableBody");
+            tablaBody.appendChild(fila);
+
         }
 
 

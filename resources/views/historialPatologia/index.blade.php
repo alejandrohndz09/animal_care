@@ -102,11 +102,11 @@
                 <table>
                     <thead>
                         <tr class="head">
-                            <th style="width: 11%">No.</th>
+                            <th style="width: 5%">No.</th>
                             <th>Fecha de diagnostico</th>
-                            <th style="width: 30%">Detalles</th>
-                            <th>Estado</th>
-                            <th></th>
+                            <th style="width: 25%" >Detalles</th>
+                            <th style="width: 22%">Estado</th>
+                            <th style="width: 5%"></th>
                         </tr>
                     </thead>
                     <tbody id="detallepatologiaTableBody">

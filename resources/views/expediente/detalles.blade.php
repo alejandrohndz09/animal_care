@@ -315,8 +315,8 @@
                                                     </li>
                                                     <li>
                                                         Estado:
-                                                        <span
-                                                            class="@if ($ultimoHistorial->estado == 'De alta') estado-de-alta @elseif($ultimoHistorial->estado == 'En tratamiento') estado-tratamiento @elseif($ultimoHistorial->estado == 'En espera de tratamiento') estado-espera @endif">
+                                                        <span style="font-size: 15px;"
+                                                            class="@if ($ultimoHistorial->estado == 'De alta') badge rounded-pill alert-success @elseif($ultimoHistorial->estado == 'En tratamiento') badge rounded-pill alert-warning @elseif($ultimoHistorial->estado == 'En espera de tratamiento') badge rounded-pill alert-danger @endif">
                                                             {{ $ultimoHistorial->estado }}
                                                         </span>
                                                     </li>
