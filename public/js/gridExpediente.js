@@ -42,7 +42,7 @@ function cargarRegistros(pagina, filtro) {
 
     columna.innerHTML =
       '<div class="card mb-4 panelGrid" style="border: none; padding:.5rem; padding-bottom: 25px !important; gap: 0rem !important; width: 100%">' +
-        '<a href="/animal/'+ expediente.idAnimal+'" class="stretched-link"></a>'+
+        '<a href="/expediente/'+ expediente.idAnimal+'" class="stretched-link"></a>'+
         '<div style="width: 100%; height: 140px; overflow: hidden;">' +
           '<img src="' + img + '" class="card-img-top" style="width: 100%; height: 100%; object-fit: cover;">' +
         '</div>' +
