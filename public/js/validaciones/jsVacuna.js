@@ -42,7 +42,7 @@ $('.vacuna-row').on('click', function (event) {
   
     // Actualiza el contenido del modal con los detalles del registro
     $('#codigo').text(id);
-    $('#vacuna').text(vacuna);
+    $('#v').text(vacuna);
 
     // Abre el modal
     $('#ModalDetalle').modal('show');

@@ -1,8 +1,4 @@
 $(document).ready(function () {
-    $('#formulario #vacuna-error').html('');
-    $('#formulario #dosis-error').html('');
-    $('#formulario #fechaAplicacion-error').html('');
-
     $('#btnGuardar').click(function () {
 
         // Borra todas las advertencias de errores existentes
@@ -13,25 +9,17 @@ $(document).ready(function () {
         // Serializa los datos del formulario
         var formData = $('#formulario').serialize();
 
-        // Obtén el token CSRF
-        var csrfToken = $('meta[name="csrf-token"]').attr('content');
-
         // Realiza la solicitud AJAX para validar los campos
         $.ajax({
             type: 'POST',
             url: '/historialVacunas/store',
             data: formData,
             headers: {
-                'X-CSRF-TOKEN': csrfToken // Agrega el token CSRF al encabezado
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
             success: function (data) {
                 $('#newHistorial').modal('hide');
-
-                // Si la validación se completó con éxito
-                if (data.success) {
-                    // Puedes redirigir o hacer lo que necesites aquí
-                    window.location.href = '/expediente';
-                }
+                window.location.reload();
             },
             error: function (xhr) {
                 if (xhr.status === 422) {
@@ -198,12 +186,12 @@ $(document).ready(function () {
                 });
             });
 
-           deleteButton.on('click', function () {
+            deleteButton.on('click', function () {
 
                 var idHistVacuna = $(this).attr('value');
-                
+
                 console.log(idHistVacuna);
-        
+
                 $.ajax({
                     type: 'DELETE',
                     url: '/destroyHistorialVacunas/' + idHistVacuna,
@@ -216,46 +204,46 @@ $(document).ready(function () {
                         // Ahora, solicita todos los registros relacionados con idVacuna
                         $.ajax({
                             type: 'GET',
-                            url: '/cargarListaDatos/' + idVacuna 
+                            url: '/cargarListaDatos/' + idVacuna
                         })
                             .done(function (data) {
-        
+
                                 tableBody.empty();
                                 $.each(data, function (index, newData) {
-        
+
                                     // Agrega una fila a la tabla
                                     var row = $('<tr>');
                                     row.append(`<td>${index + 1} </td>`);
                                     row.append('<td>' + newData.dosis + '</td>');
                                     row.append('<td>' + dateFormat(newData.fechaAplicacion) + '</td>');
                                     row.append('<td></td>');
-        
+
                                     // Agrega un div que envuelve a los botones y aplica estilos
                                     var buttonDiv = $('<div style="display: flex; align-items: flex-end; gap: 5px; justify-content: center;">');
                                     var editButton = $('<button type="button" class="button button-blue"' +
                                         'data-bs-pp="tooltip" data-bs-placement="top" style="width: 45%;" title="Editar"> <i class="svg-icon fas fa-pencil"></i></button>');
                                     var deleteButton = $('<button type="button" class="button button-red  delete-button" style="width: 45%" value="' + newData.idHistVacuna + '"' +
                                         'data-bs-pp="tooltip" data-bs-placement="top" title="Dar de baja"> <i class="svg-icon fas fa-trash"></i></button>');
-        
-        
+
+
                                     // Agrega los botones al div
                                     buttonDiv.append(editButton);
                                     buttonDiv.append(deleteButton);
-        
+
                                     var buttonCell = $('<td>');
                                     buttonCell.append(buttonDiv);
-        
+
                                     row.append(buttonCell);
-        
+
                                     tableBody.append(row);
-        
+
                                     $.ajax({
                                         url: '/cargarHistoriales/' + idExpediente,
                                         method: "GET",
                                         success: function (data) {
                                             var tablaVacuna = $('#contenedorVacuna');
                                             tablaVacuna.empty(); // Limpia cualquier contenido anterior
-        
+
                                             // Función para agrupar los datos por el nombre de la vacuna
                                             function groupByVacuna(data) {
                                                 if (data == null) {
@@ -273,23 +261,23 @@ $(document).ready(function () {
                                                 });
                                                 return groupedData;
                                             }
-        
+
                                             var groupedData = groupByVacuna(data);
-        
+
                                             // Recorre los datos agrupados y crea elementos HTML para mostrarlos
                                             const contenedorPrincipal = document.createElement('div');
-        
+
                                             for (var nombreVacuna in groupedData) {
                                                 const container = document.createElement('div');
                                                 container.classList.add('vaccine-container');
                                                 container.classList.add('historialv-row');
-        
+
                                                 // Crear un array para almacenar los datos
                                                 const datosVacunaArray = [];
-        
+
                                                 // Obtener los datos de fechaAplicacion y dosis para este nombre de vacuna
                                                 groupedData[nombreVacuna].forEach(function (historial, index) {
-        
+
                                                     const datosHistorial = {
                                                         vacuna: nombreVacuna,
                                                         idVacuna: historial.idVacuna, // Puedes establecer el valor correcto
@@ -300,50 +288,50 @@ $(document).ready(function () {
                                                     };
                                                     // Agregar el objeto de datos al array
                                                     datosVacunaArray.push(datosHistorial);
-        
+
                                                 });
-        
+
                                                 // Convertir el objeto de datos a una cadena JSON
                                                 const datosJSON = JSON.stringify(datosVacunaArray);
-        
+
                                                 // Asignar los datos al atributo data-nombre-vacuna del container
                                                 container.setAttribute('data-vacuna', datosJSON);
-        
-        
-        
+
+
+
                                                 const content = document.createElement('div');
                                                 content.classList.add('vaccine-content');
                                                 content.style.margin = '0';
                                                 content.style.display = 'flex';
                                                 content.style.alignItems = 'center';
-        
+
                                                 content.innerHTML = '<i class="inputFieldIcon fas fa-syringe" style="margin-right: 3px; color: #6067eb;vertical-align: middle;"></i> <span class="vaccine-title">' + nombreVacuna + '</span>';
                                                 container.appendChild(content);
-        
+
                                                 const ul = document.createElement('ul');
                                                 groupedData[nombreVacuna].forEach(function (historial, index) {
                                                     const fechaAplicacion = historial.fechaAplicacion;
-        
-        
+
+
                                                     const li = document.createElement('li');
                                                     li.innerHTML = `Dosis #${index + 1} aplicada el ${dateFormat(fechaAplicacion)}`;
                                                     ul.appendChild(li);
                                                 });
-        
-        
+
+
                                                 container.appendChild(ul);
                                                 contenedorPrincipal.appendChild(container);
                                             }
-        
+
                                             const lineBreak = document.createElement('br');
                                             contenedorPrincipal.appendChild(lineBreak);
                                             tablaVacuna.append(contenedorPrincipal);
-        
-        
+
+
                                         },
                                         error: function (xhr, status, error) {
                                             console.log(error);
-        
+
                                         }
                                     });
                                 });
@@ -357,8 +345,8 @@ $(document).ready(function () {
                         console.log(xhr);
                         // Maneja errores si es necesario
                     });
-        
-        
+
+
             });
             // Agrega los botones al div
             buttonDiv.append(editButton);
@@ -375,171 +363,6 @@ $(document).ready(function () {
 
         // Abre el modal
         $('#detalleVacunaModal').modal('show');
-    });
-
-    
-    $('.delete-button').on('click', function () {
-
-        var idHistVacuna = $(this).attr('value');
-
-        console.log(idHistVacuna);
-
-        $.ajax({
-            type: 'DELETE',
-            url: '/destroyHistorialVacunas/' + idHistVacuna,
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-        })
-            .done(function () {
-                // Eliminación exitosa
-                // Ahora, solicita todos los registros relacionados con idVacuna
-                $.ajax({
-                    type: 'GET',
-                    url: '/cargarListaDatos/' + idVacuna, // Ajusta la URL según tu enrutamiento
-                })
-                    .done(function (data) {
-
-                        console.log(data);
-                        tableBody.empty();
-                        $.each(data, function (index, newData) {
-
-                            // Agrega una fila a la tabla
-                            var row = $('<tr>');
-                            row.append(`<td>${index + 1} </td>`);
-                            row.append('<td>' + newData.dosis + '</td>');
-                            row.append('<td>' + dateFormat(newData.fechaAplicacion) + '</td>');
-                            row.append('<td></td>');
-
-                            // Agrega un div que envuelve a los botones y aplica estilos
-                            var buttonDiv = $('<div style="display: flex; align-items: flex-end; gap: 5px; justify-content: center;">');
-                            var editButton = $('<button type="button" class="button button-blue"' +
-                                'data-bs-pp="tooltip" data-bs-placement="top" style="width: 45%;" title="Editar"> <i class="svg-icon fas fa-pencil"></i></button>');
-                            var deleteButton = $('<button type="button" class="button button-red  delete-button" style="width: 45%" value="' + historial.idHistVacuna + '"' +
-                                'data-bs-pp="tooltip" data-bs-placement="top" title="Dar de baja"> <i class="svg-icon fas fa-trash"></i></button>');
-
-
-                            // Agrega los botones al div
-                            buttonDiv.append(editButton);
-                            buttonDiv.append(deleteButton);
-
-                            var buttonCell = $('<td>');
-                            buttonCell.append(buttonDiv);
-
-                            row.append(buttonCell);
-
-                            tableBody.append(row);
-
-                            $.ajax({
-                                url: '/cargarHistoriales/' + idExpediente,
-                                method: "GET",
-                                success: function (data) {
-                                    var tablaVacuna = $('#contenedorVacuna');
-                                    tablaVacuna.empty(); // Limpia cualquier contenido anterior
-
-                                    // Función para agrupar los datos por el nombre de la vacuna
-                                    function groupByVacuna(data) {
-                                        if (data == null) {
-                                            var tableBody = $('#detalleVacunaTableBody');
-                                            tableBody.empty(); // Limpia cualquier contenido anterior
-                                            $('#detalleVacunaModal').modal('hide');
-                                        }
-                                        var groupedData = {};
-                                        data.forEach(function (historial, index) {
-                                            var nombreVacuna = historial.vacuna;
-                                            if (!groupedData[nombreVacuna]) {
-                                                groupedData[nombreVacuna] = [];
-                                            }
-                                            groupedData[nombreVacuna].push(historial);
-                                        });
-                                        return groupedData;
-                                    }
-
-                                    var groupedData = groupByVacuna(data);
-
-                                    // Recorre los datos agrupados y crea elementos HTML para mostrarlos
-                                    const contenedorPrincipal = document.createElement('div');
-
-                                    for (var nombreVacuna in groupedData) {
-                                        const container = document.createElement('div');
-                                        container.classList.add('vaccine-container');
-                                        container.classList.add('historialv-row');
-
-                                        // Crear un array para almacenar los datos
-                                        const datosVacunaArray = [];
-
-                                        // Obtener los datos de fechaAplicacion y dosis para este nombre de vacuna
-                                        groupedData[nombreVacuna].forEach(function (historial, index) {
-
-                                            const datosHistorial = {
-                                                vacuna: nombreVacuna,
-                                                idVacuna: historial.idVacuna, // Puedes establecer el valor correcto
-                                                idExpediente: historial.idExpediente, // Puedes establecer el valor correcto
-                                                fechaAplicacion: historial.fechaAplicacion,
-                                                dosis: historial.dosis,
-                                                idHistVacuna: historial.idHistVacuna,
-                                            };
-                                            // Agregar el objeto de datos al array
-                                            datosVacunaArray.push(datosHistorial);
-
-                                        });
-
-                                        // Convertir el objeto de datos a una cadena JSON
-                                        const datosJSON = JSON.stringify(datosVacunaArray);
-
-                                        // Asignar los datos al atributo data-nombre-vacuna del container
-                                        container.setAttribute('data-vacuna', datosJSON);
-
-
-
-                                        const content = document.createElement('div');
-                                        content.classList.add('vaccine-content');
-                                        content.style.margin = '0';
-                                        content.style.display = 'flex';
-                                        content.style.alignItems = 'center';
-
-                                        content.innerHTML = '<i class="inputFieldIcon fas fa-syringe" style="margin-right: 3px; color: #6067eb;vertical-align: middle;"></i> <span class="vaccine-title">' + nombreVacuna + '</span>';
-                                        container.appendChild(content);
-
-                                        const ul = document.createElement('ul');
-                                        groupedData[nombreVacuna].forEach(function (historial, index) {
-                                            const fechaAplicacion = historial.fechaAplicacion;
-
-
-                                            const li = document.createElement('li');
-                                            li.innerHTML = `Dosis #${index + 1} aplicada el ${dateFormat(fechaAplicacion)}`;
-                                            ul.appendChild(li);
-                                        });
-
-
-                                        container.appendChild(ul);
-                                        contenedorPrincipal.appendChild(container);
-                                    }
-
-                                    const lineBreak = document.createElement('br');
-                                    contenedorPrincipal.appendChild(lineBreak);
-                                    tablaVacuna.append(contenedorPrincipal);
-
-
-                                },
-                                error: function (xhr, status, error) {
-                                    console.log(error);
-
-                                }
-                            });
-                        });
-                    })
-                    .fail(function (xhr) {
-                        console.log(xhr);
-                        // Maneja errores si es necesario
-                    });
-            })
-            .fail(function (xhr) {
-                console.log(xhr);
-                // Maneja errores si es necesario
-            });
-
-
     });
 
     // Evento para cargar el select

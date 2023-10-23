@@ -5,9 +5,10 @@
     <link rel="stylesheet" href="<?php echo asset('css/cards.css'); ?>" type="text/css">
 @endsection
 
-{{-- @section('scripts')
-    <script src="{{ asset('js/validaciones/JsAlbergue.js') }}"></script>
-@endsection --}}
+@section('scripts')
+    <script src="{{ asset('js/validaciones/jsHistorialV.js') }}"></script>
+    <script src="{{ asset('js/validaciones/jsHistorialP.js') }}"></script>
+@endsection
 @section('content')
     <div id="layoutSidenav_content">
         <main>
@@ -263,8 +264,9 @@
                                     style="width:100%; display: flex;  justify-content: space-between; align-items: center; margin-bottom: 5px;">
                                     <h5 style="margin-left: 30px;font-size: 34px; color: #333;">Historial de patologías
                                     </h5>
-                                    <button type="submit" class="button button-pri" id="abrir" data-bs-toggle="modal"
-                                        data-bs-target="#newHistorial" style="width: 80px;padding: 7px 3px">
+                                    <button type="submit" id="mostrarPatologia" class="button button-pri"
+                                        id="abrir" data-bs-toggle="modal" data-bs-target="#newHistorialPatologia"
+                                        style="width: 80px;padding: 7px 3px">
                                         <i class="svg-icon fas fa-plus"></i>
                                     </button>
                                 </div>
@@ -277,7 +279,7 @@
 
                                 @foreach ($exp->historialPatologia as $historial)
                                     @php
-                                        $nombrePatologia = $historial->idPatologia;
+                                        $nombrePatologia = $historial->patologium->patologia;
                                         if (!isset($historialesAgrupados[$nombrePatologia])) {
                                             $historialesAgrupados[$nombrePatologia] = [];
                                         }
@@ -285,42 +287,52 @@
                                     @endphp
                                 @endforeach
 
-                                @foreach ($historialesAgrupados as $nombrePatologia => $historiales)
-                                    <div class="vaccine-container">
-                                        <div class="vaccine-content"style="margin: 0; display: flex; align-items: center">
+                                <div id="contenedorPatologia">
+                                    @foreach ($historialesAgrupados as $nombrePatologia => $historiales)
+                                        <div class="vaccine-container historialp-row"
+                                            data-patologia="{{ json_encode($historiales) }}">
+                                            <div class="vaccine-content"
+                                                style="margin: 0; display: flex; align-items: center">
+                                                <img src="{{ asset('img/suero.svg') }}"
+                                                    alt="triangle with all three sides equal" height="25"
+                                                    width="25" style="margin-right: 3px" />
+                                                <span class="vaccine-title">{{ $nombrePatologia }}</span>
+                                            </div>
+                                            <ul>
+                                                @php
+                                                    // Ordena los historiales por fecha de diagnóstico de forma descendente
+                                                    usort($historiales, function ($a, $b) {
+                                                        return strtotime($b->fechaDiagnostico) - strtotime($a->fechaDiagnostico);
+                                                    });
 
-                                            <img src="{{ asset('img/suero.svg') }}"
-                                                alt="triangle with all three sides equal" height="25" width="25"
-                                                style="margin-right: 3px" />
-                                            <span class="vaccine-title">{{ $nombrePatologia }}</span>
-                                        </div>
-                                        <ul>
-                                            @foreach ($historiales as $historial)
+                                                    // Toma el último historial (el más reciente) para mostrarlo
+                                                    $ultimoHistorial = reset($historiales);
+                                                @endphp
                                                 <ul>
                                                     <li>
                                                         Diagnosticado el
-                                                        <span>
-                                                            {{ date('d/m/Y', strtotime($historial->fechaDiagnostico)) }}
-                                                        </span>
+                                                        <span>{{ date('d/m/Y', strtotime($ultimoHistorial->fechaDiagnostico)) }}</span>
                                                     </li>
                                                     <li>
                                                         Estado:
                                                         <span
-                                                            class="@if ($historial->estado == 'De alta') estado-de-alta @elseif($historial->estado == 'En tratamiento') estado-tratamiento @elseif($historial->estado == 'En espera de tratamiento') estado-espera @endif">
-                                                            {{ $historial->estado }}
+                                                            class="@if ($ultimoHistorial->estado == 'De alta') estado-de-alta @elseif($ultimoHistorial->estado == 'En tratamiento') estado-tratamiento @elseif($ultimoHistorial->estado == 'En espera de tratamiento') estado-espera @endif">
+                                                            {{ $ultimoHistorial->estado }}
                                                         </span>
                                                     </li>
                                                 </ul>
-                                            @endforeach
-                                        </ul>
-                                    </div>
-                                @endforeach
-
-                                <br>
+                                            </ul>
+                                        </div>
+                                    @endforeach
+                                    <br>
+                                </div>
                             </div>
                         </div>
+                    </div>
                 @endif
                 @include('historialVacunas.index')
+                @include('historialPatologia.index')
         </main>
     </div>
+
 @endsection

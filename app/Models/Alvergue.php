@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $idAlvergue
  * @property string|null $direccion
  * @property string|null $idMiembro
+ * @property int|null $estado
  * 
  * @property Miembro|null $miembro
  * @property Collection|Expediente[] $expedientes
@@ -28,9 +29,14 @@ class Alvergue extends Model
 	public $incrementing = false;
 	public $timestamps = false;
 
+	protected $casts = [
+		'estado' => 'int'
+	];
+
 	protected $fillable = [
 		'direccion',
-		'idMiembro'
+		'idMiembro',
+		'estado'
 	];
 
 	public function miembro()

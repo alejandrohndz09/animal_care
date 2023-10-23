@@ -1,6 +1,4 @@
-@section('scripts')
-    <script src="{{ asset('js/validaciones/jsHistorialV.js') }}"></script>
-@endsection
+
 <!-- Modal para agregar o modificar vacunas al historial de vacunas-->
 <div class="modal fade" id="newHistorial" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
@@ -53,7 +51,7 @@
                 </div>
 
                 <div class="modal-footer " id="btnGuardar" style="justify-content: center;">
-                    <button type="submit" class="button button-pri">
+                    <button type="button" class="button button-pri">
                         <i class="svg-icon fa-regular fa-floppy-disk"></i>
                         <span class="lable" id="btn">
                            Guardar
@@ -95,3 +93,15 @@
         </div>
     </div>
 </div>
+@if (session()->has('alert'))
+<script>
+    Toast.fire({
+        icon: "{{ session()->get('alert')['type'] }}",
+        title: "{{ session()->get('alert')['message'] }}",
+    });
+
+    @php
+        session()->keep('alert');
+    @endphp
+</script>
+@endif

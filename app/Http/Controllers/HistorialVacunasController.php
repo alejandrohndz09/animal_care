@@ -49,8 +49,14 @@ class HistorialVacunasController extends Controller
             $newHistorialVacuna->idExpediente = $request->input('idExpediente');
             $newHistorialVacuna->save();
 
+            $alert = array(
+                'type' => 'success',
+                'message' => 'El registro se ha guardado exitosamente'
+            );
+
+            session()->flash('alert', $alert);
             // // Redirige al usuario a la página deseada
-            // return redirect()->action([ExpedienteController::class, 'show'], ['expediente' => $request->input('idAnimal')]);
+             return redirect()->action([ExpedienteController::class, 'show'], ['expediente' => $request->input('idAnimal')]);
 
         } elseif ($request->input('operacion') == 'modificar') {
 
@@ -92,7 +98,7 @@ class HistorialVacunasController extends Controller
     public function cargarListaDatos($id)
     {
         $datos = HistorialVacuna::where('idVacuna', $id)
-            ->select('dosis', 'fechaAplicacion','idHistVacuna')
+            ->select('dosis', 'fechaAplicacion', 'idHistVacuna')
             ->get();
 
         return response()->json($datos);

@@ -45,18 +45,6 @@
     <script src="{{ asset('js/scripts.js') }}"></script>
     <script src="{{ asset('js/tablas.js') }}"></script>
     @yield('scripts')
-    @if (session()->has('alert'))
-        <script>
-            Toast.fire({
-                icon: "{{ session()->get('alert')['type'] }}",
-                title: "{{ session()->get('alert')['message'] }}",
-            });
-
-            @php
-                session()->forget('alert');
-            @endphp
-        </script>
-    @endif
 </body>
 
 </html>

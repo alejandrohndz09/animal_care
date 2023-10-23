@@ -4,6 +4,7 @@ use App\Http\Controllers\AlbergueController;
 use App\Http\Controllers\AnimalControlador;
 use App\Http\Controllers\EspecieController;
 use App\Http\Controllers\ExpedienteController;
+use App\Http\Controllers\HistorialPatologiasController;
 use App\Http\Controllers\MiembroController;
 use App\Http\Controllers\PatologiaController;
 use App\Http\Controllers\VacuanaController;
@@ -80,3 +81,8 @@ Route::get('/crearExpediente/{id}', 'App\Http\Controllers\ExpedienteController@c
 Route::put('/expediente/update/{id}', [ExpedienteController::class, 'update']);
 Route::get('/expedientedestroy/{id}', 'App\Http\Controllers\ExpedienteController@destroy');
 Route::get('/expedienteAlta/{id}', 'App\Http\Controllers\ExpedienteController@alta');
+
+Route::resource('historialPatologias', 'App\Http\Controllers\HistorialPatologiasController');
+Route::post('/historialPatologias/store', [HistorialPatologiasController::class, 'store'])->name('historialP.store');
+Route::get('/obtener-patologias', 'App\Http\Controllers\HistorialPatologiasController@ObtenerPatologias');
+Route::get('/obtener-registros-guardados/{id}', 'App\Http\Controllers\HistorialPatologiasController@obtenerPatologiasGuardadas');
