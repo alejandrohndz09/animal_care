@@ -29,6 +29,8 @@ $(document).ready(function () {
 
     });
 
+
+
     $("#btnCancelar").click(function () {
         window.location.href = '/albergue'
     });
@@ -43,10 +45,10 @@ $(document).ready(function () {
     });
 
     // Escuchar el click en una fila
-    $('.registro-row').on('click', function (event) {
+    $('#tableBody').on('click', '.registro-row', function (event) {
         // //     // Verifica si el clic se realizó en un botón de editar o eliminar
 
-        if ($(event.target).is('a#btnUpdate') || $(event.target).is('a#btnDelete')) {
+        if ($(event.target).is('#btnUpdate') || $(event.target).is('a#btnDelete')) {
            
             return; // No muestres el modal si se hizo clic en un botón
         } else {
@@ -55,4 +57,26 @@ $(document).ready(function () {
         }
     });
 
+
+      //Si presiona El dar de baja abrira el modal con los datos que se daran de baja
+      $('#modaldeBaja').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget); // Botón que desencadenó el modal
+       
+        var idExpediente = button.data('expediente').idExpediente; // Obtiene el valor del atributo data-id
+        var idAlvergue = button.data('expediente').idAlvergue;
+        var Animal = button.data('expediente').animal.nombre; // Obtiene el valor del atribut
+        // Actualiza el contenido del modal con los detalles del registro
+        $('#modalRecordi').text(idExpediente);
+        $('#modalRecordAni').text(Animal);
+    
+      
+    
+        $('body').on('click', '#confirmarOperacion', function () {
+            $.get('/desalbergar/'+ idExpediente + '/'+ idAlvergue, function () {
+                 location.reload();
+      //          window.location.href = '/expediente'
+            });
+        });
+    
+    });
 });

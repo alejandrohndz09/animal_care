@@ -59,18 +59,29 @@
                     </div>
                 </div>
                 <div class="row mt-3">
-                    <div
-                        style="width:100%; display: flex;  justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                        <h3>Animales albergados </h3>
-                        <input id="searchInput" class="inputField card" style="width: 50% " autocomplete="off"
-                            placeholder="🔍︎ Buscar" type="search">
+                    <div class="d-flex flex-row  align-items-center" style="margin-bottom: 15px;">
+                        <h3 class="me-auto">Animales albergados</h3>
+
+                        <div class="d-flex" style="gap:8px">
+                            <button type="button" class="button button-pri" data-bs-toggle="modal"
+                                data-bs-target="#modalAlvergar" style="width: 40px;" data-bs-pp="tooltip"
+                                data-bs-placement="top" title="Albergar nuevo animal">
+                                <i class="svg-icon fas fa-plus"></i>
+                            </button>
+
+                            <input id="searchInput" class="inputField card" style="width:80%" autocomplete="off"
+                                placeholder="🔍︎ Buscar" type="search">
+                        </div>
+
                     </div>
+
+
 
                     <table>
                         <thead>
                             <tr class="head">
-                                <th></th>
-                                <th>Código</th>
+                                <th style="width: 15%"></th>
+                                <th>Cod. Expediente</th>
                                 <th>Nombre</th>
                                 <th>Especie</th>
                                 <th>Raza</th>
@@ -84,32 +95,26 @@
                             @php use App\Http\Controllers\AnimalControlador; @endphp
                             @foreach ($albergue->expedientes as $a)
                                 <tr>
-                                    <td>
-                                        <img src="{{ isset($a->imagen) ? asset($a->imagen) : 'https://static.vecteezy.com/system/resources/previews/017/783/245/original/pet-shop-silhouette-logo-template-free-vector.jpg' }}"
+                                    <td style="width: 15%">
+                                        <img src="{{ isset($a->animal->imagen) ? asset($a->animal->imagen) : 'https://static.vecteezy.com/system/resources/previews/017/783/245/original/pet-shop-silhouette-logo-template-free-vector.jpg' }}"
                                             alt="user" class="picture" />
                                     </td>
-                                    <td>{{ $a->idAnimal }}</td>
+                                    <td>{{ $a->idExpediente }}</td>
                                     <td>{{ $a->animal->nombre }}</td>
                                     <td>{{ $a->animal->raza->especie->especie }}</td>
                                     <td>{{ $a->animal->raza->raza }}</td>
                                     <td>{{ AnimalControlador::calcularEdad(explode(' ', $a->fechaNacimiento)[0]) }}
                                     </td>
                                     <td>
-                                        <div
-                                            style="display: flex; align-items: flex-end; gap: 3px; justify-content: center">
-                                            <a href="{{ url('animal/' . $a->idAnimal . '/edit') }}"
-                                                class="button button-blue" style="width: 45%;" data-bs-pp="tooltip"
-                                                data-bs-placement="top" title="Editar">
-                                                <i class="svg-icon fas fa-pencil"></i>
-                                            </a>
-                                            <button type="button" class="button button-red" style="width: 45%"
-                                                data-bs-toggle="modal" data-bs-target="#exampleModalToggle"
-                                                data-animal="{{ json_encode($a) }}" data-bs-pp="tooltip"
-                                                data-bs-placement="top" title="Dar de baja">
-                                                <i class="svg-icon fas fa-trash"></i>
-                                            </button>
 
-                                        </div>
+                                        <button type="button" class="button button-red btnDelete" style="width: 45%"
+                                            data-bs-toggle="modal" data-bs-target="#modaldeBaja"
+                                            data-expediente="{{ json_encode($a) }}" data-bs-pp="tooltip"
+                                            data-bs-placement="top" title="Dar de baja del albergue">
+                                            <i class="svg-icon fas fa-house-circle-xmark"></i>
+                                        </button>
+
+
                                     </td>
                                 </tr>
                             @endforeach
@@ -120,4 +125,5 @@
             </div>
         </main>
     </div>
+    @include('albergue.modalDetalle')
 @endsection

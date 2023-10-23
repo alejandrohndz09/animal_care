@@ -10,7 +10,7 @@
     <div id="layoutSidenav_content">
         <main>
             <div class="container-fluid px-4 py-4">
-                <div class="row mt-3">
+                <div class="row">
                     <div class="col-xl-7">
                         <div
                             style="width:100%; display: flex;  justify-content: space-between; align-items: center; margin-bottom: 15px;">
@@ -47,7 +47,7 @@
 
                                 @php use App\Http\Controllers\AnimalControlador; @endphp
                                 @foreach ($animales as $a)
-                                    <tr class="animal-row"  data-animal="{{json_encode($a)}}">
+                                    <tr class="animal-row" data-animal="{{json_encode($a)}}">
                                         <td>
                                             <img src="{{isset($a->imagen)?asset($a->imagen):asset('img/especie.png')}}"
                                                 alt="user" class="picture" />

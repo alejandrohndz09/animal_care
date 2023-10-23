@@ -133,13 +133,14 @@ function imagenVistaPrevia() {
         // Evitar la propagación del evento al hacer clic en la fila
         event.stopPropagation();
     });
+}
+// Escuchar el click en una fila
 
+$('#tableBody').on('click', '.animal-row', function (event) {
+    console.log('si entra al evento')
 
-    // Escuchar el click en una fila
-    $('.animal-row').on('click', function (event) {
-        // //     // Verifica si el clic se realizó en un botón de editar o eliminar
-
-        if ($(event.target).is('a#btnUpdate') || $(event.target).is('a#btnDelete')) {
+    // Verifica si el clic se realizó en un botón de editar o eliminar
+    if ($(event.target).is('a#btnUpdate') || $(event.target).is('a#btnDelete')) {
 
             return; // No muestres el modal si se hizo clic en un botón
         } else {
@@ -148,7 +149,4 @@ function imagenVistaPrevia() {
             window.location.href = '/expediente/' + id;
         }
     });
-
-}
-
 

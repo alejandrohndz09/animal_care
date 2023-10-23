@@ -6,6 +6,7 @@ use App\Models\Animal;
 use App\Models\Expediente;
 use App\Models\Historialvacuna;
 use App\Models\Raza;
+use App\Models\Alvergue;
 use App\Models\Vacuna;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -233,6 +234,76 @@ class AnimalControlador extends Controller
         return view('animal.index')->with([
             'animales' => Animal::where('estado', 1)->get()
         ]);
+    }
+
+    public function expediente($id)
+    {
+
+        // Obtén el último registro de la tabla para determinar el siguiente incremento
+        $ultimoRegistro = Expediente::latest('idExpediente')->first();
+
+        // Calcula el siguiente incremento
+        $siguienteIncremento = $ultimoRegistro ? (int) substr($ultimoRegistro->idExpediente, -4) + 1 : 1;
+
+        // Crea el ID personalizado concatenando "MB" y el incremento
+        $idPersonalizado = "EX" . str_pad($siguienteIncremento, 5, '0', STR_PAD_LEFT);
+
+        $expediente = new Expediente();
+        $expediente->idExpediente = $idPersonalizado;
+        $expediente->idAnimal = $id;
+        $expediente->idAlvergue = null;
+        $expediente->fechaIngreso = date('d/m/Y');
+        $expediente->estadoGeneral = 'Controlado';
+        $expediente->estado = 1;
+        $expediente->save();
+
+
+        return view('animal.detalles')->with([
+            'animal' => Animal::find($id),
+            'registrado' => Expediente::where('idAnimal', $id)->get(),
+            'estado' => Expediente::where('idAnimal', $id)->value('estadoGeneral'),
+            'idExpediente' => Expediente::where('idAnimal', $id)->value('idExpediente')
+        ]);
+    }
+
+    public function historialstore(Request $request)
+    {
+
+        // Obtén el último registro de la tabla para determinar el siguiente incremento
+        $ultimoRegistro = Historialvacuna::latest('idHistVacuna')->first();
+
+        // Calcula el siguiente incremento
+        $siguienteIncremento = $ultimoRegistro ? (int) substr($ultimoRegistro->idHistVacuna, -4) + 1 : 1;
+
+        // Crea el ID personalizado concatenando "HV" y el incremento
+        $idPersonalizado = "HV" . str_pad($siguienteIncremento, 5, '0', STR_PAD_LEFT);
+
+        $newHistorialVacuna = new Historialvacuna();
+        $newHistorialVacuna->idHistVacuna = $idPersonalizado;
+        $newHistorialVacuna->fechaAplicacion = $request->input('fechaAplicacion');
+        $newHistorialVacuna->dosis = $request->input('dosis');
+        $newHistorialVacuna->idVAcuna = $request->input('vacuna');
+        $newHistorialVacuna->idExpediente = $request->input('idExpediente');
+        $newHistorialVacuna->save();
+
+        return view('animal.detalles')->with([
+            'animal' => Animal::find($request->input('idAnimal')),
+            'registrado' => Expediente::where('idAnimal', $request->input('idAnimal'))->get(),
+            'estado' => Expediente::where('idAnimal', $request->input('idAnimal'))->value('estadoGeneral'),
+            'idExpediente' => Expediente::where('idAnimal', $request->input('idAnimal'))->value('idExpediente'),
+        ]);
+    }
+
+    
+    public function albergarDeExpediente($idAlvergue, $idExpediente)
+    {
+        $expe = Expediente::find($idExpediente);
+
+        //Actualiza los datos en la BD
+        $expe->idAlvergue = $idAlvergue;
+        $expe->estadoGeneral = 'Albergado';
+        $expe->save();
+        return back();
     }
 
 }
