@@ -137,7 +137,7 @@
 
                                 <style>
                                     .vaccine-container {
-                                        padding: 10px;
+                                        padding: 15px;
                                         margin: 10px;
                                         margin-top: -30px;
                                         margin-bottom: -35px;
@@ -191,31 +191,7 @@
 
                                     ul li {
                                         margin-left: 60px;
-                                    }
-
-                                    /* Clases de estado personalizadas */
-                                    .estado-de-alta {
-                                        background-color: rgb(129, 246, 100);
-                                        color: rgb(72, 189, 78);
-                                        padding: 3px 6px;
-                                        border-radius: 5px;
-                                        font-weight: bold;
-                                    }
-
-                                    .estado-tratamiento {
-                                        background-color: rgb(242, 242, 89);
-                                        color: rgb(182, 171, 99);
-                                        padding: 3px 6px;
-                                        border-radius: 5px;
-                                        font-weight: bold;
-                                    }
-
-                                    .estado-espera {
-                                        background-color: rgb(231, 186, 186);
-                                        color: rgb(198, 37, 37);
-                                        padding: 3px 6px;
-                                        border-radius: 5px;
-                                        font-weight: bold;
+                                    
                                     }
                                 </style>
 

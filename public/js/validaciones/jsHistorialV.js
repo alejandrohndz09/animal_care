@@ -190,8 +190,6 @@ $(document).ready(function () {
 
                 var idHistVacuna = $(this).attr('value');
 
-                console.log(idHistVacuna);
-
                 $.ajax({
                     type: 'DELETE',
                     url: '/destroyHistorialVacunas/' + idHistVacuna,
@@ -246,7 +244,7 @@ $(document).ready(function () {
 
                                             // Función para agrupar los datos por el nombre de la vacuna
                                             function groupByVacuna(data) {
-                                                if (data == null) {
+                                                if (data === null) {
                                                     var tableBody = $('#detalleVacunaTableBody');
                                                     tableBody.empty(); // Limpia cualquier contenido anterior
                                                     $('#detalleVacunaModal').modal('hide');

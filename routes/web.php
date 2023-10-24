@@ -83,6 +83,11 @@ Route::resource('historialPatologias', 'App\Http\Controllers\HistorialPatologias
 Route::post('/historialPatologias/store', [HistorialPatologiasController::class, 'store'])->name('historialP.store');
 Route::get('/obtener-patologias', 'App\Http\Controllers\HistorialPatologiasController@ObtenerPatologias');
 Route::get('/obtener-registros-guardados/{id}', 'App\Http\Controllers\HistorialPatologiasController@obtenerPatologiasGuardadas');
+Route::delete('/historialPatologiaEliminar/{id}', 'App\Http\Controllers\HistorialPatologiasController@eliminarPatologia');
+Route::get('/cargarHistorialesPatologia/{id}', 'App\Http\Controllers\HistorialPatologiasController@cargarHistorialesPatologia');
+Route::post('/historialPatologias/actualizacion', 'App\Http\Controllers\HistorialPatologiasController@actualizacionHistorial');
+Route::get('/historialPatologias/mostrar/{id}', 'App\Http\Controllers\HistorialPatologiasController@tablaMostrar');
+
 Route::get('/albergar/{idExpediente}/{idAlvergue}', 'App\Http\Controllers\AlbergueController@albergar');
 Route::get('/desalbergar/{idExpediente}/{idAlvergue}', 'App\Http\Controllers\AlbergueController@desalbergar');
 Route::get('/albergarDeExpediente/{idAlvergue}/{idExpediente}', 'App\Http\Controllers\AnimalControlador@albergarDeExpediente');
