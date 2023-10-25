@@ -77,7 +77,7 @@ Route::resource('expediente', 'App\Http\Controllers\ExpedienteController');
 Route::get('/getExpedientes', 'App\Http\Controllers\ExpedienteController@getExpedientes');
 Route::get('/crearExpediente/{id}', 'App\Http\Controllers\ExpedienteController@crearExpediente');
 Route::put('/expediente/update/{id}', [ExpedienteController::class, 'update']);
-Route::get('/expedientedestroy/{id}', 'App\Http\Controllers\ExpedienteController@destroy');
+Route::get('expedientedestroy/{id}', 'App\Http\Controllers\ExpedienteController@destroy');
 Route::get('/expedienteAlta/{id}', 'App\Http\Controllers\ExpedienteController@alta');
 
 Route::resource('historialPatologias', 'App\Http\Controllers\HistorialPatologiasController');

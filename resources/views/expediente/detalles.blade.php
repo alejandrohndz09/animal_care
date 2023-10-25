@@ -17,10 +17,26 @@
                     <div class="card  mb-4" style="border:none; padding-bottom: 25px !important; width: 100%">
                         <div class="row">
                             <div class="col-xl-8">
-                                <h1 class="mb-8">
-                                    {{ $registrado->count() > 0 ? 'Expediente No. ' . $animal->expedientes->get(0)->idExpediente : 'Detalles de animal' }}
-                                </h1>
-
+                                <div
+                                    style="width:100%; display: flex;  justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                                    <h1 class="mb-8">
+                                        {{ $registrado->count() > 0 ? 'Expediente No. ' . $animal->expedientes->get(0)->idExpediente : 'Detalles de animal' }}
+                                    </h1>
+                                    <div class="dropdown">
+                                        <button class="button btn-transparent" style="width: 30px;padding: 15px 5px"
+                                            type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown"
+                                            aria-expanded="false" data-bs-pp="tooltip" data-bs-placement="top"
+                                            title="Opciones">
+                                            <i class="svg-icon fas fa-ellipsis-vertical" style="color: #4c4c4c"></i>
+                                        </button>
+                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                            <li
+                                                onclick="window.location.href = '{{ url('expedientedestroy/' . $animal->expedientes->get(0)->idExpediente) }}'">
+                                                <a class="dropdown-item">Dar de baja expediente</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
                                 <br>
                                 <div class="row mt-1" style="justify-content: center;">
 
