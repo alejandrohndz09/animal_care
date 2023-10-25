@@ -64,25 +64,31 @@ Route::resource('/patologia', 'App\Http\Controllers\PatologiaController');
 Route::put('patologia/update/{id}', [PatologiaController::class, 'update'])->name('patologia.update');
 Route::get('/destroyPatologia/{id}', 'App\Http\Controllers\PatologiaController@destroy');
 
-
 Route::resource('/historialVacunas', 'App\Http\Controllers\HistorialVacunasController');
 Route::post('/historialVacunas/store', 'App\Http\Controllers\HistorialVacunasController@store')->name('historial.store');
 Route::get('/cargarListaDatos/{id}', 'App\Http\Controllers\HistorialVacunasController@cargarListaDatos');
 Route::get('/cargarHistoriales/{id}', 'App\Http\Controllers\HistorialVacunasController@cargarHistoriales');
 Route::delete('/destroyHistorialVacunas/{id}', 'App\Http\Controllers\HistorialVacunasController@destroy');
 Route::get('/obtener-vacunas', 'App\Http\Controllers\HistorialVacunasController@ObtenerVacunas');
+Route::post('/historialVacunas/actualizacionVacunas', 'App\Http\Controllers\HistorialVacunasController@actualizacionHistorialVacunas');
+Route::get('/getTablaVacunas/{idExpediente}/{idVacuna}', 'App\Http\Controllers\HistorialVacunasController@tablaMostrarVacunas');
 
 Route::resource('expediente', 'App\Http\Controllers\ExpedienteController');
 Route::get('/getExpedientes', 'App\Http\Controllers\ExpedienteController@getExpedientes');
 Route::get('/crearExpediente/{id}', 'App\Http\Controllers\ExpedienteController@crearExpediente');
 Route::put('/expediente/update/{id}', [ExpedienteController::class, 'update']);
-Route::get('/expedientedestroy/{id}', 'App\Http\Controllers\ExpedienteController@destroy');
+Route::get('expedientedestroy/{id}', 'App\Http\Controllers\ExpedienteController@destroy');
 Route::get('/expedienteAlta/{id}', 'App\Http\Controllers\ExpedienteController@alta');
 
 Route::resource('historialPatologias', 'App\Http\Controllers\HistorialPatologiasController');
 Route::post('/historialPatologias/store', [HistorialPatologiasController::class, 'store'])->name('historialP.store');
 Route::get('/obtener-patologias', 'App\Http\Controllers\HistorialPatologiasController@ObtenerPatologias');
 Route::get('/obtener-registros-guardados/{id}', 'App\Http\Controllers\HistorialPatologiasController@obtenerPatologiasGuardadas');
+Route::delete('/historialPatologiaEliminar/{id}', 'App\Http\Controllers\HistorialPatologiasController@eliminarPatologia');
+Route::get('/cargarHistorialesPatologia/{id}', 'App\Http\Controllers\HistorialPatologiasController@cargarHistorialesPatologia');
+Route::post('/historialPatologias/actualizacion', 'App\Http\Controllers\HistorialPatologiasController@actualizacionHistorial');
+Route::get('/getTablaPatologia/{idExpediente}/{idPatologia}', 'App\Http\Controllers\HistorialPatologiasController@tablaMostrar');
+
 Route::get('/albergar/{idExpediente}/{idAlvergue}', 'App\Http\Controllers\AlbergueController@albergar');
 Route::get('/desalbergar/{idExpediente}/{idAlvergue}', 'App\Http\Controllers\AlbergueController@desalbergar');
 Route::get('/albergarDeExpediente/{idAlvergue}/{idExpediente}', 'App\Http\Controllers\AnimalControlador@albergarDeExpediente');

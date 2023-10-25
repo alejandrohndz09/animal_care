@@ -37,7 +37,6 @@ class Adoptante extends Model
 	];
 
 	protected $fillable = [
-		'idAdoptante',
 		'nombres',
 		'apellidos',
 		'dui',
