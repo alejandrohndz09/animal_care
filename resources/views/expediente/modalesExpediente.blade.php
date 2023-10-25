@@ -27,6 +27,7 @@
     </div>
 </div>
 
+
 <!-- Modal para los registros dados de baja-->
 <div class="modal fade" id="tabla" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-lg ">
@@ -40,15 +41,17 @@
                     <thead>
                         <tr class="head">
                             <th style="width: 10%"></th>
-                            <th>Nombres</th>
-                            <th>Apellidos</th>
-                            <th>Correo</th>
+                            <th>Codigo expediente</th>
+                            <th>nombre</th>
+                            <th>Especie</th>
+                            <th>Raza</th>
+                            <th>Edad</th>
                             <th></th>
 
                         </tr>
                     </thead>
                     <tbody>
-
+                        @php use App\Http\Controllers\AnimalControlador; @endphp
                         @foreach ($expedientes as $item)
                             @if ($item->estado == 0)
                                 <tr>
@@ -56,9 +59,11 @@
                                         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/2048px-User-avatar.svg.png"
                                             alt="user" class="picture" />
                                     </td>
-                                    <td>{{ $item->nombres }}</td>
-                                    <td>{{ $item->apellidos }}</td>
-                                    <td>{{ $item->correo }} </td>
+                                    <td>{{ $item->idExpediente }}</td>
+                                    <td>{{ $item->animal->nombre }}</td>
+                                    <td>{{ $item->animal->raza->especie->especie}} </td>
+                                    <td>{{ $item->animal->raza->raza }} </td>
+                                    <td>{{ AnimalControlador::calcularEdad(explode(' ', $item->animal->fechaNacimiento)[0]) }}
                                     <td>
                                         <div
                                             style="display: flex; align-items: flex-end; gap: 5px; justify-content: center">
@@ -69,17 +74,6 @@
                                                 data-bs-placement="top" title="Dar de alta">
                                                 <i class="svg-icon fas fa-up-long"></i>
                                             </button>
-
-                                            <button type="button" class="button button-primary btnDelete ver-button"
-                                                data-bs-pp="tooltip" data-bs-toggle="modal"
-                                                data-bs-target="#ModalToggle" style="width: 45%"
-                                                data-id="{{ $item->idExpediente }}" data-nombre="{{ $item->nombres }}"
-                                                data-apellido="{{ $item->apellidos }}" data-dui="{{ $item->dui }}"
-                                                data-correo="{{ $item->correo }}" data-bs-placement="top"
-                                                title="Ver detalles">
-                                                <i class="svg-icon fas fa-eye"></i>
-                                            </button>
-
                                         </div>
                                     </td>
                                 </tr>
@@ -89,10 +83,6 @@
                 <div id="pagination">
 
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                <!-- Puedes agregar botones adicionales si es necesario -->
             </div>
         </div>
     </div>

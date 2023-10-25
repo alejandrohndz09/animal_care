@@ -61,8 +61,7 @@ class HistorialPatologiasController extends Controller
 
             // session()->flash('alert', $alert);
             // Redirige al usuario a la página deseada
-             return redirect()->action([ExpedienteController::class, 'show'], ['expediente' => $request->input('idAnimal')]);
-
+            return redirect()->action([ExpedienteController::class, 'show'], ['expediente' => $request->input('idAnimal')]);
         } elseif ($request->input('operacion') == 'modificar') {
 
             $HistorialPatologia = Historialpatologium::find($request->input('idHistVacuna'));
@@ -112,5 +111,73 @@ class HistorialPatologiasController extends Controller
             $query->where('idAnimal', $id);
         })->get();
         return response()->json($patologiasRelacionadas);
+    }
+
+    public function eliminarPatologia($id)
+    {
+        $HistorialPatologia = Historialpatologium::find($id);
+        $HistorialPatologia->delete();
+    }
+
+    public function cargarHistorialesPatologia($id)
+    {
+        $datos = DB::table('historialPatologia')
+            ->join('patologia', 'historialPatologia.idPatologia', '=', 'patologia.idPatologia')
+            ->where('historialPatologia.idExpediente', $id)
+            ->select('patologia.patologia', 'patologia.idPatologia', 'historialPatologia.idHistPatologia', 'historialPatologia.fechaDiagnostico', 'historialPatologia.datalles', 'historialPatologia.idExpediente', 'historialPatologia.estado')
+            ->groupBy('patologia.patologia', 'patologia.idPatologia', 'historialPatologia.idHistPatologia', 'historialPatologia.fechaDiagnostico', 'historialPatologia.datalles', 'historialPatologia.idExpediente', 'historialPatologia.estado')
+            ->get();
+
+        return response()->json($datos);
+    }
+
+    public function actualizacionHistorial(Request $request)
+    {
+        $request->validate([
+            'datalles' => 'required',
+            'fecha' => 'required|before_or_equal:today',
+            'state' => 'required'
+        ], [
+            'fechaDiagnostico.before_or_equal' => 'La fecha ingresada no debe ser mayor a la de ahora.',
+            'datalles.required' => 'El campo detalles es requerido.',
+            'state.required' => 'El campo estado es requerido.'
+        ]);
+
+        // Obtén el último registro de la tabla para determinar el siguiente incremento
+        $ultimoRegistro = Historialpatologium::latest('idHistpatologia')->first();
+
+        // Calcula el siguiente incremento
+        $siguienteIncremento = $ultimoRegistro ? (int) substr($ultimoRegistro->idHistPatologia, -4) + 1 : 1;
+
+        // Crea el ID personalizado concatenando "HV" y el incremento
+        $idPersonalizado = "HP" . str_pad($siguienteIncremento, 5, '0', STR_PAD_LEFT);
+
+        $newHistorialVacuna = new Historialpatologium();
+        $newHistorialVacuna->idHistPatologia = $idPersonalizado;
+        $newHistorialVacuna->fechaDiagnostico = $request->input('fecha');
+        $newHistorialVacuna->estado = $request->input('state');
+        $newHistorialVacuna->datalles = $request->input('datalles');
+        $newHistorialVacuna->idPatologia = $request->input('Patologium');
+        $newHistorialVacuna->idExpediente = $request->input('idExpediente');
+        $newHistorialVacuna->save();
+    }
+
+    public function tablaMostrar($idExpediente, $idPatologia)
+    {
+        $historiales = DB::table('historialPatologia')
+            ->join('patologia', 'historialPatologia.idPatologia', '=', 'patologia.idPatologia')
+            ->where('historialPatologia.idExpediente', $idExpediente)
+            ->where('historialPatologia.idPatologia', $idPatologia)
+            ->select(
+                'patologia.patologia',
+                'patologia.idPatologia',
+                'historialPatologia.idHistPatologia',
+                'historialPatologia.fechaDiagnostico',
+                'historialPatologia.datalles',
+                'historialPatologia.idExpediente',
+                'historialPatologia.estado'
+            )
+            ->get();
+        return response()->json($historiales);
     }
 }

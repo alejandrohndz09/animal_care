@@ -123,4 +123,52 @@ class HistorialVacunasController extends Controller
 
         return response()->json($datos);
     }
+
+    public function actualizacionHistorialVacunas(Request $request)
+    {
+        $request->validate([
+            'fechaA' => 'required|before_or_equal:today',
+            'number' => 'required',
+        ], [
+            'fechaDiagnostico.before_or_equal' => 'La fecha ingresada no debe ser mayor a la de ahora.',
+            'fechaA.required' => 'El campo fecha es requerido.',
+            'number.required' => 'El campo dosis es requerido.'
+        ]);
+
+         // Obtén el último registro de la tabla para determinar el siguiente incremento
+         $ultimoRegistro = Historialvacuna::latest('idHistVacuna')->first();
+
+         // Calcula el siguiente incremento
+         $siguienteIncremento = $ultimoRegistro ? (int) substr($ultimoRegistro->idHistVacuna, -4) + 1 : 1;
+
+         // Crea el ID personalizado concatenando "HV" y el incremento
+         $idPersonalizado = "HV" . str_pad($siguienteIncremento, 5, '0', STR_PAD_LEFT);
+
+         $newHistorialVacuna = new Historialvacuna();
+         $newHistorialVacuna->idHistVacuna = $idPersonalizado;
+         $newHistorialVacuna->fechaAplicacion = $request->input('fechaA');
+         $newHistorialVacuna->dosis = $request->input('number');
+         $newHistorialVacuna->idVAcuna = $request->input('Vacuna');
+         $newHistorialVacuna->idExpediente = $request->input('idExpediente');
+         $newHistorialVacuna->save();
+    }
+
+    public function tablaMostrarVacunas($idExpediente, $idVacuna)
+    {
+        $historiales = DB::table('historialVacuna')
+            ->join('vacuna', 'historialVacuna.idVacuna', '=', 'vacuna.idVacuna')
+            ->where('historialVacuna.idExpediente', $idExpediente)
+            ->where('historialVacuna.idVacuna', $idVacuna)
+            ->select(
+                'vacuna.vacuna',
+                'vacuna.idVacuna',
+                'historialVacuna.idHistVacuna',
+                'historialVacuna.fechaAplicacion',
+                'historialVacuna.dosis',
+                'historialVacuna.idExpediente',
+            )
+            ->get();
+        return response()->json($historiales);
+    }
+
 }
