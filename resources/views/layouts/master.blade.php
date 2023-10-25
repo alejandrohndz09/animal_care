@@ -22,7 +22,7 @@
     <link rel="stylesheet" href="<?php echo asset('css/styles.css'); ?>" type="text/css">
     @yield('styles')
     <link rel="stylesheet" href="<?php echo asset('css/f1.css'); ?>" type="text/css">
-    
+
     <link rel="stylesheet" href="<?php echo asset('css/input.css'); ?>" type="text/css">
 </head>
 
@@ -46,6 +46,17 @@
     <script src="{{ url('https://cdn.jsdelivr.net/npm/sweetalert2@10.3.5/dist/sweetalert2.min.js') }}"></script>
     <script src="{{ asset('js/scripts.js') }}"></script>
     <script src="{{ asset('js/tablas.js') }}"></script>
+    @if (session('alert'))
+        <script>
+            Toast.fire({
+                icon: "{{ session('alert')['type'] }}",
+                title: "{{ session('alert')['message'] }}",
+            });
+        </script>
+        @php
+            session()->forget('alert');
+        @endphp
+    @endif
     @yield('scripts')
 </body>
 

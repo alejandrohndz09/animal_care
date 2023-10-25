@@ -73,7 +73,10 @@ function cargarRegistros(pagina, filtro) {
     if (adopcion.aceptacion == 1) {
       estado = '<span class="badge rounded-pill alert-success">Trámite aprobado</span>';
       fechaFin = '<div  style="margin: 0; display: flex; align-items: center; color:#867596; justify-content:end; font-size: 12px "> <i class="fas fa-calendar" style="margin-right: 3px;"></i>Finalizado el ' + dateFormat(adopcion.fechaTramiteFin) + '</div>';
-    } 
+    } else if (adopcion.aceptacion == 2) {
+      estado = '<span class="badge rounded-pill alert-danger">Trámite denegado</span>';
+      fechaFin = '<div  style="margin: 0; display: flex; align-items: center; color:#867596; justify-content:end; font-size: 12px "> <i class="fas fa-calendar" style="margin-right: 3px;"></i>Finalizado el ' + dateFormat(adopcion.fechaTramiteFin) + '</div>';
+    }
     if (ultimaPalabra == 'adopcion') {
 
       columna.innerHTML =

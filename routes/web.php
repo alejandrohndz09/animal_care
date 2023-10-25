@@ -89,5 +89,8 @@ Route::get('/albergarDeExpediente/{idAlvergue}/{idExpediente}', 'App\Http\Contro
 
 Route::resource('/adopcion', 'App\Http\Controllers\AdopcionController');
 Route::get('/getAdopciones', 'App\Http\Controllers\AdopcionController@getAdopciones');
+Route::get('/aprobarAdopcion/{id}', 'App\Http\Controllers\AdopcionController@aprobarAdopcion');
+Route::get('/denegarAdopcion/{id}', 'App\Http\Controllers\AdopcionController@denegarAdopcion');
+Route::get('/revertirDecisionAdopcion/{id}', 'App\Http\Controllers\AdopcionController@revertirDecisionAdopcion');
 Route::get('/getExpedientesSinAdopcion', 'App\Http\Controllers\AdopcionController@getExpedientesSinAdopcion');
 Route::get('/get-exp-ad-elegido/{idAdoptante}/{idExpediente}', 'App\Http\Controllers\AdopcionController@getExp_AdDElegido');

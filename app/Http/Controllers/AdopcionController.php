@@ -165,16 +165,24 @@ class AdopcionController extends Controller
                     'aceptacion' => 0,
                     'estado' => 1,
                 ]);
-
+                Expediente::where('idExpediente', $request->input('expA'))->update(['estadoGeneral' => 'En proceso de adopción']);
                 // Confirma la transacción
                 DB::commit();
-
-                return redirect('/adopcion/')
-                    ->with('success', 'Registro de adopción y adoptante guardados con éxito.');
+                $alert = array(
+                    'type' => 'success',
+                    'message' => 'Operación exitosa',
+                );
+                session()->flash('alert', $alert);
+                return redirect('/adopcion/' . $adoption->idAdopcion)
+                    ->with($alert);
             } catch (\Exception $e) {
                 // En caso de error, realiza un rollback de la transacción
                 DB::rollBack();
-                dd($e->getMessage());
+                $alert = array(
+                    'type' => 'error',
+                    'message' => 'Operación fallida',
+                );
+                session()->flash('alert', $alert);
                 return back()
                     ->withInput()
                     ->with('error', 'Error al guardar los registros.');
@@ -190,16 +198,25 @@ class AdopcionController extends Controller
                     'aceptacion' => 0,
                     'estado' => 1,
                 ]);
-                Expediente::where('idExpediente', $request->input('expA'))->update('estadoGeneral', 'En proceso de adopción');
+                Expediente::where('idExpediente', $request->input('expA'))->update(['estadoGeneral' => 'En proceso de adopción']);
                 // Confirma la transacción
                 DB::commit();
 
-                return redirect('/adopcion/')
-                    ->with('success', 'Registro de adopción y adoptante guardados con éxito.');
+                $alert = array(
+                    'type' => 'success',
+                    'message' => 'Operación exitosa',
+                );
+                session()->flash('alert', $alert);
+                return redirect('/adopcion/' . $adoption->idAdopcion)
+                    ->with($alert);
             } catch (\Exception $e) {
                 // En caso de error, realiza un rollback de la transacción
                 DB::rollBack();
-                dd($e->getMessage());
+                $alert = array(
+                    'type' => 'error',
+                    'message' => 'Operación fallida',
+                );
+                session()->flash('alert', $alert);
                 return back()
                     ->withInput()
                     ->with('error', 'Error al guardar los registros.');
@@ -262,6 +279,133 @@ class AdopcionController extends Controller
         $adopcion->estado = '1';
         $adopcion->save();
         return redirect()->route('adopcion.index');
+    }
+
+    public function aprobarAdopcion($id)
+    {
+        DB::beginTransaction();
+
+        try {
+            $adopcion = Adopcion::find($id);
+            $adopcion->aceptacion = '1';
+            $adopcion->fechaTramiteFin = date('Y-m-d');
+            $expediente = $adopcion->expediente;
+
+            if ($expediente) {
+                $expediente->estadoGeneral = 'Adoptado';
+                $expediente->save();
+            }
+            $adopcion->save();
+
+            DB::commit();
+
+            $alert = array(
+                'type' => 'success',
+                'message' => 'Operación exitosa',
+            );
+            session()->flash('alert', $alert);
+
+            return back()->with($alert);
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            $alert = array(
+                'type' => 'error',
+                'message' => 'Error en la operación',
+            );
+            session()->flash('alert', $alert);
+
+            return back()->with($alert);
+        }
+    }
+
+    public function denegarAdopcion($id)
+    {
+        DB::beginTransaction();
+
+        try {
+            $adopcion = Adopcion::find($id);
+            $adopcion->aceptacion = '2';
+            $adopcion->fechaTramiteFin = date('Y-m-d');
+            $expediente = $adopcion->expediente;
+
+            if ($expediente) {
+                $expediente->estadoGeneral = $adopcion->expediente->idAlvergue != null ? 'Albergado' : 'Controlado';
+                $expediente->save();
+            }
+            $adopcion->save();
+
+            DB::commit();
+
+            $alert = array(
+                'type' => 'success',
+                'message' => 'Operación exitosa',
+            );
+            session()->flash('alert', $alert);
+
+            return back()->with($alert);
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            $alert = array(
+                'type' => 'error',
+                'message' => 'Error en la operación',
+            );
+            session()->flash('alert', $alert);
+
+            return back()->with($alert);
+        }
+    }
+
+    public function revertirDecisionAdopcion($id)
+    {
+        $adopcion = Adopcion::find($id);
+
+        foreach ($adopcion->expediente->adopcions as $a) {
+            if($a->aceptacion==0 && $a->idAdopcion!=$adopcion->idAdopcion){
+                $alert = array(
+                    'type' => 'error',
+                    'message' => 'Este expediente ya tiene un trámite pendiente',
+                );
+                session()->flash('alert', $alert);
+                return back();
+            }
+        }
+
+        DB::beginTransaction();
+
+        try {
+
+            $adopcion->aceptacion = '0';
+            $adopcion->fechaTramiteFin = null;
+            $expediente = $adopcion->expediente;
+
+            if ($expediente) {
+                $expediente->estadoGeneral = 'En proceso de adopción';
+                $expediente->save();
+            }
+            $adopcion->save();
+
+            DB::commit();
+
+            $alert = array(
+                'type' => 'info',
+                'message' => 'Se ha revertido la decisión.',
+            );
+            session()->flash('alert', $alert);
+
+            return back()->with($alert);
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            $alert = array(
+                'type' => 'error',
+                'message' => 'Error en la operación',
+            );
+            session()->flash('alert', $alert);
+
+            return back()->with($alert);
+        }
     }
 
     public function getExp_AdDElegido($idExpediente, $idAdoptante)
@@ -347,11 +491,11 @@ class AdopcionController extends Controller
     public function getExpedientesSinAdopcion()
     {
         $expedientes = Expediente::with('animal')
-            ->where('estado' , 1)   
-            ->where('estadoGeneral','Controlado')
+            ->where('estado', 1)
+            ->where('estadoGeneral', 'Controlado')
             ->orWhere('estadoGeneral', 'Albergado')
             ->get();
-        
+
         return response()->json($expedientes);
     }
 }
