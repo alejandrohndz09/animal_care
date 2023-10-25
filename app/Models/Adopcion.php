@@ -42,7 +42,6 @@ class Adopcion extends Model
 	];
 
 	protected $fillable = [
-		'idAdopcion',
 		'fechaTramiteInicio',
 		'fechaTramiteFin',
 		'idAdoptante',

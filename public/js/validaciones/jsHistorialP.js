@@ -8,7 +8,6 @@ $(document).ready(function () {
         $('#estado-error').html('');
 
         // Hacer una solicitud AJAX para obtener los registros de la BD
-        console.log($('#idAnimal').val());
         $.ajax({
             url: '/obtener-registros-guardados/' + $('#idAnimal').val(),
             type: 'GET',
@@ -114,10 +113,7 @@ $(document).ready(function () {
     $('#contenedorPatologia').on('click', '.historialp-row', function () {
 
         var button = $(this); // Fila de la tabla que se hizo clic
-        var datos = button.data('patologia'); // Obtiene el valor del atributo data-vacuna
-
-        console.log(datos)
-
+        var datos = button.data('patologia'); // Obtiene el valor del atributo data-patologia
 
         // Genera los detalles en el modal
         if (datos[0].patologium) {
@@ -176,179 +172,183 @@ $(document).ready(function () {
             // Luego, agrega la fila a la tabla
             var tablaBody = document.getElementById("detallepatologiaTableBody");
             tablaBody.appendChild(fila);
-
-
-            // Agrega un manejador de eventos para los botones de eliminación dentro del modal
-            $('#ModalDetallePatologia').on('click', '.delete-button', function () {
-                var idToDelete = $(this).attr("value"); // Obtiene el valor del atributo "value" del botón
-
-                console.log(idToDelete);
-                // Realiza una solicitud Ajax para eliminar el registro con el ID "idToDelete"
-                $.ajax({
-                    type: 'DELETE',
-                    url: '/historialPatologiaEliminar/' + idToDelete,
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') // 
-                    },
-                    success: function (response) {
-                        $('#detallepatologiaTableBody').find('button[value="' + idToDelete + '"]').closest('tr').remove();
-
-                        $.ajax({
-                            url: '/cargarHistorialesPatologia/' + $('#idExpediente').val(),
-                            method: "GET",
-                            success: function (data) {
-
-                                var tablaVacuna = $('#contenedorPatologia');
-
-                                tablaVacuna.empty(); // Limpia cualquier contenido anterior
-                                console.log(data);
-                                // Función para agrupar los datos por el nombre de la patología
-                                function groupByPatologia(data) {
-                                    if (data == null) {
-                                        var tableBody = $('#ModalDetallePatologia');
-                                        tableBody.empty(); // Limpia cualquier contenido anterior
-                                        $('#ModalDetallePatologia').modal('hide');
-                                    }
-                                    console.log(data);
-
-                                    const groupedData = {};
-                                    data.forEach(function (historial) {
-                                        const nombrePatologia = historial.patologia;
-                                        if (!groupedData[nombrePatologia]) {
-                                            groupedData[nombrePatologia] = [];
-                                        }
-                                        groupedData[nombrePatologia].push(historial);
-                                    });
-                                    return groupedData;
-                                }
-
-                                // Agrupa los datos por patología
-                                const historialesAgrupados = groupByPatologia(data);
-
-                                // Selecciona el contenedor HTML
-                                const contenedorPatologia = $('#contenedorPatologia');
-
-                                // Crea un div contenedor para todo el contenido
-                                const contenidoCompleto = $('<div>');
-
-                                // Recorre los datos agrupados y crea elementos HTML para mostrarlos
-                                for (const nombrePatologia in historialesAgrupados) {
-                                    const historiales = historialesAgrupados[nombrePatologia];
-
-                                    // Crea un nuevo div para cada patología
-                                    const divContainer = $('<div>');
-                                    divContainer.addClass('vaccine-container historialp-row');
-
-
-                                    // Crear un array para almacenar los datos
-                                    const datosVacunaArray = [];
-
-                                    // Obtener los datos de fechaAplicacion y dosis para este nombre de vacuna
-                                    historialesAgrupados[nombrePatologia].forEach(function (historial, index) {
-
-                                        const datosHistorial = {
-                                            patologia: nombrePatologia,
-                                            idPatologia: historial.idPatologia, // Puedes establecer el valor correcto
-                                            idExpediente: historial.idExpediente, // Puedes establecer el valor correcto
-                                            fechaDiagnostico: historial.fechaDiagnostico,
-                                            datalles: historial.datalles,
-                                            idHistPatologia: historial.idHistPatologia,
-                                            estado: historial.estado,
-                                        };
-                                        // Agregar el objeto de datos al array
-                                        datosVacunaArray.push(datosHistorial);
-
-                                    });
-
-                                    // Convertir el objeto de datos a una cadena JSON
-                                    const datosJSON = JSON.stringify(datosVacunaArray);
-
-                                    // Asignar los datos al atributo data-nombre-vacuna del container
-                                    divContainer.attr('data-patologia', datosJSON);
-
-                                    // Crea un nuevo div para el contenido
-                                    const divContent = $('<div>');
-                                    divContent.addClass('vaccine-content');
-                                    divContent.css('margin', '0');
-                                    divContent.css('display', 'flex');
-                                    divContent.css('align-items', 'center');
-
-                                    // Crea una imagen y la configura
-                                    const img = $('<img>');
-                                    img.attr('src', '/img/suero.svg');
-                                    img.attr('alt', 'triangle with all three sides equal');
-                                    img.attr('height', 25);
-                                    img.attr('width', 25);
-                                    img.css('margin-right', '3px');
-
-                                    // Crea un span para el título de la patología
-                                    const spanTitle = $('<span>');
-                                    spanTitle.addClass('vaccine-title');
-                                    spanTitle.text(nombrePatologia);
-
-                                    divContent.append(img);
-                                    divContent.append(spanTitle);
-
-                                    const ul = $('<ul>');
-
-                                    // Ordena los historiales por fecha de diagnóstico de forma descendente
-                                    historiales.sort((a, b) => new Date(b.fechaDiagnostico) - new Date(a.fechaDiagnostico));
-
-                                    // Toma el último historial (el más reciente) para mostrarlo
-                                    const ultimoHistorial = historiales[0];
-
-                                    // Crea elementos de lista y los configura
-                                    const liDiagnostico = $('<li>');
-                                    liDiagnostico.html('Diagnosticado el <span>' + formatDate(ultimoHistorial.fechaDiagnostico) + '</span>');
-
-                                    const liEstado = $('<li>');
-                                    liEstado.html('Estado: <span style="font-size: 15px;" class="badge rounded-pill alert-' + getEstadoClass(ultimoHistorial.estado) + '">' + ultimoHistorial.estado + '</span>');
-
-                                    ul.append(liDiagnostico);
-                                    ul.append(liEstado);
-
-                                    divContainer.append(divContent);
-                                    divContainer.append(ul);
-
-                                    contenidoCompleto.append(divContainer);
-                                }
-                                contenidoCompleto.append('<br>');
-                                // Agrega el contenido completo a contenedorPatologia
-                                contenedorPatologia.append(contenidoCompleto);
-
-                                // Agrega un <br> al final de contenedorPatologia
-                                contenedorPatologia.append('<br>');
-
-                                // Función para formatear una fecha
-                                function formatDate(date) {
-                                    return new Date(date).toLocaleDateString();
-                                }
-
-                                // Función para obtener la clase de estado
-                                function getEstadoClass(estado) {
-                                    if (estado === 'De alta') {
-                                        return 'success';
-                                    } else if (estado === 'En tratamiento') {
-                                        return 'warning';
-                                    } else if (estado === 'En espera de tratamiento') {
-                                        return 'danger';
-                                    }
-                                }
-
-                            },
-                            error: function (xhr, status, error) {
-                                console.log(error);
-                            }
-                        });
-
-                    },
-                    error: function () {
-                        // Maneja errores en la solicitud Ajax si es necesario
-                    }
-                });
-            });
-
         }
+
+        // Agrega un manejador de eventos para los botones de eliminación dentro del modal
+        $('#ModalDetallePatologia').off('click', '.delete-button').on('click', '.delete-button', function () {
+            var idToDelete = $(this).attr("value"); // Obtiene el valor del atributo "value" del botón
+
+            console.log(idToDelete);
+            // Realiza una solicitud Ajax para eliminar el registro con el ID "idToDelete"
+            $.ajax({
+                type: 'DELETE',
+                url: '/historialPatologiaEliminar/' + idToDelete,
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') // 
+                },
+                success: function (response) {
+                    $('#detallepatologiaTableBody').find('button[value="' + idToDelete + '"]').closest('tr').remove();
+
+                    // Verifica si la tabla está vacía después de la eliminación
+                    if ($('#detallepatologiaTableBody tr').length === 0) {
+                        // Cierra el modal si no hay elementos en la tabla
+                        $('#ModalDetallePatologia').modal('hide');
+                    }
+
+                    $.ajax({
+                        url: '/cargarHistorialesPatologia/' + $('#idExpediente').val(),
+                        method: "GET",
+                        success: function (data) {
+
+                            var tablaVacuna = $('#contenedorPatologia');
+
+                            tablaVacuna.empty(); // Limpia cualquier contenido anterior
+
+                            // Función para agrupar los datos por el nombre de la patología
+                            function groupByPatologia(data) {
+                                if (data == null) {
+                                    var tableBody = $('#ModalDetallePatologia');
+                                    tableBody.empty(); // Limpia cualquier contenido anterior
+                                    $('#ModalDetallePatologia').modal('hide');
+                                }
+
+
+                                const groupedData = {};
+                                data.forEach(function (historial) {
+                                    const nombrePatologia = historial.patologia;
+                                    if (!groupedData[nombrePatologia]) {
+                                        groupedData[nombrePatologia] = [];
+                                    }
+                                    groupedData[nombrePatologia].push(historial);
+                                });
+                                return groupedData;
+                            }
+
+                            // Agrupa los datos por patología
+                            const historialesAgrupados = groupByPatologia(data);
+
+                            // Selecciona el contenedor HTML
+                            const contenedorPatologia = $('#contenedorPatologia');
+
+                            // Crea un div contenedor para todo el contenido
+                            const contenidoCompleto = $('<div>');
+
+                            // Recorre los datos agrupados y crea elementos HTML para mostrarlos
+                            for (const nombrePatologia in historialesAgrupados) {
+                                const historiales = historialesAgrupados[nombrePatologia];
+
+                                // Crea un nuevo div para cada patología
+                                const divContainer = $('<div>');
+                                divContainer.addClass('vaccine-container historialp-row');
+
+
+                                // Crear un array para almacenar los datos
+                                const datosVacunaArray = [];
+
+                                // Obtener los datos de fechaAplicacion y dosis para este nombre de vacuna
+                                historialesAgrupados[nombrePatologia].forEach(function (historial, index) {
+
+                                    const datosHistorial = {
+                                        patologia: nombrePatologia,
+                                        idPatologia: historial.idPatologia, // Puedes establecer el valor correcto
+                                        idExpediente: historial.idExpediente, // Puedes establecer el valor correcto
+                                        fechaDiagnostico: historial.fechaDiagnostico,
+                                        datalles: historial.datalles,
+                                        idHistPatologia: historial.idHistPatologia,
+                                        estado: historial.estado,
+                                    };
+                                    // Agregar el objeto de datos al array
+                                    datosVacunaArray.push(datosHistorial);
+
+                                });
+
+                                // Convertir el objeto de datos a una cadena JSON
+                                const datosJSON = JSON.stringify(datosVacunaArray);
+
+                                // Asignar los datos al atributo data-nombre-vacuna del container
+                                divContainer.attr('data-patologia', datosJSON);
+
+                                // Crea un nuevo div para el contenido
+                                const divContent = $('<div>');
+                                divContent.addClass('vaccine-content');
+                                divContent.css('margin', '0');
+                                divContent.css('display', 'flex');
+                                divContent.css('align-items', 'center');
+
+                                // Crea una imagen y la configura
+                                const img = $('<img>');
+                                img.attr('src', '/img/suero.svg');
+                                img.attr('alt', 'triangle with all three sides equal');
+                                img.attr('height', 25);
+                                img.attr('width', 25);
+                                img.css('margin-right', '3px');
+
+                                // Crea un span para el título de la patología
+                                const spanTitle = $('<span>');
+                                spanTitle.addClass('vaccine-title');
+                                spanTitle.text(nombrePatologia);
+
+                                divContent.append(img);
+                                divContent.append(spanTitle);
+
+                                const ul = $('<ul>');
+
+                                // Ordena los historiales por fecha de diagnóstico de forma descendente
+                                historiales.sort((a, b) => new Date(b.fechaDiagnostico) - new Date(a.fechaDiagnostico));
+
+                                // Toma el último historial (el más reciente) para mostrarlo
+                                const ultimoHistorial = historiales[0];
+
+                                // Crea elementos de lista y los configura
+                                const liDiagnostico = $('<li>');
+                                liDiagnostico.html('Diagnosticado el <span>' + formatDate(ultimoHistorial.fechaDiagnostico) + '</span>');
+
+                                const liEstado = $('<li>');
+                                liEstado.html('Estado: <span style="font-size: 15px;" class="badge rounded-pill alert-' + getEstadoClass(ultimoHistorial.estado) + '">' + ultimoHistorial.estado + '</span>');
+
+                                ul.append(liDiagnostico);
+                                ul.append(liEstado);
+
+                                divContainer.append(divContent);
+                                divContainer.append(ul);
+
+                                contenidoCompleto.append(divContainer);
+                            }
+                            contenidoCompleto.append('<br>');
+                            // Agrega el contenido completo a contenedorPatologia
+                            contenedorPatologia.append(contenidoCompleto);
+
+                            // Agrega un <br> al final de contenedorPatologia
+                            contenedorPatologia.append('<br>');
+
+                            // Función para formatear una fecha
+                            function formatDate(date) {
+                                return new Date(date).toLocaleDateString();
+                            }
+
+                            // Función para obtener la clase de estado
+                            function getEstadoClass(estado) {
+                                if (estado === 'De alta') {
+                                    return 'success';
+                                } else if (estado === 'En tratamiento') {
+                                    return 'warning';
+                                } else if (estado === 'En espera de tratamiento') {
+                                    return 'danger';
+                                }
+                            }
+
+                        },
+                        error: function (xhr, status, error) {
+                            console.log(error);
+                        }
+                    });
+
+                },
+                error: function () {
+                    // Maneja errores en la solicitud Ajax si es necesario
+                }
+            });
+        });
         // Abre el modal
         $('#ModalDetallePatologia').modal('show');
     });
@@ -364,7 +364,15 @@ $(document).ready(function () {
 
     });
 
-    $('#btnGuardarActualizacion').click(function () {
+    $('#actualizacionPatologia').click(function () {
+
+        $('#datalles-error').html('');
+        $('#fecha-error').html('');
+        $('#state-error').html('');
+
+    });
+
+    $('#btnGuardarActualizacion').off('click').on('click', function () {
         // Borra todas las advertencias de errores existentes
         $('#datalles-error').html('');
         $('#fecha-error').html('');
@@ -376,6 +384,7 @@ $(document).ready(function () {
             url: '/historialPatologias/actualizacion',
             data: $('#formularioActualizacion').serialize(),
             success: function (data) {
+
                 // cerrar el modal
                 $('#newActualiacionPatologia').modal('hide');
                 // Abre el modal
@@ -384,20 +393,22 @@ $(document).ready(function () {
                 document.getElementById('formularioActualizacion').reset();
 
                 $.ajax({
-                    url: '/historialPatologias/mostrar/' + $('#idExpediente').val(),
+                    url: '/getTablaPatologia/' + $('#idExpediente').val() + '/' + $('#Patologium').val(),
                     method: 'GET',
                     success: function (data) {
                         var tableBody = $('#detallepatologiaTableBody');
+                        tableBody.empty();
+
+                        // Clona el array de datos
                         var datosClonados = data.slice(0);
 
+                        // Ordena el array en orden descendente por fecha de diagnóstico
                         datosClonados.sort(function (a, b) {
                             var fechaA = new Date(a.fechaDiagnostico);
                             var fechaB = new Date(b.fechaDiagnostico);
-                            return fechaB - fechaA;
+                            return fechaB - fechaA; // Orden descendente
                         });
-
-                        tableBody.empty();
-
+                 
                         for (var index = 0; index < datosClonados.length; index++) {
                             var dato = datosClonados[index];
 
@@ -429,6 +440,154 @@ $(document).ready(function () {
                             var tablaBody = document.getElementById("detallepatologiaTableBody");
                             tablaBody.appendChild(fila);
                         }
+                    },
+                    error: function (xhr, status, error) {
+                        console.log(error);
+                    }
+                });
+
+                $.ajax({
+                    url: '/cargarHistorialesPatologia/' + $('#idExpediente').val(),
+                    method: "GET",
+                    success: function (data) {
+
+                        var tablaVacuna = $('#contenedorPatologia');
+
+                        tablaVacuna.empty(); // Limpia cualquier contenido anterior
+
+                        // Función para agrupar los datos por el nombre de la patología
+                        function groupByPatologia(data) {
+                            if (data == null) {
+                                var tableBody = $('#ModalDetallePatologia');
+                                tableBody.empty(); // Limpia cualquier contenido anterior
+                                $('#ModalDetallePatologia').modal('hide');
+                            }
+
+
+                            const groupedData = {};
+                            data.forEach(function (historial) {
+                                const nombrePatologia = historial.patologia;
+                                if (!groupedData[nombrePatologia]) {
+                                    groupedData[nombrePatologia] = [];
+                                }
+                                groupedData[nombrePatologia].push(historial);
+                            });
+                            return groupedData;
+                        }
+
+                        // Agrupa los datos por patología
+                        const historialesAgrupados = groupByPatologia(data);
+
+                        // Selecciona el contenedor HTML
+                        const contenedorPatologia = $('#contenedorPatologia');
+
+                        // Crea un div contenedor para todo el contenido
+                        const contenidoCompleto = $('<div>');
+
+                        // Recorre los datos agrupados y crea elementos HTML para mostrarlos
+                        for (const nombrePatologia in historialesAgrupados) {
+                            const historiales = historialesAgrupados[nombrePatologia];
+
+                            // Crea un nuevo div para cada patología
+                            const divContainer = $('<div>');
+                            divContainer.addClass('vaccine-container historialp-row');
+
+
+                            // Crear un array para almacenar los datos
+                            const datosVacunaArray = [];
+
+                            // Obtener los datos de fechaAplicacion y dosis para este nombre de vacuna
+                            historialesAgrupados[nombrePatologia].forEach(function (historial, index) {
+
+                                const datosHistorial = {
+                                    patologia: nombrePatologia,
+                                    idPatologia: historial.idPatologia, // Puedes establecer el valor correcto
+                                    idExpediente: historial.idExpediente, // Puedes establecer el valor correcto
+                                    fechaDiagnostico: historial.fechaDiagnostico,
+                                    datalles: historial.datalles,
+                                    idHistPatologia: historial.idHistPatologia,
+                                    estado: historial.estado,
+                                };
+                                // Agregar el objeto de datos al array
+                                datosVacunaArray.push(datosHistorial);
+
+                            });
+
+                            // Convertir el objeto de datos a una cadena JSON
+                            const datosJSON = JSON.stringify(datosVacunaArray);
+
+                            // Asignar los datos al atributo data-nombre-vacuna del container
+                            divContainer.attr('data-patologia', datosJSON);
+
+                            // Crea un nuevo div para el contenido
+                            const divContent = $('<div>');
+                            divContent.addClass('vaccine-content');
+                            divContent.css('margin', '0');
+                            divContent.css('display', 'flex');
+                            divContent.css('align-items', 'center');
+
+                            // Crea una imagen y la configura
+                            const img = $('<img>');
+                            img.attr('src', '/img/suero.svg');
+                            img.attr('alt', 'triangle with all three sides equal');
+                            img.attr('height', 25);
+                            img.attr('width', 25);
+                            img.css('margin-right', '3px');
+
+                            // Crea un span para el título de la patología
+                            const spanTitle = $('<span>');
+                            spanTitle.addClass('vaccine-title');
+                            spanTitle.text(nombrePatologia);
+
+                            divContent.append(img);
+                            divContent.append(spanTitle);
+
+                            const ul = $('<ul>');
+
+                            // Ordena los historiales por fecha de diagnóstico de forma descendente
+                            historiales.sort((a, b) => new Date(b.fechaDiagnostico) - new Date(a.fechaDiagnostico));
+
+                            // Toma el último historial (el más reciente) para mostrarlo
+                            const ultimoHistorial = historiales[0];
+
+                            // Crea elementos de lista y los configura
+                            const liDiagnostico = $('<li>');
+                            liDiagnostico.html('Diagnosticado el <span>' + formatDate(ultimoHistorial.fechaDiagnostico) + '</span>');
+
+                            const liEstado = $('<li>');
+                            liEstado.html('Estado: <span style="font-size: 15px;" class="badge rounded-pill alert-' + getEstadoClass(ultimoHistorial.estado) + '">' + ultimoHistorial.estado + '</span>');
+
+                            ul.append(liDiagnostico);
+                            ul.append(liEstado);
+
+                            divContainer.append(divContent);
+                            divContainer.append(ul);
+
+                            contenidoCompleto.append(divContainer);
+                        }
+                        contenidoCompleto.append('<br>');
+                        // Agrega el contenido completo a contenedorPatologia
+                        contenedorPatologia.append(contenidoCompleto);
+
+                        // Agrega un <br> al final de contenedorPatologia
+                        contenedorPatologia.append('<br>');
+
+                        // Función para formatear una fecha
+                        function formatDate(date) {
+                            return new Date(date).toLocaleDateString();
+                        }
+
+                        // Función para obtener la clase de estado
+                        function getEstadoClass(estado) {
+                            if (estado === 'De alta') {
+                                return 'success';
+                            } else if (estado === 'En tratamiento') {
+                                return 'warning';
+                            } else if (estado === 'En espera de tratamiento') {
+                                return 'danger';
+                            }
+                        }
+
                     },
                     error: function (xhr, status, error) {
                         console.log(error);

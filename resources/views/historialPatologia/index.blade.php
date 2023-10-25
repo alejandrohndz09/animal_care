@@ -95,7 +95,7 @@
         <div class="modal-content text-center">
             <div class="modal-header">
                 <h4 style="margin-left: 43%"><span id="patologia"></span></h4>
-                <button type="button" class="circle-button" style="margin-right: 4%" data-bs-dismiss="modal">
+                <button type="button" class="circle-button" style="margin-right: 4%" data-bs-dismiss="modal" >
                     <i style="height: 30px;width: 45px;margin-right: 8%"
                         class="svg-icon fas fa-regular fa-circle-xmark"></i></button>
             </div>
@@ -105,8 +105,9 @@
                     <input id="searchInput" class="inputField card" style="width: 50%; margin-right: 8px; "
                         autocomplete="off" placeholder="🔍︎ Buscar" type="search">
 
-                    <button type="submit" id="mostrarPatologia" class="button button-pri" id="abrir"
-                        data-bs-toggle="modal" data-bs-target="#newActualiacionPatologia"
+                    <button type="submit" id="actualizacionPatologia" class="button button-pri" id="abrir"
+                        data-bs-toggle="modal" data-bs-target="#newActualiacionPatologia" data-bs-pp="tooltip"
+                        data-bs-placement="top" title="Nueva patología"
                         style="width: 30px;padding: 7px 3px">
                         <i class="svg-icon fas fa-plus"></i>
                     </button>

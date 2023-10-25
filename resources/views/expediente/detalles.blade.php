@@ -17,9 +17,10 @@
                     <div class="card  mb-4" style="border:none; padding-bottom: 25px !important; width: 100%">
                         <div class="row">
                             <div class="col-xl-8">
-                                <h1 class="mb-4">
+                                <h1 class="mb-8">
                                     {{ $registrado->count() > 0 ? 'Expediente No. ' . $animal->expedientes->get(0)->idExpediente : 'Detalles de animal' }}
                                 </h1>
+
                                 <br>
                                 <div class="row mt-1" style="justify-content: center;">
 
@@ -99,7 +100,7 @@
                                     </div>
 
                                     <button type="submit" class="button button-pri" style="margin-left: 180%"
-                                        onclick="window.location.href = '{{ $registrado->count() > 0 ? 'AQUI EL URL PARA ALBERGARLO' : url('crearExpediente/' . $animal->idAnimal) }} '">
+                                        data-bs-toggle="modal" data-bs-target="#ModalALbergarExpediente">
                                         <span class="lable">
                                             {{ $registrado->count() > 0 ? 'Albergar animal' : 'Crear expediente' }}
                                         </span>
@@ -129,7 +130,8 @@
                                     <h5 style="margin-left: 30px;font-size: 34px; color: #333;">Historial de vacunas</h5>
                                     <button type="submit" id="mostrar" class="button button-pri"
                                         data-bs-toggle="modal" data-bs-target="#newHistorial"
-                                        style="width: 80px;padding: 7px 3px">
+                                        style="width: 80px;padding: 7px 3px" data-bs-pp="tooltip" data-bs-placement="top"
+                                        title="Agregar vacuna">
                                         <i class="svg-icon fas fa-plus"></i>
                                     </button>
                                 </div>
@@ -191,7 +193,7 @@
 
                                     ul li {
                                         margin-left: 60px;
-                                    
+
                                     }
                                 </style>
 
@@ -217,7 +219,7 @@
                                             data-vacuna="{{ json_encode($historiales) }}">
                                             <div class="vaccine-content"
                                                 style="margin: 0; display: flex; align-items: center">
-                                                <i class="fas fa-syringe" style="margin-right: 3px;color:#6067eb"></i>
+                                                <i class="fas fa-syringe" style="color:#6067eb"></i>
                                                 <span class="vaccine-title">{{ $nombreVacuna }}</span>
                                             </div>
                                             <ul>
@@ -242,7 +244,8 @@
                                     </h5>
                                     <button type="submit" id="mostrarPatologia" class="button button-pri"
                                         id="abrir" data-bs-toggle="modal" data-bs-target="#newHistorialPatologia"
-                                        style="width: 80px;padding: 7px 3px">
+                                        style="width: 80px;padding: 7px 3px" data-bs-pp="tooltip" data-bs-placement="top"
+                                        title="Agregar patologia">
                                         <i class="svg-icon fas fa-plus"></i>
                                     </button>
                                 </div>
@@ -301,6 +304,67 @@
                                         </div>
                                     @endforeach
                                     <br>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endif
+                @php use App\Http\Controllers\AlbergueController; @endphp
+                @php use App\Models\Alvergue; @endphp
+                @php use App\Models\Miembro; @endphp
+                @if ($animal->expedientes->count() == 0)
+                    <!--Modal alberlgar desde expediente-->
+                    <div class="modal fade" id="ModalALbergarExpediente" tabindex="-1"
+                        aria-labelledby="ModalALbergarExpediente" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-lg ">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" style="margin-left: auto; margin-right: auto;">Lista de
+                                        Albergues disponibles</h5>
+                                </div>
+                                <div class="modal-body">
+
+                                    <table>
+                                        <thead>
+                                            <tr class="head">
+                                                <th></th>
+                                                <th>Código</th>
+                                                <th>Encargado</th>
+                                                <th>direccion</th>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="tableBody">
+
+                                            @php $albergueDisponible = Alvergue::where('estado','1')->get();@endphp
+                                            @foreach ($albergueDisponible as $a)
+                                                <tr>
+                                                    <td>{{ $a->idAlvergue }}</td>
+                                                    <td>{{ $a->miembro->nombres }} {{ $a->miembro->apellidos }}</td>
+                                                    <td>{{ $a->direccion }}</td>
+
+                                                    </td>
+                                                    <td>
+                                                        <div
+                                                            style="display: flex; align-items: flex-end; gap: 3px; justify-content: center">
+                                                            <a href="{{ url('albergarDeExpediente/' . $a->idAlvergue . '/' . ($animal->expedientes->count() == 0 ? '' : $animal->expedientes->get(0)->idExpediente)) }}"
+                                                                class="button button-blue" style="width: 45%;"
+                                                                data-bs-pp="tooltip" data-bs-placement="top"
+                                                                title="Albergar en este albergue">
+                                                                <i class="svg-icon fas fa-pencil"></i>
+                                                            </a>
+
+
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Cerrar</button>
                                 </div>
                             </div>
                         </div>

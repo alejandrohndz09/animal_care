@@ -117,8 +117,6 @@ class HistorialPatologiasController extends Controller
     {
         $HistorialPatologia = Historialpatologium::find($id);
         $HistorialPatologia->delete();
-
-        return response()->json($HistorialPatologia);
     }
 
     public function cargarHistorialesPatologia($id)
@@ -129,7 +127,7 @@ class HistorialPatologiasController extends Controller
             ->select('patologia.patologia', 'patologia.idPatologia', 'historialPatologia.idHistPatologia', 'historialPatologia.fechaDiagnostico', 'historialPatologia.datalles', 'historialPatologia.idExpediente', 'historialPatologia.estado')
             ->groupBy('patologia.patologia', 'patologia.idPatologia', 'historialPatologia.idHistPatologia', 'historialPatologia.fechaDiagnostico', 'historialPatologia.datalles', 'historialPatologia.idExpediente', 'historialPatologia.estado')
             ->get();
-              
+
         return response()->json($datos);
     }
 
@@ -141,45 +139,45 @@ class HistorialPatologiasController extends Controller
             'state' => 'required'
         ], [
             'fechaDiagnostico.before_or_equal' => 'La fecha ingresada no debe ser mayor a la de ahora.',
+            'datalles.required' => 'El campo detalles es requerido.',
+            'state.required' => 'El campo estado es requerido.'
         ]);
 
-            // Obtén el último registro de la tabla para determinar el siguiente incremento
-            $ultimoRegistro = Historialpatologium::latest('idHistpatologia')->first();
+        // Obtén el último registro de la tabla para determinar el siguiente incremento
+        $ultimoRegistro = Historialpatologium::latest('idHistpatologia')->first();
 
-            // Calcula el siguiente incremento
-            $siguienteIncremento = $ultimoRegistro ? (int) substr($ultimoRegistro->idHistPatologia, -4) + 1 : 1;
+        // Calcula el siguiente incremento
+        $siguienteIncremento = $ultimoRegistro ? (int) substr($ultimoRegistro->idHistPatologia, -4) + 1 : 1;
 
-            // Crea el ID personalizado concatenando "HV" y el incremento
-            $idPersonalizado = "HP" . str_pad($siguienteIncremento, 5, '0', STR_PAD_LEFT);
+        // Crea el ID personalizado concatenando "HV" y el incremento
+        $idPersonalizado = "HP" . str_pad($siguienteIncremento, 5, '0', STR_PAD_LEFT);
 
-            $newHistorialVacuna = new Historialpatologium();
-            $newHistorialVacuna->idHistPatologia = $idPersonalizado;
-            $newHistorialVacuna->fechaDiagnostico = $request->input('fecha');
-            $newHistorialVacuna->estado = $request->input('state');
-            $newHistorialVacuna->datalles = $request->input('datalles');
-            $newHistorialVacuna->idPatologia = $request->input('Patologium');
-            $newHistorialVacuna->idExpediente = $request->input('idExpediente');
-            $newHistorialVacuna->save();
-
+        $newHistorialVacuna = new Historialpatologium();
+        $newHistorialVacuna->idHistPatologia = $idPersonalizado;
+        $newHistorialVacuna->fechaDiagnostico = $request->input('fecha');
+        $newHistorialVacuna->estado = $request->input('state');
+        $newHistorialVacuna->datalles = $request->input('datalles');
+        $newHistorialVacuna->idPatologia = $request->input('Patologium');
+        $newHistorialVacuna->idExpediente = $request->input('idExpediente');
+        $newHistorialVacuna->save();
     }
 
-    public function tablaMostrar($id)
+    public function tablaMostrar($idExpediente, $idPatologia)
     {
         $historiales = DB::table('historialPatologia')
-        ->join('patologia', 'historialPatologia.idPatologia', '=', 'patologia.idPatologia')
-        ->where('historialPatologia.idExpediente', $id)
-        ->select(
-            'patologia.patologia',
-            'patologia.idPatologia',
-            'historialPatologia.idHistPatologia',
-            'historialPatologia.fechaDiagnostico',
-            'historialPatologia.datalles',
-            'historialPatologia.idExpediente',
-            'historialPatologia.estado'
-        )
-        ->get();
-
-              
+            ->join('patologia', 'historialPatologia.idPatologia', '=', 'patologia.idPatologia')
+            ->where('historialPatologia.idExpediente', $idExpediente)
+            ->where('historialPatologia.idPatologia', $idPatologia)
+            ->select(
+                'patologia.patologia',
+                'patologia.idPatologia',
+                'historialPatologia.idHistPatologia',
+                'historialPatologia.fechaDiagnostico',
+                'historialPatologia.datalles',
+                'historialPatologia.idExpediente',
+                'historialPatologia.estado'
+            )
+            ->get();
         return response()->json($historiales);
     }
 }
