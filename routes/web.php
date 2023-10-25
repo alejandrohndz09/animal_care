@@ -94,6 +94,7 @@ Route::get('/desalbergar/{idExpediente}/{idAlvergue}', 'App\Http\Controllers\Alb
 Route::get('/albergarDeExpediente/{idAlvergue}/{idExpediente}', 'App\Http\Controllers\AnimalControlador@albergarDeExpediente');
 
 Route::resource('/adopcion', 'App\Http\Controllers\AdopcionController');
+Route::get('/adopcion-baja/{id}', 'App\Http\Controllers\AdopcionController@baja');
 Route::get('/getAdopciones', 'App\Http\Controllers\AdopcionController@getAdopciones');
 Route::get('/aprobarAdopcion/{id}', 'App\Http\Controllers\AdopcionController@aprobarAdopcion');
 Route::get('/denegarAdopcion/{id}', 'App\Http\Controllers\AdopcionController@denegarAdopcion');

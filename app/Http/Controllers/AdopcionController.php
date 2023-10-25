@@ -214,7 +214,7 @@ class AdopcionController extends Controller
                 DB::rollBack();
                 $alert = array(
                     'type' => 'error',
-                    'message' => 'Operación fallida',
+                    'message' => 'Operación fallida'.$e->getMessage(),
                 );
                 session()->flash('alert', $alert);
                 return back()
@@ -265,12 +265,27 @@ class AdopcionController extends Controller
         return redirect()->route('adopcion.index');
     }
 
-    public function destroy($id)
+    public function baja($id)
     {
-        $adopcion = Adopcion::find($id);
-        $adopcion->estado = '0';
-        $adopcion->save();
-        return redirect()->route('adopcion.index');
+        
+       
+            $adopcion = Adopcion::find($id);
+            $adopcion->estado=0;
+            $expediente = $adopcion->expediente;
+
+            if ($expediente) {
+                $expediente->estadoGeneral = $adopcion->expediente->idAlvergue != null ? 'Albergado' : 'Controlado';
+                $expediente->save();
+            }
+            $adopcion->delete();
+            $alert = array(
+                'type' => 'success',
+                'message' => 'Operación exitosa',
+            );
+            session()->flash('alert', $alert);
+
+            return redirect()->route('adopcion.index')->with($alert);
+       
     }
 
     public function alta($id)
@@ -362,7 +377,7 @@ class AdopcionController extends Controller
         $adopcion = Adopcion::find($id);
 
         foreach ($adopcion->expediente->adopcions as $a) {
-            if($a->aceptacion==0 && $a->idAdopcion!=$adopcion->idAdopcion){
+            if ($a->aceptacion == 0 && $a->idAdopcion != $adopcion->idAdopcion) {
                 $alert = array(
                     'type' => 'error',
                     'message' => 'Este expediente ya tiene un trámite pendiente',

@@ -28,9 +28,22 @@
                                 <i class="svg-icon fas fa-chevron-left" style="color: #4c4c4c"></i>
                             </button>
                             <h1>
-                                {{ isset($adopcion) ? 'Actualizar proceso de adopción' : 'Nuevo proceso de adopción' }}
+                                {{ (isset($adopcion) && $adopcion->aceptacion==0)? 'Actualizar proceso de adopción' : ((isset($adopcion) && $adopcion->aceptacion!=0)?'Detalle de adopción':'Nuevo proceso de adopción') }}
                             </h1>
                         </div>
+                        @if(isset($adopcion) && $adopcion->aceptacion==0)
+                        <div class="dropdown">
+                            <button class="button btn-transparent" style="width: 30px;padding: 15px 5px" type="button"
+                                id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="svg-icon fas fa-ellipsis-vertical" style="color: #4c4c4c"></i>
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1"
+                            onclick="window.location.href = '{{url('/adopcion-baja/'.$adopcion->idAdopcion)}}'">
+                                <li><a class="dropdown-item">
+                                    ✖️Eliminar trámite</a></li>
+                            </ul>
+                        </div>
+                        @endif
                     </div>
                 </div>
                 <form
@@ -140,7 +153,7 @@
                                     <h3 style="margin: 0;">Datos del animal</h3>
 
                                 </div>
-                                @if(isset($adopcion) && $adopcion->aceptacion==0)
+                                @if((isset($adopcion) && $adopcion->aceptacion==0)||!isset($adopcion))
                                 Este apartado no es editable, seleccione el expediente del animal a adoptar.
                                 <button type="button" class="button button-pri" data-bs-toggle="modal"
                                     data-bs-target="#buscarExpediente"
@@ -317,7 +330,7 @@
                                         <h3 style="margin: 0;">Adoptante</h3>
                                     </div>
 
-                                    @if(isset($adopcion) && $adopcion->aceptacion==0)
+                                    @if((isset($adopcion) && $adopcion->aceptacion==0)||!isset($adopcion))
                                 
                                     <div class="d-flex align-items-center " style="gap: 8px">
                                         ¿Ya ha realizado este proceso?
@@ -531,7 +544,7 @@
                                                     @endforeach
                                                 </div>
                                             @endif
-                                            @if(isset($adopcion) && $adopcion->aceptacion==0)
+                                            @if((isset($adopcion) && $adopcion->aceptacion==0)||!isset($adopcion))
                                             <div class="row">
                                                 <p style="margin-top: -25px;">(*)Campos Obligatorios</p>
                                             </div>
@@ -763,7 +776,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    @if(isset($adopcion) && $adopcion->aceptacion==0)
+                                    @if((isset($adopcion) && $adopcion->aceptacion==0)||!isset($adopcion))
                                     <div class="row">
                                         <p style="margin-top: -25px;">(*)Campos Obligatorios</p>
                                     </div>
