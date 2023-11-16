@@ -165,14 +165,19 @@ $(document).ready(function () {
                             }
 
                             var groupedData = groupByVacuna(data);
+                            // Selecciona el contenedor HTML
+                            const contenedorPrincipal = $('#contenedorVacuna');
+
+                            // Crea un div contenedor para todo el contenido
+                            const contenidoCompleto = $('<div>');
 
                             // Recorre los datos agrupados y crea elementos HTML para mostrarlos
-                            const contenedorPrincipal = document.createElement('div');
+                            for (const nombreVacuna in groupedData) {
+                                const historiales = groupedData[nombreVacuna];
 
-                            for (var nombreVacuna in groupedData) {
-                                const container = document.createElement('div');
-                                container.classList.add('vaccine-container');
-                                container.classList.add('historialv-row');
+                                // Crea un nuevo div para cada vacuna
+                                const container = $('<div>');
+                                container.addClass('vaccine-container historialv-row');
 
                                 // Crear un array para almacenar los datos
                                 const datosVacunaArray = [];
@@ -197,35 +202,48 @@ $(document).ready(function () {
                                 const datosJSON = JSON.stringify(datosVacunaArray);
 
                                 // Asignar los datos al atributo data-nombre-vacuna del container
-                                container.setAttribute('data-vacuna', datosJSON);
+                                container.attr('data-vacuna', datosJSON);
 
-                                const content = document.createElement('div');
-                                content.classList.add('vaccine-content');
-                                content.style.margin = '0';
-                                content.style.display = 'flex';
-                                content.style.alignItems = 'center';
+                                // Crea un nuevo div para el contenido
+                                const content = $('<div>');
+                                content.addClass('vaccine-content');
+                                content.css('margin', '0');
+                                content.css('display', 'flex');
+                                content.css('align-items', 'center');
 
-                                content.innerHTML = '<i class="inputFieldIcon fas fa-syringe" style="margin-right: 3px; color: #6067eb;vertical-align: middle;"></i> <span class="vaccine-title">' + nombreVacuna + '</span>';
-                                container.appendChild(content);
+                                // Crea una imagen y la configura
+                                const img = $('<img>');
+                                img.attr('src', '/img/vaccine.svg'); 
+                                img.attr('alt', '');
+                                img.attr('height', 25);
+                                img.attr('width', 25);
+                                img.css('margin-right', '3px');
 
-                                const ul = document.createElement('ul');
+                                // Crea un span para el título de la vacuna
+                                const spanTitle = $('<span>');
+                                spanTitle.addClass('vaccine-title');
+                                spanTitle.text(nombreVacuna);
+
+                                content.append(img);
+                                content.append(spanTitle);
+
+                                const ul = $('<ul>');
                                 groupedData[nombreVacuna].forEach(function (historial, index) {
                                     const fechaAplicacion = historial.fechaAplicacion;
 
-
-                                    const li = document.createElement('li');
-                                    li.innerHTML = `Dosis #${index + 1} aplicada el ${dateFormat(fechaAplicacion)}`;
-                                    ul.appendChild(li);
+                                    const li = $('<li>');
+                                    li.html(`Dosis #${index + 1} aplicada el ${dateFormat(fechaAplicacion)}`);
+                                    ul.append(li);
                                 });
 
-
-                                container.appendChild(ul);
-                                contenedorPrincipal.appendChild(container);
+                                container.append(content);
+                                container.append(ul);
+                                contenidoCompleto.append(container);
                             }
 
-                            const lineBreak = document.createElement('br');
-                            contenedorPrincipal.appendChild(lineBreak);
-                            tablaVacuna.append(contenedorPrincipal);
+                            contenidoCompleto.append('<br>');
+                            // Agrega el contenido completo a contenedorPrincipal
+                            contenedorPrincipal.append(contenidoCompleto);
 
 
                         },
@@ -375,14 +393,19 @@ $(document).ready(function () {
                         }
 
                         var groupedData = groupByVacuna(data);
+                        // Selecciona el contenedor HTML
+                        const contenedorPrincipal = $('#contenedorVacuna');
+
+                        // Crea un div contenedor para todo el contenido
+                        const contenidoCompleto = $('<div>');
 
                         // Recorre los datos agrupados y crea elementos HTML para mostrarlos
-                        const contenedorPrincipal = document.createElement('div');
+                        for (const nombreVacuna in groupedData) {
+                            const historiales = groupedData[nombreVacuna];
 
-                        for (var nombreVacuna in groupedData) {
-                            const container = document.createElement('div');
-                            container.classList.add('vaccine-container');
-                            container.classList.add('historialv-row');
+                            // Crea un nuevo div para cada vacuna
+                            const container = $('<div>');
+                            container.addClass('vaccine-container historialv-row');
 
                             // Crear un array para almacenar los datos
                             const datosVacunaArray = [];
@@ -407,35 +430,49 @@ $(document).ready(function () {
                             const datosJSON = JSON.stringify(datosVacunaArray);
 
                             // Asignar los datos al atributo data-nombre-vacuna del container
-                            container.setAttribute('data-vacuna', datosJSON);
+                            container.attr('data-vacuna', datosJSON);
 
-                            const content = document.createElement('div');
-                            content.classList.add('vaccine-content');
-                            content.style.margin = '0';
-                            content.style.display = 'flex';
-                            content.style.alignItems = 'center';
+                            // Crea un nuevo div para el contenido
+                            const content = $('<div>');
+                            content.addClass('vaccine-content');
+                            content.css('margin', '0');
+                            content.css('display', 'flex');
+                            content.css('align-items', 'center');
 
-                            content.innerHTML = '<i class="inputFieldIcon fas fa-syringe" style="margin-right: 3px; color: #6067eb;vertical-align: middle;"></i> <span class="vaccine-title">' + nombreVacuna + '</span>';
-                            container.appendChild(content);
+                            // Crea una imagen y la configura
+                            const img = $('<img>');
+                            img.attr('src', '/img/vaccine.svg');
+                            img.attr('alt', 'triangle with all three sides equal');
+                            img.attr('height', 25);
+                            img.attr('width', 25);
+                            img.css('margin-right', '3px');
 
-                            const ul = document.createElement('ul');
+                            // Crea un span para el título de la vacuna
+                            const spanTitle = $('<span>');
+                            spanTitle.addClass('vaccine-title');
+                            spanTitle.text(nombreVacuna);
+
+                            content.append(img);
+                            content.append(spanTitle);
+
+                            const ul = $('<ul>');
                             groupedData[nombreVacuna].forEach(function (historial, index) {
                                 const fechaAplicacion = historial.fechaAplicacion;
 
-
-                                const li = document.createElement('li');
-                                li.innerHTML = `Dosis #${index + 1} aplicada el ${dateFormat(fechaAplicacion)}`;
-                                ul.appendChild(li);
+                                const li = $('<li>');
+                                li.html(`Dosis #${index + 1} aplicada el ${dateFormat(fechaAplicacion)}`);
+                                ul.append(li);
                             });
 
-
-                            container.appendChild(ul);
-                            contenedorPrincipal.appendChild(container);
+                            container.append(content);
+                            container.append(ul);
+                            contenidoCompleto.append(container);
                         }
 
-                        const lineBreak = document.createElement('br');
-                        contenedorPrincipal.appendChild(lineBreak);
-                        tablaVacuna.append(contenedorPrincipal);
+                        contenidoCompleto.append('<br>');
+                        // Agrega el contenido completo a contenedorPrincipal
+                        contenedorPrincipal.append(contenidoCompleto);
+
 
 
                     },
