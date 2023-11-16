@@ -48,7 +48,8 @@ function cargarRegistros(pagina, filtro) {
         '</div>' +
         '<div style="margin: 0; display: flex; align-items: center; font-weight: bold;"> Cod. ' + expediente.idExpediente + '</div>' +
         '<div style="margin: 0; display: flex; align-items: center;color:#6067eb; font-size: 14px"> <i class="fas fa-paw" style="margin-right: 3px;"></i>' + expediente.animal.nombre + '</div>' +
-        '<div style="margin: 0; display: flex; align-items: center; color:#867596; font-size: 12px "> <i class="fas fa-calendar" style="margin-right: 3px;"></i>Desde el ' + dateFormat(expediente.fechaIngreso) + '</div>'
+      '<div style="margin: 0; display: flex; align-items: center; color:#867596; font-size: 12px "><i class="fas fa-calendar" style="margin-right: 3px;"></i>Desde el ' + dateFormat(expediente.fechaIngreso) + '</div>'+
+      '<div style="margin: 0; display: flex; justify-content:end; color:#867596; font-size: 12px "> <span class="badge rounded-pill alert-secondary">'+expediente.estadoGeneral+'</span></div>'
     '</div>';
     table.appendChild(columna);
   });

@@ -68,7 +68,7 @@
                                         <div
                                             style="display: flex; align-items: flex-end; gap: 5px; justify-content: center">
                                             <button
-                                                onclick="window.location.href = '{{ url('expediente/Alta/' . $item->idExpediente) }}';"
+                                                onclick="window.location.href = '{{ url('/expedienteAlta/' . $item->idExpediente) }}';"
                                                 type="button" class="button button-blue btnUpdate" style="width: 45%"
                                                 data-id="{{ $item->idExpediente }}" data-bs-pp="tooltip"
                                                 data-bs-placement="top" title="Dar de alta">
