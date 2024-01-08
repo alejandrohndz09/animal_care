@@ -74,6 +74,29 @@
   font-family:  'Dosis',Arial, sans-serif;
   box-sizing: border-box;
 }
+/* Estilo del botón flotante */
+.floating-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 50px;
+  height: 50px;
+  background-color: #6067eb;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+
+
+/* Mostrar el tooltip al pasar el ratón sobre el botón */
+.floating-button:hover::before {
+  opacity: 1;
+}
 .toast {
   box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.1) !important;
 }

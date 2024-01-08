@@ -61,7 +61,7 @@
                     <div class="sb-nav-link-icon"><i class="fas fa-user" ></i></div>
                     Miembros
                 </a>
-                <a class="nav-link" href="/Inventario">
+                <a class="nav-link" href="/inventario">
                     <div class="sb-nav-link-icon"><i class="fas fa-warehouse" ></i></div>
                     Inventario
                 </a>

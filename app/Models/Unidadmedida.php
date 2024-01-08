@@ -14,9 +14,10 @@ use Illuminate\Database\Eloquent\Model;
  * 
  * @property string $idUnidadMedida
  * @property string|null $unidadMedida
+ * @property string|null $simbolo
  * @property string|null $idCategoria
  * 
- * @property Categorium|null $categorium
+ * @property Categoria|null $categorium
  * @property Collection|Recurso[] $recursos
  *
  * @package App\Models
@@ -30,12 +31,13 @@ class Unidadmedida extends Model
 
 	protected $fillable = [
 		'unidadMedida',
+		'simbolo',
 		'idCategoria'
 	];
 
 	public function categorium()
 	{
-		return $this->belongsTo(Categorium::class, 'idCategoria');
+		return $this->belongsTo(Categoria::class, 'idCategoria');
 	}
 
 	public function recursos()

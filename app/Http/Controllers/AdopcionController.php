@@ -481,7 +481,7 @@ class AdopcionController extends Controller
         $ultimoAnimal = Adopcion::latest('idAdopcion')->first();
 
         if (!$ultimoAnimal) {
-            // Si no hay registros previos, comenzar desde AN0001
+            // Si no hay registros previos, comenzar desde ADC0001
             $nuevoId = 'ADC0001';
         } else {
             // Obtener el número del último idAdopcion

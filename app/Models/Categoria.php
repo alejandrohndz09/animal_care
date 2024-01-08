@@ -16,11 +16,11 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $categoria
  * 
  * @property Collection|Recurso[] $recursos
- * @property Collection|Unidadmedida[] $unidadmedidas
+ * @property Collection|UnidadMedida[] $unidadmedidas
  *
  * @package App\Models
  */
-class Categorium extends Model
+class Categoria extends Model
 {
 	protected $table = 'categoria';
 	protected $primaryKey = 'idCategoria';
@@ -38,6 +38,6 @@ class Categorium extends Model
 
 	public function unidadmedidas()
 	{
-		return $this->hasMany(Unidadmedida::class, 'idCategoria');
+		return $this->hasMany(UnidadMedida::class, 'idCategoria');
 	}
 }

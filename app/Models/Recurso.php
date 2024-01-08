@@ -17,9 +17,10 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $idCategoria
  * @property float|null $cantidad
  * @property string|null $idUnidadMedida
+ * @property int|null $estado
  * 
  * @property Categorium|null $categorium
- * @property Unidadmedida|null $unidadmedida
+ * @property UnidadMedida|null $unidadmedida
  * @property Collection|Movimiento[] $movimientos
  *
  * @package App\Models
@@ -32,24 +33,26 @@ class Recurso extends Model
 	public $timestamps = false;
 
 	protected $casts = [
-		'cantidad' => 'float'
+		'cantidad' => 'float',
+		'estado' => 'int'
 	];
 
 	protected $fillable = [
 		'recurso',
 		'idCategoria',
 		'cantidad',
-		'idUnidadMedida'
+		'idUnidadMedida',
+		'estado'
 	];
 
-	public function categorium()
+	public function categoria()
 	{
-		return $this->belongsTo(Categorium::class, 'idCategoria');
+		return $this->belongsTo(Categoria::class, 'idCategoria');
 	}
 
 	public function unidadmedida()
 	{
-		return $this->belongsTo(Unidadmedida::class, 'idUnidadMedida');
+		return $this->belongsTo(UnidadMedida::class, 'idUnidadMedida');
 	}
 
 	public function movimientos()

@@ -48,10 +48,10 @@ class ExpedienteController extends Controller
         $ultimoRegistro = Expediente::latest('idExpediente')->first();
 
         // Calcula el siguiente incremento
-        $siguienteIncremento = $ultimoRegistro ? (int) substr($ultimoRegistro->idMiembro, -4) + 1 : 1;
+        $siguienteIncremento = $ultimoRegistro ? (int) substr($ultimoRegistro->idExpediente, -4) + 1 : 1;
 
         // Crea el ID personalizado concatenando "MB" y el incremento
-        $idPersonalizado = "EX" . str_pad($siguienteIncremento, 5, '0', STR_PAD_LEFT);
+        $idPersonalizado = "EXP" . str_pad($siguienteIncremento, 4, '0', STR_PAD_LEFT);
 
         //Guardar en BD
         $expediente = new Expediente();
@@ -75,7 +75,7 @@ class ExpedienteController extends Controller
          $siguienteIncremento = $ultimoRegistro ? (int) substr($ultimoRegistro->idExpediente, -4) + 1 : 1;
  
          // Crea el ID personalizado concatenando "MB" y el incremento
-         $idPersonalizado = "EX" . str_pad($siguienteIncremento, 5, '0', STR_PAD_LEFT);
+         $idPersonalizado = "EXP" . str_pad($siguienteIncremento, 4, '0', STR_PAD_LEFT);
  
          $expediente = new Expediente();
          $expediente->idExpediente = $idPersonalizado;
