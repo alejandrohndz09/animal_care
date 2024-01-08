@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('apellidos')->nullable();
             $table->string('correo')->nullable();
             $table->integer('estado')->nullable();
-            $table->string('dui', 12);
+            $table->string('dui', 12)->nullable();
         });
     }
 

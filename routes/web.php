@@ -94,6 +94,32 @@ Route::get('/desalbergar/{idExpediente}/{idAlvergue}', 'App\Http\Controllers\Alb
 Route::get('/albergarDeExpediente/{idAlvergue}/{idExpediente}', 'App\Http\Controllers\AnimalControlador@albergarDeExpediente');
 
 Route::resource('/adopcion', 'App\Http\Controllers\AdopcionController');
+Route::get('/adopcion-baja/{id}', 'App\Http\Controllers\AdopcionController@baja');
 Route::get('/getAdopciones', 'App\Http\Controllers\AdopcionController@getAdopciones');
+Route::get('/aprobarAdopcion/{id}', 'App\Http\Controllers\AdopcionController@aprobarAdopcion');
+Route::get('/denegarAdopcion/{id}', 'App\Http\Controllers\AdopcionController@denegarAdopcion');
+Route::get('/revertirDecisionAdopcion/{id}', 'App\Http\Controllers\AdopcionController@revertirDecisionAdopcion');
 Route::get('/getExpedientesSinAdopcion', 'App\Http\Controllers\AdopcionController@getExpedientesSinAdopcion');
 Route::get('/get-exp-ad-elegido/{idAdoptante}/{idExpediente}', 'App\Http\Controllers\AdopcionController@getExp_AdDElegido');
+
+Route::get('/inventario', function () {
+    return view('inventario.index');
+});
+Route::resource('/inventario/recursos', 'App\Http\Controllers\RecursoController');
+Route::get('/obtener-unidades/{categoria}', 'App\Http\Controllers\RecursoController@obtenerUnidades');
+Route::put('/inventario/recursos/update/{id}', 'App\Http\Controllers\RecursoController@update');
+Route::get('/inventario/recursos/destroy/{id}', 'App\Http\Controllers\RecursoController@destroy');
+
+Route::resource('/inventario/categorias', 'App\Http\Controllers\CategoriaController');
+Route::put('/inventario/categorias/update/{id}', 'App\Http\Controllers\CategoriaController@update');
+Route::get('/inventario/categorias/destroy/{id}', 'App\Http\Controllers\CategoriaController@destroy');
+
+Route::resource('/inventario/unidadMedidas', 'App\Http\Controllers\UnidadMedidacontroller');
+Route::put('/inventario/unidadMedidas/update/{id}', 'App\Http\Controllers\UnidadMedidaController@update');
+Route::get('/inventario/unidadMedidas/destroy/{id}', 'App\Http\Controllers\UnidadMedidaController@destroy');
+
+Route::resource('/inventario/movimientos', 'App\Http\Controllers\MovimientoController');
+Route::resource('/inventario/donantes', 'App\Http\Controllers\DonanteController');
+Route::get('/inventario/historial', function () {
+    return view('inventario.historial');
+});

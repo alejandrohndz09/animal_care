@@ -24,7 +24,9 @@
     height: auto;
     margin-bottom: 7px;
    }
-   
+   .item--0{
+    background: #c3c4c5;
+   }
    .item--1 {
     background: #c7c7ff;
    }
@@ -32,15 +34,18 @@
    .item--2 {
     background: #ffd8be;
    }
-   
+    
    .item--3 {
     background: #a9ecbf;
    }
    
    .item--4 {
-    background: #f3bbe1;
+    background: #f6b5b5;
    }
 
+   .item--0 svg{
+    color: #514e4e;
+   }
    .item--1 svg{
     color: #6067eb;
    }
@@ -51,7 +56,7 @@
     color:  rgba(66,193,110,1);
    }
    .item--4 svg{
-    color:  rgba(220,91,183,1);
+    color: #d02929;
    }
    .quantity {
     font-size: 32px;
@@ -62,6 +67,10 @@
     font-size: 18px;
     font-family: inherit;
     font-weight: 600;
+   }
+
+   .text--0 {
+    color:#514e4e;
    }
    
    .text--1 {
@@ -77,5 +86,5 @@
    }
    
    .text--4 {
-    color: rgba(220,91,183,1);
+    color:#d02929;
    }

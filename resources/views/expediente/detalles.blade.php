@@ -22,6 +22,9 @@
                                     <h1 class="mb-8">
                                         {{ $registrado->count() > 0 ? 'Expediente No. ' . $animal->expedientes->get(0)->idExpediente : 'Detalles de animal' }}
                                     </h1>
+                                    @if ( $registrado->count() > 0 )
+                                        
+                                   
                                     <div class="dropdown">
                                         <button class="button btn-transparent" style="width: 30px;padding: 15px 5px"
                                             type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown"
@@ -36,6 +39,7 @@
                                             </li>
                                         </ul>
                                     </div>
+                                    @endif
                                 </div>
                                 <br>
                                 <div class="row mt-1" style="justify-content: center;">
@@ -114,23 +118,33 @@
                                             </div>
                                         @endif
                                     </div>
+                                    @if ($registrado->count() > 0)
+                                        <button type="button" class="button button-pri" style="margin-left: 180%"
+                                            data-bs-toggle="modal" data-bs-target="#ModalALbergarExpediente">
+                                            <span class="lable">
+                                                Albergar animal
+                                            </span>
+                                        </button>
+                                    @else
+                                        <button type="submit" class="button button-pri" style="margin-left: 180%"
+                                            onclick="window.location.href = '{{ url('crearExpediente/' . $animal->idAnimal) }}'">
+                                            <span class="lable">
+                                                Crear expediente
+                                            </span>
+                                        </button>
+                                    @endif
 
-                                    <button type="submit" class="button button-pri" style="margin-left: 180%"
-                                        data-bs-toggle="modal" data-bs-target="#ModalALbergarExpediente">
-                                        <span class="lable">
-                                            {{ $registrado->count() > 0 ? 'Albergar animal' : 'Crear expediente' }}
-                                        </span>
-                                    </button>
 
                                 </div>
 
                             </div>
-                            <div class="col-xl-4" style="margin: auto 0; padding: 20px 7%">
-                                <div class="card_">
-                                    <div class="item item--1">
-                                        <img src="{{ isset($animal->imagen) ? asset($animal->imagen) : asset('img/especie.png') }}"
-                                            alt="user" class="picture">
-                                    </div>
+                            <div class="col-xl-4" style="margin: auto 0;">
+                                <div
+                                    style="margin-bottom:35px; width: 100%; height: 10rem; display:flex; justify-content: center; align-items: center; overflow: hidden;">
+                                    <img src="{{ isset($animal->imagen) ? asset($animal->imagen) : asset('img/especie.png') }}"
+                                        alt="user"
+                                        class="picture"style="width: 55%; height: 100%; object-fit: cover;" />
+
                                 </div>
                             </div>
                         </div>
@@ -330,10 +344,10 @@
                 @php use App\Http\Controllers\AlbergueController; @endphp
                 @php use App\Models\Alvergue; @endphp
                 @php use App\Models\Miembro; @endphp
-                @if ($animal->expedientes->count() == 0)
+                @if ($registrado->count() >0)
                     <!--Modal alberlgar desde expediente-->
                     <div class="modal fade" id="ModalALbergarExpediente" tabindex="-1"
-                        aria-labelledby="ModalALbergarExpediente" aria-hidden="true">
+                        aria-labelledby="ModalALbergarExpedientes" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-lg ">
                             <div class="modal-content">
                                 <div class="modal-header">

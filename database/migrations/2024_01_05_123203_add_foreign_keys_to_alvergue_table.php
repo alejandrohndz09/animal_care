@@ -13,10 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('unidadmedida', function (Blueprint $table) {
-            $table->string('idUnidadMedida', 7)->primary();
-            $table->string('unidadMedida')->nullable();
-            $table->string('idCategoria', 7)->nullable()->index('unidadmedida_ibfk_1');
+        Schema::table('alvergue', function (Blueprint $table) {
+            $table->foreign(['idMiembro'], 'fk_alv-mbr')->references(['idMiembro'])->on('miembro')->onUpdate('CASCADE')->onDelete('NO ACTION');
         });
     }
 
@@ -27,6 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('unidadmedida');
+        Schema::table('alvergue', function (Blueprint $table) {
+            $table->dropForeign('fk_alv-mbr');
+        });
     }
 };

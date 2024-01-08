@@ -153,7 +153,7 @@ class AnimalControlador extends Controller
             session()->flash('alert', $alert);
         } else {
             $alert = array(
-                'type' => 'errror',
+                'type' => 'error',
                 'message' => 'No se puede eliminar el registro porque tiene datos asociados'
             );
 

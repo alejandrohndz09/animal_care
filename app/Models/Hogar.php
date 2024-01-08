@@ -37,6 +37,7 @@ class Hogar extends Model
 	];
 
 	protected $fillable = [
+		'idHogar',
 		'direccion',
 		'companiaHumana',
 		'companiaAnimal',

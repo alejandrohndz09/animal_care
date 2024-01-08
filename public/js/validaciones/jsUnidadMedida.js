@@ -1,27 +1,25 @@
 $(document).ready(function () {
 
     $("#btnCancelar").click(function () {
-        window.location.href = '/raza'
+        window.location.href = '/inventario/unidadMedidas/'
     });
 
      //Si presiona eliminar abrira el modal con los datos que se daran de baja
      $('#exampleModalToggle').on('show.bs.modal', function (event) {
          var button = $(event.relatedTarget); // Botón que desencadenó el modal
         
-         var id = button.data('raza').idRaza; // Obtiene el valor del atributo data-id
-         var nombre = button.data('raza').raza; // Obtiene el valor del atributo data-nombre
-         var especie = button.data('raza').especie.especie; // Obtiene el valor del atributo data-apellido
-        
+         var id = button.data('unidadmedida').idUnidadMedida; // Obtiene el valor del atributo data-id
+         var nombre = button.data('unidadmedida').unidadMedida; // Obtiene el valor del atributo data-nombre
+         var simbolo = button.data('unidadmedida').simbolo;
          // Actualiza el contenido del modal con los detalles del registro
          $('#modalRecordCodigo').text(id);
-         $('#modalRecordNombre').text(nombre);
-         $('#modalRecordEspecie').text(especie);
+         $('#modalRecordNombre').text(`${nombre} (${simbolo})`);
        
  
          $('body').on('click', '#confirmar', function () {
-             $.get('/raza/destroy/'+ id, function () {
+             $.get('/inventario/unidadMedidas/destroy/'+ id, function () {
                  // location.reload();
-                 window.location.href = '/raza'
+                 window.location.href = '/inventario/unidadMedidas'
              });
          });
 
@@ -37,21 +35,20 @@ $(".btnUpdate").click(function (event) {
     event.stopPropagation();
 });
 
-$('.raza-row').on('click', function (event) {
+$('.unidadMedida-row').on('click', function (event) {
     // Verifica si el clic fue en un botón dentro de la fila
     if ($(event.target).is('.btnUpdate, .btnDelete')) {
         return; // Evita abrir el modal si se hizo clic en un botón
     }
 
     var button = $(this); // Fila de la tabla que se hizo clic
-    var id = button.data('raza').idRaza; // Obtiene el valor del atributo data-id
-    var nombre = button.data('raza').raza; // Obtiene el valor del atributo data-nombre
-        var especie = button.data('raza').idEspecie; // Obtiene el valor del atributo data-apellido
-   console.log(button.data('raza'))
+    var id = button.data('unidadmedida').idUnidadMedida; // Obtiene el valor del atributo data-id
+    var nombre = button.data('unidadmedida').unidadMedida; // Obtiene el valor del atributo data-nombre
+    var simbolo = button.data('unidadmedida').simbolo;
     // Actualiza el contenido del modal con los detalles del registro
     $('#Codigo').text(id);
-    $('#Raza').text(nombre);
-    $('#Especie').text(especie);
+    $('#Raza').text(`${nombre} (${simbolo})`);
+    
 
     // Abre el modal
     $('#modalDetalle').modal('show');
