@@ -33,9 +33,8 @@
                                             <i class="svg-icon fas fa-ellipsis-vertical" style="color: #4c4c4c"></i>
                                         </button>
                                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                            <li
-                                                onclick="window.location.href = '{{ url('expedientedestroy/' . $animal->expedientes->get(0)->idExpediente) }}'">
-                                                <a class="dropdown-item">Dar de baja expediente</a>
+                                            <li>
+                                                <a href = "{{ url('expedientedestroy/' . $animal->expedientes->get(0)->idExpediente) }}" class="dropdown-item">Dar de baja </a>
                                             </li>
                                         </ul>
                                     </div>

@@ -45,7 +45,7 @@
 @endsection
 
 @section('scripts')
-    <script src="{{ asset('js/validaciones/JsRecurso.js') }}"></script>
+    <script src="{{ asset('js/validaciones/JsMovimiento.js') }}"></script>
 @endsection
 @section('content')
     <div id="layoutSidenav_content">
@@ -62,58 +62,46 @@
                                     onclick="window.location.href='/inventario'">
                                     <i class="svg-icon fas fa-chevron-left" style="color: #4c4c4c"></i>
                                 </button>
-                                <h1>Recursos </h1>
+                                <h1>Movimientos </h1>
                             </div>
                             <div
                                 style=" width:100%;margin: 0; display: flex; gap: 5px; justify-content: end ;align-items: center; ">
                                 <input id="searchInput" class="inputField card" style="width: 50%;" autocomplete="off"
                                     placeholder="🔍︎ Buscar" type="search">
-
-                                <div class="dropdown">
-                                    <button class="button btn-transparent" style="width: 30px;padding: 15px 5px"
-                                        type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown"
-                                        aria-expanded="false" data-bs-pp="tooltip" data-bs-placement="top" title="Opciones">
-                                        <i class="svg-icon fas fa-ellipsis-vertical" style="color: #4c4c4c"></i>
-                                    </button>
-                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                        <li><a class="dropdown-item" data-bs-toggle="modal"data-bs-target="#tabla">
-                                                Recursos dados de baja</a></li>
-                                    </ul>
-                                </div>
-
                             </div>
                         </div>
                         <table>
                             <thead>
                                 <tr class="head">
                                     <th style="width: 8%"></th>
-                                    <th>Código</th>
-                                    <th style="width:40%">Descripción</th>
-                                    <th style="width: 25%">Categoría</th>
-                                    <th style="width: 20%">Unidad de medida</th>
+                                    <th style="width:20%">Fecha</th>
+                                    <th style="width: 15%">Tipo</th>
+                                    <th style="width: 20%">Recurso</th>
+                                    <th style="width: 20%">Valor</th>
                                     <th></th>
 
                                 </tr>
                             </thead>
                             <tbody id="tableBody">
 
-                                @foreach ($Recursos as $item)
+                                @foreach ($Movimientos as $item)
                                  @if ($item->estado == 1) 
-                                    <tr class="recurso-row" data-recurso="{{$item}}" data-categoria="{{$item->categoria}}">
+                                    <tr class="movimiento-row" data-movimiento="{{$item}}" data-recurso="{{$item->recurso}}">
                                         <td style="width: 8%">
-                                            <img src="{{ asset('img/recurso.png') }}" alt="recurso item" class="picture" />
+                                            <img src="{{ asset('img/regurso.png') }}" alt="movimiento item" class="picture" />
                                         </td>
-                                        <td>{{ $item->idRecurso }}</td>
-                                        <td style="width: 40%">{{ $item->recurso }} </td>
-                                        <td style="width: 20%">{{ $item->categoria->categoria }}</td>
-                                        <td style="width: 15%">{{ $item->unidadmedida->unidadMedida }}</td>
+                                        <td>{{ $item->idMovimiento }}</td>
+                                        <td style="width: 20%">{{ explode(' ',$item->fechaMovimiento)[0] }} </td>
+                                        <td style="width: 15%">{{ $item->tipo }}</td>
+                                        <td style="width: 20%">{{ $item->recurso->recurso }}</td>
+                                        <td style="width: 20%">{{ $item->valor. ' ('.$item->recurso->unidadmedida->simbolo.')' }}</td>
 
                                         <td>
                                             <div
                                                 style="display: flex; align-items: flex-end; gap: 5px; justify-content: center">
                                                 <a
-                                                    href="{{ url('inventario/recursos/' . $item->idRecurso . '/edit') }}" type="button"
-                                                    class="button button-blue btnUpdate" data-id="{{ $item->idRecurso }}"
+                                                    href="{{ url('inventario/movimientos/' . $item->idMovimiento . '/edit') }}" type="button"
+                                                    class="button button-blue btnUpdate" data-id="{{ $item->idMovimiento }}"
                                                     data-bs-pp="tooltip" data-bs-placement="top"
                                                     title="Editar">
                                                     <i class="svg-icon fas fa-pencil"></i>
@@ -121,7 +109,7 @@
 
                                                 <button type="button" id="btnDelete" class="button button-red btnDelete"
                                                     data-bs-toggle="modal" data-bs-target="#exampleModalToggle"
-                                                    data-recurso="{{ $item }}" data-bs-pp="tooltip"
+                                                    data-movimiento="{{ $item }}" data-bs-pp="tooltip"
                                                     data-bs-placement="top" title="Eliminar">
                                                     <i class="svg-icon fas fa-trash"></i>
                                                 </button>
@@ -140,7 +128,7 @@
                         <h3 style="padding: 0px !important;">
                             Más opciones</h3>
                         <div class="card  px-0 py-0 mb-4" style="border:none; margin:0;  gap:0 !important; width: 100%">
-                            <a href="/inventario/categorias" class="menu-link">
+                            <a href="/inventario/recursos" class="menu-link">
                                 <div class="menu-panel ">
                                     <div class="menu-title">
                                         <div class="menu-icon">
@@ -165,80 +153,118 @@
                         </div>
                         <div class="card  mb-4" style="border:none; padding-bottom: 25px !important; width: 100%">
                             <h3 style="padding: -5px 0px !important;">
-                                {{ isset($RecursoEdit) ? 'Editar Registro' : 'Nuevo Registro' }}</h3>
+                                {{ isset($MovimientoEdit) ? 'Editar Registro' : 'Nuevo Registro' }}</h3>
                             <form
-                                action="{{ isset($RecursoEdit) ? url('inventario/recursos/update/' . $RecursoEdit->idRecurso) : '' }}"
+                                action="{{ isset($MovimientoEdit) ? url('inventario/movimientos/update/' . $MovimientoEdit->idMovimiento) : '' }}"
                                 id="miFormulario" name="form" method="POST">
                                 @csrf
-                                @if (isset($RecursoEdit))
+                                @if (isset($MovimientoEdit))
                                     @method('PUT') <!-- Utilizar el método PUT para la actualización -->
                                 @endif
 
                                 <div class="row">
                                     <div class="col-xl-12">
-
+                                        <div class="inputContainer">
+                                            <input id="fecha" name="fecha"
+                                                value="{{ isset($MovimientoEdit) ? old('fecha', explode(' ', $MovimientoEdit->fechaMovimiento)[0]) : old('fecha') }}"
+                                                max="{{ date('Y-m-d') }}" class="inputField" autocomplete="false"
+                                                placeholder="Fecha de movimiento" type="date">
+                                            <label class="inputFieldLabel" for="fecha">Fecha de operación*</label>
+                                            <i class="inputFieldIcon fas fa-calendar"></i>
+                                            @error('fecha')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
+                                        </div>
                                         <div class="inputContainer">
                                             <label class="inputFieldLabel" autocomplete="off"
-                                                for="recurso">Descripción*</label>
+                                                for="movimiento">Concepto*</label>
                                             <i class="inputFieldIcon fas fa-pencil"></i>
-                                            <input placeholder="Ej. Croquetas para perro." autocomplete="off"
-                                                value="{{ isset($RecursoEdit) ? old('recurso', $RecursoEdit->recurso) : old('recurso') }}"
-                                                class="inputField" name="recurso">
+                                            <input placeholder="Ej. alimentación del mes de abril." autocomplete="off"
+                                                value="{{ isset($MovimientoEdit) ? old('concepto', $MovimientoEdit->descripcion) : old('concepto') }}"
+                                                class="inputField" name="concepto">
+                                            @error('concepto')
+                                                <small style="color:red">{{ $message }}</small>
+                                            @enderror
+                                        </div>
+                                        <div class="inputContainer">
+                                            <select id="tipoMovimiento" name="tipoMovimiento" class="inputField">
+                                                <option value=""
+                                                {{ old('tipoMovimiento') == '' && !isset($MovimientoEdit) ? 'selected' : '' }}>
+                                                    Seleccione...</option>
+                                                <option value="Ingreso"
+                                                    @if (isset($MovimientoEdit)) 
+                                                     @if ($MovimientoEdit->tipoMovimiento == 'Ingreso')
+                                                        selected
+                                                     @endif 
+                                                    @else 
+                                                        @if (old('tipoMovimiento') == 'Ingreso') selected 
+                                                        @endif 
+                                                    @endif>
+                                                    Ingreso</option>
+                                                    <option value="Salida"
+                                                    @if (isset($MovimientoEdit)) 
+                                                     @if ($MovimientoEdit->tipoMovimiento == 'Salida')
+                                                        selected
+                                                     @endif 
+                                                    @else 
+                                                        @if (old('tipoMovimiento') == 'Salida') selected 
+                                                        @endif 
+                                                    @endif>
+                                                    Salida</option>                                               
+                                            </select>
+                                            <label class="inputFieldLabel" for="raza">Tipo de movimiento*</label>
+                                            <i class="inputFieldIcon fas fa-house"></i>
+                                            @error('tipoMovimiento')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                        <div class="inputContainer">
+                                            <label class="inputFieldLabel" for="">Recurso*</label>
+                                            <i class="inputFieldIcon fas fa-tag"></i>
+                                            <select id="recurso" name="recurso" class="inputField">
+                                                <option value=""
+                                                    {{ old('recurso') == '' && !isset($MovimientoEdit) ? 'selected' : '' }}>
+                                                    Seleccione...
+                                                </option>
+                                                @php use App\Models\Recurso; @endphp
+                                                @foreach (Recurso::all() as $recurso)
+                                                    <option value="{{ $recurso->idRecurso }}"
+                                                        {{ isset($MovimientoEdit) ? ($MovimientoEdit->recurso->idRecurso == $recurso->idRecurso ? 'selected' : '') : (old('recurso') == $recurso->idRecurso ? 'selected' : '') }}>
+                                                        {{ $recurso->recurso }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
                                             @error('recurso')
                                                 <small style="color:red">{{ $message }}</small>
                                             @enderror
                                         </div>
-
-
                                         <div class="inputContainer">
-                                            <label class="inputFieldLabel" for="">Categoría*</label>
-                                            <i class="inputFieldIcon fas fa-tag"></i>
-                                            <select id="categoria" name="categoria" class="inputField">
-                                                <option value=""
-                                                    {{ old('categoria') == '' && !isset($RecursoEdit) ? 'selected' : '' }}>
-                                                    Seleccione...
-                                                </option>
-                                                @php use App\Models\Categoria; @endphp
-                                                @foreach (Categoria::all() as $categoria)
-                                                    <option value="{{ $categoria->idCategoria }}"
-                                                        {{ isset($RecursoEdit) ? ($RecursoEdit->categoria->idCategoria == $categoria->idCategoria ? 'selected' : '') : (old('categoria') == $categoria->idCategoria ? 'selected' : '') }}>
-                                                        {{ $categoria->categoria }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
-                                            @error('categoria')
+                                            <label class="inputFieldLabel" autocomplete="off"
+                                                for="valor">Valor*</label>
+                                            <i class="inputFieldIcon fas fa-pencil"></i>
+                                            <input autocomplete="off"
+                                                value="{{ isset($MovimientoEdit) ? old('valor', $MovimientoEdit->valor) : old('valor','1') }}"
+                                                class="inputField" type="number" min="1" step="1" value="1" name="valor">
+                                            @error('valor')
                                                 <small style="color:red">{{ $message }}</small>
                                             @enderror
                                         </div>
 
-
-                                        <div class="inputContainer">
-                                            <select id="unidad" name="unidad"
-                                                data-selected="{{ isset($RecursoEdit) ? $RecursoEdit->unidadmedida->idUnidadMedida : old('unidad') }}"
-                                                class="inputField">
-                                                <option value="">Seleccione...</option>
-
-                                            </select>
-                                            <label class="inputFieldLabel" for="unidad">Unidad de Medida*</label>
-                                            <i class="inputFieldIcon fas fa-ruler"></i>
-                                            @error('unidad')
-                                                <span style="color:red">{{ $message }}</span>
-                                            @enderror
-                                        </div>
+                                        
                                         <p style="margin-top: -25px;">(*)Campos Obligatorios</p>
                                     </div>
                                     <div style="display: flex; align-items: flex-end; gap: 10px; justify-content: center">
                                         <button type="submit" class="button button-pri">
                                             <i class="svg-icon fa-regular fa-floppy-disk"></i>
                                             <span class="lable">
-                                                @if (isset($RecursoEdit))
+                                                @if (isset($MovimientoEdit))
                                                     Modificar
                                                 @else
                                                     Guardar
                                                 @endif
                                             </span>
                                         </button>
-                                        <button onclick="{{ url('inventario/recursos') }}" type="button"
+                                        <button onclick="{{ url('inventario/movimientos') }}" type="button"
                                             id="btnCancelar" class="button button-red">
                                             <i class="svg-icon fas fa-rotate-right"></i>
                                             <span class="lable">Cancelar</span>
@@ -256,5 +282,5 @@
     <div class="floating-button"data-bs-pp="tooltip" data-bs-placement="top" title="Ayuda">
         <span>?</span>
     </div>
-    @include('inventario.recurso.modalesRecurso')
+    @include('inventario.movimiento.modalesMovimiento')
 @endsection

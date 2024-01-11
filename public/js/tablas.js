@@ -25,7 +25,7 @@ function updatePagination() {
   if (totalPages > 1) {
     for (let i = 1; i <= totalPages; i++) {
       const pageLink = document.createElement('a');
-        pageLink.href = '#'+i;
+       // pageLink.href = '#'+i;
         pageLink.classList.add('button');
         pageLink.classList.add('button-pri');
       pageLink.textContent = i;

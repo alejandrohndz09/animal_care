@@ -23,7 +23,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('dashboard.dashboard');
-});
+})->middleware('auth');
 
 Route::resource('animal', 'App\Http\Controllers\AnimalControlador');
 Route::put('/animal/update/{id}', 'App\Http\Controllers\AnimalControlador@update');
@@ -101,6 +101,21 @@ Route::get('/denegarAdopcion/{id}', 'App\Http\Controllers\AdopcionController@den
 Route::get('/revertirDecisionAdopcion/{id}', 'App\Http\Controllers\AdopcionController@revertirDecisionAdopcion');
 Route::get('/getExpedientesSinAdopcion', 'App\Http\Controllers\AdopcionController@getExpedientesSinAdopcion');
 Route::get('/get-exp-ad-elegido/{idAdoptante}/{idExpediente}', 'App\Http\Controllers\AdopcionController@getExp_AdDElegido');
+// Route::middleware(['auth', 'can:isAdmin'])->group(function () {
+//     // Rutas que solo pueden ser accedidas por administradores
+//     // ...
+// });
+
+// Route::middleware(['auth', 'can:isUser'])->group(function () {
+//     // Rutas que pueden ser accedidas por usuarios comunes
+//     // ...
+// });
+// routes/web.php
+
+Route::get('/login', 'App\Http\Controllers\LoginController@show')->name('login')->middleware('guest');;
+Route::post('/login', 'App\Http\Controllers\LoginController@login');
+Route::post('/logout', 'App\Http\Controllers\LoginController@logout')->name('logout');
+
 
 Route::get('/inventario', function () {
     return view('inventario.index');
