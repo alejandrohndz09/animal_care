@@ -248,7 +248,9 @@
                                             data-vacuna="{{ json_encode($historiales) }}">
                                             <div class="vaccine-content"
                                                 style="margin: 0; display: flex; align-items: center">
-                                                <i class="fas fa-syringe" style="color:#6067eb"></i>
+                                                <img src="{{ asset('img/vaccine.svg') }}"
+                                                alt="triangle with all three sides equal" height="25"
+                                                width="25" style="margin-right: 3px" /></i>
                                                 <span class="vaccine-title">{{ $nombreVacuna }}</span>
                                             </div>
                                             <ul>
