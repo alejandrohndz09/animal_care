@@ -5,9 +5,10 @@
     <link rel="stylesheet" href="<?php echo asset('css/cards.css'); ?>" type="text/css">
 @endsection
 
-{{-- @section('scripts')
-    <script src="{{ asset('js/validaciones/JsAlbergue.js') }}"></script>
-@endsection --}}
+@section('scripts')
+    <script src="{{ asset('js/validaciones/jsHistorialV.js') }}"></script>
+    <script src="{{ asset('js/validaciones/jsHistorialP.js') }}"></script>
+@endsection
 @section('content')
     <div id="layoutSidenav_content">
         <main>
@@ -16,9 +17,29 @@
                     <div class="card  mb-4" style="border:none; padding-bottom: 25px !important; width: 100%">
                         <div class="row">
                             <div class="col-xl-8">
-                                <h1 class="mb-4">
-                                    {{ $registrado->count() > 0 ? 'Expediente No' . $animal->expedientes->get(0)->idExpediente : 'Detalles de animal' }}
-                                </h1>
+                                <div
+                                    style="width:100%; display: flex;  justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                                    <h1 class="mb-8">
+                                        {{ $registrado->count() > 0 ? 'Expediente No. ' . $animal->expedientes->get(0)->idExpediente : 'Detalles de animal' }}
+                                    </h1>
+                                    @if ( $registrado->count() > 0 )
+                                        
+                                   
+                                    <div class="dropdown">
+                                        <button class="button btn-transparent" style="width: 30px;padding: 15px 5px"
+                                            type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown"
+                                            aria-expanded="false" data-bs-pp="tooltip" data-bs-placement="top"
+                                            title="Opciones">
+                                            <i class="svg-icon fas fa-ellipsis-vertical" style="color: #4c4c4c"></i>
+                                        </button>
+                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                            <li>
+                                                <a href = "{{ url('expedientedestroy/' . $animal->expedientes->get(0)->idExpediente) }}" class="dropdown-item">Dar de baja </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    @endif
+                                </div>
                                 <br>
                                 <div class="row mt-1" style="justify-content: center;">
 
@@ -96,23 +117,33 @@
                                             </div>
                                         @endif
                                     </div>
+                                    @if ($registrado->count() > 0)
+                                        <button type="button" class="button button-pri" style="margin-left: 180%"
+                                            data-bs-toggle="modal" data-bs-target="#ModalALbergarExpediente">
+                                            <span class="lable">
+                                                Albergar animal
+                                            </span>
+                                        </button>
+                                    @else
+                                        <button type="submit" class="button button-pri" style="margin-left: 180%"
+                                            onclick="window.location.href = '{{ url('crearExpediente/' . $animal->idAnimal) }}'">
+                                            <span class="lable">
+                                                Crear expediente
+                                            </span>
+                                        </button>
+                                    @endif
 
-                                    <button type="submit" class="button button-pri" style="margin-left: 180%"
-                                        onclick="window.location.href = '{{ $registrado->count() > 0 ? 'AQUI EL URL PARA ALBERGARLO' : url('crearExpediente/' . $animal->idAnimal) }} '">
-                                        <span class="lable">
-                                            {{ $registrado->count() > 0 ? 'Albergar animal' : 'Crear expediente' }}
-                                        </span>
-                                    </button>
 
                                 </div>
 
                             </div>
-                            <div class="col-xl-4" style="margin: auto 0; padding: 20px 7%">
-                                <div class="card_">
-                                    <div class="item item--1">
-                                        <img src="{{ isset($animal->imagen) ? asset($animal->imagen) : asset('img/especie.png') }}"
-                                            alt="user" class="picture">
-                                    </div>
+                            <div class="col-xl-4" style="margin: auto 0;">
+                                <div
+                                    style="margin-bottom:35px; width: 100%; height: 10rem; display:flex; justify-content: center; align-items: center; overflow: hidden;">
+                                    <img src="{{ isset($animal->imagen) ? asset($animal->imagen) : asset('img/especie.png') }}"
+                                        alt="user"
+                                        class="picture"style="width: 55%; height: 100%; object-fit: cover;" />
+
                                 </div>
                             </div>
                         </div>
@@ -126,15 +157,18 @@
                                 <div
                                     style="width:100%; display: flex;  justify-content: space-between; align-items: center; margin-bottom: 5px;">
                                     <h5 style="margin-left: 30px;font-size: 34px; color: #333;">Historial de vacunas</h5>
-                                    <button type="submit" class="button button-pri" data-bs-toggle="modal"
-                                        data-bs-target="#newHistorial" style="width: 80px;padding: 7px 3px">
+                                    <button type="submit" id="mostrar" class="button button-pri"
+                                        data-bs-toggle="modal" data-bs-target="#newHistorial"
+                                        style="width: 80px;padding: 7px 3px" data-bs-pp="tooltip" data-bs-placement="top"
+                                        title="Agregar vacuna">
                                         <i class="svg-icon fas fa-plus"></i>
                                     </button>
                                 </div>
+                                <input type="hidden" id="valorJavascript" name="valorJavascript" value="">
 
                                 <style>
                                     .vaccine-container {
-                                        padding: 10px;
+                                        padding: 15px;
                                         margin: 10px;
                                         margin-top: -30px;
                                         margin-bottom: -35px;
@@ -187,21 +221,20 @@
                                     }
 
                                     ul li {
-                                        margin-left: 20px;
+                                        margin-left: 60px;
+
                                     }
                                 </style>
 
                                 @php
-                                    $currentVacuna = null;
-                                    $dosisInfo = [];
-                                    $contador = 1;
                                     $exp = $animal->expedientes->get(0);
                                     $historialesAgrupados = [];
                                 @endphp
 
+
                                 @foreach ($exp->historialVacunas as $historial)
                                     @php
-                                        $nombreVacuna = $historial->vacuna->vacuna; // Asegúrate de que el nombre esté en una propiedad llamada "nombre"
+                                        $nombreVacuna = $historial->vacuna->vacuna;
                                         if (!isset($historialesAgrupados[$nombreVacuna])) {
                                             $historialesAgrupados[$nombreVacuna] = [];
                                         }
@@ -209,24 +242,27 @@
                                     @endphp
                                 @endforeach
 
-                                @foreach ($historialesAgrupados as $nombreVacuna => $historiales)
-                                    <div class="vaccine-container">
-                                        <div class="vaccine-content">
-                                            <i class="inputFieldIcon fas fa-syringe"></i> <span
-                                                class="vaccine-title">{{ $nombreVacuna }}</span>
+                                <div id="contenedorVacuna">
+                                    @foreach ($historialesAgrupados as $nombreVacuna => $historiales)
+                                        <div class="vaccine-container historialv-row"
+                                            data-vacuna="{{ json_encode($historiales) }}">
+                                            <div class="vaccine-content"
+                                                style="margin: 0; display: flex; align-items: center">
+                                                <img src="{{ asset('img/vaccine.svg') }}"
+                                                alt="triangle with all three sides equal" height="25"
+                                                width="25" style="margin-right: 3px" /></i>
+                                                <span class="vaccine-title">{{ $nombreVacuna }}</span>
+                                            </div>
+                                            <ul>
+                                                @foreach ($historiales as $historial)
+                                                    <li>Dosis #{{ $loop->iteration }} aplicada el
+                                                        {{ date('d/m/Y', strtotime($historial->fechaAplicacion)) }}</li>
+                                                @endforeach
+                                            </ul>
                                         </div>
-                                        <ul>
-                                            @foreach ($historiales as $historial)
-                                                <li>Dosis #{{ $loop->iteration }} aplicada el
-                                                    {{ $historial->fechaAplicacion }}</li>
-                                            @endforeach
-                                        </ul>
-                                    </div>
-                                @endforeach
-
-
-
-                                <br>
+                                    @endforeach
+                                    <br>
+                                </div>
                             </div>
                         </div>
 
@@ -234,66 +270,140 @@
                         <div class="col-xl-6 " style="padding-right: 0%">
                             <div class="card mb-4" style="border:none; padding-bottom: 25px !important; width: 100%">
                                 <div
-                                    style="width:100%; display: flex;  justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                                    <h5>Historial de Patologías</h5>
-
-                                    <button type="submit" class="button button-pri"
-                                        style="width: 40px;padding: 15px 5px">
+                                    style="width:100%; display: flex;  justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                                    <h5 style="margin-left: 30px;font-size: 34px; color: #333;">Historial de patologías
+                                    </h5>
+                                    <button type="submit" id="mostrarPatologia" class="button button-pri"
+                                        id="abrir" data-bs-toggle="modal" data-bs-target="#newHistorialPatologia"
+                                        style="width: 80px;padding: 7px 3px" data-bs-pp="tooltip" data-bs-placement="top"
+                                        title="Agregar patologia">
                                         <i class="svg-icon fas fa-plus"></i>
                                     </button>
                                 </div>
 
-                                <table>
-                                    <thead>
-                                        <tr class="head">
-                                            <th>Patología</th>
-                                            <th>Fecha diagnóstico</th>
-                                            <th>Detalles</th>
-                                            <th>Estado</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="tableBody">
 
-                                        {{-- @php use App\Http\Controllers\AnimalControlador; @endphp
-                                    @foreach ($animales as $a)
-                                        <tr class="animal-row"  data-animal="{{json_encode($a)}}">
-                                            <td>
-                                                <img src="{{isset($a->imagen)?asset($a->imagen):asset('img/especie.png')}}"
-                                                    alt="user" class="picture" />
-                                            </td>
-                                            <td>{{ $a->idAnimal }}</td>
-                                            <td>{{ $a->nombre }}</td>
-                                            <td>{{ $a->raza->especie->especie }}</td>
-                                            <td>{{ $a->raza->raza }}</td>
-                                            <td>{{ AnimalControlador::calcularEdad(explode(' ', $a->fechaNacimiento)[0]) }}
-                                            </td>
-                                            <td>
-                                                <div
-                                                    style="display: flex; align-items: flex-end; gap: 3px; justify-content: center">
-                                                    <a href="{{ url('animal/' . $a->idAnimal . '/edit') }}"
-                                                        class="button button-blue btnUpdate" style="width: 45%;" data-bs-pp="tooltip"
-                                                        data-bs-placement="top" title="Editar">
-                                                        <i class="svg-icon fas fa-pencil"></i>
-                                                    </a>
-                                                    <button type="button" class="button button-red btnDelete" style="width: 45%"
-                                                    data-bs-toggle="modal" data-bs-target="#exampleModalToggle" data-animal="{{json_encode($a)}}"
-                                                        data-bs-pp="tooltip" data-bs-placement="top" title="Dar de baja">
-                                                        <i class="svg-icon fas fa-trash"></i>
-                                                    </button>
-    
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    @endforeach --}}
-                                    </tbody>
-                                </table>
+                                @php
+                                    $exp = $animal->expedientes->get(0);
+                                    $historialesAgrupados = [];
+                                @endphp
 
+                                @foreach ($exp->historialPatologia as $historial)
+                                    @php
+                                        $nombrePatologia = $historial->patologium->patologia;
+                                        if (!isset($historialesAgrupados[$nombrePatologia])) {
+                                            $historialesAgrupados[$nombrePatologia] = [];
+                                        }
+                                        $historialesAgrupados[$nombrePatologia][] = $historial;
+                                    @endphp
+                                @endforeach
+
+                                <div id="contenedorPatologia">
+                                    @foreach ($historialesAgrupados as $nombrePatologia => $historiales)
+                                        <div class="vaccine-container historialp-row"
+                                            data-patologia="{{ json_encode($historiales) }}">
+                                            <div class="vaccine-content"
+                                                style="margin: 0; display: flex; align-items: center">
+                                                <img src="{{ asset('img/suero.svg') }}"
+                                                    alt="triangle with all three sides equal" height="25"
+                                                    width="25" style="margin-right: 3px" />
+                                                <span class="vaccine-title">{{ $nombrePatologia }}</span>
+                                            </div>
+                                            <ul>
+                                                @php
+                                                    // Ordena los historiales por fecha de diagnóstico de forma descendente
+                                                    usort($historiales, function ($a, $b) {
+                                                        return strtotime($b->fechaDiagnostico) - strtotime($a->fechaDiagnostico);
+                                                    });
+
+                                                    // Toma el último historial (el más reciente) para mostrarlo
+                                                    $ultimoHistorial = reset($historiales);
+                                                @endphp
+                                                <ul>
+                                                    <li>
+                                                        Diagnosticado el
+                                                        <span>{{ date('d/m/Y', strtotime($ultimoHistorial->fechaDiagnostico)) }}</span>
+                                                    </li>
+                                                    <li>
+                                                        Estado:
+                                                        <span style="font-size: 15px;"
+                                                            class="@if ($ultimoHistorial->estado == 'De alta') badge rounded-pill alert-success @elseif($ultimoHistorial->estado == 'En tratamiento') badge rounded-pill alert-warning @elseif($ultimoHistorial->estado == 'En espera de tratamiento') badge rounded-pill alert-danger @endif">
+                                                            {{ $ultimoHistorial->estado }}
+                                                        </span>
+                                                    </li>
+                                                </ul>
+                                            </ul>
+                                        </div>
+                                    @endforeach
+                                    <br>
+                                </div>
                             </div>
-
                         </div>
                     </div>
                 @endif
-                @include('animal.historial')
+                @php use App\Http\Controllers\AlbergueController; @endphp
+                @php use App\Models\Alvergue; @endphp
+                @php use App\Models\Miembro; @endphp
+                @if ($registrado->count() >0)
+                    <!--Modal alberlgar desde expediente-->
+                    <div class="modal fade" id="ModalALbergarExpediente" tabindex="-1"
+                        aria-labelledby="ModalALbergarExpedientes" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-lg ">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" style="margin-left: auto; margin-right: auto;">Lista de
+                                        Albergues disponibles</h5>
+                                </div>
+                                <div class="modal-body">
+
+                                    <table>
+                                        <thead>
+                                            <tr class="head">
+                                                <th></th>
+                                                <th>Código</th>
+                                                <th>Encargado</th>
+                                                <th>direccion</th>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="tableBody">
+
+                                            @php $albergueDisponible = Alvergue::where('estado','1')->get();@endphp
+                                            @foreach ($albergueDisponible as $a)
+                                                <tr>
+                                                    <td>{{ $a->idAlvergue }}</td>
+                                                    <td>{{ $a->miembro->nombres }} {{ $a->miembro->apellidos }}</td>
+                                                    <td>{{ $a->direccion }}</td>
+
+                                                    </td>
+                                                    <td>
+                                                        <div
+                                                            style="display: flex; align-items: flex-end; gap: 3px; justify-content: center">
+                                                            <a href="{{ url('albergarDeExpediente/' . $a->idAlvergue . '/' . ($animal->expedientes->count() == 0 ? '' : $animal->expedientes->get(0)->idExpediente)) }}"
+                                                                class="button button-blue" style="width: 45%;"
+                                                                data-bs-pp="tooltip" data-bs-placement="top"
+                                                                title="Albergar en este albergue">
+                                                                <i class="svg-icon fas fa-pencil"></i>
+                                                            </a>
+
+
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Cerrar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endif
+                @include('historialVacunas.index')
+                @include('historialPatologia.index')
         </main>
     </div>
+
 @endsection

@@ -28,7 +28,7 @@
                             </div>
                             <div class="d-flex" style="width:45%; gap:8px">
                                 <button type="button" class="button button-pri" style="width: 30%;"
-                                onclick="window.location.href='{{route('adopcion.form')}}'" >
+                                onclick="window.location.href='{{url('/adopcion/create')}}'" >
                                     <i class="svg-icon fas fa-plus"></i>
                                     <span class="lable">Nueva adopción</span>
                                 </button>
@@ -36,6 +36,7 @@
                                     placeholder="🔍︎ Buscar" type="search">
                             </div>
                         </div>
+                        
                         <div id="grid" class="d-flex justify-content-center">
                             <div class="row col-xl-8">
 

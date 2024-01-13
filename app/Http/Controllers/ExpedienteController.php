@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Animal;
 use App\Models\Expediente;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class ExpedienteController extends Controller
@@ -20,12 +22,14 @@ class ExpedienteController extends Controller
             'expedientes' => $expedientes,
         ]);
     }
+    
     public function getExpedientes()
     {
         $expedientes = Expediente::with('animal')->where('estado', 1)->get();
         
         return response()->json($expedientes);
     }
+
     public function store(Request $request)
     {
         $request->validate([
@@ -44,10 +48,10 @@ class ExpedienteController extends Controller
         $ultimoRegistro = Expediente::latest('idExpediente')->first();
 
         // Calcula el siguiente incremento
-        $siguienteIncremento = $ultimoRegistro ? (int) substr($ultimoRegistro->idMiembro, -4) + 1 : 1;
+        $siguienteIncremento = $ultimoRegistro ? (int) substr($ultimoRegistro->idExpediente, -4) + 1 : 1;
 
         // Crea el ID personalizado concatenando "MB" y el incremento
-        $idPersonalizado = "EX" . str_pad($siguienteIncremento, 5, '0', STR_PAD_LEFT);
+        $idPersonalizado = "EXP" . str_pad($siguienteIncremento, 4, '0', STR_PAD_LEFT);
 
         //Guardar en BD
         $expediente = new Expediente();
@@ -61,9 +65,44 @@ class ExpedienteController extends Controller
 
         return redirect()->route('expediente.index');
     }
+
+    public function crearExpediente($id)
+    {
+         // Obtén el último registro de la tabla para determinar el siguiente incremento
+         $ultimoRegistro = Expediente::latest('idExpediente')->first();
+
+         // Calcula el siguiente incremento
+         $siguienteIncremento = $ultimoRegistro ? (int) substr($ultimoRegistro->idExpediente, -4) + 1 : 1;
+ 
+         // Crea el ID personalizado concatenando "MB" y el incremento
+         $idPersonalizado = "EXP" . str_pad($siguienteIncremento, 4, '0', STR_PAD_LEFT);
+ 
+         $expediente = new Expediente();
+         $expediente->idExpediente = $idPersonalizado;
+         $expediente->idAnimal = $id;
+         $expediente->idAlvergue = null;
+         $expediente->fechaIngreso = Carbon::now()->format('Y-m-d');;
+         $expediente->estadoGeneral = 'Controlado';
+         $expediente->estado = 1;
+         $expediente->save();
+ 
+ 
+         return view('expediente.detalles')->with([
+             'animal' => Animal::find($id),
+             'registrado' => Expediente::where('idAnimal', $id)->get(),
+             'estado' => Expediente::where('idAnimal', $id)->value('estadoGeneral'),
+             'idExpediente' => Expediente::where('idAnimal', $id)->value('idExpediente')
+         ]);
+    }
     public function show($id)
     {
-        //
+       return view('expediente.detalles')->with([
+            'animal' => Animal::find($id),
+            'registrado' => Expediente::where('idAnimal', $id)->get(),
+            'estado' => Expediente::where('idAnimal', $id)->value('estadoGeneral'),
+            'idExpediente' => Expediente::where('idAnimal', $id)->value('idExpediente'),
+            'accion' => false
+        ]);
     }
     public function edit($id)
     {

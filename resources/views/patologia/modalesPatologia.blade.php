@@ -41,7 +41,7 @@
                 <p> <img src="{{ asset('img/patologia.png') }}" alt="user" class="picture"
                         style="width: 15%; height: auto; margin-left: auto; margin-right: auto;"> </p>
                 <p>Código: <span id="codigo"></span></p>
-                <p>Patología: <span id="patlogia"></span></p>
+                <p>Patología: <span id="p"></span></p>
 
             </div>
         </div>

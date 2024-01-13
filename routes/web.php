@@ -3,9 +3,11 @@
 use App\Http\Controllers\AlbergueController;
 use App\Http\Controllers\EspecieController;
 use App\Http\Controllers\ExpedienteController;
+use App\Http\Controllers\HistorialPatologiasController;
 use App\Http\Controllers\MiembroController;
 use App\Http\Controllers\PatologiaController;
 use App\Http\Controllers\VacunaController;
+use App\Models\Historialvacuna;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,7 +23,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('dashboard.dashboard');
-});
+})->middleware('auth');
 
 Route::resource('animal', 'App\Http\Controllers\AnimalControlador');
 Route::put('/animal/update/{id}', 'App\Http\Controllers\AnimalControlador@update');
@@ -62,36 +64,77 @@ Route::resource('/patologia', 'App\Http\Controllers\PatologiaController');
 Route::put('patologia/update/{id}', [PatologiaController::class, 'update'])->name('patologia.update');
 Route::get('/destroyPatologia/{id}', 'App\Http\Controllers\PatologiaController@destroy');
 
-Route::resource('/historialV', 'App\Http\Controllers\HistorialVacunaController');
+Route::resource('/historialVacunas', 'App\Http\Controllers\HistorialVacunasController');
+Route::post('/historialVacunas/store', 'App\Http\Controllers\HistorialVacunasController@store')->name('historial.store');
+Route::get('/cargarListaDatos/{id}', 'App\Http\Controllers\HistorialVacunasController@cargarListaDatos');
+Route::get('/cargarHistoriales/{id}', 'App\Http\Controllers\HistorialVacunasController@cargarHistoriales');
+Route::delete('/destroyHistorialVacunas/{id}', 'App\Http\Controllers\HistorialVacunasController@destroy');
+Route::get('/obtener-vacunas', 'App\Http\Controllers\HistorialVacunasController@ObtenerVacunas');
+Route::post('/historialVacunas/actualizacionVacunas', 'App\Http\Controllers\HistorialVacunasController@actualizacionHistorialVacunas');
+Route::get('/getTablaVacunas/{idExpediente}/{idVacuna}', 'App\Http\Controllers\HistorialVacunasController@tablaMostrarVacunas');
+
 Route::resource('expediente', 'App\Http\Controllers\ExpedienteController');
-Route::put('/expediente/update/{id}', [ExpedienteController::class, 'update']);
 Route::get('/getExpedientes', 'App\Http\Controllers\ExpedienteController@getExpedientes');
-Route::get('/expedientedestroy/{id}', 'App\Http\Controllers\ExpedienteController@destroy');
+Route::get('/crearExpediente/{id}', 'App\Http\Controllers\ExpedienteController@crearExpediente');
+Route::put('/expediente/update/{id}', [ExpedienteController::class, 'update']);
+Route::get('expedientedestroy/{id}', 'App\Http\Controllers\ExpedienteController@destroy');
 Route::get('/expedienteAlta/{id}', 'App\Http\Controllers\ExpedienteController@alta');
+
+Route::resource('historialPatologias', 'App\Http\Controllers\HistorialPatologiasController');
+Route::post('/historialPatologias/store', [HistorialPatologiasController::class, 'store'])->name('historialP.store');
+Route::get('/obtener-patologias', 'App\Http\Controllers\HistorialPatologiasController@ObtenerPatologias');
+Route::get('/obtener-registros-guardados/{id}', 'App\Http\Controllers\HistorialPatologiasController@obtenerPatologiasGuardadas');
+Route::delete('/historialPatologiaEliminar/{id}', 'App\Http\Controllers\HistorialPatologiasController@eliminarPatologia');
+Route::get('/cargarHistorialesPatologia/{id}', 'App\Http\Controllers\HistorialPatologiasController@cargarHistorialesPatologia');
+Route::post('/historialPatologias/actualizacion', 'App\Http\Controllers\HistorialPatologiasController@actualizacionHistorial');
+Route::get('/getTablaPatologia/{idExpediente}/{idPatologia}', 'App\Http\Controllers\HistorialPatologiasController@tablaMostrar');
 
 Route::get('/albergar/{idExpediente}/{idAlvergue}', 'App\Http\Controllers\AlbergueController@albergar');
 Route::get('/desalbergar/{idExpediente}/{idAlvergue}', 'App\Http\Controllers\AlbergueController@desalbergar');
 Route::get('/albergarDeExpediente/{idAlvergue}/{idExpediente}', 'App\Http\Controllers\AnimalControlador@albergarDeExpediente');
 
-Route::get('/adopcion', 'App\Http\Controllers\AdopcionController@index');
+Route::resource('/adopcion', 'App\Http\Controllers\AdopcionController');
+Route::get('/adopcion-baja/{id}', 'App\Http\Controllers\AdopcionController@baja');
 Route::get('/getAdopciones', 'App\Http\Controllers\AdopcionController@getAdopciones');
-Route::get('/adopcion/nueva', function () {
-    if (session('expElegido')) {
-        $expElegido = session('expElegido');
-    } else {
-        $expElegido = null;
-    }
-
-    if (session('adElegido')) {
-        $adElegido = session('adElegido');
-    } else {
-        $adElegido = null;
-    }
-    return view('adopcion.form')->with(
-        [
-            'expElegido' => $expElegido,
-            'adElegido' => $adElegido,
-        ]);
-})->name('adopcion.form');
-Route::post('/adopcion/nueva', 'App\Http\Controllers\AdopcionController@store');
+Route::get('/aprobarAdopcion/{id}', 'App\Http\Controllers\AdopcionController@aprobarAdopcion');
+Route::get('/denegarAdopcion/{id}', 'App\Http\Controllers\AdopcionController@denegarAdopcion');
+Route::get('/revertirDecisionAdopcion/{id}', 'App\Http\Controllers\AdopcionController@revertirDecisionAdopcion');
+Route::get('/getExpedientesSinAdopcion', 'App\Http\Controllers\AdopcionController@getExpedientesSinAdopcion');
 Route::get('/get-exp-ad-elegido/{idAdoptante}/{idExpediente}', 'App\Http\Controllers\AdopcionController@getExp_AdDElegido');
+// Route::middleware(['auth', 'can:isAdmin'])->group(function () {
+//     // Rutas que solo pueden ser accedidas por administradores
+//     // ...
+// });
+
+// Route::middleware(['auth', 'can:isUser'])->group(function () {
+//     // Rutas que pueden ser accedidas por usuarios comunes
+//     // ...
+// });
+// routes/web.php
+
+Route::get('/login', 'App\Http\Controllers\LoginController@show')->name('login')->middleware('guest');;
+Route::post('/login', 'App\Http\Controllers\LoginController@login');
+Route::post('/logout', 'App\Http\Controllers\LoginController@logout')->name('logout');
+
+
+Route::get('/inventario', function () {
+    return view('inventario.index');
+});
+Route::resource('/inventario/recursos', 'App\Http\Controllers\RecursoController');
+Route::get('/obtener-unidades/{categoria}', 'App\Http\Controllers\RecursoController@obtenerUnidades');
+Route::put('/inventario/recursos/update/{id}', 'App\Http\Controllers\RecursoController@update');
+Route::get('/inventario/recursos/destroy/{id}', 'App\Http\Controllers\RecursoController@destroy');
+
+Route::resource('/inventario/categorias', 'App\Http\Controllers\CategoriaController');
+Route::put('/inventario/categorias/update/{id}', 'App\Http\Controllers\CategoriaController@update');
+Route::get('/inventario/categorias/destroy/{id}', 'App\Http\Controllers\CategoriaController@destroy');
+
+Route::resource('/inventario/unidadMedidas', 'App\Http\Controllers\UnidadMedidacontroller');
+Route::put('/inventario/unidadMedidas/update/{id}', 'App\Http\Controllers\UnidadMedidaController@update');
+Route::get('/inventario/unidadMedidas/destroy/{id}', 'App\Http\Controllers\UnidadMedidaController@destroy');
+
+Route::resource('/inventario/movimientos', 'App\Http\Controllers\MovimientoController');
+Route::resource('/inventario/donantes', 'App\Http\Controllers\DonanteController');
+Route::get('/inventario/historial', function () {
+    return view('inventario.historial');
+});

@@ -115,7 +115,7 @@
     color:  #000;
   }
 
-   .button-red{
+  .button-red{
     background: #ff000027;
   }
   .button-red >.lable{
@@ -137,6 +137,16 @@
   .button-blue >.svg-icon{
     color:  #002df8;
   }
+
+  .button-green{
+    background: rgba(78, 207, 68, 0.299);; ;
+  }
+  .button-green >.lable{
+    color: #177428;
+  }
+  .button-green >.svg-icon{
+    color:  #177428;
+  }
   .lable {
     margin-top: 1px;
     font-size: 14px;
@@ -157,6 +167,9 @@
   }
   .button-blue:hover  {
     background-color:  #0015ff4a;   
+  }
+  .button-green:hover{
+    background-color:  rgba(58, 156, 51, 0.299);; 
   }
   .button-blue:hover .svg-icon,
   .button-red:hover .svg-icon,

@@ -1,7 +1,7 @@
 $(document).ready(function () {
 
     $("#btnCancelar").click(function () {
-        window.location.href = '/expediente'
+        window.location.href = '/raza'
     });
 
      //Si presiona eliminar abrira el modal con los datos que se daran de baja
@@ -46,10 +46,10 @@ $('.raza-row').on('click', function (event) {
     var button = $(this); // Fila de la tabla que se hizo clic
     var id = button.data('raza').idRaza; // Obtiene el valor del atributo data-id
     var nombre = button.data('raza').raza; // Obtiene el valor del atributo data-nombre
-    //var especie = button.data('raza').especie.especie; // Obtiene el valor del atributo data-apellido
-   
+        var especie = button.data('raza').idEspecie; // Obtiene el valor del atributo data-apellido
+   console.log(button.data('raza'))
     // Actualiza el contenido del modal con los detalles del registro
-    $('#codigo').text(id);
+    $('#Codigo').text(id);
     $('#Raza').text(nombre);
     $('#Especie').text(especie);
 

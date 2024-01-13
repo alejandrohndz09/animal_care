@@ -84,10 +84,11 @@ $(document).ready(function () {
         }
 
         $('body').on('click', '#confirmar', function () {
-            $.get('/animal/destroy/' + id, function () {
-                // location.reload();
-                window.location.href = '/animal'
-            });
+            window.location.href = '/animal/destroy/' + id;
+            // $.get('/animal/destroy/' + id, function () {
+            //     // location.reload();
+            //     window.location.href = '/animal'
+            // });
         });
 
     });
@@ -135,18 +136,26 @@ function imagenVistaPrevia() {
     });
 }
 // Escuchar el click en una fila
+$(".btnDelete").click(function (event) {
+    // Evitar la propagación del evento al hacer clic en la fila
+    event.stopPropagation();
+});
+$(".btnUpdate").click(function (event) {
+    // Evitar la propagación del evento al hacer clic en la fila
+    event.stopPropagation();
+});
 
 $('#tableBody').on('click', '.animal-row', function (event) {
     console.log('si entra al evento')
 
     // Verifica si el clic se realizó en un botón de editar o eliminar
-    if ($(event.target).is('a#btnUpdate') || $(event.target).is('a#btnDelete')) {
+    if ($(event.target).is('a#btnUpdate') || $(event.target).is('.btnDelete')) {
 
-        return; // No muestres el modal si se hizo clic en un botón
-    } else {
-        var button = $(this); // Fila de la tabla que se hizo clic
-        var id = button.data('animal').idAnimal; // Obtiene el valor del atributo data-id
-        window.location.href = '/animal/' + id;
-    }
-});
+            return; // No muestres el modal si se hizo clic en un botón
+        } else {
+            var button = $(this); // Fila de la tabla que se hizo clic
+            var id = button.data('animal').idAnimal; // Obtiene el valor del atributo data-id
+            window.location.href = '/expediente/' + id;
+        }
+    });
 

@@ -42,13 +42,14 @@ function cargarRegistros(pagina, filtro) {
 
     columna.innerHTML =
       '<div class="card mb-4 panelGrid" style="border: none; padding:.5rem; padding-bottom: 25px !important; gap: 0rem !important; width: 100%">' +
-        '<a href="/animal/'+ expediente.idAnimal+'" class="stretched-link"></a>'+
+        '<a href="/expediente/'+ expediente.idAnimal+'" class="stretched-link"></a>'+
         '<div style="width: 100%; height: 140px; overflow: hidden;">' +
           '<img src="' + img + '" class="card-img-top" style="width: 100%; height: 100%; object-fit: cover;">' +
         '</div>' +
         '<div style="margin: 0; display: flex; align-items: center; font-weight: bold;"> Cod. ' + expediente.idExpediente + '</div>' +
         '<div style="margin: 0; display: flex; align-items: center;color:#6067eb; font-size: 14px"> <i class="fas fa-paw" style="margin-right: 3px;"></i>' + expediente.animal.nombre + '</div>' +
-        '<div style="margin: 0; display: flex; align-items: center; color:#867596; font-size: 12px "> <i class="fas fa-calendar" style="margin-right: 3px;"></i>Desde el ' + dateFormat(expediente.fechaIngreso) + '</div>'
+      '<div style="margin: 0; display: flex; align-items: center; color:#867596; font-size: 12px "><i class="fas fa-calendar" style="margin-right: 3px;"></i>Desde el ' + dateFormat(expediente.fechaIngreso) + '</div>'+
+      '<div style="margin: 0; display: flex; justify-content:end; color:#867596; font-size: 12px "> <span class="badge rounded-pill alert-secondary">'+expediente.estadoGeneral+'</span></div>'
     '</div>';
     table.appendChild(columna);
   });

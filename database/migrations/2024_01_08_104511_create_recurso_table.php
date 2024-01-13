@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('idCategoria', 7)->nullable()->index('idCategoria');
             $table->float('cantidad', 10, 0)->nullable();
             $table->string('idUnidadMedida', 7)->nullable()->index('idUnidadMedida');
+            $table->integer('estado')->nullable();
         });
     }
 

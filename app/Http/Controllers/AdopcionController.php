@@ -21,16 +21,33 @@ class AdopcionController extends Controller
     public function index()
     {
         //Formulario donde se agrega datos
-        $adopciones = Adopcion::where('estado', 1)->get();
+        $adopciones = Adopcion::where('estado', 1)->orderByDesc('aceptacion')
+            ->orderByDesc('fechaTramiteInicio')->get();
         return view('adopcion.index')->with([
             'adopciones' => $adopciones,
         ]);
     }
-    public function getAdopciones()
+
+    public function create()
     {
-        $adopciones = Adopcion::with('expediente.animal')->where('estado', 1)->get();
-        return response()->json($adopciones);
+        if (session('expElegido')) {
+            $expElegido = session('expElegido');
+        } else {
+            $expElegido = null;
+        }
+
+        if (session('adElegido')) {
+            $adElegido = session('adElegido');
+        } else {
+            $adElegido = null;
+        }
+        return view('adopcion.form')->with(
+            [
+                'expElegido' => $expElegido,
+                'adElegido' => $adElegido,
+            ]);
     }
+
     public function store(Request $request)
     {
         if (empty($request->input('idAdoptante'))) {
@@ -72,7 +89,7 @@ class AdopcionController extends Controller
         } else {
             $request->validate([
                 'expA' => 'required|exists:expediente,idExpediente',
-                'idAdoptante'=>'required_if:idAdoptante,' . request('idAdoptante') . '|exists:adoptante,idAdoptante',
+                'idAdoptante' => 'required_if:idAdoptante,' . request('idAdoptante') . '|exists:adoptante,idAdoptante',
                 'nombres' => 'required|min:3',
                 'apellidos' => 'required|min:3',
                 'dui' => [
@@ -105,10 +122,10 @@ class AdopcionController extends Controller
                 'direccion.unique' => 'Esta dirección ya ha sido ingresada.',
             ]);
         }
-      
+
         // si no se ha elegido un adoptante registrado...
         if (empty($request->input('idAdoptante'))) {
-            
+
             DB::beginTransaction();
             try {
                 // Crea un nuevo registro en la tabla de hogar
@@ -132,13 +149,13 @@ class AdopcionController extends Controller
                 ]);
                 $telefonosAd = $request->input('telefonosAd');
                 $telefonosAAsociar = [];
-                
+
                 foreach ($telefonosAd as $telefono) {
                     $telefonosAAsociar[] = ['telefono' => $telefono];
                 }
-                
+
                 $adoptante->telefono_adoptantes()->createMany($telefonosAAsociar);
-                
+
                 // Crea un nuevo registro en la tabla de adopciones
                 $adoption = Adopcion::create([
                     'idAdopcion' => $this->generarIdAdopcion(),
@@ -148,16 +165,24 @@ class AdopcionController extends Controller
                     'aceptacion' => 0,
                     'estado' => 1,
                 ]);
-
+                Expediente::where('idExpediente', $request->input('expA'))->update(['estadoGeneral' => 'En proceso de adopción']);
                 // Confirma la transacción
                 DB::commit();
-
-                return redirect('/adopcion/')
-                    ->with('success', 'Registro de adopción y adoptante guardados con éxito.');
+                $alert = array(
+                    'type' => 'success',
+                    'message' => 'Operación exitosa',
+                );
+                session()->flash('alert', $alert);
+                return redirect('/adopcion/' . $adoption->idAdopcion)
+                    ->with($alert);
             } catch (\Exception $e) {
                 // En caso de error, realiza un rollback de la transacción
                 DB::rollBack();
-                dd($e->getMessage());
+                $alert = array(
+                    'type' => 'error',
+                    'message' => 'Operación fallida',
+                );
+                session()->flash('alert', $alert);
                 return back()
                     ->withInput()
                     ->with('error', 'Error al guardar los registros.');
@@ -173,96 +198,36 @@ class AdopcionController extends Controller
                     'aceptacion' => 0,
                     'estado' => 1,
                 ]);
-                 // Confirma la transacción
-                 DB::commit();
+                Expediente::where('idExpediente', $request->input('expA'))->update(['estadoGeneral' => 'En proceso de adopción']);
+                // Confirma la transacción
+                DB::commit();
 
-                 return redirect('/adopcion/')
-                     ->with('success', 'Registro de adopción y adoptante guardados con éxito.');
+                $alert = array(
+                    'type' => 'success',
+                    'message' => 'Operación exitosa',
+                );
+                session()->flash('alert', $alert);
+                return redirect('/adopcion/' . $adoption->idAdopcion)
+                    ->with($alert);
             } catch (\Exception $e) {
                 // En caso de error, realiza un rollback de la transacción
                 DB::rollBack();
-                dd($e->getMessage());
+                $alert = array(
+                    'type' => 'error',
+                    'message' => 'Operación fallida'.$e->getMessage(),
+                );
+                session()->flash('alert', $alert);
                 return back()
                     ->withInput()
                     ->with('error', 'Error al guardar los registros.');
-            
+
             }
         }
     }
 
-    public function generarIdAdoptante()
-    {
-        // Obtener el último registro de la tabla "ADOPTANTE"
-        $ultimoAdoptante = Adoptante::latest('idAdoptante')->first();
-        if (!$ultimoAdoptante) {
-            // Si no hay registros previos, comenzar desde AD0001
-            $nuevoId = 'AD0001';
-        } else {
-            // Obtener el número del último idAdoptante
-            $ultimoNumero = intval(substr($ultimoAdoptante->idAdoptante, 2));
-            
-            // Incrementar el número para el nuevo registro
-            $nuevoNumero = $ultimoNumero + 1;
-            // Formatear el nuevo idAnimal con ceros a la izquierda
-            $nuevoId = 'AD' . str_pad($nuevoNumero, 4, '0', STR_PAD_LEFT);
-        }
-
-        return $nuevoId;
-    }
-    public function generarIdHogar()
-    {
-        // Obtener el último registro de la tabla "ADOPTANTE"
-        $ultimoHogar = Hogar::latest('idHogar')->first();
-        if (!$ultimoHogar) {
-            // Si no hay registros previos, comenzar desde AD0001
-            $nuevoId = 'HG0001';
-        } else {
-            // Obtener el número del último idHogar
-            $ultimoNumero = intval(substr($ultimoHogar->idHogar, 2));
-            // Incrementar el número para el nuevo registro
-            $nuevoNumero = $ultimoNumero + 1;
-            // Formatear el nuevo idAnimal con ceros a la izquierda
-            $nuevoId = 'HG' . str_pad($nuevoNumero, 4, '0', STR_PAD_LEFT);
-        }
-
-        return $nuevoId;
-    }
-    public function generarIdAdopcion()
-    {
-        // Obtener el último registro de la tabla "ADOPCION"
-        $ultimoAnimal = Adopcion::latest('idAdopcion')->first();
-        
-        if (!$ultimoAnimal) {
-            // Si no hay registros previos, comenzar desde AN0001
-            $nuevoId = 'ADC0001';
-        } else {
-            // Obtener el número del último idAdopcion
-            $ultimoNumero = intval(substr($ultimoAnimal->idAdopcion, 3));
-            // Incrementar el número para el nuevo registro
-            $nuevoNumero = $ultimoNumero + 1;
-
-            // Formatear el nuevo idAnimal con ceros a la izquierda
-            $nuevoId = 'ADC' . str_pad($nuevoNumero, 4, '0', STR_PAD_LEFT);
-        }
-
-        return $nuevoId;
-    }
-
     public function show($id)
     {
-        //
-    }
-
-    public function getExp_AdDElegido($idExpediente, $idAdoptante)
-    {
-
-        $expediente = Expediente::find($idExpediente);
-        $adoptante = Adoptante::find($idAdoptante);
-        return redirect()->route('adopcion.form')->with(
-            [
-                'expElegido' => $expediente,
-                'adElegido' => $adoptante,
-            ]);
+        return view('adopcion.form')->with('adopcion', Adopcion::find($id));
     }
 
     public function edit($id)
@@ -300,12 +265,27 @@ class AdopcionController extends Controller
         return redirect()->route('adopcion.index');
     }
 
-    public function destroy($id)
+    public function baja($id)
     {
-        $adopcion = Adopcion::find($id);
-        $adopcion->estado = '0';
-        $adopcion->save();
-        return redirect()->route('adopcion.index');
+        
+       
+            $adopcion = Adopcion::find($id);
+            $adopcion->estado=0;
+            $expediente = $adopcion->expediente;
+
+            if ($expediente) {
+                $expediente->estadoGeneral = $adopcion->expediente->idAlvergue != null ? 'Albergado' : 'Controlado';
+                $expediente->save();
+            }
+            $adopcion->delete();
+            $alert = array(
+                'type' => 'success',
+                'message' => 'Operación exitosa',
+            );
+            session()->flash('alert', $alert);
+
+            return redirect()->route('adopcion.index')->with($alert);
+       
     }
 
     public function alta($id)
@@ -314,5 +294,223 @@ class AdopcionController extends Controller
         $adopcion->estado = '1';
         $adopcion->save();
         return redirect()->route('adopcion.index');
+    }
+
+    public function aprobarAdopcion($id)
+    {
+        DB::beginTransaction();
+
+        try {
+            $adopcion = Adopcion::find($id);
+            $adopcion->aceptacion = '1';
+            $adopcion->fechaTramiteFin = date('Y-m-d');
+            $expediente = $adopcion->expediente;
+
+            if ($expediente) {
+                $expediente->estadoGeneral = 'Adoptado';
+                $expediente->save();
+            }
+            $adopcion->save();
+
+            DB::commit();
+
+            $alert = array(
+                'type' => 'success',
+                'message' => 'Operación exitosa',
+            );
+            session()->flash('alert', $alert);
+
+            return back()->with($alert);
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            $alert = array(
+                'type' => 'error',
+                'message' => 'Error en la operación',
+            );
+            session()->flash('alert', $alert);
+
+            return back()->with($alert);
+        }
+    }
+
+    public function denegarAdopcion($id)
+    {
+        DB::beginTransaction();
+
+        try {
+            $adopcion = Adopcion::find($id);
+            $adopcion->aceptacion = '2';
+            $adopcion->fechaTramiteFin = date('Y-m-d');
+            $expediente = $adopcion->expediente;
+
+            if ($expediente) {
+                $expediente->estadoGeneral = $adopcion->expediente->idAlvergue != null ? 'Albergado' : 'Controlado';
+                $expediente->save();
+            }
+            $adopcion->save();
+
+            DB::commit();
+
+            $alert = array(
+                'type' => 'success',
+                'message' => 'Operación exitosa',
+            );
+            session()->flash('alert', $alert);
+
+            return back()->with($alert);
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            $alert = array(
+                'type' => 'error',
+                'message' => 'Error en la operación',
+            );
+            session()->flash('alert', $alert);
+
+            return back()->with($alert);
+        }
+    }
+
+    public function revertirDecisionAdopcion($id)
+    {
+        $adopcion = Adopcion::find($id);
+
+        foreach ($adopcion->expediente->adopcions as $a) {
+            if ($a->aceptacion == 0 && $a->idAdopcion != $adopcion->idAdopcion) {
+                $alert = array(
+                    'type' => 'error',
+                    'message' => 'Este expediente ya tiene un trámite pendiente',
+                );
+                session()->flash('alert', $alert);
+                return back();
+            }
+        }
+
+        DB::beginTransaction();
+
+        try {
+
+            $adopcion->aceptacion = '0';
+            $adopcion->fechaTramiteFin = null;
+            $expediente = $adopcion->expediente;
+
+            if ($expediente) {
+                $expediente->estadoGeneral = 'En proceso de adopción';
+                $expediente->save();
+            }
+            $adopcion->save();
+
+            DB::commit();
+
+            $alert = array(
+                'type' => 'info',
+                'message' => 'Se ha revertido la decisión.',
+            );
+            session()->flash('alert', $alert);
+
+            return back()->with($alert);
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            $alert = array(
+                'type' => 'error',
+                'message' => 'Error en la operación',
+            );
+            session()->flash('alert', $alert);
+
+            return back()->with($alert);
+        }
+    }
+
+    public function getExp_AdDElegido($idExpediente, $idAdoptante)
+    {
+
+        $expediente = Expediente::find($idExpediente);
+        $adoptante = Adoptante::find($idAdoptante);
+
+        return redirect('/adopcion/create')->with(
+            [
+                'expElegido' => $expediente,
+                'adElegido' => $adoptante,
+            ]);
+    }
+
+    public function generarIdAdoptante()
+    {
+        // Obtener el último registro de la tabla "ADOPTANTE"
+        $ultimoAdoptante = Adoptante::latest('idAdoptante')->first();
+        if (!$ultimoAdoptante) {
+            // Si no hay registros previos, comenzar desde AD0001
+            $nuevoId = 'AD0001';
+        } else {
+            // Obtener el número del último idAdoptante
+            $ultimoNumero = intval(substr($ultimoAdoptante->idAdoptante, 2));
+
+            // Incrementar el número para el nuevo registro
+            $nuevoNumero = $ultimoNumero + 1;
+            // Formatear el nuevo idAnimal con ceros a la izquierda
+            $nuevoId = 'AD' . str_pad($nuevoNumero, 4, '0', STR_PAD_LEFT);
+        }
+
+        return $nuevoId;
+    }
+
+    public function generarIdHogar()
+    {
+        // Obtener el último registro de la tabla "ADOPTANTE"
+        $ultimoHogar = Hogar::latest('idHogar')->first();
+        if (!$ultimoHogar) {
+            // Si no hay registros previos, comenzar desde AD0001
+            $nuevoId = 'HG0001';
+        } else {
+            // Obtener el número del último idHogar
+            $ultimoNumero = intval(substr($ultimoHogar->idHogar, 2));
+            // Incrementar el número para el nuevo registro
+            $nuevoNumero = $ultimoNumero + 1;
+            // Formatear el nuevo idAnimal con ceros a la izquierda
+            $nuevoId = 'HG' . str_pad($nuevoNumero, 4, '0', STR_PAD_LEFT);
+        }
+
+        return $nuevoId;
+    }
+
+    public function generarIdAdopcion()
+    {
+        // Obtener el último registro de la tabla "ADOPCION"
+        $ultimoAnimal = Adopcion::latest('idAdopcion')->first();
+
+        if (!$ultimoAnimal) {
+            // Si no hay registros previos, comenzar desde ADC0001
+            $nuevoId = 'ADC0001';
+        } else {
+            // Obtener el número del último idAdopcion
+            $ultimoNumero = intval(substr($ultimoAnimal->idAdopcion, 3));
+            // Incrementar el número para el nuevo registro
+            $nuevoNumero = $ultimoNumero + 1;
+
+            // Formatear el nuevo idAnimal con ceros a la izquierda
+            $nuevoId = 'ADC' . str_pad($nuevoNumero, 4, '0', STR_PAD_LEFT);
+        }
+
+        return $nuevoId;
+    }
+
+    public function getAdopciones()
+    {
+        $adopciones = Adopcion::with('expediente.animal')->where('estado', 1)->orderby('aceptacion')
+            ->orderByDesc('fechaTramiteInicio')->get();
+        return response()->json($adopciones);
+    }
+
+    public function getExpedientesSinAdopcion()
+    {
+        $expedientes = Expediente::with('animal')
+            ->where('estado', 1)
+            ->where('estadoGeneral', 'Controlado')
+            ->orWhere('estadoGeneral', 'Albergado')
+            ->get();
+
+        return response()->json($expedientes);
     }
 }

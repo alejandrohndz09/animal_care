@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::table('expediente', function (Blueprint $table) {
             $table->foreign(['idAnimal'], 'fk_aml-exp')->references(['idAnimal'])->on('animal')->onUpdate('CASCADE')->onDelete('NO ACTION');
-            $table->foreign(['idAlvergue'], 'expediente_ibfk_1')->references(['idAlvergue'])->on('alvergue')->onUpdate('CASCADE')->onDelete('NO ACTION');
+            $table->foreign(['idAlvergue'], 'expediente_ibfk_1')->references(['idAlvergue'])->on('alvergue')->onUpdate('CASCADE')->onDelete('CASCADE');
         });
     }
 

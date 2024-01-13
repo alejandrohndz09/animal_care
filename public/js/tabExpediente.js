@@ -25,7 +25,29 @@ function cargarRegistros(pagina, filtro) {
   table.innerHTML = '';
 
   if (registrosMostrados.length === 0) {
-    table.innerHTML = '<p>No se entregaron registros</p>';
+    const newRow = document.createElement('tr');
+    
+    // Crear un nuevo elemento <td>
+    const newCell = document.createElement('td');
+    
+    // Realizar una solicitud AJAX para cargar el contenido del archivo
+    fetch('/html/loader.html')
+        .then(response => response.text())
+        .then(data => {
+            // Establecer el contenido del <td> con el HTML cargado del archivo
+            newCell.innerHTML = data;
+        })
+        .catch(error => {
+            console.error('Error al cargar', error);
+        });
+    
+        newCell.style.width = '100%';
+    // Agregar el <td> como hijo del <tr>
+    newRow.appendChild(newCell);
+    
+    // Agregar el <tr> al <tbody> de la tabla
+    table.appendChild(newRow);
+    
     return;
   }
   // Obtiene la URL actual
@@ -104,10 +126,16 @@ function generarPaginador(totalRegistros) {
   }
 }
 
+var urlActual = window.location.href;
+
+// Divide la URL en segmentos usando el carácter '/'
+var segmentos = urlActual.split('/');
+// Accede al último segmento (la última palabra en la URL)
+var ultimaPalabra = segmentos[segmentos.length - 1];
 
 // Realizar la primera carga de expedientes usando una solicitud AJAX
 $.ajax({
-  url: '/getExpedientes', // URL de la API en tu servidor
+  url:  ultimaPalabra == 'expediente'? '/getExpedientes':'/getExpedientesSinAdopcion', // URL de la API en tu servidor
   type: 'GET',
   dataType: 'json',
   success: function (response) {

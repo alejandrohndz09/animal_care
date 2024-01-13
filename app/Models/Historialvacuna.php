@@ -6,13 +6,14 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class Historialvacuna
  * 
  * @property string $idHistVacuna
- * @property string|null $fechaAplicacion
+ * @property Carbon|null $fechaAplicacion
  * @property int|null $dosis
  * @property string|null $idVacuna
  * @property string|null $idExpediente
@@ -30,6 +31,7 @@ class Historialvacuna extends Model
 	public $timestamps = false;
 
 	protected $casts = [
+		'fechaAplicacion' => 'datetime',
 		'dosis' => 'int'
 	];
 

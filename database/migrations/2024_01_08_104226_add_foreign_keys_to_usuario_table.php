@@ -13,10 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('alvergue', function (Blueprint $table) {
-            $table->string('idAlvergue', 6)->primary();
-            $table->string('direccion')->nullable();
-            $table->string('idMiembro', 7)->nullable()->index('fk_alv-mbr');
+        Schema::table('usuario', function (Blueprint $table) {
+            $table->foreign(['idMiembro'], 'usuario_ibfk_1')->references(['idMiembro'])->on('miembro')->onUpdate('CASCADE')->onDelete('CASCADE');
         });
     }
 
@@ -27,6 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('alvergue');
+        Schema::table('usuario', function (Blueprint $table) {
+            $table->dropForeign('usuario_ibfk_1');
+        });
     }
 };

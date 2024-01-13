@@ -97,6 +97,7 @@ class AlbergueController extends Controller
 
         //Actualiza los datos en la BD
         $expediente->idAlvergue = $idAlvergue;
+        $expediente->estadoGeneral = 'Albergado';
         $expediente->save();
             return back();
     }
@@ -106,6 +107,7 @@ class AlbergueController extends Controller
 
         //Actualiza los datos en la BD
         $expediente->idAlvergue = null;
+        $expediente->estadoGeneral = 'Controlado';
         $expediente->save();
             return back();
     }

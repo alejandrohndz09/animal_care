@@ -7,6 +7,8 @@ use App\Models\Expediente;
 use App\Models\Historialvacuna;
 use App\Models\Raza;
 use App\Models\Alvergue;
+use App\Models\Vacuna;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -85,16 +87,9 @@ class AnimalControlador extends Controller
 
     public function show($id)
     {
-        return view('animal.detalles')->with([
-            'animal' => Animal::find($id),
-            'registrado' => Expediente::where('idAnimal', $id)->get(),
-            'estado' => Expediente::where('idAnimal', $id)->value('estadoGeneral'),
-            'idExpediente' => Expediente::where('idAnimal', $id)->value('idExpediente'),
-        ]);
+        
     }
-
-
-
+    
     public function edit($id)
     {
         $animal = Animal::find($id);
@@ -158,7 +153,7 @@ class AnimalControlador extends Controller
             session()->flash('alert', $alert);
         } else {
             $alert = array(
-                'type' => 'errror',
+                'type' => 'error',
                 'message' => 'No se puede eliminar el registro porque tiene datos asociados'
             );
 
@@ -306,6 +301,7 @@ class AnimalControlador extends Controller
 
         //Actualiza los datos en la BD
         $expe->idAlvergue = $idAlvergue;
+        $expe->estadoGeneral = 'Albergado';
         $expe->save();
         return back();
     }

@@ -13,9 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('patologias', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+        Schema::create('alvergue', function (Blueprint $table) {
+            $table->string('idAlvergue', 6)->primary();
+            $table->string('direccion')->nullable();
+            $table->string('idMiembro', 7)->nullable()->index('fk_alv-mbr');
+            $table->integer('estado')->nullable();
         });
     }
 
@@ -26,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('patologias');
+        Schema::dropIfExists('alvergue');
     }
 };

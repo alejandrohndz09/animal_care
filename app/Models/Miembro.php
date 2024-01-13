@@ -17,12 +17,13 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $apellidos
  * @property string|null $correo
  * @property int|null $estado
- * @property string $dui
+ * @property string|null $dui
  * 
  * @property Collection|Adopcion[] $adopcions
  * @property Collection|Alvergue[] $alvergues
  * @property Collection|Movimiento[] $movimientos
  * @property Collection|TelefonoMiembro[] $telefono_miembros
+ * @property Collection|Usuario[] $usuarios
  *
  * @package App\Models
  */
@@ -63,5 +64,10 @@ class Miembro extends Model
 	public function telefono_miembros()
 	{
 		return $this->hasMany(TelefonoMiembro::class, 'idMiembro');
+	}
+
+	public function usuarios()
+	{
+		return $this->hasMany(Usuario::class, 'idMiembro');
 	}
 }

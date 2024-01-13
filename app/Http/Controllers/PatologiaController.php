@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Patologia;
+use App\Models\Patologium;
 use Illuminate\Http\Request;
 
 class PatologiaController extends Controller
@@ -14,7 +15,7 @@ class PatologiaController extends Controller
      */
     public function index()
     {
-        $patologia =  Patologia::all();
+        $patologia =  Patologium::all();
         return view('patologia.patologia', ['patologia' => $patologia]);
     }
 
@@ -38,7 +39,7 @@ class PatologiaController extends Controller
     {
         $request->validate(['patologia' => 'required|unique:patologia']);
 
-        $ultimoRegistro = Patologia::latest('idPatologia')->first();
+        $ultimoRegistro = Patologium::latest('idPatologia')->first();
 
         $siguienteIncremento = $ultimoRegistro ? (int) substr($ultimoRegistro->idPatologia, -4) + 1 : 1;
 
@@ -46,13 +47,13 @@ class PatologiaController extends Controller
         $idPersonalizado = "PA" . str_pad($siguienteIncremento, 5, '0', STR_PAD_LEFT);
 
         //guardar en la base
-        $patologia = new Patologia();
+        $patologia = new Patologium();
         $patologia->idPatologia = $this->generarId();
         $patologia->patologia = $request->post('patologia');
 
         $patologia->save();
 
-       
+
         return back()->with('success', 'Guardado con éxito');
     }
 
@@ -75,10 +76,9 @@ class PatologiaController extends Controller
      */
     public function edit($id)
     {
-        $patologiaEdit = Patologia::find($id);
-        $patologia= Patologia::all();
-        return view('patologia.patologia')->with
-        (['patologiaEdit'=> $patologiaEdit,'patologia'=>$patologia ]);
+        $patologiaEdit = Patologium::find($id);
+        $patologia = Patologium::all();
+        return view('patologia.patologia')->with(['patologiaEdit' => $patologiaEdit, 'patologia' => $patologia]);
     }
 
     /**
@@ -90,21 +90,21 @@ class PatologiaController extends Controller
      */
     public function update(Request $request, $id)
     {
-       
-    $patologia = Patologia::find($id);
-    $request->validate([
-        'patologia'=> 'required|unique:patologia,patologia,'.$id.',idPatologia'
-    ]);
-    //actualizar datos en bd
-    $patologia->patologia=$request->post('patologia');
-    $patologia->save();
-    return redirect()->route("patologia.index");
+
+        $patologia = Patologium::find($id);
+        $request->validate([
+            'patologia' => 'required|unique:patologia,patologia,' . $id . ',idPatologia'
+        ]);
+        //actualizar datos en bd
+        $patologia->patologia = $request->post('patologia');
+        $patologia->save();
+        return redirect()->route("patologia.index");
     }
 
     public function generarId()
     {
         // Obtener el último registro de la tabla "Espacio"
-        $ultimaPatologia = Patologia::latest('idPatologia')->first();
+        $ultimaPatologia = Patologium::latest('idPatologia')->first();
 
         if (!$ultimaPatologia) {
             // Si no hay registros previos, comenzar desde PA0001
@@ -130,11 +130,9 @@ class PatologiaController extends Controller
      */
     public function destroy($id)
     {
-        $patologia=Patologia::find($id);
-        
-        $patologia->delete();        
+        $patologia = Patologium::find($id);
+
+        $patologia->delete();
         return back()->with('success', 'Eliminado con éxito');
-               
-              
     }
 }
