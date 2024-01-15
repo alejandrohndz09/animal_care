@@ -22,24 +22,23 @@
                                     <h1 class="mb-8">
                                         {{ $registrado->count() > 0 ? 'Expediente No. ' . $animal->expedientes->get(0)->idExpediente : 'Detalles de animal' }}
                                     </h1>
-                                    @if ( $registrado->count() > 0 )
-                                        
-                                   
-                                    <div class="dropdown">
-                                        <button class="button btn-transparent" style="width: 30px;padding: 15px 5px"
-                                            type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown"
-                                            aria-expanded="false" data-bs-pp="tooltip" data-bs-placement="top"
-                                            title="Opciones">
-                                            <i class="svg-icon fas fa-ellipsis-vertical" style="color: #4c4c4c"></i>
-                                        </button>
-                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                            <li
-                                                onclick="window.location.href = '{{ url('expedientedestroy/' . $animal->expedientes->get(0)->idExpediente) }}'">
-                                                <a class="dropdown-item">Dar de baja expediente</a>
-                                            </li>
-                                        </ul>
-                                    </div>
+                                    @if ($registrado->count() > 0)
+                                        <div class="dropdown">
+                                            <button class="button btn-transparent" style="width: 30px;padding: 15px 5px"
+                                                type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown"
+                                                aria-expanded="false" data-bs-pp="tooltip" data-bs-placement="top"
+                                                title="Opciones">
+                                                <i class="svg-icon fas fa-ellipsis-vertical" style="color: #4c4c4c"></i>
+                                            </button>
+                                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                                <li
+                                                    onclick="window.location.href = '{{ url('expedientedestroy/' . $animal->expedientes->get(0)->idExpediente) }}'">
+                                                    <a class="dropdown-item">Dar de baja expediente</a>
+                                                </li>
+                                            </ul>
+                                        </div>
                                     @endif
+
                                 </div>
                                 <br>
                                 <div class="row mt-1" style="justify-content: center;">
@@ -118,14 +117,20 @@
                                             </div>
                                         @endif
                                     </div>
-                                    @if ($registrado->count() > 0)
+
+                                    @if (
+                                        $registrado->count() > 0 &&
+                                            $animal->expedientes->get(0)->idAlvergue == null &&
+                                            $animal->expedientes->get(0)->estadoGeneral == 'Controlado')
                                         <button type="button" class="button button-pri" style="margin-left: 180%"
                                             data-bs-toggle="modal" data-bs-target="#ModalALbergarExpediente">
                                             <span class="lable">
                                                 Albergar animal
                                             </span>
                                         </button>
-                                    @else
+                                    @endif
+
+                                    @if ($registrado->count() == 0)
                                         <button type="submit" class="button button-pri" style="margin-left: 180%"
                                             onclick="window.location.href = '{{ url('crearExpediente/' . $animal->idAnimal) }}'">
                                             <span class="lable">
@@ -133,14 +138,18 @@
                                             </span>
                                         </button>
                                     @endif
-
-
                                 </div>
 
                             </div>
                             <div class="col-xl-4" style="margin: auto 0;">
+                                <button type="submit" class="button button-pri"
+                                    style="margin-left: 67%;margin-top: -10%;" data-bs-pp="tooltip"
+                                    onclick="window.location.href = '{{ url('/expediente/pdf/' . $animal->idAnimal) }}'"
+                                    data-bs-placement="top" title="Imprimir">
+                                    <i class="svg-icon fas fa-print"></i>
+                                </button>
                                 <div
-                                    style="margin-bottom:35px; width: 100%; height: 10rem; display:flex; justify-content: center; align-items: center; overflow: hidden;">
+                                    style="margin-bottom:35px; width: 100%; height: 10rem; display:flex; justify-content: center; align-items: center; overflow: hidden;margin-top: 10%">
                                     <img src="{{ isset($animal->imagen) ? asset($animal->imagen) : asset('img/especie.png') }}"
                                         alt="user"
                                         class="picture"style="width: 55%; height: 100%; object-fit: cover;" />
@@ -250,8 +259,8 @@
                                             <div class="vaccine-content"
                                                 style="margin: 0; display: flex; align-items: center">
                                                 <img src="{{ asset('img/vaccine.svg') }}"
-                                                alt="triangle with all three sides equal" height="25"
-                                                width="25" style="margin-right: 3px" /></i>
+                                                    alt="triangle with all three sides equal" height="25"
+                                                    width="25" style="margin-right: 3px" /></i>
                                                 <span class="vaccine-title">{{ $nombreVacuna }}</span>
                                             </div>
                                             <ul>
@@ -344,7 +353,7 @@
                 @php use App\Http\Controllers\AlbergueController; @endphp
                 @php use App\Models\Alvergue; @endphp
                 @php use App\Models\Miembro; @endphp
-                @if ($registrado->count() >0)
+                @if ($registrado->count() > 0)
                     <!--Modal alberlgar desde expediente-->
                     <div class="modal fade" id="ModalALbergarExpediente" tabindex="-1"
                         aria-labelledby="ModalALbergarExpedientes" aria-hidden="true">

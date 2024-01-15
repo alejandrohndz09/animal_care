@@ -7,6 +7,7 @@ use App\Models\Alvergue;
 use App\Models\Expediente;
 use App\Models\Miembro;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class AlbergueController extends Controller
 {
@@ -20,7 +21,7 @@ class AlbergueController extends Controller
     }
     public function Create()
     {
-        
+
         return view('detalleAlbergue.Create');
     }
 
@@ -91,7 +92,7 @@ class AlbergueController extends Controller
         return redirect()->route("albergue.index");
     }
 
-    public function albergar($idExpediente,$idAlvergue)
+    public function albergar($idExpediente, $idAlvergue)
     {
         $expediente = Expediente::find($idExpediente);
 
@@ -99,9 +100,9 @@ class AlbergueController extends Controller
         $expediente->idAlvergue = $idAlvergue;
         $expediente->estadoGeneral = 'Albergado';
         $expediente->save();
-            return back();
+        return back();
     }
-    public function desalbergar($idExpediente,$idAlvergue)
+    public function desalbergar($idExpediente, $idAlvergue)
     {
         $expediente = Expediente::find($idExpediente);
 
@@ -109,7 +110,7 @@ class AlbergueController extends Controller
         $expediente->idAlvergue = null;
         $expediente->estadoGeneral = 'Controlado';
         $expediente->save();
-            return back();
+        return back();
     }
 
     public function destroy($id)
@@ -149,5 +150,20 @@ class AlbergueController extends Controller
         }
 
         return $nuevoId;
+    }
+
+    public function pdf($id)
+    {
+        $albergue = Alvergue::find($id);
+
+        // dd($historialVacunas);
+        $pdf = PDF::loadView(
+            'albergue.pdf',
+            [
+                'albergue' => $albergue,
+            ]
+        );
+
+        return $pdf->stream();
     }
 }

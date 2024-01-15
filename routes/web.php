@@ -47,10 +47,14 @@ Route::get('/destroy/{id}', [MiembroController::class, 'destroy'])->name('miembr
 Route::delete('/destroyTelefono/{id}', [MiembroController::class, 'destroyTelefono'])->name('miembros.destroyTelefono');
 Route::post('/validar-telefono', 'App\Http\Controllers\AnimalControlador@validarTelefono');
 
+Route::get('/albergue/pdf/{id}',  [AlbergueController::class, 'pdf']);
 Route::resource('/albergue', 'App\Http\Controllers\AlbergueController');
 Route::put('albergue/update/{id}', [AlbergueController::class, 'update'])->name('albergue.update');
 Route::get('/destroyAlbergue/{id}', [AlbergueController::class, 'destroy'])->name('albergue.destroy');
 Route::get('/albergue/alta/{id}', [AlbergueController::class, 'alta'])->name('albergue.alta');
+Route::get('/albergar/{idExpediente}/{idAlvergue}', 'App\Http\Controllers\AlbergueController@albergar');
+Route::get('/desalbergar/{idExpediente}/{idAlvergue}', 'App\Http\Controllers\AlbergueController@desalbergar');
+Route::get('/albergarDeExpediente/{idAlvergue}/{idExpediente}', 'App\Http\Controllers\AnimalControlador@albergarDeExpediente');
 
 Route::resource('/especie', 'App\Http\Controllers\EspecieController');
 Route::put('especie/update/{id}', [EspecieController::class, 'update'])->name('especie.update');
@@ -73,6 +77,7 @@ Route::get('/obtener-vacunas', 'App\Http\Controllers\HistorialVacunasController@
 Route::post('/historialVacunas/actualizacionVacunas', 'App\Http\Controllers\HistorialVacunasController@actualizacionHistorialVacunas');
 Route::get('/getTablaVacunas/{idExpediente}/{idVacuna}', 'App\Http\Controllers\HistorialVacunasController@tablaMostrarVacunas');
 
+Route::get('/expediente/pdf/{id}', 'App\Http\Controllers\ExpedienteController@pdf');
 Route::resource('expediente', 'App\Http\Controllers\ExpedienteController');
 Route::get('/getExpedientes', 'App\Http\Controllers\ExpedienteController@getExpedientes');
 Route::get('/crearExpediente/{id}', 'App\Http\Controllers\ExpedienteController@crearExpediente');
@@ -89,10 +94,7 @@ Route::get('/cargarHistorialesPatologia/{id}', 'App\Http\Controllers\HistorialPa
 Route::post('/historialPatologias/actualizacion', 'App\Http\Controllers\HistorialPatologiasController@actualizacionHistorial');
 Route::get('/getTablaPatologia/{idExpediente}/{idPatologia}', 'App\Http\Controllers\HistorialPatologiasController@tablaMostrar');
 
-Route::get('/albergar/{idExpediente}/{idAlvergue}', 'App\Http\Controllers\AlbergueController@albergar');
-Route::get('/desalbergar/{idExpediente}/{idAlvergue}', 'App\Http\Controllers\AlbergueController@desalbergar');
-Route::get('/albergarDeExpediente/{idAlvergue}/{idExpediente}', 'App\Http\Controllers\AnimalControlador@albergarDeExpediente');
-
+Route::get('/adopcion/pdf/{id}', 'App\Http\Controllers\AdopcionController@pdf');
 Route::resource('/adopcion', 'App\Http\Controllers\AdopcionController');
 Route::get('/adopcion-baja/{id}', 'App\Http\Controllers\AdopcionController@baja');
 Route::get('/getAdopciones', 'App\Http\Controllers\AdopcionController@getAdopciones');
@@ -102,9 +104,11 @@ Route::get('/revertirDecisionAdopcion/{id}', 'App\Http\Controllers\AdopcionContr
 Route::get('/getExpedientesSinAdopcion', 'App\Http\Controllers\AdopcionController@getExpedientesSinAdopcion');
 Route::get('/get-exp-ad-elegido/{idAdoptante}/{idExpediente}', 'App\Http\Controllers\AdopcionController@getExp_AdDElegido');
 
+
 Route::get('/inventario', function () {
     return view('inventario.index');
 });
+
 Route::resource('/inventario/recursos', 'App\Http\Controllers\RecursoController');
 Route::get('/obtener-unidades/{categoria}', 'App\Http\Controllers\RecursoController@obtenerUnidades');
 Route::put('/inventario/recursos/update/{id}', 'App\Http\Controllers\RecursoController@update');
