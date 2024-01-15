@@ -67,21 +67,18 @@ $(document).ready(function () {
     $('#exampleModalToggle').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget); // Botón que desencadenó el modal
         // Botón que desencadenó el modal
-        var id = button.data('recurso-cell').idRecurso; // Obtiene el valor del atributo data-id
-        var nombre = button.data('recurso-cell').recurso; // Obtiene el valor del atributo data-nombre
-        var categoria = button.data('recurso-cell').categoria.categoria; 
+        var idN = button.data('recurso').idRecurso; // Obtiene el valor del atributo data-id
+        var nombre = button.data('recurso').recurso; // Obtiene el valor del atributo data-nombre
+        var categoria = button.data('recurso').categoria.categoria; 
         // // Actualiza el contenido del modal con los detalles del registro
-        $('#Codigo').text(id);
+        $('#Codigo').text(idN);
         $('#Nombre').text(nombre);
         $('#Categoria').text(categoria);
      
       
 
         $('body').on('click', '#confirmar', function () {
-            $.get('/inventario/recursos/destroy/' + id, function () {
-                // location.reload();
-                window.location.href = '/inventario/recursos'
-            });
+            window.location.href = '/inventario/recursos/destroy/' + idN
         });
 
     });
@@ -107,7 +104,7 @@ $('#tableBody').on('click', '.recurso-row', function (event) {
         var button = $(this); // Fila de la tabla que se hizo clic
         var id = button.data('recurso').idRecurso; // Obtiene el valor del atributo data-id
         var nombre = button.data('recurso').recurso; // Obtiene el valor del atributo data-nombre
-        var categoria = button.data('recurso').categoria.categoria; // Obtiene el valor del atributo data-apellido
+        var categoria = button.data('categoria').categoria; // Obtiene el valor del atributo data-apellido
       
         // Actualiza el contenido del modal con los detalles del registro
         $('#CodigoD').text(id);

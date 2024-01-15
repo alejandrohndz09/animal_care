@@ -7,7 +7,6 @@ use App\Http\Controllers\HistorialPatologiasController;
 use App\Http\Controllers\MiembroController;
 use App\Http\Controllers\PatologiaController;
 use App\Http\Controllers\VacunaController;
-use App\Models\Historialvacuna;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,8 +19,8 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
  */
-
-Route::get('/', function () {
+Route::middleware(['auth'])->group(function () {
+  Route::get('/', function () {
     return view('dashboard.dashboard');
 });
 
@@ -104,32 +103,53 @@ Route::get('/revertirDecisionAdopcion/{id}', 'App\Http\Controllers\AdopcionContr
 Route::get('/getExpedientesSinAdopcion', 'App\Http\Controllers\AdopcionController@getExpedientesSinAdopcion');
 Route::get('/get-exp-ad-elegido/{idAdoptante}/{idExpediente}', 'App\Http\Controllers\AdopcionController@getExp_AdDElegido');
 
+// Route::middleware(['auth', 'can:isAdmin'])->group(function () {
+//     // Rutas que solo pueden ser accedidas por administradores
+//     // ...
+// });
 
-Route::get('/inventario', function () {
-    return view('inventario.index');
+// Route::middleware(['auth', 'can:isUser'])->group(function () {
+//     // Rutas que pueden ser accedidas por usuarios comunes
+//     // ...
+// });
+// routes/web.php
+
+    Route::get('/inventario', function () {
+        return view('inventario.index');
+    });
+    Route::resource('/inventario/recursos', 'App\Http\Controllers\RecursoController');
+    Route::get('/obtener-unidades/{categoria}', 'App\Http\Controllers\RecursoController@obtenerUnidades');
+    Route::put('/inventario/recursos/update/{id}', 'App\Http\Controllers\RecursoController@update');
+    Route::get('/inventario/recursos/destroy/{id}', 'App\Http\Controllers\RecursoController@destroy');
+
+    Route::resource('/inventario/categorias', 'App\Http\Controllers\CategoriaController');
+    Route::put('/inventario/categorias/update/{id}', 'App\Http\Controllers\CategoriaController@update');
+    Route::get('/inventario/categorias/destroy/{id}', 'App\Http\Controllers\CategoriaController@destroy');
+
+    Route::resource('/inventario/unidadMedidas', 'App\Http\Controllers\UnidadMedidacontroller');
+    Route::put('/inventario/unidadMedidas/update/{id}', 'App\Http\Controllers\UnidadMedidaController@update');
+    Route::get('/inventario/unidadMedidas/destroy/{id}', 'App\Http\Controllers\UnidadMedidaController@destroy');
+  
+    Route::resource('/inventario/donantes', 'App\Http\Controllers\DonanteController@index');
+    Route::resource('/donantes', 'App\Http\Controllers\DonanteController');
+    Route::resource('inventario/donantes/{id}/edit', 'App\Http\Controllers\DonanteController@edit');
+    Route::get('/destroyDonante/{id}', 'App\Http\Controllers\DonanteController@destroy');
+    Route::resource('/inventario/donantes/update/{id}', 'App\Http\Controllers\DonanteController@update');
+  
+    Route::resource('/inventario/movimientos', 'App\Http\Controllers\MovimientoController');
+    Route::resource('/inventario/donantes', 'App\Http\Controllers\DonanteController');
+    Route::get('/inventario/historial', function () {
+        return view('inventario.historial');
+    });
+
+    Route::resource('/inventario/movimientos', 'App\Http\Controllers\MovimientoController');
+    Route::get('/obtener-unidad/{recurso}', 'App\Http\Controllers\MovimientoController@obtenerUnidad');
+    Route::resource('/inventario/donantes', 'App\Http\Controllers\DonanteController');
+    Route::get('/inventario/historial', function () {
+        return view('inventario.historial');
+    });
 });
+Route::get('/login', 'App\Http\Controllers\LoginController@show')->name('login')->middleware('guest');
+Route::post('/login', 'App\Http\Controllers\LoginController@login');
+Route::post('/logout', 'App\Http\Controllers\LoginController@logout')->name('logout');
 
-Route::resource('/inventario/recursos', 'App\Http\Controllers\RecursoController');
-Route::get('/obtener-unidades/{categoria}', 'App\Http\Controllers\RecursoController@obtenerUnidades');
-Route::put('/inventario/recursos/update/{id}', 'App\Http\Controllers\RecursoController@update');
-Route::get('/inventario/recursos/destroy/{id}', 'App\Http\Controllers\RecursoController@destroy');
-
-Route::resource('/inventario/donantes', 'App\Http\Controllers\DonanteController@index');
-Route::resource('/donantes', 'App\Http\Controllers\DonanteController');
-Route::resource('inventario/donantes/{id}/edit', 'App\Http\Controllers\DonanteController@edit');
-Route::get('/destroyDonante/{id}', 'App\Http\Controllers\DonanteController@destroy');
-Route::resource('/inventario/donantes/update/{id}', 'App\Http\Controllers\DonanteController@update');
-
-Route::resource('/inventario/categorias', 'App\Http\Controllers\CategoriaController');
-Route::put('/inventario/categorias/update/{id}', 'App\Http\Controllers\CategoriaController@update');
-Route::get('/inventario/categorias/destroy/{id}', 'App\Http\Controllers\CategoriaController@destroy');
-
-Route::resource('/inventario/unidadMedidas', 'App\Http\Controllers\UnidadMedidacontroller');
-Route::put('/inventario/unidadMedidas/update/{id}', 'App\Http\Controllers\UnidadMedidaController@update');
-Route::get('/inventario/unidadMedidas/destroy/{id}', 'App\Http\Controllers\UnidadMedidaController@destroy');
-
-Route::resource('/inventario/movimientos', 'App\Http\Controllers\MovimientoController');
-Route::resource('/inventario/donantes', 'App\Http\Controllers\DonanteController');
-Route::get('/inventario/historial', function () {
-    return view('inventario.historial');
-});

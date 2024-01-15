@@ -1,5 +1,5 @@
 <!-- Modal para los registros dados de baja-->
-{{-- <div class="modal fade" id="tabla" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="tabla" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-lg ">
         <div class="modal-content">
             <div class="modal-header">
@@ -9,50 +9,49 @@
                 <table>
                     <thead>
                         <tr class="head">
-                            <th style="width: 10%"></th>
+                            <th style="width: 8%"></th>
                             <th>Código</th>
-                            <th style="width: 40%">Direccion</th>
-                            <th>Responsable</th>
+                            <th style="width:40%">Descripción</th>
+                            <th style="width: 25%">Categoría</th>
+                            <th style="width: 20%">Unidad de medida</th>
                             <th></th>
 
                         </tr>
                     </thead>
                     <tbody id="tableBody">
 
-                        @foreach ($Albergues as $item)
-                            @if ($item->estado == 0)
-                                <tr class="registro-row">
-                                    <td style="width: 10%">
-                                        <img src="{{ asset('img/albergue.png') }}" alt="user" class="picture" />
-                                    </td>
-                                    <td>{{ $item->idAlvergue }}</td>
-                                    <td style="width: 40%">{{ $item->direccion }} </td>
-                                    <td>{{ $item->miembro->nombres }} {{ $item->miembro->apellidos }}</td>
+                        @foreach ($Recursos as $item)
+                         @if ($item->estado == 0) 
+                            <tr class="recurso-row" data-recurso="{{$item}}" data-categoria="{{$item->categoria}}">
+                                <td style="width: 8%">
+                                    <img src="{{ asset('img/recurso.png') }}" alt="recurso item" class="picture" />
+                                </td>
+                                <td>{{ $item->idRecurso }}</td>
+                                <td style="width: 40%">{{ $item->recurso }} </td>
+                                <td style="width: 20%">{{ $item->categoria->categoria }}</td>
+                                <td style="width: 15%">{{ $item->unidadmedida->unidadMedida }}</td>
 
-                                    <td>
-                                        <div
-                                            style="display: flex; align-items: flex-end; gap: 5px; justify-content: center">
-                                            <button
-                                                onclick="window.location.href = '{{ url('albergue/alta/' . $item->idAlvergue) }}';"
-                                                type="button" class="button button-blue btnUpdate"
-                                                data-id="{{ $item->idAlvergue }}" style="width: 45%"
-                                                data-bs-pp="tooltip" data-bs-placement="top" title="Dar de alta">
-                                                <i class="svg-icon fas fa-up-long"></i>
-                                            </button>
+                                <td>
+                                    <div
+                                        style="display: flex; align-items: flex-end; gap: 5px; justify-content: center">
+                                        <a
+                                            href="{{ url('inventario/recursos/' . $item->idRecurso . '/edit') }}" type="button"
+                                            class="button button-blue btnUpdate" data-id="{{ $item->idRecurso }}"
+                                            data-bs-pp="tooltip" data-bs-placement="top"
+                                            title="Editar">
+                                            <i class="svg-icon fas fa-pencil"></i>
+                                        </a>
 
-                                            <button type="button" class="button button-red btnDelete"
-                                                style="width: 45%" data-bs-toggle="modal" data-bs-target="#modalDetalle"
-                                                data-id="{{ $item->idAlvergue }}"
-                                                data-nombre="{{ $item->miembro->nombres }}"
-                                                data-apellido="{{ $item->miembro->apellidos }}"
-                                                data-direccion="{{ $item->direccion }}" data-bs-pp="tooltip"
-                                                data-bs-placement="top" title="Dar de baja">
-                                                <i class="svg-icon fas fa-trash"></i>
-                                            </button>
+                                        <button type="button" id="btnDelete" class="button button-red btnDelete"
+                                            data-bs-toggle="modal" data-bs-target="#exampleModalToggle"
+                                            data-recurso="{{ $item }}" data-bs-pp="tooltip"
+                                            data-bs-placement="top" title="Eliminar">
+                                            <i class="svg-icon fas fa-trash"></i>
+                                        </button>
 
-                                        </div>
-                                    </td>
-                                </tr>
+                                    </div>
+                                </td>
+                            </tr>
                             @endif
                         @endforeach
                     </tbody>
@@ -60,7 +59,7 @@
             </div>
         </div>
     </div>
-</div> --}}
+</div>
 
 <!-- Modal para dar de baja un elemento de la lista-->
 <div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
@@ -95,7 +94,7 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content text-center">
             <div class="modal-header">
-                <h5 style="margin-left: auto; margin-right: auto;">¿Desea dar de baja este registro?</h5>
+                <h5 style="margin-left: auto; margin-right: auto;">Detalles del registro</h5>
             </div>
             <div class="modal-body text-center">
                 <!-- Utiliza la clase text-center para centrar los elementos -->
@@ -103,7 +102,7 @@
                         style="width: 35%; height: auto; margin-left: auto; margin-right: auto;"> </p>
                 <p>Código: <span id="CodigoD"></span></p>
                 <p>Descripcion: <span id="NombreD"></span></p>
-                <p>Categoría: <span id="CategoriaC"></span>
+                <p>Categoría: <span id="CategoriaD"></span>
             </div>
         </div>
     </div>

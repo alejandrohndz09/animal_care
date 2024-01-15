@@ -15,7 +15,7 @@ return [
 
     'defaults' => [
         'guard' => 'web',
-        'passwords' => 'users',
+        'passwords' => 'usuario',
     ],
 
     /*
@@ -38,8 +38,8 @@ return [
     'guards' => [
         'web' => [
             'driver' => 'session',
-            'provider' => 'users',
-        ],
+            'provider' => 'usuario',
+        ],    
     ],
 
     /*
@@ -60,11 +60,13 @@ return [
     */
 
     'providers' => [
-        'users' => [
+        'usuario' => [
             'driver' => 'eloquent',
-            'model' => App\Models\User::class,
+            'model' => App\Models\Usuario::class,
+            'table' => 'usuario', // Nombre de la tabla en la base de datos
+            'username' => 'usuario', // Campo que se utilizará como nombre de usuario
+            'password' => 'clave', // Campo que se utilizará como contraseña
         ],
-
         // 'users' => [
         //     'driver' => 'database',
         //     'table' => 'users',
