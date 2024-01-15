@@ -114,6 +114,12 @@ Route::get('/obtener-unidades/{categoria}', 'App\Http\Controllers\RecursoControl
 Route::put('/inventario/recursos/update/{id}', 'App\Http\Controllers\RecursoController@update');
 Route::get('/inventario/recursos/destroy/{id}', 'App\Http\Controllers\RecursoController@destroy');
 
+Route::resource('/inventario/donantes', 'App\Http\Controllers\DonanteController@index');
+Route::resource('/donantes', 'App\Http\Controllers\DonanteController');
+Route::resource('inventario/donantes/{id}/edit', 'App\Http\Controllers\DonanteController@edit');
+Route::get('/destroyDonante/{id}', 'App\Http\Controllers\DonanteController@destroy');
+Route::resource('/inventario/donantes/update/{id}', 'App\Http\Controllers\DonanteController@update');
+
 Route::resource('/inventario/categorias', 'App\Http\Controllers\CategoriaController');
 Route::put('/inventario/categorias/update/{id}', 'App\Http\Controllers\CategoriaController@update');
 Route::get('/inventario/categorias/destroy/{id}', 'App\Http\Controllers\CategoriaController@destroy');

@@ -134,7 +134,7 @@
 
             @foreach ($historialesAgrupadosVacunas as $nombreVacuna => $fechas)
                 <div>
-                    <div class="vaccine-content" style="margin: 0; display: flex; align-items: center">
+                    <div >
                         <img src="img/vaccine.svg" alt="Vaccine Icon" height="25" width="25"
                             style="margin-right: 3px" />
                         <span class="vaccine-title">{{ $nombreVacuna }}</span>
@@ -170,7 +170,7 @@
 
 
             @foreach ($historialesAgrupadosPatologias as $nombrePatologia => $historiales)
-                <div class="vaccine-content" style="margin: 0; display: flex; align-items: center">
+                <div>
                     <img src="img/suero.svg" alt="Suero Icon" height="25" width="25" style="margin-right: 3px" />
                     <span class="vaccine-title">{{ $nombrePatologia }}</span>
                 </div>

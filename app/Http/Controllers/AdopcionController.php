@@ -268,8 +268,6 @@ class AdopcionController extends Controller
 
     public function baja($id)
     {
-
-
         $adopcion = Adopcion::find($id);
         $adopcion->estado = 0;
         $expediente = $adopcion->expediente;
