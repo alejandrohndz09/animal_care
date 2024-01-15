@@ -118,7 +118,7 @@ Route::resource('/inventario/donantes', 'App\Http\Controllers\DonanteController@
 Route::resource('/donantes', 'App\Http\Controllers\DonanteController');
 Route::resource('inventario/donantes/{id}/edit', 'App\Http\Controllers\DonanteController@edit');
 Route::get('/destroyDonante/{id}', 'App\Http\Controllers\DonanteController@destroy');
-Route::resource('/inventario/donantes/update/{id}', 'App\Http\Controllers\DonanteController@update');
+Route::put('/inventario/donantes/update/{id}', 'App\Http\Controllers\DonanteController@update');
 
 Route::resource('/inventario/categorias', 'App\Http\Controllers\CategoriaController');
 Route::put('/inventario/categorias/update/{id}', 'App\Http\Controllers\CategoriaController@update');

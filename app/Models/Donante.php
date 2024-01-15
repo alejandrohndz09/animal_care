@@ -28,6 +28,8 @@ class Donante extends Model
 	public $incrementing = false;
 	public $timestamps = false;
 
+	protected $primaryKey = 'idDonante'; // Agrega esta línea
+
 	protected $fillable = [
 		'idDonante',
 		'nombres',

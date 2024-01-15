@@ -94,7 +94,7 @@ class DonanteController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'dui' => 'required|unique:donante,dui,' . $id,
+            'dui' => 'required|unique:donante,dui,' . $id .',idDonante',
             'nombres' => 'required|min:3',
             'apellidos' => 'required|min:3',
         ], [
@@ -102,10 +102,8 @@ class DonanteController extends Controller
         ]);
 
         // Inicia una transacción para garantizar la integridad de los datos
-        DB::beginTransaction();
 
-        try {
-            $donante = Donante::find($id);
+        $donante = Donante::find($id);
 
             $donante->dui = $request->input('dui');
             $donante->nombres = $request->input('nombres');
@@ -139,23 +137,10 @@ class DonanteController extends Controller
                     $donante->telefono_donantes()->save($telefonoDonante);
                 }
             }
-
-            // Confirma la transacción
-            DB::commit();
-
             $donantes = Donante::all();
             return view('inventario.donante.index')->with([
                 'donantes' => $donantes
             ]);
-        } catch (\Exception $e) {
-            // Deshace la transacción en caso de error
-            DB::rollBack();
-
-            $donantes = Donante::all();
-            return view('inventario.donante.index')->with([
-                'donantes' => $donantes
-            ]);
-        }
     }
 
     public function destroy($id)
