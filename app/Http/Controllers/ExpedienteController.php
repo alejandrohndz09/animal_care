@@ -6,6 +6,7 @@ use App\Models\Animal;
 use App\Models\Expediente;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class ExpedienteController extends Controller
 {
@@ -22,11 +23,11 @@ class ExpedienteController extends Controller
             'expedientes' => $expedientes,
         ]);
     }
-    
+
     public function getExpedientes()
     {
         $expedientes = Expediente::with('animal')->where('estado', 1)->get();
-        
+
         return response()->json($expedientes);
     }
 
@@ -68,35 +69,35 @@ class ExpedienteController extends Controller
 
     public function crearExpediente($id)
     {
-         // Obtén el último registro de la tabla para determinar el siguiente incremento
-         $ultimoRegistro = Expediente::latest('idExpediente')->first();
+        // Obtén el último registro de la tabla para determinar el siguiente incremento
+        $ultimoRegistro = Expediente::latest('idExpediente')->first();
 
-         // Calcula el siguiente incremento
-         $siguienteIncremento = $ultimoRegistro ? (int) substr($ultimoRegistro->idExpediente, -4) + 1 : 1;
- 
-         // Crea el ID personalizado concatenando "MB" y el incremento
-         $idPersonalizado = "EXP" . str_pad($siguienteIncremento, 4, '0', STR_PAD_LEFT);
- 
-         $expediente = new Expediente();
-         $expediente->idExpediente = $idPersonalizado;
-         $expediente->idAnimal = $id;
-         $expediente->idAlvergue = null;
-         $expediente->fechaIngreso = Carbon::now()->format('Y-m-d');;
-         $expediente->estadoGeneral = 'Controlado';
-         $expediente->estado = 1;
-         $expediente->save();
- 
- 
-         return view('expediente.detalles')->with([
-             'animal' => Animal::find($id),
-             'registrado' => Expediente::where('idAnimal', $id)->get(),
-             'estado' => Expediente::where('idAnimal', $id)->value('estadoGeneral'),
-             'idExpediente' => Expediente::where('idAnimal', $id)->value('idExpediente')
-         ]);
+        // Calcula el siguiente incremento
+        $siguienteIncremento = $ultimoRegistro ? (int) substr($ultimoRegistro->idExpediente, -4) + 1 : 1;
+
+        // Crea el ID personalizado concatenando "MB" y el incremento
+        $idPersonalizado = "EXP" . str_pad($siguienteIncremento, 4, '0', STR_PAD_LEFT);
+
+        $expediente = new Expediente();
+        $expediente->idExpediente = $idPersonalizado;
+        $expediente->idAnimal = $id;
+        $expediente->idAlvergue = null;
+        $expediente->fechaIngreso = Carbon::now()->format('Y-m-d');;
+        $expediente->estadoGeneral = 'Controlado';
+        $expediente->estado = 1;
+        $expediente->save();
+
+
+        return view('expediente.detalles')->with([
+            'animal' => Animal::find($id),
+            'registrado' => Expediente::where('idAnimal', $id)->get(),
+            'estado' => Expediente::where('idAnimal', $id)->value('estadoGeneral'),
+            'idExpediente' => Expediente::where('idAnimal', $id)->value('idExpediente')
+        ]);
     }
     public function show($id)
     {
-       return view('expediente.detalles')->with([
+        return view('expediente.detalles')->with([
             'animal' => Animal::find($id),
             'registrado' => Expediente::where('idAnimal', $id)->get(),
             'estado' => Expediente::where('idAnimal', $id)->value('estadoGeneral'),
@@ -153,5 +154,29 @@ class ExpedienteController extends Controller
         $expediente->estado = '1';
         $expediente->save();
         return redirect()->route('expediente.index');
+    }
+
+    public function pdf($id)
+    {
+        $animal = Animal::find($id);
+
+        $historialVacunas = $animal->expedientes->get(0)->historialVacunas->map(function ($historial) {
+            return [
+                'nombreVacuna' => $historial->vacuna->vacuna,
+                'fechaAplicacion' => $historial->fechaAplicacion,
+            ];
+        });
+
+
+        // dd($historialVacunas);
+        $pdf = PDF::loadView(
+            'expediente.pdf',
+            [
+                'animal' => $animal,
+                compact('historialVacunas')
+            ]
+        );
+
+        return $pdf->stream();
     }
 }

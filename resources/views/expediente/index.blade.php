@@ -19,11 +19,11 @@
                     <div class="col-xl-12">
                         <div
                             style="width:100%; display: flex;  justify-content: space-between; align-items: center; margin-bottom: 25px; padding-bottom:5px; border-bottom: 2px solid rgba(0, 0, 0, 0.1);">
-                            <div
-                                style=" width:100%;margin: 0; display: flex; gap: 5px; align-items: center; ">
+                            <div style=" width:100%;margin: 0; display: flex; gap: 5px; align-items: center; ">
                                 <button class="button btn-transparent" style="width: 30px;padding: 15px 5px" type="button"
-                                      id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"  data-bs-pp="tooltip"
-                                    data-bs-placement="top" title="Volver" onclick="window.location.href='/'">
+                                    id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"
+                                    data-bs-pp="tooltip" data-bs-placement="top" title="Volver"
+                                    onclick="window.location.href='/'">
                                     <i class="svg-icon fas fa-chevron-left" style="color: #4c4c4c"></i>
                                 </button>
                                 <h1>Expedientes </h1>
@@ -36,8 +36,7 @@
                                 <div class="dropdown">
                                     <button class="button btn-transparent" style="width: 30px;padding: 15px 5px"
                                         type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown"
-                                        aria-expanded="false"  data-bs-pp="tooltip"
-                                        data-bs-placement="top" title="Opciones">
+                                        aria-expanded="false" data-bs-pp="tooltip" data-bs-placement="top" title="Opciones">
                                         <i class="svg-icon fas fa-ellipsis-vertical" style="color: #4c4c4c"></i>
                                     </button>
                                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
@@ -47,7 +46,7 @@
                                                 baja</a></li>
                                     </ul>
                                 </div>
-                             
+
                             </div>
                         </div>
                         <div id="grid" class="d-flex justify-content-center">
@@ -56,21 +55,25 @@
                                 @foreach ($expedientes as $item)
                                     @if ($item->estado == 1)
                                         <div class="col-xl-2 col-md-6">
+
                                             <div class="card mb-4 panelGrid"
                                                 style="border: none; padding:.5rem; padding-bottom: 25px !important; gap: 0rem !important; width: 100%">
                                                 <div style="width: 100%; height: 140px; overflow: hidden;">
-                                                    <img src="{{isset($item->animal->imagen)?$item->animal->imagen:asset('img/especie.png')}}" class="card-img-top"
+                                                    <img src="{{ isset($item->animal->imagen) ? $item->animal->imagen : asset('img/especie.png') }}"
+                                                        class="card-img-top"
                                                         style="width: 100%; height: 100%; object-fit: cover;">
                                                 </div>
                                                 <div
                                                     style="margin: 0; display: flex; align-items: center; font-weight: bold;">
                                                     Cod. {{ $item->idExpediente }}
                                                 </div>
+
                                                 <div
                                                     style="margin: 0; display: flex; align-items: center;color:#6067eb; font-size: 14px">
                                                     <i class="fas fa-paw" style="margin-right: 3px;"></i>
                                                     {{ $item->animal->nombre }}
                                                 </div>
+
                                                 <div
                                                     style="margin: 0; display: flex; align-items: center; color:#867596; font-size: 12px ">
                                                     <i class="fas fa-calendar" style="margin-right: 3px;"></i>

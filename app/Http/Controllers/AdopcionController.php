@@ -10,6 +10,7 @@ use App\Rules\EmptyIf503;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class AdopcionController extends Controller
 {
@@ -45,7 +46,8 @@ class AdopcionController extends Controller
             [
                 'expElegido' => $expElegido,
                 'adElegido' => $adElegido,
-            ]);
+            ]
+        );
     }
 
     public function store(Request $request)
@@ -214,13 +216,12 @@ class AdopcionController extends Controller
                 DB::rollBack();
                 $alert = array(
                     'type' => 'error',
-                    'message' => 'Operación fallida'.$e->getMessage(),
+                    'message' => 'Operación fallida' . $e->getMessage(),
                 );
                 session()->flash('alert', $alert);
                 return back()
                     ->withInput()
                     ->with('error', 'Error al guardar los registros.');
-
             }
         }
     }
@@ -267,25 +268,22 @@ class AdopcionController extends Controller
 
     public function baja($id)
     {
-        
-       
-            $adopcion = Adopcion::find($id);
-            $adopcion->estado=0;
-            $expediente = $adopcion->expediente;
+        $adopcion = Adopcion::find($id);
+        $adopcion->estado = 0;
+        $expediente = $adopcion->expediente;
 
-            if ($expediente) {
-                $expediente->estadoGeneral = $adopcion->expediente->idAlvergue != null ? 'Albergado' : 'Controlado';
-                $expediente->save();
-            }
-            $adopcion->delete();
-            $alert = array(
-                'type' => 'success',
-                'message' => 'Operación exitosa',
-            );
-            session()->flash('alert', $alert);
+        if ($expediente) {
+            $expediente->estadoGeneral = $adopcion->expediente->idAlvergue != null ? 'Albergado' : 'Controlado';
+            $expediente->save();
+        }
+        $adopcion->delete();
+        $alert = array(
+            'type' => 'success',
+            'message' => 'Operación exitosa',
+        );
+        session()->flash('alert', $alert);
 
-            return redirect()->route('adopcion.index')->with($alert);
-       
+        return redirect()->route('adopcion.index')->with($alert);
     }
 
     public function alta($id)
@@ -433,7 +431,8 @@ class AdopcionController extends Controller
             [
                 'expElegido' => $expediente,
                 'adElegido' => $adoptante,
-            ]);
+            ]
+        );
     }
 
     public function generarIdAdoptante()
@@ -512,5 +511,20 @@ class AdopcionController extends Controller
             ->get();
 
         return response()->json($expedientes);
+    }
+
+    public function pdf($id)
+    {
+        $adopcion = Adopcion::find($id);
+
+        // dd($historialVacunas);
+        $pdf = PDF::loadView(
+            'adopcion.pdf',
+            [
+                'adopcion' => $adopcion,
+            ]
+        );
+
+        return $pdf->stream();
     }
 }

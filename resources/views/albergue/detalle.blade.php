@@ -45,7 +45,13 @@
                                 </div>
                             </div>
                             <div class="col-xl-4" style="margin: auto 0; padding: 20px 7%">
-                                <div class="card_">
+                                <button type="submit" class="button button-pri" style="margin-left: 67%;margin-top: -10%;"
+                                    data-bs-pp="tooltip"
+                                     onclick="window.location.href = '{{ url('/albergue/pdf/' . $albergue->idAlvergue) }}'"
+                                    data-bs-placement="top" title="Imprimir">
+                                    <i class="svg-icon fas fa-print"></i>
+                                </button>
+                                <div class="card_" style="margin-top: 7%">
                                     <div class="item item--1">
 
                                         <i class=" fas fa-shield-dog"></i>
