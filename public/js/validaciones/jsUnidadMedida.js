@@ -17,10 +17,7 @@ $(document).ready(function () {
        
  
          $('body').on('click', '#confirmar', function () {
-             $.get('/inventario/unidadMedidas/destroy/'+ id, function () {
-                 // location.reload();
-                 window.location.href = '/inventario/unidadMedidas'
-             });
+             window.location.href = '/inventario/unidadMedidas/destroy/' + id;
          });
 
     });

@@ -73,7 +73,9 @@
         </div>
         <div class="sb-sidenav-footer">
             <div class="small">Bienvenido</div>
-            {{ session()->has('usuario') ? session()->get('usuario')->persona->nombre . ' ' . session()->get('usuario')->persona->Apellido : 'unknown' }}
+            <b>{{Auth::user()->usuario!='admin'?
+             Auth::user()->miembro->nombres.' '.Auth::user()->miembro->apellidos:
+             Auth::user()->usuario }}</b>
         </div>
     </nav>
 </div>

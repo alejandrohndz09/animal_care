@@ -12,7 +12,7 @@ class RecursoController extends Controller
 
     public function index()
     {
-        $recursos = Recurso::where('estado', 1)->get();
+        $recursos = Recurso::all();
         return view('inventario.recurso.index')->with('Recursos',$recursos);
     }
     public function Create()
@@ -85,6 +85,12 @@ class RecursoController extends Controller
         $recurso->idUnidadMedida = $request->post('unidad');
         $recurso->idCategoria = $request->post('categoria');
         $recurso->save();
+        $alert = array(
+            'type' => 'success',
+            'message' => 'El registro se ha modificado exitosamente',
+        );
+
+        session()->flash('alert', $alert);
 
         return redirect()->route('recursos.index')->with('Recursos', Recurso::where('estado', 1)->get());
     }
@@ -111,6 +117,7 @@ class RecursoController extends Controller
                 'message' => 'El registro se ha dado de baja exitosamente',
             );
             session()->flash('alert', $alert);
+            
         } else {
             $alert = array(
                 'type' => 'error',
@@ -119,9 +126,7 @@ class RecursoController extends Controller
             session()->flash('alert', $alert);
         }
 
-        return view('inventario.recurso.index')->with([
-            'Recursos' => Recurso::where('estado',0)->get(),
-        ]);
+        return redirect()->route('recursos.index')->with('Recursos', Recurso::where('estado', 1)->get());
         
     }
 

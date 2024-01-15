@@ -13,16 +13,17 @@ use Illuminate\Database\Eloquent\Model;
  * Class Miembro
  * 
  * @property string $idMiembro
- * @property string|null $dui
  * @property string|null $nombres
  * @property string|null $apellidos
  * @property string|null $correo
  * @property int|null $estado
+ * @property string|null $dui
  * 
  * @property Collection|Adopcion[] $adopcions
  * @property Collection|Alvergue[] $alvergues
  * @property Collection|Movimiento[] $movimientos
  * @property Collection|TelefonoMiembro[] $telefono_miembros
+ * @property Collection|Usuario[] $usuarios
  *
  * @package App\Models
  */
@@ -38,11 +39,11 @@ class Miembro extends Model
 	];
 
 	protected $fillable = [
-		'dui',
 		'nombres',
 		'apellidos',
 		'correo',
-		'estado'
+		'estado',
+		'dui'
 	];
 
 	public function adopcions()
@@ -63,5 +64,10 @@ class Miembro extends Model
 	public function telefono_miembros()
 	{
 		return $this->hasMany(TelefonoMiembro::class, 'idMiembro');
+	}
+
+	public function usuarios()
+	{
+		return $this->hasMany(Usuario::class, 'idMiembro');
 	}
 }
