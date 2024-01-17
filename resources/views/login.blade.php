@@ -35,7 +35,8 @@
                 <form method="POST" action="{{ route('login') }}">
                     @csrf
                     <div class="inputContainer">
-                        <input type="text" class="inputField" autocomplete="off" name="usuario" placeholder="Ingrese su usuario.">
+                        <input type="text" value="{{ old('usuario') }}"class="inputField" autocomplete="off"
+                            name="usuario" placeholder="Ingrese su usuario.">
                         <label class="inputFieldLabel" for="usuario">Usuario o Correo:</label>
                         <i class="inputFieldIcon fas fa-user"></i>
                         @error('usuario')
@@ -43,18 +44,28 @@
                         @enderror
                     </div>
                     <div class="inputContainer ">
-                        <input type="password" class="inputField" name="clave" placeholder="Ingrese su clave.">
+                        <input type="password" class="inputField" id="clave" name="clave"
+                            placeholder="Ingrese su clave.">
                         <label class="inputFieldLabel" for="clave">Clave:</label>
                         <i class="inputFieldIcon fas fa-key"></i>
                         @error('clave')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
-                        <p style="text-align: end"><a class="" style="text-decoration: none; color: #6067eb"  data-bs-toggle="modal" data-bs-target="#recuperar" href="">¿Olvidó su clave?</a></p>
+                        <div class="d-flex mt-3 align-items-center">
+                            <div class="d-flex flex-grow-1 " style="margin-left:5px; gap:3px">
+                                <input type="checkbox" id="mostrarClave"> Mostrar Clave
+                            </div>
+                            <p style="text-align: end; margin-bottom: 0;"><a class=""
+                                    style="text-decoration: none; color: #6067eb" data-bs-toggle="modal"
+                                    data-bs-target="#recuperar" href="">¿Olvidó su
+                                    clave?</a>
+                            </p>
+                        </div>
                     </div>
 
                     <button type="submit" class="button "
-                        style="width: 100%;padding: 7px 7px; justify-items: end; background: #606eed;" >
-                        <span class="lable" style="color:#fff" >Ingresar<span>
+                        style="width: 100%;padding: 7px 7px; justify-items: end; background: #606eed;">
+                        <span class="lable" style="color:#fff">Ingresar<span>
                     </button>
                 </form>
 
@@ -62,34 +73,36 @@
         </div>
     </div>
     <div style="text-align: center; color:#e8e5e5">
-        <p>©️Tejutepets-Todos los derechos reservados.</p>
+        <p>©️UES FMP - Todos los derechos reservados.</p>
     </div>
     <div class="modal fade" id="recuperar" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content text-center">
-                <form action="/usuario" method="post">
+                <form action="/recuperarClaveMail" method="post">
                     @csrf
                     <div class="modal-header">
                         <h5 style="margin-left: auto; margin-right: auto;">Recuperar clave</h5>
                     </div>
-                  
+
                     <div class="modal-body text-center px-5">
                         <div
                             style="margin: 0; display: flex;flex-direction: column; align-items: center; justify-content: center ">
-    
+
                             <div class="inputContainer mt-4 mb-2">
-                                <input type="email" id="correo" name="correo" placeholder="ejemplo@email.com"class="inputField">
-                                <label class="inputFieldLabel" for="raza">Ingrese un correo elecctónico asociado al miembro:</label>
+                                <input type="email" id="correo" name="correo"
+                                    placeholder="ejemplo@email.com"class="inputField">
+                                <label class="inputFieldLabel" for="raza">Ingrese un correo electrónico asociado al
+                                    miembro:</label>
                                 <i class="inputFieldIcon fas fa-user"></i>
-                           
+
                             </div>
                             <div
-                            style="margin: 0; display: flex; align-items: center;width:auto; color:#867596; font-size: 14px ">
-                            <i class="fas fa-circle-info" style="margin-right: 3px;"></i>
-                            Se enviará un código de seguridad al correo indicado.
+                                style="margin: 0; display: flex; align-items: center;width:auto; color:#867596; font-size: 14px ">
+                                <i class="fas fa-circle-info" style="margin-right: 3px;"></i>
+                                Se enviará un código de seguridad al correo indicado.
+                            </div>
                         </div>
-                        </div>
-    
+
                     </div>
                     <div class="modal-footer" style="display:flex; justify-content: center; gap:40px">
                         <button id="confirmar" type="submit" class="button button-pri">
@@ -104,7 +117,7 @@
             </div>
         </div>
     </div>
-    
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="{{ url('https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js') }}"
@@ -125,6 +138,24 @@
             session()->forget('alert');
         @endphp
     @endif
+    <!-- resources/views/tu_vista.blade.php -->
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var checkbox = document.getElementById('mostrarClave');
+            var claveInput = document.getElementById('clave');
+
+            checkbox.addEventListener('change', function() {
+                if (checkbox.checked) {
+                    // Si el checkbox está marcado, cambia el tipo del input a 'text'
+                    claveInput.type = 'text';
+                } else {
+                    // Si el checkbox está desmarcado, vuelve a establecer el tipo del input a 'password'
+                    claveInput.type = 'password';
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>

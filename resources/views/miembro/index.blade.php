@@ -30,7 +30,7 @@
                             </div>
                             <div
                                 style=" width:100%;margin: 0; display: flex; gap: 5px; justify-content: end ;align-items: center; ">
-                                <input id="searchInput" class="inputField card" style="width: 50%;" autocomplete="off"
+                                <input id="searchInput" class="inputField card" style="width: 100%;" autocomplete="off"
                                     placeholder="🔍︎ Buscar" type="search">
 
                                 <div class="dropdown">
@@ -309,4 +309,8 @@
         </main>
     </div>
     @include('miembro.modalesMiembro')
+
+    <div class="floating-button" data-toggle="modal" data-target="#ayudaMiembro" data-bs-pp="tooltip" data-bs-placement="top" title="Ayuda">
+        <span>?</span>
+    </div>
 @endsection

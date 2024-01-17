@@ -89,9 +89,6 @@
         </div>
     </div>
 </div>
-
-
-
   <!-- Modal -->
   <div class="modal fade" id="abrirModal" tabindex="-1" aria-labelledby="abrirModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -205,6 +202,34 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para ver ayuda de los Albergue-->
+<div class="modal fade" id="ayudaAlbergue" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content text-center">
+            <div class="modal-header">
+                <h3 style="margin-left: auto; margin-right: auto;">Ayuda</h5>
+            </div>
+            <div class="modal-body text-center">
+               
+                <p> °Se encuentran los datos de los albergues registrados, y el modal para registrar un nuevo albergue. </p>
+                <p></p>
+                <p>°Se cuenta con un combo con miembros registrados con anterioridd</p>
+                <img src="/img/lber.png" alt="Descripción de la imagen" class="img-fluid">
+                <p></p>
+                <p>°Para poder guardar un registro nuevo no deben haber campos vacios.</p>
+                
+                
+            </div>
+            <div class="modal-footer text-center" style="margin-left: auto; margin-right: auto;">
+
+                <button type="button" class="button button-red" data-bs-dismiss="modal"> <i
+                        class="svg-icon fas fa-xmark"></i>
+                    <span class="lable">cerrar</span> </button>
             </div>
         </div>
     </div>

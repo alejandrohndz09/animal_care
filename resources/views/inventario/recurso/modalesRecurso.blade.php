@@ -116,3 +116,34 @@
         </div>
     </div>
 </div>
+
+<!-- Modal de ayuda -->
+<div class="modal fade" id="ayudaRecursos" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content text-center">
+            <div class="modal-header">
+                <h3 style="margin-left: auto; margin-right: auto;">Ayuda</h5>
+            </div>
+            <div class="modal-body text-center">
+                <!-- Utiliza la clase text-center para centrar los elementos -->
+               
+                <p> °En Recursos registramos  los recursos detalladamente tomando en cuenta gestiones de categoria y unidades de medidas.</p>
+                <img src="/img/cte1.png" alt="Descripción de la imagen" class="img-fluid">
+                <p></p>
+                <p>°Cuando se seleccionaa editar el modulo cambia a modificar.</p>
+                <img src="/img/cte.png" alt="Descripción de la imagen" class="img-fluid">
+                <p></p>
+                <p>°Para poder guardar un registro nuevo no deben haber campos vacios.</p>
+                
+                
+            </div>
+            <div class="modal-footer text-center" style="margin-left: auto; margin-right: auto;">
+
+                <button type="button" class="button button-red" data-bs-dismiss="modal"> <i
+                        class="svg-icon fas fa-xmark"></i>
+                    <span class="lable">cerrar</span> </button>
+            </div>
+        </div>
+    </div>
+    
+</div>

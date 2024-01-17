@@ -1,6 +1,9 @@
 @extends('layouts.master')
 
+
 @section('content')
+
+
 <div id="layoutSidenav_content">
     <main>  
         <div class="container-fluid px-4">
@@ -570,4 +573,9 @@
         </div>
     </footer>
 </div>
+
+<div class="floating-button" data-toggle="modal" data-target="#ayudaDash" data-bs-pp="tooltip" data-bs-placement="top" title="Ayuda">
+    <span>?</span>
+</div>
+
 @endsection

@@ -87,7 +87,13 @@ class AnimalControlador extends Controller
 
     public function show($id)
     {
-        
+        return view('expediente.detalles')->with([
+            'animal' => Animal::find($id),
+            'registrado' => Expediente::where('idAnimal', $id)->get(),
+            'estado' => Expediente::where('idAnimal', $id)->value('estadoGeneral'),
+            'idExpediente' => Expediente::where('idAnimal', $id)->value('idExpediente'),
+            'accion' => true
+        ]); 
     }
     
     public function edit($id)

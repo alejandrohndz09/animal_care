@@ -231,3 +231,69 @@
         </div>
     </div>
 </div>
+
+<!-- Modal para ver ayuda de los Adoptantes-->
+
+<div class="modal fade" id="ayudaAdopcion" aria-hidden="true" aria-labelledby="adopcionModalToggleLabel" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content text-center">
+            <div class="modal-header">
+                <h3 style="margin-left: auto; margin-right: auto;">Ayuda</h5>
+            </div>
+            <div class="modal-body text-center">
+                             
+                <p> °Listado de las adopciones, El boton añadir nos dirige al registro de una nueva adopcion </p>
+                <p></p>
+                <img src="img/adopc.png" alt="Descripción de la imagen" class="img-fluid"> 
+                <p></p>
+                <p> °Listado de las adopciones, El boton añadir nos dirige al registro de una nueva adopcion </p>
+                <p></p>
+                <img src="img/dop2.png" alt="Descripción de la imagen" class="img-fluid"> 
+                           
+            </div>
+            <div class="modal-footer text-center" style="margin-left: auto; margin-right: auto;">
+
+                <button type="button" class="button button-red" data-bs-dismiss="modal"> <i
+                        class="svg-icon fas fa-xmark"></i>
+                    <span class="lable">cerrar</span> </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para ver ayuda de form-->
+<div class="modal fade" id="ayudaAdopcionForm" aria-hidden="true" aria-labelledby="adopcionModalToggleLabel" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content text-center">
+            <div class="modal-header">
+                <h3 style="margin-left: auto; margin-right: auto;">Ayuda</h5>
+            </div>
+            <div class="modal-body text-center">
+                
+                <p> °Este es el formulario que se requiere llenar para solicitud de adopcion. </p>
+                <p></p>
+                <img src="/img/for1.png" alt="Descripción de la imagen" class="img-fluid">
+                <p></p> 
+                <p> °Datos de adopcion </p>
+                <p></p>
+                <img src="/img/form2.png" alt="Descripción de la imagen" class="img-fluid"> 
+                <p></p>
+                <p> ° En esta sección podemos ingresar los datos del adoptante o hacemos una búsqueda para encontrar los datos si el adoptante ya tiene historial con nosotros.</p>
+                <p></p>
+                <img src="/img/for3.png" alt="Descripción de la imagen" class="img-fluid">
+                <p></p>
+                <p> ° Al hacer una búsqueda de adoptantes, muestra los adoptantes disponibles con historial.</p>
+                <p></p>
+                <img src="/img/busquead.png" alt="Descripción de la imagen" class="img-fluid">
+                <p></p>
+                <p>°Para poder guardar un registro nuevo no deben haber campos vacios.</p>
+                </div>
+            <div class="modal-footer text-center" style="margin-left: auto; margin-right: auto;">
+
+                <button type="button" class="button button-red" data-bs-dismiss="modal"> <i
+                        class="svg-icon fas fa-xmark"></i>
+                    <span class="lable">cerrar</span> </button>
+            </div>
+        </div>
+    </div>
+</div>
