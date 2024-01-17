@@ -418,9 +418,14 @@
                         </div>
                     </div>
                 @endif
-                @include('historialVacunas.index')
-                @include('historialPatologia.index')
+                
         </main>
+        <div class="floating-button" data-toggle="modal" data-target="#ayudaExpedienteE" data-bs-pp="tooltip" data-bs-placement="top" title="Ayuda">
+            <span>?</span>
+        </div>
     </div>
+   
+  
 
+    
 @endsection

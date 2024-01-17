@@ -105,4 +105,10 @@ function dateFormat(fecha) {
   var fechaFormateada = dia + '/' + mes + '/' + anio; // Cambia el formato según tus necesidades
   return fechaFormateada;
 }
-
+// Agregar un evento de clic al botón flotante de ayuda para abrir el modal
+document.querySelector('.floating-button').addEventListener('click', function () {
+  $('#ayudaExpediente').modal('show');
+  });
+  
+ 
+  

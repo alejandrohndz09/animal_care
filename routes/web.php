@@ -146,7 +146,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::resource('/inventario/movimientos', 'App\Http\Controllers\MovimientoController');
     Route::put('/inventario/movimientos/update/{id}', 'App\Http\Controllers\MovimientoController@update');
-    Route::get('/inventario/movimientos/destroy//{id}', 'App\Http\Controllers\MovimientoController@destroy');
+    Route::get('/inventario/movimientos/destroy/{id}', 'App\Http\Controllers\MovimientoController@destroy');
     Route::get('/obtener-unidad/{recurso}', 'App\Http\Controllers\MovimientoController@obtenerUnidad');
     Route::get('/inventario/historial', function () {
         return view('inventario.historial');
@@ -154,7 +154,8 @@ Route::middleware(['auth'])->group(function () {
     });
 
     Route::resource('/inventario/historialMovimientos', 'App\Http\Controllers\HistorialMovimientoController');
-    Route::get('/inventario/historialMovimientos/filtro', 'App\Http\Controllers\HistorialMovimientoController@show');
+    Route::get('/inventario/historialMovimientos/filtro', 'App\Http\Controllers\HistorialMovimientoController@filtro');
+    Route::post('/inventario/historialMovimientos/pdf', 'App\Http\Controllers\HistorialMovimientoController@pdf');
     Route::get('/logout','App\Http\Controllers\LoginController@logout')->name('logout');
 
     Route::resource('/usuario', 'App\Http\Controllers\UsuarioController');
@@ -166,4 +167,5 @@ Route::get('/login', 'App\Http\Controllers\LoginController@show')->name('login')
 Route::post('/login', 'App\Http\Controllers\LoginController@login');
 Route::post('/cambiarClaveTemporal', 'App\Http\Controllers\LoginController@cambiarClaveTemporal')->middleware('guest');
 Route::post('/recuperarClaveMail', 'App\Http\Controllers\LoginController@recuperarClaveMail');
+Route::get('/verificarToken/{token}/{id}', 'App\Http\Controllers\LoginController@verificarToken');
 Route::post('/recuperarClave', 'App\Http\Controllers\LoginController@recuperarClave');

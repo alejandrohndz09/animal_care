@@ -76,7 +76,7 @@
         </div>
     </div>
 </div>
-<!-- Modal para ver ayuda en Animal-->
+
 <div class="modal fade" id="ayudaMovimiento" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content text-center">
@@ -93,6 +93,7 @@
                 <p>°Nos lleva a una ventana donde nos muestra los donantes ya registrados.</p>
                 <p></p>
                 <img src="/img/m2.png" alt="Descripción de la imagen" class="img-fluid">
+
 
 
             </div>

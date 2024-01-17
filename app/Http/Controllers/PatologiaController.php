@@ -54,6 +54,14 @@ class PatologiaController extends Controller
         $patologia->save();
 
 
+        
+        $alert = array(
+            'type' => 'success',
+            'message' => 'El registro se ha agregado exitosamente',
+        );
+
+        session()->flash('alert', $alert);
+
         return back()->with('success', 'Guardado con éxito');
     }
 
@@ -98,6 +106,15 @@ class PatologiaController extends Controller
         //actualizar datos en bd
         $patologia->patologia = $request->post('patologia');
         $patologia->save();
+
+        
+        $alert = array(
+            'type' => 'success',
+            'message' => 'El registro se ha modificado exitosamente',
+        );
+
+        session()->flash('alert', $alert);
+
         return redirect()->route("patologia.index");
     }
 
@@ -133,6 +150,14 @@ class PatologiaController extends Controller
         $patologia = Patologium::find($id);
 
         $patologia->delete();
-        return back()->with('success', 'Eliminado con éxito');
+        
+        $alert = array(
+            'type' => 'success',
+            'message' => 'El registro se ha eliminado exitosamente',
+        );
+
+        session()->flash('alert', $alert);
+
+        return redirect()->route("patologia.index");
     }
 }

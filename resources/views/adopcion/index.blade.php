@@ -74,6 +74,10 @@
                 </div>
             </div>
         </main>
-        {{-- @include('adopcion.modalesAdopcion') --}}
+        <div class="floating-button" data-toggle="modal" data-target="#ayudaAdopcion" data-bs-pp="tooltip" data-bs-placement="top" title="Ayuda">
+            <span>?</span>
+        </div>
+       @include('adopcion.modalesAdopcion') 
     </div>
+    
 @endsection

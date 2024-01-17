@@ -185,6 +185,13 @@ $('.seleccion').on('click', function () {
     $('#DonanteName').text(nombres + ' ' + apellidos); // Cambiar el texto del span
 });
 
+$('.seleccion').on('click', function () {
+  
+    var idDonante = $(this).data('id');
+
+    $('#donanteE').val(idDonante); // Guardar el ID en un campo oculto dentro del modal
+});
+
 
 $(".btnDelete").click(function (event) {
     // Evitar la propagación del evento al hacer clic en la fila
@@ -208,7 +215,7 @@ $('.movimiento-row').on('click', function (event) {
     var tipoMovimiento = movimientoData.tipoMovimiento;
     var valor = movimientoData.valor;
     var recurso = button.data('recurso');
-    var donante = button.data('donante');
+    var donante = button.data('donante').nombres + ' ' + button.data('donante').apellidos;
     var miembro = button.data('miembro');
 
     // Utiliza moment.js para formatear la fecha

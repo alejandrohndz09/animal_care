@@ -215,6 +215,7 @@ $(document).ready(function () {
 
     });
 
+ 
 
     // Agrega un evento de cambio al radio button
     $('input[name="isCompaniaAnimal"]').on('change',function () {
@@ -230,5 +231,15 @@ $(document).ready(function () {
             lbCant.css('color', '#000000');
         }
     });
+
+
+
+
 });
+// Agregar un evento de clic al botón flotante de ayuda para abrir el modal
+
+
+   document.querySelector('.floating-button').addEventListener('click', function () {
+    $('#ayudaAdopcionForm').modal('show');
+   });
 

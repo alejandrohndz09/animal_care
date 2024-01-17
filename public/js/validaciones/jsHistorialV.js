@@ -535,3 +535,6 @@ function dateFormat(fecha) {
     var fechaFormateada = dia + '/' + mes + '/' + anio; // Cambia el formato según tus necesidades
     return fechaFormateada;
 }
+document.querySelector('.floating-button').addEventListener('click', function () {
+    $('#ayudaExpedienteE').modal('show');
+    });

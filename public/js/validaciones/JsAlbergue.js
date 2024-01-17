@@ -6,6 +6,8 @@ $(document).ready(function () {
         return new bootstrap.Tooltip(tooltipTriggerEl)
     });
 
+  
+
     //Si presiona eliminar abrira el modal con los datos que se daran de baja
     $('#modalDetalle').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget); // Botón que desencadenó el modal
@@ -58,7 +60,11 @@ $(document).ready(function () {
         }
     });
 
-
+    
+         // Agregar un evento de clic al botón flotante de ayuda para abrir el modal
+     document.querySelector('.floating-button').addEventListener('click', function () {
+        $('#ayudaDash').modal('show');
+        });
       //Si presiona El dar de baja abrira el modal con los datos que se daran de baja
       $('#modaldeBaja').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget); // Botón que desencadenó el modal
@@ -81,3 +87,12 @@ $(document).ready(function () {
     
     });
 });
+
+   // Agregar un evento de clic al botón flotante de ayuda para abrir el modal
+   document.querySelector('.floating-button').addEventListener('click', function () {
+    $('#ayudaAlbergue').modal('show');
+    });
+     // Agregar un evento de clic al botón flotante de ayuda para abrir el modal
+   document.querySelector('.floating-button').addEventListener('click', function () {
+    $('#ayudaAlbergueD').modal('show');
+    });

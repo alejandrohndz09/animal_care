@@ -88,7 +88,7 @@
                                     <tr class="movimiento-row" data-movimiento="{{ $item }}"
                                         data-recurso="{{ $item->recurso->recurso }}"
                                         data-miembro="{{ $item->miembro->nombres . ' ' . $item->miembro->apellidos }}"
-                                        data-donante="{{ $item->donante->nombres . ' ' . $item->donante->apellidos }}">
+                                        data-donante="{{ $item->donante }}">
                                         <td style="width: 8%">
                                             <img src="{{ asset('img/recurso.png') }}" alt="movimiento item"
                                                 class="picture" />
@@ -111,7 +111,7 @@
 
                                                 <button type="button" id="btnDelete" class="button button-red btnDelete"
                                                     data-movimiento="{{ $item }}"
-                                                    onclick="{{ url('/inventario/movimientos/destroy/' . $item->idMovimiento) }}"
+                                                    onclick="window.location.href = '{{ url('/inventario/movimientos/destroy/' . $item->idMovimiento) }}'"
                                                     data-bs-pp="tooltip" data-bs-placement="top" title="Eliminar">
                                                     <i class="svg-icon fas fa-trash"></i>
                                                 </button>

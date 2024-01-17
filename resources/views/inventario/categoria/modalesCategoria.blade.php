@@ -47,3 +47,29 @@
         </div>
     </div>
 </div>
+
+<!-- Modal de ayuda -->
+<div class="modal fade" id="ayudaCategoria" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content text-center">
+            <div class="modal-header">
+                <h3 style="margin-left: auto; margin-right: auto;">Ayuda</h5>
+            </div>
+            <div class="modal-body text-center">
+                <!-- Utiliza la clase text-center para centrar los elementos -->
+               
+                <p> °En categorias registramos las categorias de los recursos recibidos, en tipos de categorias podemos tomar en cuenta: utencilios de limpieza, frasads, comida, jugetes, e.c.t</p>
+                <p></p>
+                <p>°Para poder guardar un registro nuevo no deben haber campos vacios.</p>
+                
+                
+            </div>
+            <div class="modal-footer text-center" style="margin-left: auto; margin-right: auto;">
+
+                <button type="button" class="button button-red" data-bs-dismiss="modal"> <i
+                        class="svg-icon fas fa-xmark"></i>
+                    <span class="lable">cerrar</span> </button>
+            </div>
+        </div>
+    </div>
+</div>

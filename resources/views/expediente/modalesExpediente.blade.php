@@ -165,3 +165,62 @@
         </div>
     </div>
 </div>
+
+<!-- Modal de ayuda -->
+<div class="modal fade" id="ayudaExpediente" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content text-center">
+            <div class="modal-header">
+                <h3 style="margin-left: auto; margin-right: auto;">Ayuda</h5>
+            </div>
+            <div class="modal-body text-center">
+               
+                <p> °Cuando seleccionamos expediente nos muestra cada expediente de los animales registrados. </p>
+                <p></p>
+                <p>°Cuando seleccionamos un expediente en específico, se abre y nos permite ver los datos del animal registrado, su historial de vacuna y su historial de patologías.</p>
+                <p></p>
+                <img src="img/expe.png" alt="Descripción de la imagen" class="img-fluid">
+                <p></p>
+                
+            </div>
+            <div class="modal-footer text-center" style="margin-left: auto; margin-right: auto;">
+
+                <button type="button" class="button button-red" data-bs-dismiss="modal"> <i
+                        class="svg-icon fas fa-xmark"></i>
+                    <span class="lable">cerrar</span> </button>
+            </div>
+        </div>
+    </div>
+</div> 
+
+
+<!-- Modal de ayuda -->
+<div class="modal fade" id="ayudaExpedienteE" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content text-center">
+            <div class="modal-header">
+                <h3 style="margin-left: auto; margin-right: auto;">Ayuda</h5>
+            </div>
+            <div class="modal-body text-center">
+                <p>°Al seleccionar el boton de Albergar muestra el modal para poder albergar desde aca un animal en un alberge  previpreviamente registrado.</p>
+                <img src="img/lberr.png" alt="Descripción de la imagen" class="img-fluid">
+                <p></p>
+                <p>°Este modal presenta el historial de las vacunas.</p>
+                <img src="img/vcu1.png" alt="Descripción de la imagen" class="img-fluid">
+                <p></p>
+                <p>°Este modal presenta el historial de las patologías, en este caso no tiene ninguna registrada.</p>
+                <img src="img/vcu2.png" alt="Descripción de la imagen" class="img-fluid">
+                <p></p>
+                <p>°Para poder guardar un registro nuevo no deben haber campos vacios.</p>
+                
+                
+            </div>
+            <div class="modal-footer text-center" style="margin-left: auto; margin-right: auto;">
+
+                <button type="button" class="button button-red" data-bs-dismiss="modal"> <i
+                        class="svg-icon fas fa-xmark"></i>
+                    <span class="lable">cerrar</span> </button>
+            </div>
+        </div>
+    </div>
+</div> 

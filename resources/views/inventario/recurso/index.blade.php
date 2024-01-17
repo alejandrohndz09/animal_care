@@ -99,7 +99,7 @@
 
                                 @foreach ($Recursos as $item)
                                  @if ($item->estado == 1) 
-                                    <tr class="recurso-row" data-recurso="{{$item}}" data-categoria="{{$item->categoria}}">
+                                    <tr class="recurso-row" data-recurso="{{$item}}">
                                         <td style="width: 8%">
                                             <img src="{{ asset('img/recurso.png') }}" alt="recurso item" class="picture" />
                                         </td>
@@ -253,7 +253,7 @@
         </main>
     </div>
     <!-- Botón de ayuda -->
-    <div class="floating-button"data-bs-pp="tooltip" data-bs-placement="top" title="Ayuda">
+    <div class="floating-button" data-toggle="modal" data-target="#ayudaRecursos" data-bs-pp="tooltip" data-bs-placement="top" title="Ayuda">
         <span>?</span>
     </div>
     @include('inventario.recurso.modalesRecurso')

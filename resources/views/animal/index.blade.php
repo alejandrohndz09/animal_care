@@ -16,7 +16,6 @@
                             style="width:100%; display: flex;  justify-content: space-between; align-items: center; margin-bottom: 15px;">
                             <div style=" width:100%;margin: 0; display: flex; gap: 5px; align-items: center; ">
                                 <button class="button btn-transparent" style="width: 30px;padding: 15px 5px" type="button"
-                                    id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"
                                     data-bs-pp="tooltip" data-bs-placement="top" title="Volver"
                                     onclick="window.location.href='/'">
                                     <i class="svg-icon fas fa-chevron-left" style="color: #4c4c4c"></i>
@@ -61,7 +60,7 @@
 
                                 @php use App\Http\Controllers\AnimalControlador; @endphp
                                 @foreach ($animales as $a)
-                                    @if ($a->estado == 0)
+                                    @if ($a->estado == 1)
                                         <tr class="animal-row" data-animal="{{ json_encode($a) }}">
                                             <td>
                                                 <img src="{{ isset($a->imagen) ? asset($a->imagen) : asset('img/especie.png') }}"
@@ -134,7 +133,7 @@
                                     </div>
                                     <div class="col-xl-8">
                                         <div class="inputContainer">
-                                            <input id="nombre" name="nombre" class="inputField" placeholder="Nombre"
+                                            <input id="nombre" name="nombre" autocomplete="off" class="inputField" placeholder="Nombre"
                                                 type="text"
                                                 value="{{ isset($animal) ? old('nombre', $animal->nombre) : old('nombre') }}"
                                                 autocomplete="off">
@@ -260,9 +259,12 @@
                 title: "{{ session()->get('alert')['message'] }}",
             });
 
-            @php
-                session()->keep('alert');
-            @endphp
-        </script>
-    @endif
+        @php
+            session()->keep('alert');
+        @endphp
+    </script>
+@endif
+<div class="floating-button" data-toggle="modal" data-target="#ayudaAnimal" data-bs-pp="tooltip" data-bs-placement="top" title="Ayuda">
+    <span>?</span>
+</div>
 @endsection

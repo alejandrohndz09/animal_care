@@ -26,7 +26,7 @@
                     <div class="sb-nav-link-icon"><i class="fas fa-tents"></i></div>
                     Albergue
                 </a>
-
+                @if(Auth::user()->rol==1)
                 <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages"
                     aria-expanded="false" aria-controls="collapsePages">
                     <div class="sb-nav-link-icon"><i class="fas fa-folder"></i>
@@ -55,11 +55,14 @@
                         </a>
                     </nav>
                 </div>
+                @endif
                 <div class="sb-sidenav-menu-heading">Otros</div>
+                @if(Auth::user()->rol==1)
                 <a class="nav-link" href="/miembro">
                     <div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>
                     Miembros
                 </a>
+                @endif
                 <a class="nav-link" href="/inventario">
                     <div class="sb-nav-link-icon"><i class="fas fa-warehouse"></i></div>
                     Inventario

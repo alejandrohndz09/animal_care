@@ -223,7 +223,7 @@ $(document).ready(function () {
     });
 });
 
-
-document.querySelector('.floating-button').addEventListener('click', function () {
-    $('#ayudaExpediente').modal('show');
+ // Agregar un evento de clic al botón flotante de ayuda para abrir el modal
+ document.querySelector('.floating-button').addEventListener('click', function () {
+    $('#ayudaMiembro').modal('show');
     });

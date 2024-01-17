@@ -159,6 +159,10 @@
                 </div>
             </div>
         </main>
+        <div class="floating-button" data-toggle="modal" data-target="#ayudaUni" data-bs-pp="tooltip" data-bs-placement="top" title="Ayuda">
+            <span>?</span>
+        </div>
         @include('inventario.unidadMedida.modalesUnidadMedida')
     </div>
+    
 @endsection

@@ -585,10 +585,10 @@
 
                                         <div class="col-xl-12">
                                             <div class="inputContainer">
-                                                <label class="inputFieldLabel" autocomplete="off"
+                                                <label class="inputFieldLabel" 
                                                     for="direccion">Dirección:*</label>
                                                 <i class="inputFieldIcon fas fa-location-dot"></i>
-                                                <input placeholder="Ej. Calle Principal #123, Ciudad" class="inputField"
+                                                <input autocomplete="off" placeholder="Ej. Calle Principal #123, Ciudad" class="inputField"
                                                     name="direccion"
                                                     {{ isset($adopcion) && $adopcion->aceptacion != 0 ? 'readonly' : '' }}
                                                     value="{{ isset($adopcion) ? old('direccion', $adopcion->adoptante->hogar->direccion) : (isset($adElegido) ? old('direccion', $adElegido->hogar->direccion) : old('direccion')) }}">
@@ -817,6 +817,9 @@
                 </form>
             </div>
         </main>
+        <div class="floating-button" data-toggle="modal" data-target="#ayudaAdopcionForm" data-bs-pp="tooltip" data-bs-placement="top" title="Ayuda">
+            <span>?</span>
+        </div>
         @include('adopcion.modalesAdopcion')
     </div>
 

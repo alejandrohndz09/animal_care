@@ -32,7 +32,13 @@
                     <h5 style="padding: -5px 0px !important; margin-bottom:0px ">
                         Bienvenido {{ $usuario->usuario }}.
                     </h5>
-                    <p style="color: #867596; font-size: 14px; margin-bottom: 0">Debes cambiar tu clave temporal.</p>
+                    @if (!isset($opcion))
+                        <p style="color: #867596; font-size: 14px; margin-bottom: 0">Debes cambiar tu clave temporal.
+                        </p>
+                    @else
+                        <p style="color: #867596; font-size: 14px; margin-bottom: 0">Debes ingresar una nueva clave de acceso.
+                        </p>
+                    @endif
                 </div>
 
                 <form method="POST" action="{{ url('/cambiarClaveTemporal') }}">

@@ -111,7 +111,7 @@
                                             <label class="inputFieldLabel" autocomplete="off"
                                                 for="direccion">Dirección</label>
                                             <i class="inputFieldIcon fas fa-location-dot"></i>
-                                            <input placeholder="Ej. Calle Principal #123, Ciudad"
+                                            <input autocomplete="off" placeholder="Ej. Calle Principal #123, Ciudad"
                                                 value="{{ isset($AlbergueEdit) ? old('direccion', $AlbergueEdit->direccion) : old('direccion') }}"
                                                 class="inputField" name="direccion">
                                             @error('direccion')
@@ -166,9 +166,13 @@
                     </div>
                 </div>
             </div>
-        </main>>
+
+        </main>
+        <div class="floating-button" data-toggle="modal" data-target="#ayudaAlbergue" data-bs-pp="tooltip" data-bs-placement="top" title="Ayuda">
+            <span>?</span>
+        </div>   
     </div>
    
     @include('albergue.modalesAlbergue')
-    
+
 @endsection
