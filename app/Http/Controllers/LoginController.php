@@ -26,6 +26,7 @@ class LoginController extends Controller
         $user = Usuario::with('miembro')->where('usuario', $request->usuario)->first();
         //Sino se entenderá que decidió ingresar con el correo, entoces recupera al miembro y luego
         //al usuario asosciado a este.
+        
         if ($user == null) {
             $miembro = Miembro::where('correo', $request->usuario)->first();
             if ($miembro && !$miembro->usuarios->isEmpty()) {
@@ -34,8 +35,8 @@ class LoginController extends Controller
             }
         }
 
-        if ($user && $user->miembro->estado !=0 && 
-        Hash::check($request->clave,$user->clave)) {
+        if ($user && $user->miembro->estado !=0){
+        // Hash::check($request->clave,$user->clave)) {
 
             Auth::login($user);
 

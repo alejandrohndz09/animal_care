@@ -69,13 +69,13 @@ $(document).ready(function () {
         // Botón que desencadenó el modal
         var idN = button.data('recurso').idRecurso; // Obtiene el valor del atributo data-id
         var nombre = button.data('recurso').recurso; // Obtiene el valor del atributo data-nombre
-        var categoria = button.data('recurso').categoria.categoria; 
+        var categoria = button.data('recurso').categoria.categoria;
         // // Actualiza el contenido del modal con los detalles del registro
         $('#Codigo').text(idN);
         $('#Nombre').text(nombre);
         $('#Categoria').text(categoria);
-     
-      
+
+
 
         $('body').on('click', '#confirmar', function () {
             window.location.href = '/inventario/recursos/destroy/' + idN
@@ -101,19 +101,10 @@ $('#tableBody').on('click', '.recurso-row', function (event) {
     if ($(event.target).is('.btnUpdate, .btnDelete')) {
         return; // Evita abrir el modal si se hizo clic en un botón
     } else {
-        var button = $(this); // Fila de la tabla que se hizo clic
-        var id = button.data('recurso').idRecurso; // Obtiene el valor del atributo data-id
-        var nombre = button.data('recurso').recurso; // Obtiene el valor del atributo data-nombre
-        var categoria = button.data('categoria').categoria; // Obtiene el valor del atributo data-apellido
-      
-        // Actualiza el contenido del modal con los detalles del registro
-        $('#CodigoD').text(id);
-        $('#NombreD').text(nombre);
-        $('#CategoriaD').text(categoria);
-        
-    
-        // Abre el modal
-        $('#modalDetalle').modal('show');
+        var RecursoData = $(this).data('recurso');
+        var idRecurso = RecursoData.idRecurso;
+        window.location.href = '/inventario/recursos/' + idRecurso;
     }
 });
+
 

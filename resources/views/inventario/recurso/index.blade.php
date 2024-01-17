@@ -99,7 +99,7 @@
 
                                 @foreach ($Recursos as $item)
                                  @if ($item->estado == 1) 
-                                    <tr class="recurso-row" data-recurso="{{$item}}" data-categoria="{{$item->categoria}}">
+                                    <tr class="recurso-row" data-recurso="{{$item}}">
                                         <td style="width: 8%">
                                             <img src="{{ asset('img/recurso.png') }}" alt="recurso item" class="picture" />
                                         </td>
