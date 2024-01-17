@@ -91,5 +91,9 @@
             </div>
         </main>
     </div>
+     <div class="floating-button" data-toggle="modal" data-target="#ayudaExpediente" data-bs-pp="tooltip" data-bs-placement="top" title="Ayuda">
+        <span>?</span>
+    </div>
+    
     @include('expediente.modalesExpediente')
 @endsection

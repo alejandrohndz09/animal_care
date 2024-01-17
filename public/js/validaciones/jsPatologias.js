@@ -47,3 +47,6 @@ $('.patologia-row').on('click', function (event) {
     // Abre el modal
     $('#modalDetalle').modal('show');
 });
+document.querySelector('.floating-button').addEventListener('click', function () {
+    $('#ayudaPato').modal('show');
+    });

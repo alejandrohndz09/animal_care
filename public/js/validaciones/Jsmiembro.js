@@ -341,3 +341,8 @@ $(document).ready(function () {
         $('#ModalToggle').modal('show');
     });
 });
+
+ // Agregar un evento de clic al botón flotante de ayuda para abrir el modal
+ document.querySelector('.floating-button').addEventListener('click', function () {
+    $('#ayudaMiembro').modal('show');
+    });

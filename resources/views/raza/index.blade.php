@@ -141,6 +141,9 @@
                 </div>
             </div>
         </main>
+        <div class="floating-button" data-toggle="modal" data-target="#ayudaRaza" data-bs-pp="tooltip" data-bs-placement="top" title="Ayuda">
+            <span>?</span>
+        </div>
         @include('raza.modalesRaza')
     </div>
 @endsection

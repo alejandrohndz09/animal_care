@@ -50,6 +50,10 @@ $('.unidadMedida-row').on('click', function (event) {
     // Abre el modal
     $('#modalDetalle').modal('show');
 });
+ // Agregar un evento de clic al botón flotante de ayuda para abrir el modal
+ document.querySelector('.floating-button').addEventListener('click', function () {
+    $('#ayudaUni').modal('show');
+    });
 
 
 

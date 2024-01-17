@@ -159,3 +159,9 @@ $('#tableBody').on('click', '.animal-row', function (event) {
         }
     });
 
+    // button de ayuda
+   //Agregar un evento de clic al botón flotante de ayuda para abrir el modal
+    document.querySelector('.floating-button').addEventListener('click', function () {
+      $('#ayudaAnimal').modal('show');
+     });
+

@@ -36,6 +36,10 @@ window.addEventListener('DOMContentLoaded', event => {
     }
 
 });
+ // Agregar un evento de clic al botón flotante de ayuda para abrir el modal
+ document.querySelector('.floating-button').addEventListener('click', function () {
+    $('#ayudaDash').modal('show');
+    });
 
 $(document).ready(function () {
     //Habilitar tooltips
@@ -43,4 +47,5 @@ $(document).ready(function () {
     var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
         return new bootstrap.Tooltip(tooltipTriggerEl)
     })
+    
 });
