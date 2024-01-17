@@ -106,120 +106,43 @@ $(document).ready(function () {
 
             // Si pasa ambas validaciones, puedes agregar el nuevo campo de teléfono
             var newTelefonoField = `
-        <div  class="row" id="remove${con}">
+            <div class="row" id="remove${con}">
                <div class="col-xl-6">
                   <div class="inputContainer">
                        <input class="inputField form-control telefono"  id="tel`+ con + `"
-                          value="+503 " name="telefono`+ con + `" type="text" oninput="validarInput(this)">
+                          value="+503 " name="telefonosAd[]" type="text" oninput="validarInput(this)">
                            <small  style="color:red" class="error-message" id="error-` + con + `"></small>
                   </div>
                 </div>
-             <div class="col-xl-6">
-                  <button type="button" class="button button-sec remove-telefono"
-                  data-telefono="telefono${con}"
-                  data-remove="remove${con}"
-                  data-telefono-id="vacio" data-bs-pp="tooltip"
-                  data-bs-placement="top" title="Eliminar telefono">
-                   <i class="svg-icon fas fa-minus"></i>
-                  </button>
-            </div>
-        </div>
-        `;
+                <div class="col-xl-6">
+                    <button type="button" class="button button-sec remove-telefono"
+                    data-telefono="telefono${con}"
+                    data-remove="remove${con}"
+                    data-telefono-id="vacio" data-bs-pp="tooltip"
+                    data-bs-placement="top" title="Eliminar telefono">
+                    <i class="svg-icon fas fa-minus"></i>
+                    </button>
+                </div>
+            </div>`;
             $("#telefono-container").append(newTelefonoField);
+            // Cierra el tooltip si está abierto
+            $(this).tooltip('hide');
+            tooltips();
         }
 
     });
 
     $("#telefono-container").on("click", ".remove-telefono", function () {
-        var telefonoId = $(this).data("telefono-id"); // Almacenar telefonoId
-        var removeList = $(this).data("remove"); // Almacenar el id que se eliminara
-
-        var telefono = $(this).data("telefono"); // Obtener el name del input dinamico agregado por el usuario para obtener el valor
-        var valorGuardado = $("input[name='" + telefono + "']").val();//Guardar valor del input en especifico que se selecciono
-        var telefonoBD = $(this).data("telefono-e"); // Numero de BD para mostrar en el modal si quiere eliminarlo o no
-
-        //Verifica si el input esta vacio entonces no mostrara el modal sino solo lo eliminara
-        if (valorGuardado === "+503 ") {
-
-            // Elimina input
-            $("#" + removeList).remove();
-            var contador = $("#con");
-            var con = parseInt(contador.val());
-            con = con - 1; // decrementa el valor de 'con' en 1
-            contador.val(con); // Actualiza el valor en el campo de entrada
-
-        }//Sino entonces esta con un registro pregunta al usuario 
-        else {
-
-            //Si hay datos en telefono signica que estamos eliminando un registro de la BD y para confirmacion obtenemos el data 
-            if (telefono != null) {
-                // Actualiza el contenido del modal con los detalles del registro
-                $('#telefono').text(valorGuardado);
-            } else {
-                // Actualiza el contenido del modal con los detalles del registro
-                $('#telefono').text(telefonoBD);
-            }
-
-            // Abrir el modal de confirmación
-            $("#modalTelefono").modal("show");
-
-
-            $("#confirmarCell").on("click", function () {
-                // Cerrar el modal de confirmación
-
-                $("#modalTelefono").modal("hide");
-
-                console.log(telefonoId);
-
-                // Si esta vacio significa que no esta guardado el telefono en la BD
-                if (telefonoId === "vacio") {
-
-                    // Elimina input
-                    $("#" + removeList).remove();
-                    var contador = $("#con");
-                    var con = parseInt(contador.val());
-                    con = con - 1; // decrementa el valor de 'con' en 1
-                    contador.val(con); // Actualiza el valor en el campo de entrada
-
-                } else {
-                    // Realizar la eliminación del registro utilizando AJAX
-                    $.ajax({
-                        url: "/destroyTelefono/" + telefonoId,
-                        method: "DELETE",
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        },
-                        success: function () {
-                            // Eliminar el elemento del DOM si la eliminación en el servidor fue exitosa
-                            var divAEliminar = $("#" + removeList);
-                            divAEliminar.remove();
-
-                            // Restar 1 al contador
-                            var contador = $("#con");
-                            var con = parseInt(contador.val());
-                            con = con - 1;
-                            contador.val(con);
-
-                            // Abre el modal
-                            $('#modalEliminacion').modal('show');
-
-                            // Ocultar el modal después de 4 segundos
-                            setTimeout(function () {
-                                $('#modalEliminacion').modal('hide');
-                            }, 1050);
-
-                            telefonoId = "";
-                        },
-                        error: function (xhr, status, error) {
-                            console.log(error);
-
-                        }
-                    });
-                }
-            });
-
-        }
+        $(this).closest('.row').remove();
+        $(this).remove();
+        var contador = $("#con");
+        var con = parseInt(contador.val());
+        con = con - 1; // decrementa el valor de 'con' en 1
+        contador.val(con); // Actualiza el valor en el campo de entrada
+        // Cierra el tooltip si está abierto
+        $(this).tooltip('hide');
     });
+
 
     //Validacion de campos vacios en el formulario
     $("#miFormulario").submit(function (event) {
@@ -268,7 +191,7 @@ $(document).ready(function () {
         $('#modalRecordCorreo').text(correo);
 
         $('body').on('click', '#confirmar', function () {
-            $.get('/destroy/' + id, function () {
+            $.get('miembro/DarBaja/' + id, function () {
                 // location.reload();
                 window.location.href = '/miembro'
             });
@@ -293,51 +216,9 @@ $(document).ready(function () {
     $('.miembro-row').on('click', function (event) {
         // Verifica si el clic fue en un botón dentro de la fila
         if ($(event.target).is('.btnUpdate, .btnDelete')) {
-            return; // Evita abrir el modal si se hizo clic en un botón
-        }
-
-        var miembroData = $(this).data('miembro');
-        var idMiembro = miembroData.idMiembro;
-        var dui = miembroData.dui;
-        var nombres = miembroData.nombres;
-        var apellidos = miembroData.apellidos;
-        var correo = miembroData.correo;
-
-
-        $.ajax({
-            url: 'miembro/telefonos/' + idMiembro, // La URL de la ruta definida en Laravel
-            type: 'GET',
-            dataType: 'json',
-            success: function (data) {
-                var isFirst = true; // Variable para rastrear si es el primer registro
-                $('#telefonos').empty();
-                for (var key in data) {
-                    if (data.hasOwnProperty(key)) {
-                        var text = data[key]; // Obtén el valor actual
-
-                        // Aplica el estilo CSS solo al primer registro
-                        if (isFirst) {
-                            $('#telefonos').append('<br>' + text);
-                            isFirst = false; // Cambia el valor de isFirst para que los siguientes registros no apliquen el estilo
-                        } else {
-                            // Inserta los registros restantes sin el estilo
-                            $('#telefonos').append('<br>' + text);
-                        }
-                    }
-                }
-            },
-            error: function (error) {
-                console.error('Error en la solicitud:', error);
-            }
-        });
-
-        // Llena el modal con los datos correspondientes
-        $('#modalDui').text(dui);
-        $('#modalNombres').text(nombres);
-        $('#modalApellidos').text(apellidos);
-        $('#modalCorreo').text(correo);
-
-        // Abre el modal
-        $('#ModalToggle').modal('show');
+            return; // No muestres el modal si se hizo clic en un botón
+        } else {
+            window.location.href ='/miembro/'+$(this).data('miembro').idMiembro;
+        }       
     });
 });

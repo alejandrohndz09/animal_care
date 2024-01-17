@@ -10,6 +10,7 @@ use App\Rules\EmptyIf503;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class AdopcionController extends Controller
 {
@@ -45,7 +46,8 @@ class AdopcionController extends Controller
             [
                 'expElegido' => $expElegido,
                 'adElegido' => $adElegido,
-            ]);
+            ]
+        );
     }
 
     public function store(Request $request)
@@ -214,13 +216,12 @@ class AdopcionController extends Controller
                 DB::rollBack();
                 $alert = array(
                     'type' => 'error',
-                    'message' => 'Operación fallida'.$e->getMessage(),
+                    'message' => 'Operación fallida' . $e->getMessage(),
                 );
                 session()->flash('alert', $alert);
                 return back()
                     ->withInput()
                     ->with('error', 'Error al guardar los registros.');
-
             }
         }
     }
@@ -243,20 +244,43 @@ class AdopcionController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'idAnimal' => 'required|unique:miembro,idAnimal,' . $id . ',idAdopcion',
-            'albergue' => 'required',
-            'fecha' => 'required|date|before_or_equal:today',
-            'estado' => 'required',
+            'expA' => 'required|exists:expediente,idExpediente',
+            'idAdoptante' => 'required_if:idAdoptante,' . request('idAdoptante') . '|exists:adoptante,idAdoptante',
+            'nombres' => 'required|min:3',
+            'apellidos' => 'required|min:3',
+            'dui' => [
+                'required',
+                'unique:adoptante,dui,' . request('idAdoptante') . ',idAdoptante',
+                'unique:miembro,dui',
+                'unique:donante,dui',
+            ],
+            'telefonosAd' => 'required|array|distinct',
+            'telefonosAd.*' => [
+                'required',
+                'unique:telefono_adoptante,telefono,' . request('idAdoptante') . ',idAdoptante',
+                'unique:telefono_miembro,telefono',
+                'unique:telefono_donante,telefono',
+                new EmptyIf503,
+            ],
+            'direccion' => 'required|unique:hogar,direccion,' . request('idHogar') . ',idHogar',
+            'tamanioHogar' => 'required|in:Grande,Mediano,Pequeño',
+            'companiaHumana' => 'required|numeric|min:1',
+            'isCompaniaAnimal' => 'required|in:Sí,No',
+            'companiaAnimal' => 'required_if:isCompaniaAnimal,Sí|numeric|min:1',
+
         ], [
-            'idAnimal.unique' => 'Ya existe un adopcion de este animal.',
-            'idAnimal.required' => 'El campo animal es requerido.',
-            'albergue.required' => 'El campo albergue es requerido.',
-            'fecha.before_or_equal' => 'La fecha ingresada no debe ser mayor a la de ahora.',
+            'required' => 'Este campo es requerido.',
+            'expA.required' => 'No ha seleccionado nigún expediente.',
+            'expA.exist' => 'El expediente especificado no se ha encontrado, seleccione uno de nuevo.',
+            'idAdoptante.exist' => 'El adoptante especificado no se ha encontrado, seleccione uno de nuevo o regístrelo.',
+            'telefonosAd.*.unique' => 'Este número ya ha sido ingresado.',
+            'dui.unique' => 'Este dui ya ha sido ingresado.',
+            'direccion.unique' => 'Esta dirección ya ha sido ingresada.',
         ]);
 
         $adopcion = Adopcion::find($id);
 
-        $adopcion->idAnimal = $request->post('animal');
+        $adopcion->idExpediente = $request->post('expA');
         $adopcion->idAlvergue = $request->post('albergue');
         $adopcion->fechaIngreso = $request->post('fecha');
         $adopcion->estadoGeneral = $request->post('estado');
@@ -267,25 +291,22 @@ class AdopcionController extends Controller
 
     public function baja($id)
     {
-        
-       
-            $adopcion = Adopcion::find($id);
-            $adopcion->estado=0;
-            $expediente = $adopcion->expediente;
+        $adopcion = Adopcion::find($id);
+        $adopcion->estado = 0;
+        $expediente = $adopcion->expediente;
 
-            if ($expediente) {
-                $expediente->estadoGeneral = $adopcion->expediente->idAlvergue != null ? 'Albergado' : 'Controlado';
-                $expediente->save();
-            }
-            $adopcion->delete();
-            $alert = array(
-                'type' => 'success',
-                'message' => 'Operación exitosa',
-            );
-            session()->flash('alert', $alert);
+        if ($expediente) {
+            $expediente->estadoGeneral = $adopcion->expediente->idAlvergue != null ? 'Albergado' : 'Controlado';
+            $expediente->save();
+        }
+        $adopcion->delete();
+        $alert = array(
+            'type' => 'success',
+            'message' => 'Operación exitosa',
+        );
+        session()->flash('alert', $alert);
 
-            return redirect()->route('adopcion.index')->with($alert);
-       
+        return redirect()->route('adopcion.index')->with($alert);
     }
 
     public function alta($id)
@@ -433,7 +454,8 @@ class AdopcionController extends Controller
             [
                 'expElegido' => $expediente,
                 'adElegido' => $adoptante,
-            ]);
+            ]
+        );
     }
 
     public function generarIdAdoptante()
@@ -512,5 +534,20 @@ class AdopcionController extends Controller
             ->get();
 
         return response()->json($expedientes);
+    }
+
+    public function pdf($id)
+    {
+        $adopcion = Adopcion::find($id);
+
+        // dd($historialVacunas);
+        $pdf = PDF::loadView(
+            'adopcion.pdf',
+            [
+                'adopcion' => $adopcion,
+            ]
+        );
+
+        return $pdf->stream();
     }
 }
