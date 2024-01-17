@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Miembro;
 use App\Models\Usuario;
+use App\Mail\RecuperarClaveMail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Hash;
+
 class LoginController extends Controller
 {
     // protected $guard = 'usuario';
@@ -34,19 +37,25 @@ class LoginController extends Controller
             }
         }
 
-        if ($user && $user->miembro->estado !=0 && 
-        Hash::check($request->clave,$user->clave)) {
+        if ($user && $user->miembro->estado != 0 &&
+            Hash::check($request->clave, $user->clave)) {
+            if ($user->estado == 2) {
+                
+                return view('usuario.actualizarClave')->with([
+                    'usuario' => $user
+                ]);
+            } else if ($user->miembro->estado == 1) {
+                Auth::login($user);
 
-            Auth::login($user);
+                $request->session()->regenerate();
+                $alert = array(
+                    'type' => 'success',
+                    'message' => '¡Bienvenido/a, ' . Auth::user()->usuario . '!',
+                );
 
-            $request->session()->regenerate();
-            $alert = array(
-                'type' => 'success',
-                'message' => '¡Bienvenido/a, ' . Auth::user()->usuario . '!',
-            );
-
-            session()->flash('alert', $alert);
-            return redirect('/');
+                session()->flash('alert', $alert);
+                return redirect('/');
+            }
         } else {
             $alert = array(
                 'type' => 'error',
@@ -63,5 +72,65 @@ class LoginController extends Controller
         Auth::logout();
 
         return redirect('/');
+    }
+
+    public function cambiarClaveTemporal(Request $request)
+    {
+        
+        $usuario = Usuario::find($request->post('usuario'));
+        $usuario->estado = 1;
+        $usuario->clave = Hash::make($request->post('clave1'));
+        $usuario->save();
+        Auth::login($usuario);
+        $request->session()->regenerate();
+        $alert = array(
+            'type' => 'success',
+            'message' => '¡Bienvenido/a, ' . Auth::user()->usuario . '!',
+        );
+
+        session()->flash('alert', $alert);
+        return redirect('/');
+
+    }
+
+    public function recuperarClaveMail(Request $request)
+    {
+        
+        $usuario = Usuario::find($request->post('correo'));
+        
+        $mail = new RecuperarClaveMail($usuario, $claveGenerada);
+        Mail::to($usuario->miembro->correo)->send($mail);
+        $usuario->estado = 1;
+        $usuario->clave = Hash::make($request->post('clave1'));
+        $usuario->save();
+        Auth::login($usuario);
+        $request->session()->regenerate();
+        $alert = array(
+            'type' => 'success',
+            'message' => '¡Bienvenido/a, ' . Auth::user()->usuario . '!',
+        );
+
+        session()->flash('alert', $alert);
+        return redirect('/');
+
+    }
+
+    public function recuperarClave(Request $request)
+    {
+        
+        $usuario = Usuario::find($request->post('correo'));
+        $usuario->estado = 1;
+        $usuario->clave = Hash::make($request->post('clave1'));
+        $usuario->save();
+        Auth::login($usuario);
+        $request->session()->regenerate();
+        $alert = array(
+            'type' => 'success',
+            'message' => '¡Bienvenido/a, ' . Auth::user()->usuario . '!',
+        );
+
+        session()->flash('alert', $alert);
+        return redirect('/');
+
     }
 }

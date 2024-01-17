@@ -21,64 +21,70 @@
 
     <div class="row" style="height:80vh;justify-content: center; align-content: center">
 
-        <div class="col-xl-4"
-            style="display: flex; font-size: 46px; color:#fff; align-items: center; justify-content: center; gap: 5px; ">
-            <img src="{{ asset('img/logo.png') }}" height="120px;" style="padding-bottom: 3px">
-            <strong style="font-family: 'Raleway','More Sugar','Dosis',Arial, sans-serif;">AnimalCare</strong>
-        </div>
-
         <div class="col-xl-4">
             <div class="card  py-5" style="border:none;  padding-bottom: 50px !important; width: 100%">
-                <h1 style="padding: -5px 0px !important; margin-bottom:25px ">
-                    Inicio de sesión
-                </h1>
-                <form method="POST" action="{{ route('login') }}">
+                <div class="col-xl-12"
+                    style="display: flex; font-size: 24px; color:#000; align-items: center; justify-content: center; gap: 5px; ">
+                    <img src="{{ asset('img/logo.png') }}" height="44px;" style="padding-bottom: 3px">
+                    <strong style="font-family: 'Raleway','More Sugar','Dosis',Arial, sans-serif;">AnimalCare</strong>
+                </div>
+                <div style="display: flex; flex-direction: column">
+                    <h5 style="padding: -5px 0px !important; margin-bottom:0px ">
+                        Bienvenido {{ $usuario->usuario }}.
+                    </h5>
+                    <p style="color: #867596; font-size: 14px; margin-bottom: 0">Debes cambiar tu clave temporal.</p>
+                </div>
+
+                <form method="POST" action="{{ url('/cambiarClaveTemporal') }}">
                     @csrf
-                    <div class="inputContainer">
-                        <input type="text" value="{{ old('usuario') }}"class="inputField" autocomplete="off"
-                            name="usuario" placeholder="Ingrese su usuario.">
-                        <label class="inputFieldLabel" for="usuario">Usuario o Correo:</label>
-                        <i class="inputFieldIcon fas fa-user"></i>
-                        @error('usuario')
+                    <input type="hidden" class="inputField" name="usuario" id="usuario"
+                        value="{{ $usuario->idUsuario }}">
+                    <div class="inputContainer ">
+                        <input type="password" class="inputField" name="clave1" id="clave1"
+                            placeholder="Ingrese su clave.">
+                        <label class="inputFieldLabel" for="clave1">Nueva clave:</label>
+                        <i class="inputFieldIcon fas fa-key"></i>
+                        @error('clave1')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
                     <div class="inputContainer ">
-                        <input type="password" class="inputField" id="clave" name="clave"
-                            placeholder="Ingrese su clave.">
-                        <label class="inputFieldLabel" for="clave">Clave:</label>
+                        <input type="password" class="inputField" id="clave2"name="clave2"
+                            placeholder="Confirme su clave.">
+                        <label class="inputFieldLabel" for="clave2">Confirmar clave:</label>
                         <i class="inputFieldIcon fas fa-key"></i>
-                        @error('clave')
+                        @error('clave2')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                         <div class="d-flex mt-3 align-items-center">
                             <div class="d-flex flex-grow-1 " style="margin-left:5px; gap:3px">
                                 <input type="checkbox" id="mostrarClave"> Mostrar Clave
                             </div>
-                            <p style="text-align: end; margin-bottom: 0;"><a class=""
-                                    style="text-decoration: none; color: #6067eb" data-bs-toggle="modal"
-                                    data-bs-target="#recuperar" href="">¿Olvidó su
-                                    clave?</a>
-                            </p>
                         </div>
+                        <label id="advertencia"></label>
                     </div>
 
-                    <button type="submit" class="button "
+
+                    <button type="submit" class="button mb-2"
                         style="width: 100%;padding: 7px 7px; justify-items: end; background: #606eed;">
-                        <span class="lable" style="color:#fff">Ingresar<span>
+                        <i class="svg-icon fas fa-check" style="color:#fff"></i>
+                        <span class="lable" style="color:#fff">Efectuar cambio e ingresar<span>
+                    </button>
+                    <button type="button" class="button button-sec" onclick="window.location.href='/login'"
+                        style="width: 100%;padding: 7px 7px; justify-items: end; ">
+                        <i class="svg-icon fas fa-chevron-left"></i>
+                        <span class="lable">Volver al inicio<span>
                     </button>
                 </form>
 
             </div>
         </div>
     </div>
-    <div style="text-align: center; color:#e8e5e5">
-        <p>©️UES FMP - Todos los derechos reservados.</p>
-    </div>
+
     <div class="modal fade" id="recuperar" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content text-center">
-                <form action="/recuperar-clave" method="post">
+                <form action="/usuario" method="post">
                     @csrf
                     <div class="modal-header">
                         <h5 style="margin-left: auto; margin-right: auto;">Recuperar clave</h5>
@@ -91,7 +97,8 @@
                             <div class="inputContainer mt-4 mb-2">
                                 <input type="email" id="correo" name="correo"
                                     placeholder="ejemplo@email.com"class="inputField">
-                                <label class="inputFieldLabel" for="raza">Ingrese un correo electrónico asociado al
+                                <label class="inputFieldLabel" for="raza">Ingrese un correo elecctónico asociado
+                                    al
                                     miembro:</label>
                                 <i class="inputFieldIcon fas fa-user"></i>
 
@@ -143,19 +150,79 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             var checkbox = document.getElementById('mostrarClave');
-            var claveInput = document.getElementById('clave');
+            var claveInput1 = document.getElementById('clave1');
+            var claveInput2 = document.getElementById('clave2');
 
             checkbox.addEventListener('change', function() {
                 if (checkbox.checked) {
                     // Si el checkbox está marcado, cambia el tipo del input a 'text'
-                    claveInput.type = 'text';
+                    claveInput1.type = 'text';
+                    claveInput2.type = 'text';
                 } else {
                     // Si el checkbox está desmarcado, vuelve a establecer el tipo del input a 'password'
-                    claveInput.type = 'password';
+                    claveInput1.type = 'password';
+                    claveInput2.type = 'password';
                 }
             });
         });
     </script>
+    <!-- En tu vista Blade -->
+    <script>
+        $(document).ready(function() {
+            // Escucha el evento de cambio en los campos
+            $('input[name="clave2"]').on('input', function() {
+                validarCampos();
+            });
+
+            // Escucha el evento de envío del formulario
+            $('form').on('submit', function(event) {
+                // Realiza la validación antes de enviar el formulario
+
+
+                if (!validarCampos()) {
+                    event
+                        .preventDefault(); // Evita el envío del formulario si no se cumplen las validaciones
+                }
+
+            });
+
+            // Función para validar los campos y mostrar la advertencia
+            function validarCampos() {
+                // Obtiene los valores de los campos
+                var valorCampo1 = $('input[name="clave1"]').val();
+                var valorCampo2 = $('input[name="clave2"]').val();
+
+                // Compara los valores y muestra la advertencia si no son iguales
+                if (valorCampo1 !== valorCampo2) {
+                    $('#advertencia').text('Los campos deben tener el mismo valor').css('color', 'red');
+                    return false; // Retorna falso si no se cumplen las validaciones
+                } else {
+                    $('#advertencia').text('').css('color', 'black');
+
+                }
+
+                // Validación de campos requeridos
+                var camposRequeridos = ['clave1', 'clave2'];
+                for (var i = 0; i < camposRequeridos.length; i++) {
+                    var valorCampo = $('input[name="' + camposRequeridos[i] + '"]').val();
+                    if (!valorCampo) {
+                        $('#advertencia').text('Todos los campos son requeridos').css('color', 'red');
+                        return false; // Retorna falso si no se cumplen las validaciones
+                    }
+                    // Validación de mínimo de 8 caracteres
+                    if (valorCampo.length < 6) {
+                        $('#advertencia').text('La clave debe tener al menos 6 caracteres').css('color', 'red');
+                        return false; // Retorna falso si no se cumplen las validaciones
+                    }
+                }
+
+                // Retorna verdadero si se cumplen todas las validaciones
+                return true;
+            }
+        });
+    </script>
+
+
 </body>
 
 </html>
