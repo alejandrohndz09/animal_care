@@ -14,21 +14,34 @@
                     <div class="col-xl-7">
                         <div
                             style="width:100%; display: flex;  justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                            <h1>Animales </h1>
-                            <input id="searchInput" class="inputField card" style="width: 50%; margin-left: 20% "
-                                autocomplete="off" placeholder="🔍︎ Buscar" type="search">
-
-                            <div class="dropdown">
+                            <div style=" width:100%;margin: 0; display: flex; gap: 5px; align-items: center; ">
                                 <button class="button btn-transparent" style="width: 30px;padding: 15px 5px" type="button"
-                                    id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <i class="svg-icon fas fa-ellipsis-vertical" style="color: #4c4c4c"></i>
+                                    data-bs-pp="tooltip" data-bs-placement="top" title="Volver"
+                                    onclick="window.location.href='/'">
+                                    <i class="svg-icon fas fa-chevron-left" style="color: #4c4c4c"></i>
                                 </button>
-                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                    <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#tabla">Animales de
+                                <h1>Animales </h1>
+                            </div>
+                            <div
+                                style=" width:100%;margin: 0; display: flex; gap: 5px; justify-content: end ;align-items: center; ">
+                                <input id="searchInput" class="inputField card" style="width: 100%;" autocomplete="off"
+                                    placeholder="🔍︎ Buscar" type="search">
+
+                                <div class="dropdown">
+                                    <button class="button btn-transparent" style="width: 30px;padding: 15px 5px"
+                                        type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown"
+                                        aria-expanded="false" data-bs-pp="tooltip" data-bs-placement="top" title="Opciones">
+                                        <i class="svg-icon fas fa-ellipsis-vertical" style="color: #4c4c4c"></i>
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                        <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#tabla">Animales de
                                             baja</a></li>
-                                </ul>
+                                    </ul>
+                                </div>
+
                             </div>
                         </div>
+                        
 
                         <table>
                             <thead>
@@ -47,34 +60,38 @@
 
                                 @php use App\Http\Controllers\AnimalControlador; @endphp
                                 @foreach ($animales as $a)
-                                    <tr class="animal-row" data-animal="{{json_encode($a)}}">
-                                        <td>
-                                            <img src="{{isset($a->imagen)?asset($a->imagen):asset('img/especie.png')}}"
-                                                alt="user" class="picture" />
-                                        </td>
-                                        <td>{{ $a->idAnimal }}</td>
-                                        <td>{{ $a->nombre }}</td>
-                                        <td>{{ $a->raza->especie->especie }}</td>
-                                        <td>{{ $a->raza->raza }}</td>
-                                        <td>{{ AnimalControlador::calcularEdad(explode(' ', $a->fechaNacimiento)[0]) }}
-                                        </td>
-                                        <td>
-                                            <div
-                                                style="display: flex; align-items: flex-end; gap: 3px; justify-content: center">
-                                                <a href="{{ url('animal/' . $a->idAnimal . '/edit') }}"
-                                                    class="button button-blue btnUpdate" style="width: 45%;" data-bs-pp="tooltip"
-                                                    data-bs-placement="top" title="Editar">
-                                                    <i class="svg-icon fas fa-pencil"></i>
-                                                </a>
-                                                <button type="button" class="button button-red btnDelete" style="width: 45%"
-                                                data-bs-toggle="modal" data-bs-target="#exampleModalToggle" data-animal="{{json_encode($a)}}"
-                                                    data-bs-pp="tooltip" data-bs-placement="top" title="Dar de baja">
-                                                    <i class="svg-icon fas fa-trash"></i>
-                                                </button>
+                                    @if ($a->estado == 1)
+                                        <tr class="animal-row" data-animal="{{ json_encode($a) }}">
+                                            <td>
+                                                <img src="{{ isset($a->imagen) ? asset($a->imagen) : asset('img/especie.png') }}"
+                                                    alt="user" class="picture" />
+                                            </td>
+                                            <td>{{ $a->idAnimal }}</td>
+                                            <td>{{ $a->nombre }}</td>
+                                            <td>{{ $a->raza->especie->especie }}</td>
+                                            <td>{{ $a->raza->raza }}</td>
+                                            <td>{{ AnimalControlador::calcularEdad(explode(' ', $a->fechaNacimiento)[0]) }}
+                                            </td>
+                                            <td>
+                                                <div
+                                                    style="display: flex; align-items: flex-end; gap: 3px; justify-content: center">
+                                                    <a href="{{ url('animal/' . $a->idAnimal . '/edit') }}"
+                                                        class="button button-blue btnUpdate" style="width: 45%;"
+                                                        data-bs-pp="tooltip" data-bs-placement="top" title="Editar">
+                                                        <i class="svg-icon fas fa-pencil"></i>
+                                                    </a>
+                                                    <button type="button" class="button button-red btnDelete"
+                                                        style="width: 45%" data-bs-toggle="modal"
+                                                        data-bs-target="#exampleModalToggle"
+                                                        data-animal="{{ json_encode($a) }}" data-bs-pp="tooltip"
+                                                        data-bs-placement="top" title="Dar de baja">
+                                                        <i class="svg-icon fas fa-trash"></i>
+                                                    </button>
 
-                                            </div>
-                                        </td>
-                                    </tr>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endif
                                 @endforeach
                             </tbody>
                         </table>
@@ -236,11 +253,11 @@
         @include('animal.modalesAnimal')
     </div>
     @if (session()->has('alert'))
-    <script>
-        Toast.fire({
-            icon: "{{ session()->get('alert')['type'] }}",
-            title: "{{ session()->get('alert')['message'] }}",
-        });
+        <script>
+            Toast.fire({
+                icon: "{{ session()->get('alert')['type'] }}",
+                title: "{{ session()->get('alert')['message'] }}",
+            });
 
         @php
             session()->keep('alert');

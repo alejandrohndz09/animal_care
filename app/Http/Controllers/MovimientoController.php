@@ -3,17 +3,21 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Donante;
+use App\Models\Movimiento;
 use App\Models\Recurso;
 use App\Models\Unidadmedida;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
-class RecursoController extends Controller
+class MovimientoController extends Controller
 {
 
     public function index()
     {
-        $recursos = Recurso::all();
-        return view('inventario.recurso.index')->with('Recursos',$recursos);
+        $movimientos = Movimiento::orderByDesc('fechaMovimento')->get();
+        $donates = Donante::all();
+        return view('inventario.movimiento.index')->with('Movimientos', $movimientos)->with('donantes', $donates);
     }
     public function Create()
     {
@@ -23,23 +27,31 @@ class RecursoController extends Controller
     {
 
         $request->validate([
-            'recurso' => 'required|unique:recurso',
-            'categoria' => 'required',
-            'unidad' => 'required',
+            'fecha' => 'required|date|after_or_equal:' . $this->fechaMinima(),
+            'tipoMovimiento' => 'required|in:Ingreso,Salida',
+            'isDonado' => 'required_if:tipoMovimiento,Ingreso|in:Sí,No',
+            'donanteE' => 'required_if:isDonado,Sí|exists:donante,idDonante',
+            'recurso' => 'required|exists:recurso,idRecurso',
+            'valorlabel' => 'required|numeric|min:1',
+            'concepto' => 'required|min:10',
         ], [
-            'recurso.unique' => 'Esta descripción ya ha sido utilizada.',
-            'unidad.required' => 'El campo unidad de medida es requerido.',
+            //     // 'movimiento.unique' => 'Esta descripción ya ha sido utilizada.',
+            // 'unidad.required' => 'El campo unidad de medida es requerido.',
         ]);
 
+
         //Guardar en BD
-        $Recurso = new Recurso();
-        $Recurso->idRecurso = $this->generarId();
-        $Recurso->recurso = $request->post('recurso');
-        $Recurso->idUnidadMedida = $request->post('unidad');
-        $Recurso->idCategoria = $request->post('categoria');
-        $Recurso->cantidad = 0;
-        $Recurso->estado = 1;
-        $Recurso->save();
+        $Movimiento = new Movimiento();
+        $Movimiento->idMovimiento = $this->generarId();
+        $Movimiento->descripcion = $request->post('concepto');
+        $Movimiento->fechaMovimento = $request->post('fecha');
+        $Movimiento->tipoMovimiento = $request->post('tipoMovimiento');
+        $Movimiento->valor = $request->post('valor');
+        $Movimiento->idMiembro =  Auth::user()->idMiembro;
+        $Movimiento->idRecurso = $request->post('recurso');
+        $Movimiento->idDonante = $request->input('donanteE');
+
+        $Movimiento->save();
 
         $alert = array(
             'type' => 'success',
@@ -47,10 +59,9 @@ class RecursoController extends Controller
         );
 
         session()->flash('alert', $alert);
-        $Recurso->save();
+        $Movimiento->save();
 
         return back()->with('success', 'Guardado con éxito');
-
     }
 
     public function show($id)
@@ -59,65 +70,67 @@ class RecursoController extends Controller
 
     public function edit($id)
     {
-        $RecursoEdit = Recurso::find($id);
-        $Recursos = Recurso::where('estado', 1)->get();
+        $MovimientoEdit = Movimiento::find($id);
+        $Movimientos = Movimiento::all();
+        $donantes = Donante::all();
 
-        return view('inventario.recurso.index')->with([
-            'Recursos' => $Recursos,
-            'RecursoEdit' => $RecursoEdit,
+        return view('inventario.movimiento.index')->with([
+            'Movimientos' => $Movimientos,
+            'MovimientoEdit' => $MovimientoEdit,
+            'donantes' => $donantes
         ]);
     }
 
     public function update(Request $request, $id)
     {
-        //Valida si estan en la BD excluyendo al registro modificado
-        $request->validate([
-            'recurso' => 'required|unique:recurso,recurso,' . $id . ',idRecurso',
-            'categoria' => 'required',
-            'unidad' => 'required',
-        ], [
-            'recurso.unique' => 'Esta descripción ya ha sido utilizada.',
-            'unidad.required' => 'El campo unidad de medida es requerido.',
-        ]);
+        // $request->validate([
+        //     'fecha' => 'required|date|after_or_equal:' . $this->fechaMinima(),
+        //     'tipoMovimiento' => 'required|in:Ingreso,Salida',
+        //     'isDonado' => 'required_if:tipoMovimiento,Ingreso|in:Sí,No',
+        //     'donanteE' => 'required_if:isDonado,Sí|exists:donante,idDonante',
+        //     'recurso' => 'required|exists:recurso,idRecurso',
+        //     'valorlabel' => 'required|numeric|min:1',
+        //     'concepto' => 'required|min:10',
+        // ], [
+        //     // 'movimiento.unique' => 'Esta descripción ya ha sido utilizada.',
+        //     // 'unidad.required' => 'El campo unidad de medida es requerido.',
+        // ]);
 
-        $recurso = Recurso::find($id);
-        $recurso->recurso = $request->post('recurso');
-        $recurso->idUnidadMedida = $request->post('unidad');
-        $recurso->idCategoria = $request->post('categoria');
-        $recurso->save();
+        $movimiento = Movimiento::find($id);
+        //Guardar en BD
+        $movimiento->descripcion = $request->post('concepto');
+        $movimiento->fechaMovimento = $request->post('fecha');
+        // dd($request->post('fecha'));
+        $movimiento->tipoMovimiento = $request->post('tipoMovimiento');
+        $movimiento->valor = $request->post('valor');
+        $movimiento->idMiembro =  Auth::user()->idMiembro;
+        $movimiento->idRecurso = $request->post('recurso');
+        $movimiento->idDonante = $request->post('donanteE');
+
+        $movimiento->save();
+
         $alert = array(
             'type' => 'success',
             'message' => 'El registro se ha modificado exitosamente',
         );
 
         session()->flash('alert', $alert);
-
-        return redirect()->route('recursos.index')->with('Recursos', Recurso::where('estado', 1)->get());
-    }
-
-    public function obtenerUnidades($categoria)
-    {
-        // Obtén las unidades relacionadas con la categoria seleccionada
-        $unidades = Unidadmedida::where('idCategoria', $categoria)->orWhere('idCategoria', null)->get();
-        // Devuelve las razas en formato JSON
-        return response()->json($unidades);
+        $donates = Donante::all();
+        return redirect()->route('movimientos.index')->with('Movimientos', Movimiento::all())->with('donantes', $donates);;
     }
 
     public function destroy($id)
     {
-        $recurso = Recurso::find($id);
-        $recurso->estado = 0;
-        
-        
+        $movimiento = Movimiento::find($id);
+        $movimiento->estado = 0;
 
-        if ($recurso->movimientos->isEmpty()) {
-            $recurso->save();
+        if ($movimiento->movimientos->isEmpty()) {
+            $movimiento->save();
             $alert = array(
                 'type' => 'success',
                 'message' => 'El registro se ha dado de baja exitosamente',
             );
             session()->flash('alert', $alert);
-            
         } else {
             $alert = array(
                 'type' => 'error',
@@ -126,29 +139,35 @@ class RecursoController extends Controller
             session()->flash('alert', $alert);
         }
 
-        return redirect()->route('recursos.index')->with('Recursos', Recurso::where('estado', 1)->get());
-        
+        return redirect()->route('movimientos.index')->with('Movimientos', Movimiento::where('estado', 1)->get());
     }
 
-    public function alta($id)
+    private function fechaMinima()
     {
-        $Recurso = Recurso::find($id);
-        $Recurso->estado = 1;
-        $Recurso->save();
-        return redirect()->route('recurso.index');
+        $fechaActual = now(); // O Carbon::now() si no has usado now() antes
+        $fechaResultado = $fechaActual->subDays(15);
+        return $fechaResultado->format('Y-m-d');
+    }
+
+    public function obtenerUnidad($recurso)
+    {
+        // Obtén las razas relacionadas con la especie seleccionada
+        $recurso = Recurso::where('idRecurso', $recurso)->first();
+        // Devuelve las razas en formato JSON
+        return response()->json($recurso->unidadmedida);
     }
 
     public function generarId()
     {
         // Obtener el último registro de la tabla "animal"
-        $ultimoRegistro = Recurso::latest('idRecurso')->first();
+        $ultimoRegistro = Movimiento::latest('idMovimiento')->first();
 
         if (!$ultimoRegistro) {
             // Si no hay registros previos, comenzar desde AN0001
             $nuevoId = 'RC0001';
         } else {
             // Obtener el número del último id
-            $ultimoNumero = intval(substr($ultimoRegistro->idRecurso, 2));
+            $ultimoNumero = intval(substr($ultimoRegistro->idMovimiento, 2));
 
             // Incrementar el número para el nuevo registro
             $nuevoNumero = $ultimoNumero + 1;

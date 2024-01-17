@@ -138,7 +138,7 @@
 
                                     <div class="card mb-4 panelGrid"
                                         style="border: none; padding:.5rem; padding-bottom: 15px !important; gap: 0rem !important; width: 100%">
-                                        <a href="/inventario/historial/" class="stretched-link"></a>
+                                        <a href="/inventario/historialMovimientos" class="stretched-link"></a>
                                         <div class="row" style="justify-content: center">
                                             <div class="col-xl-2">
                                                 <div

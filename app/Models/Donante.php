@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $nombres
  * @property string|null $apellidos
  * @property string|null $dui
+ * @property int|null $estado
  * 
  * @property Collection|Movimiento[] $movimientos
  * @property Collection|TelefonoDonante[] $telefono_donantes
@@ -25,14 +26,20 @@ use Illuminate\Database\Eloquent\Model;
 class Donante extends Model
 {
 	protected $table = 'donante';
+	protected $primaryKey = 'idDonante';
 	public $incrementing = false;
 	public $timestamps = false;
+
+	protected $casts = [
+		'estado' => 'int'
+	];
 
 	protected $fillable = [
 		'idDonante',
 		'nombres',
 		'apellidos',
-		'dui'
+		'dui',
+		'estado'
 	];
 
 	public function movimientos()

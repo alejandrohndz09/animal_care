@@ -246,3 +246,4 @@ $(document).ready(function () {
  document.querySelector('.floating-button').addEventListener('click', function () {
     $('#ayudaMiembro').modal('show');
     });
+

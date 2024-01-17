@@ -28,21 +28,21 @@
                                 <i class="svg-icon fas fa-chevron-left" style="color: #4c4c4c"></i>
                             </button>
                             <h1>
-                                {{ (isset($adopcion) && $adopcion->aceptacion==0)? 'Actualizar proceso de adopción' : ((isset($adopcion) && $adopcion->aceptacion!=0)?'Detalle de adopción':'Nuevo proceso de adopción') }}
+                                {{ isset($adopcion) && $adopcion->aceptacion == 0 ? 'Actualizar proceso de adopción' : (isset($adopcion) && $adopcion->aceptacion != 0 ? 'Detalle de adopción' : 'Nuevo proceso de adopción') }}
                             </h1>
                         </div>
-                        @if(isset($adopcion) && $adopcion->aceptacion==0)
-                        <div class="dropdown">
-                            <button class="button btn-transparent" style="width: 30px;padding: 15px 5px" type="button"
-                                id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="svg-icon fas fa-ellipsis-vertical" style="color: #4c4c4c"></i>
-                            </button>
-                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1"
-                            onclick="window.location.href = '{{url('/adopcion-baja/'.$adopcion->idAdopcion)}}'">
-                                <li><a class="dropdown-item">
-                                    ✖️Eliminar trámite</a></li>
-                            </ul>
-                        </div>
+                        @if (isset($adopcion) && $adopcion->aceptacion == 0)
+                            <div class="dropdown">
+                                <button class="button btn-transparent" style="width: 30px;padding: 15px 5px" type="button"
+                                    id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="svg-icon fas fa-ellipsis-vertical" style="color: #4c4c4c"></i>
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1"
+                                    onclick="window.location.href = '{{ url('/adopcion-baja/' . $adopcion->idAdopcion) }}'">
+                                    <li><a class="dropdown-item">
+                                            ✖️Eliminar trámite</a></li>
+                                </ul>
+                            </div>
                         @endif
                     </div>
                 </div>
@@ -61,6 +61,12 @@
                                         <i class="fas fa-file-invoice" style="font-size: 24px"></i>
                                         <h3 style="margin: 0;">Datos del Trámite</h3>
                                     </div>
+
+                                    <button type="button" class="button button-pri"
+                                             data-bs-pp="tooltip"
+                                             onclick="window.location.href = '{{ url('/adopcion/pdf/' . $adopcion->idAdopcion) }}'"  data-bs-placement="top" title="Imprimir">
+                                            <i class="svg-icon fas fa-print"></i>
+                                        </button>
                                 </div>
 
                                 <div class="row align-items-center justify-content-center">
@@ -115,6 +121,7 @@
                                         @endif
                                     </div>
                                     <div class="col-xl-3  d-flex flex-column align-items-center px-5">
+
                                         <div class="card_">
                                             <div
                                                 class="item item--{{ $adopcion->aceptacion == 1 ? '3' : ($adopcion->aceptacion == 0 ? '0' : '4') }}">
@@ -153,14 +160,14 @@
                                     <h3 style="margin: 0;">Datos del animal</h3>
 
                                 </div>
-                                @if((isset($adopcion) && $adopcion->aceptacion==0)||!isset($adopcion))
-                                Este apartado no es editable, seleccione el expediente del animal a adoptar.
-                                <button type="button" class="button button-pri" data-bs-toggle="modal"
-                                    data-bs-target="#buscarExpediente"
-                                    style="width: auto;padding: 7px 7px; margin-left:8px; justify-items: end">
-                                    <i class="svg-icon fas fa-search"></i>
-                                    <span class="lable">Buscar expediente</span>
-                                </button>
+                                @if ((isset($adopcion) && $adopcion->aceptacion == 0) || !isset($adopcion))
+                                    Este apartado no es editable, seleccione el expediente del animal a adoptar.
+                                    <button type="button" class="button button-pri" data-bs-toggle="modal"
+                                        data-bs-target="#buscarExpediente"
+                                        style="width: auto;padding: 7px 7px; margin-left:8px; justify-items: end">
+                                        <i class="svg-icon fas fa-search"></i>
+                                        <span class="lable">Buscar expediente</span>
+                                    </button>
                                 @endif
                             </div>
                             @error('expA')
@@ -330,17 +337,17 @@
                                         <h3 style="margin: 0;">Adoptante</h3>
                                     </div>
 
-                                    @if((isset($adopcion) && $adopcion->aceptacion==0)||!isset($adopcion))
-                                
-                                    <div class="d-flex align-items-center " style="gap: 8px">
-                                        ¿Ya ha realizado este proceso?
-                                        <button type="button" class="button button-pri" data-bs-toggle="modal"
-                                            data-bs-target="#buscarAdoptante"
-                                            style="width: auto;padding: 7px 7px; justify-items: end">
-                                            <i class="svg-icon fas fa-search"></i>
-                                            <span class="lable">Buscar adoptante </span>
-                                        </button>
-                                    </div>
+                                    @if ((isset($adopcion) && $adopcion->aceptacion == 0) || !isset($adopcion))
+
+                                        <div class="d-flex align-items-center " style="gap: 8px">
+                                            ¿Ya ha realizado este proceso?
+                                            <button type="button" class="button button-pri" data-bs-toggle="modal"
+                                                data-bs-target="#buscarAdoptante"
+                                                style="width: auto;padding: 7px 7px; justify-items: end">
+                                                <i class="svg-icon fas fa-search"></i>
+                                                <span class="lable">Buscar adoptante </span>
+                                            </button>
+                                        </div>
                                     @endif
                                 </div>
                                 @error('idAdoptante')
@@ -352,13 +359,13 @@
                                             <div class="row">
 
                                                 <input name="idAdoptante" id="idAdoptante" class="inputField"
-                                                    type="hidden" 
+                                                    type="hidden"
                                                     value="{{ isset($adopcion) ? old('idAdoptante', $adopcion->adoptante->idAdoptante) : (isset($adElegido) ? old('idAdoptante', $adElegido->idAdoptante) : old('idAdoptante')) }}">
                                                 <div class="col-xl-6 col-md-6">
                                                     <div class="inputContainer">
                                                         <input name="nombres" id="nombres" class="inputField"
                                                             placeholder="Nombres" type="text" autocomplete="off"
-                                                            {{(isset($adopcion) && $adopcion->aceptacion!=0)?'readonly':''}}
+                                                            {{ isset($adopcion) && $adopcion->aceptacion != 0 ? 'readonly' : '' }}
                                                             value="{{ isset($adopcion) ? old('nombres', $adopcion->adoptante->nombres) : (isset($adElegido) ? old('nombres', $adElegido->nombres) : old('nombres')) }}">
                                                         <label class="inputFieldLabel" for="nombres">Nombre
                                                             completo:*</label>
@@ -372,7 +379,7 @@
                                                 <div class="col-xl-6 col-md-6">
                                                     <div class="inputContainer">
                                                         <input name="apellidos" id="apellidos" class="inputField"
-                                                        {{(isset($adopcion) && $adopcion->aceptacion!=0)?'readonly':''}}
+                                                            {{ isset($adopcion) && $adopcion->aceptacion != 0 ? 'readonly' : '' }}
                                                             placeholder="Apellidos" type="text" autocomplete="off"
                                                             value="{{ isset($adopcion) ? old('apellidos', $adopcion->adoptante->apellidos) : (isset($adElegido) ? old('apellidos', $adElegido->apellidos) : old('apellidos')) }}">
                                                         @error('apellidos')
@@ -386,7 +393,7 @@
                                                 <div class="col-xl-12">
                                                     <div class="inputContainer ">
                                                         <input name="dui" id="dui"
-                                                        {{(isset($adopcion) && $adopcion->aceptacion!=0)?'readonly':''}}
+                                                            {{ isset($adopcion) && $adopcion->aceptacion != 0 ? 'readonly' : '' }}
                                                             value="{{ isset($adopcion) ? old('dui', $adopcion->adoptante->dui) : (isset($adElegido) ? old('dui', $adElegido->dui) : old('dui')) }}"
                                                             class="inputField" placeholder="00000000-0" type="text"
                                                             autocomplete="off" oninput="validarDui(this)">
@@ -460,7 +467,7 @@
                                                                     <input class="inputField telefono" id="tel"
                                                                         name="telefonosAd[]" type="text"
                                                                         autocomplete="off" oninput="validarInput(this)"
-                                                                        {{( $adopcion->aceptacion!=0)?'readonly':''}}
+                                                                        {{ $adopcion->aceptacion != 0 ? 'readonly' : '' }}
                                                                         value="{{ old('telefonosAd.' . $loop->index, $tel->telefono) }}">
                                                                     <label class="inputFieldLabel"
                                                                         for="telefono">Teléfono(s):*</label>
@@ -472,25 +479,27 @@
                                                                     @enderror
                                                                 </div>
                                                             </div>
-                                                            @if($adopcion->aceptacion==0)
-                                                            <div class="col-xl-6">
-                                                                @if ($loop->index == 0)
-                                                                    <button type="button" class="button button-pri"
-                                                                        id="add-telefono" data-bs-pp="tooltip"
-                                                                        data-bs-placement="top" title="Añadir teléfono">
-                                                                        <i class="svg-icon fas fa-plus"></i>
-                                                                    </button>
-                                                                @else
-                                                                    <button type="button" data-bs-pp="tooltip"
-                                                                        data-bs-placement="top" title="Eliminar telefono"
-                                                                        class=" button button-sec remove-telefono"
-                                                                        data-remove="remove{{ $loop->index }}"
-                                                                        data-telefono-id="{{ $tel->idTelefono }}"
-                                                                        data-telefono-e="{{ $tel->telefono }}">
-                                                                        <i class="svg-icon fas fa-minus"></i>
-                                                                    </button>
-                                                                @endif
-                                                            </div>
+                                                            @if ($adopcion->aceptacion == 0)
+                                                                <div class="col-xl-6">
+                                                                    @if ($loop->index == 0)
+                                                                        <button type="button" class="button button-pri"
+                                                                            id="add-telefono" data-bs-pp="tooltip"
+                                                                            data-bs-placement="top"
+                                                                            title="Añadir teléfono">
+                                                                            <i class="svg-icon fas fa-plus"></i>
+                                                                        </button>
+                                                                    @else
+                                                                        <button type="button" data-bs-pp="tooltip"
+                                                                            data-bs-placement="top"
+                                                                            title="Eliminar telefono"
+                                                                            class=" button button-sec remove-telefono"
+                                                                            data-remove="remove{{ $loop->index }}"
+                                                                            data-telefono-id="{{ $tel->idTelefono }}"
+                                                                            data-telefono-e="{{ $tel->telefono }}">
+                                                                            <i class="svg-icon fas fa-minus"></i>
+                                                                        </button>
+                                                                    @endif
+                                                                </div>
                                                             @endif
                                                         </div>
                                                     @endforeach
@@ -509,7 +518,7 @@
                                                             <div class="col-xl-6">
                                                                 <div class="inputContainer">
                                                                     <input class="inputField telefono" id="tel"
-                                                                        name="telefonosAd[]" type="text" 
+                                                                        name="telefonosAd[]" type="text"
                                                                         autocomplete="off" oninput="validarInput(this)"
                                                                         value="{{ old('telefonosAd.' . $loop->index, $tel->telefono) }}">
                                                                     <label class="inputFieldLabel"
@@ -544,10 +553,10 @@
                                                     @endforeach
                                                 </div>
                                             @endif
-                                            @if((isset($adopcion) && $adopcion->aceptacion==0)||!isset($adopcion))
-                                            <div class="row">
-                                                <p style="margin-top: -25px;">(*)Campos Obligatorios</p>
-                                            </div>
+                                            @if ((isset($adopcion) && $adopcion->aceptacion == 0) || !isset($adopcion))
+                                                <div class="row">
+                                                    <p style="margin-top: -25px;">(*)Campos Obligatorios</p>
+                                                </div>
                                             @endif
                                         </div>
 
@@ -580,7 +589,8 @@
                                                     for="direccion">Dirección:*</label>
                                                 <i class="inputFieldIcon fas fa-location-dot"></i>
                                                 <input placeholder="Ej. Calle Principal #123, Ciudad" class="inputField"
-                                                    name="direccion" {{(isset($adopcion) && $adopcion->aceptacion!=0)?'readonly':''}}
+                                                    name="direccion"
+                                                    {{ isset($adopcion) && $adopcion->aceptacion != 0 ? 'readonly' : '' }}
                                                     value="{{ isset($adopcion) ? old('direccion', $adopcion->adoptante->hogar->direccion) : (isset($adElegido) ? old('direccion', $adElegido->hogar->direccion) : old('direccion')) }}">
                                                 @error('direccion')
                                                     <small style="color:red">{{ $message }}</small>
@@ -591,67 +601,69 @@
 
                                     <div class="row">
                                         <div class="col-xl-12">
-                                            @if(isset($adopcion) && $adopcion->aceptacion!=0)
-                                            <div class="inputContainer">
-                                                <label class="inputFieldLabel" for="raza">Tamaño del hogar*</label>
-                                                <i class="inputFieldIcon fas fa-house"></i>
-                                                @error('tamanioHogar')
-                                                    <span class="text-danger">{{ $message }}</span>
-                                                @enderror
-                                                <input class="inputField"
-                                                    name="direccion" {{(isset($adopcion) && $adopcion->aceptacion!=0)?'readonly':''}}
-                                                    value="{{$adopcion->adoptante->hogar->tamanioHogar}}">
-                                              
-                                            </div>
+                                            @if (isset($adopcion) && $adopcion->aceptacion != 0)
+                                                <div class="inputContainer">
+                                                    <label class="inputFieldLabel" for="raza">Tamaño del
+                                                        hogar*</label>
+                                                    <i class="inputFieldIcon fas fa-house"></i>
+                                                    @error('tamanioHogar')
+                                                        <span class="text-danger">{{ $message }}</span>
+                                                    @enderror
+                                                    <input class="inputField" name="direccion"
+                                                        {{ isset($adopcion) && $adopcion->aceptacion != 0 ? 'readonly' : '' }}
+                                                        value="{{ $adopcion->adoptante->hogar->tamanioHogar }}">
+
+                                                </div>
                                             @else
-                                            <div class="inputContainer">
-                                                <select id="tamanioHogar" name="tamanioHogar" class="inputField">
-                                                    <option value=""
-                                                        {{ !isset($adopcion) && !isset($adElegido) ? 'selected' : '' }}>
-                                                        Seleccione una escala...</option>
-                                                    <option value="Grande"
-                                                        @if (isset($adopcion)) @if ($adopcion->adoptante->hogar->tamanioHogar == 'Grande')
+                                                <div class="inputContainer">
+                                                    <select id="tamanioHogar" name="tamanioHogar" class="inputField">
+                                                        <option value=""
+                                                            {{ !isset($adopcion) && !isset($adElegido) ? 'selected' : '' }}>
+                                                            Seleccione una escala...</option>
+                                                        <option value="Grande"
+                                                            @if (isset($adopcion)) @if ($adopcion->adoptante->hogar->tamanioHogar == 'Grande')
                                                         selected @endif
-                                                    @elseif (isset($adElegido))
-                                                    @if ($adElegido->hogar->tamanioHogar == 'Grande') selected @endif @else
-                                                        @if (old('tamanioHogar') == 'Grande') selected @endif @endif>
-                                                        Grande</option>
-                                                    <option value="Mediano"
-                                                        @if (isset($adopcion)) @if ($adopcion->adoptante->hogar->tamanioHogar == 'Mediano')
+                                                        @elseif (isset($adElegido))
+                                                        @if ($adElegido->hogar->tamanioHogar == 'Grande') selected @endif @else
+                                                            @if (old('tamanioHogar') == 'Grande') selected @endif @endif>
+                                                            Grande</option>
+                                                        <option value="Mediano"
+                                                            @if (isset($adopcion)) @if ($adopcion->adoptante->hogar->tamanioHogar == 'Mediano')
                                                             selected 
                                                             @else 
                                                             '' @endif
-                                                    @elseif (isset($adElegido))
-                                                        @if ($adElegido->hogar->tamanioHogar == 'Mediano') selected
+                                                        @elseif (isset($adElegido))
+                                                            @if ($adElegido->hogar->tamanioHogar == 'Mediano') selected
                                                             @else 
                                                                 '' @endif
-                                                    @else
-                                                        @if (old('tamanioHogar') == 'Mediano') selected
+                                                        @else
+                                                            @if (old('tamanioHogar') == 'Mediano') selected
                                                             @else 
                                                                 '' @endif
-                                                        @endif>
-                                                        Mediano</option>
-                                                    <option value="Pequeño"
-                                                        @if (isset($adopcion)) @if ($adopcion->adoptante->hogar->tamanioHogar == 'Pequeño')
+                                                            @endif>
+                                                            Mediano</option>
+                                                        <option value="Pequeño"
+                                                            @if (isset($adopcion)) @if ($adopcion->adoptante->hogar->tamanioHogar == 'Pequeño')
                                                         selected 
                                                         @else 
                                                         '' @endif
-                                                    @elseif (isset($adElegido))
-                                                        @if ($adElegido->hogar->tamanioHogar == 'Pequeño') selected
+                                                        @elseif (isset($adElegido))
+                                                            @if ($adElegido->hogar->tamanioHogar == 'Pequeño') selected
                                                         @else 
                                                             '' @endif
-                                                    @else
-                                                        @if (old('tamanioHogar') == 'Pequeño') selected
+                                                        @else
+                                                            @if (old('tamanioHogar') == 'Pequeño') selected
                                                         @else 
                                                             '' @endif
-                                                        @endif>Pequeño</option>
-                                                </select>
-                                                <label class="inputFieldLabel" for="raza">Tamaño del hogar*</label>
-                                                <i class="inputFieldIcon fas fa-house"></i>
-                                                @error('tamanioHogar')
-                                                    <span class="text-danger">{{ $message }}</span>
-                                                @enderror
-                                            </div>
+                                                            @endif>Pequeño</option>
+                                                    </select>
+                                                    <label class="inputFieldLabel" for="raza">Tamaño del
+                                                        hogar*</label>
+                                                    <i class="inputFieldIcon fas fa-house"></i>
+                                                    @error('tamanioHogar')
+                                                        <span class="text-danger">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
                                             @endif
                                         </div>
                                     </div>
@@ -662,7 +674,8 @@
                                                     for="companiaHumana">Cantidad de
                                                     miembros que lo habitan:*</label>
                                                 <i class="inputFieldIcon fas fa-users"></i>
-                                                <input min="1" step="1" {{(isset($adopcion) && $adopcion->aceptacion!=0)?'readonly':''}}
+                                                <input min="1" step="1"
+                                                    {{ isset($adopcion) && $adopcion->aceptacion != 0 ? 'readonly' : '' }}
                                                     value="{{ isset($adopcion) ? old('companiaHumana', $adopcion->adoptante->hogar->companiaHumana) : (isset($adElegido) ? old('companiaHumana', $adElegido->hogar->companiaHumana) : old('companiaHumana', '1')) }}"
                                                     class="inputField" type="number" name="companiaHumana">
                                                 @error('companiaHumana')
@@ -692,15 +705,15 @@
                                                         </div>
                                                     @elseif (isset($adopcion))
                                                         <div class="form-check form-check-inline">
-                                                            <input class="form-check-input" type="radio" 
-                                                            {{(isset($adopcion) && $adopcion->aceptacion!=0)?'disabled':''}}
+                                                            <input class="form-check-input" type="radio"
+                                                                {{ isset($adopcion) && $adopcion->aceptacion != 0 ? 'disabled' : '' }}
                                                                 name="isCompaniaAnimal" id="inlineRadio1" value="Sí"
                                                                 {{ $adopcion->adoptante->hogar->companiaAnimal > 0 ? 'checked' : '' }}>
                                                             <label class="form-check-label" for="Sí">Sí</label>
                                                         </div>
                                                         <div class="form-check form-check-inline">
                                                             <input class="form-check-input" type="radio"
-                                                            {{(isset($adopcion) && $adopcion->aceptacion!=0)?'disabled':''}}
+                                                                {{ isset($adopcion) && $adopcion->aceptacion != 0 ? 'disabled' : '' }}
                                                                 name="isCompaniaAnimal" id="inlineRadio2" value="No"
                                                                 {{ $adopcion->adoptante->hogar->companiaAnimal > 0 ? '' : 'checked' }}>
                                                             <label class="form-check-label" for="No">No</label>
@@ -747,7 +760,7 @@
                                                         <label class="form-check-label;" id="lb-cant"
                                                             style="margin-right: 8px">Cantidad:*</label>
                                                         <input placeholder="" type="number" step="1"
-                                                        {{( $adopcion->aceptacion!=0)?'readonly':''}}
+                                                            {{ $adopcion->aceptacion != 0 ? 'readonly' : '' }}
                                                             value="{{ old('companiaAnimal', $adopcion->adoptante->hogar->companiaAnimal) }}"
                                                             class="inputField w-100" min="1"
                                                             name="companiaAnimal">
@@ -776,29 +789,30 @@
                                             </div>
                                         </div>
                                     </div>
-                                    @if((isset($adopcion) && $adopcion->aceptacion==0)||!isset($adopcion))
-                                    <div class="row">
-                                        <p style="margin-top: -25px;">(*)Campos Obligatorios</p>
-                                    </div>
+                                    @if ((isset($adopcion) && $adopcion->aceptacion == 0) || !isset($adopcion))
+                                        <div class="row">
+                                            <p style="margin-top: -25px;">(*)Campos Obligatorios</p>
+                                        </div>
                                     @endif
                                 </div>
 
                             </div>
                         </div>
                     </div>
-                    @if((isset($adopcion) && $adopcion->aceptacion==0) || !isset($adopcion))
-                    <div class="row my-1 justify-content-center align-items-center" style="gap: 8px">
-                        <button type="submit" class="button button-pri"
-                            style="width: 20%;padding: 7px 7px; justify-items: end">
-                            <i class="svg-icon fas fa-save"></i>
-                            <span class="lable">{{isset($adopcion)?'Modificar':'Guardar'}}<span>
-                        </button>
-                        <button type="button" onclick="window.location.href='{{ isset($adopcion)?url('adopcion'):route('adopcion.create') }}'"
-                            class="button button-red" style="width: 20%;padding: 7px 7px; justify-items: end">
-                            <i class="svg-icon fas fa-rotate-right"></i>
-                            <span class="lable">Cancelar<span>
-                        </button>
-                    </div>
+                    @if ((isset($adopcion) && $adopcion->aceptacion == 0) || !isset($adopcion))
+                        <div class="row my-1 justify-content-center align-items-center" style="gap: 8px">
+                            <button type="submit" class="button button-pri"
+                                style="width: 20%;padding: 7px 7px; justify-items: end">
+                                <i class="svg-icon fas fa-save"></i>
+                                <span class="lable">{{ isset($adopcion) ? 'Modificar' : 'Guardar' }}<span>
+                            </button>
+                            <button type="button"
+                                onclick="window.location.href='{{ isset($adopcion) ? url('adopcion') : route('adopcion.create') }}'"
+                                class="button button-red" style="width: 20%;padding: 7px 7px; justify-items: end">
+                                <i class="svg-icon fas fa-rotate-right"></i>
+                                <span class="lable">Cancelar<span>
+                            </button>
+                        </div>
                     @endif
                 </form>
             </div>
@@ -808,5 +822,5 @@
         </div>
         @include('adopcion.modalesAdopcion')
     </div>
-   
+
 @endsection

@@ -16,7 +16,16 @@
                     <div class="card  mb-4" style="border:none; padding-bottom: 25px !important; width: 100%">
                         <div class="row">
                             <div class="col-xl-8">
-                                <h1 class="mb-4">Detalle de albergue</h1>
+                                <div class="mb-4"style=" width:100%;margin: 0; display: flex; gap: 5px; align-items: center; " >
+                                    <button class="button btn-transparent" style="width: 30px;padding: 15px 5px" type="button"
+                                        id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"
+                                        data-bs-pp="tooltip" data-bs-placement="top" title="Volver"
+                                        onclick="window.location.href='/albergue'">
+                                        <i class="svg-icon fas fa-chevron-left" style="color: #4c4c4c"></i>
+                                    </button>
+                                    <h1>Detalle Albergue </h1>
+                                </div>
+                                
                                 <div class="row mt-1" style="justify-content: center;">
                                     <div class="col-xl-5">
                                         <div class="inputContainer">
@@ -45,7 +54,13 @@
                                 </div>
                             </div>
                             <div class="col-xl-4" style="margin: auto 0; padding: 20px 7%">
-                                <div class="card_">
+                                <button type="submit" class="button button-pri" style="margin-left: 67%;margin-top: -10%;"
+                                    data-bs-pp="tooltip"
+                                     onclick="window.location.href = '{{ url('/albergue/pdf/' . $albergue->idAlvergue) }}'"
+                                    data-bs-placement="top" title="Imprimir">
+                                    <i class="svg-icon fas fa-print"></i>
+                                </button>
+                                <div class="card_" style="margin-top: 7%">
                                     <div class="item item--1">
 
                                         <i class=" fas fa-shield-dog"></i>

@@ -21,7 +21,7 @@ class AnimalControlador extends Controller
      */
     public function index()
     {
-        $animales = Animal::where('estado', 1)->get();
+        $animales = Animal::all();
         return view('animal.index')->with('animales', $animales);
     }
 
@@ -87,14 +87,20 @@ class AnimalControlador extends Controller
 
     public function show($id)
     {
-        
+        return view('expediente.detalles')->with([
+            'animal' => Animal::find($id),
+            'registrado' => Expediente::where('idAnimal', $id)->get(),
+            'estado' => Expediente::where('idAnimal', $id)->value('estadoGeneral'),
+            'idExpediente' => Expediente::where('idAnimal', $id)->value('idExpediente'),
+            'accion' => true
+        ]); 
     }
     
     public function edit($id)
     {
         $animal = Animal::find($id);
         return view('animal.index')->with([
-            'animales' => Animal::where('estado', 1)->get(),
+            'animales' => Animal::all(),
             'animal' => $animal
         ]);
     }
@@ -187,6 +193,7 @@ class AnimalControlador extends Controller
 
         return $nuevoId;
     }
+    
     public static function calcularEdad($fechaNacimiento)
     {
         $fechaNacimiento = new \DateTime($fechaNacimiento);
@@ -231,8 +238,9 @@ class AnimalControlador extends Controller
         $miembros = Animal::find($id);
         $miembros->estado = '1';
         $miembros->save();
+        $animales =  Animal::all();
         return view('animal.index')->with([
-            'animales' => Animal::where('estado', 1)->get()
+            'animales' => $animales
         ]);
     }
 
@@ -305,5 +313,7 @@ class AnimalControlador extends Controller
         $expe->save();
         return back();
     }
+
+
 
 }
