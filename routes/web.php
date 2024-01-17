@@ -134,9 +134,8 @@ Route::get('/get-exp-ad-elegido/{idAdoptante}/{idExpediente}', 'App\Http\Control
     Route::resource('/donantes', 'App\Http\Controllers\DonanteController');
     Route::resource('inventario/donantes/{id}/edit', 'App\Http\Controllers\DonanteController@edit');
     Route::get('/destroyDonante/{id}', 'App\Http\Controllers\DonanteController@destroy');
-    Route::resource('/inventario/donantes/update/{id}', 'App\Http\Controllers\DonanteController@update');
+    Route::put('/inventario/donantes/update/{id}', 'App\Http\Controllers\DonanteController@update');
   
-    Route::resource('/inventario/movimientos', 'App\Http\Controllers\MovimientoController');
     Route::resource('/inventario/donantes', 'App\Http\Controllers\DonanteController');
     Route::get('/inventario/historial', function () {
         return view('inventario.historial');
@@ -147,9 +146,15 @@ Route::get('/get-exp-ad-elegido/{idAdoptante}/{idExpediente}', 'App\Http\Control
     Route::resource('/inventario/donantes', 'App\Http\Controllers\DonanteController');
     Route::get('/inventario/historial', function () {
         return view('inventario.historial');
+
     });
+    Route::get('/logout','App\Http\Controllers\LoginController@logout')->name('logout');
+
+    Route::resource('/usuario', 'App\Http\Controllers\UsuarioController');
+    Route::get('/habilitar-usuario/{id}', 'App\Http\Controllers\UsuarioController@habilitar');
+    Route::get('/deshabilitar-usuario/{id}', 'App\Http\Controllers\UsuarioController@deshabilitar');
+
 });
 Route::get('/login', 'App\Http\Controllers\LoginController@show')->name('login')->middleware('guest');
 Route::post('/login', 'App\Http\Controllers\LoginController@login');
-Route::post('/logout', 'App\Http\Controllers\LoginController@logout')->name('logout');
 

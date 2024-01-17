@@ -24,6 +24,10 @@ class MiembroController extends Controller
         ]);
     }
 
+    public function show($id)
+    {
+        return view('miembro.detalles')->with('miembro',Miembro::find($id));
+    }
     public function create()
     {
         //Formulario donde se agrega datos
