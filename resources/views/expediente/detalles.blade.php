@@ -19,9 +19,16 @@
                             <div class="col-xl-8">
                                 <div
                                     style="width:100%; display: flex;  justify-content: space-between; align-items: center; margin-bottom: 5px;">
-                                    <h1 class="mb-8">
-                                        {{ $registrado->count() > 0 ? 'Expediente No. ' . $animal->expedientes->get(0)->idExpediente : 'Detalles de animal' }}
-                                    </h1>
+                                    <div class="mb-8" style=" width:100%;margin: 0; display: flex; gap: 5px; align-items: center; ">
+                                        <button class="button btn-transparent" style="width: 30px;padding: 15px 5px" type="button"
+                                            id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"
+                                            data-bs-pp="tooltip" data-bs-placement="top" title="Volver"
+                                            onclick="window.location.href='{{$accion?'/animal':'/expediente'}}'">
+                                            <i class="svg-icon fas fa-chevron-left" style="color: #4c4c4c"></i>
+                                        </button>
+                                        <h1>{{ $registrado->count() > 0 ? 'Expediente No. ' . $animal->expedientes->get(0)->idExpediente : 'Detalles de animal' }} </h1>
+                                    </div>
+                                   
                                     @if ($registrado->count() > 0)
                                         <div class="dropdown">
                                             <button class="button btn-transparent" style="width: 30px;padding: 15px 5px"

@@ -26,7 +26,15 @@
                     <div class="col-xl-7">
                         <div
                             style="width:100%; display: flex;  justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                            <h1>Razas </h1>
+                            <div style=" width:100%;margin: 0; display: flex; gap: 5px; align-items: center; ">
+                                <button class="button btn-transparent" style="width: 30px;padding: 15px 5px" type="button"
+                                    id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"
+                                    data-bs-pp="tooltip" data-bs-placement="top" title="Volver"
+                                    onclick="window.location.href='/'">
+                                    <i class="svg-icon fas fa-chevron-left" style="color: #4c4c4c"></i>
+                                </button>
+                                <h1>Razas </h1>
+                            </div>
                             <input id="searchInput" class="inputField card" style="width: 50% " autocomplete="off"
                                 placeholder="🔍︎ Buscar" type="search">
                         </div>
