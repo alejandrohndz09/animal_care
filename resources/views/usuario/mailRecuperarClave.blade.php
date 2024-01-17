@@ -11,23 +11,13 @@
 <body>
     <p>Hola {{ $usuario->usuario }},</p>
 
-    <p>Recibes este correo porque hemos recibido una solicitud para recuperar la clave de acceso de tu cuenta.</p>
+    <p>Recibes este correo porque hemos recibido una solicitud para recuperar la clave de acceso de tu cuenta. 
+        Utiliza el siguiente código de seguridad para continuar con el proceso de recuperación:</p>
+    <ul>
+        <li>Código de Seguridad: <strong>{{$tokenTemporal}}</strong> </li>
+    </ul>
 
-    <p>Utiliza el siguiente código de seguridad para continuar con el proceso de recuperación:</p>
-
-    <p><strong>Código de Seguridad:</strong> {{ $tokenTemporal }}</p>
-
-    <p>Ingresa este código en la página de recuperación de clave para completar el proceso:</p>
-
-    <a href="{{ $urlRecuperacion }}">Recuperar Clave</a>
-
-    <p>Por favor, no compartas este código con nadie.</p>
-
-    <p>Si no solicitaste la recuperación de la clave, puedes ignorar este correo electrónico.</p>
-
-    <p>Gracias por usar nuestro servicio.</p>
-
-    <p>Saludos,</p>
-    <p>Equipo de Tejutepets.</p>
+    <p>Por favor, no compartas este código con nadie. Si no solicitaste la recuperación de la clave, puedes ignorar este correo electrónico.</p>
+    <p>Saludos, equipo de Tejutepets.</p>
 </body>
 </html>

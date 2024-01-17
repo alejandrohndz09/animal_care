@@ -78,7 +78,7 @@
     <div class="modal fade" id="recuperar" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content text-center">
-                <form action="/recuperar-clave" method="post">
+                <form action="/recuperarClaveMail" method="post">
                     @csrf
                     <div class="modal-header">
                         <h5 style="margin-left: auto; margin-right: auto;">Recuperar clave</h5>
