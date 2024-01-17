@@ -164,3 +164,6 @@ Route::middleware(['auth'])->group(function () {
 
 Route::get('/login', 'App\Http\Controllers\LoginController@show')->name('login')->middleware('guest');
 Route::post('/login', 'App\Http\Controllers\LoginController@login');
+Route::post('/cambiarClaveTemporal', 'App\Http\Controllers\LoginController@cambiarClaveTemporal')->middleware('guest');
+Route::post('/recuperarClaveMail', 'App\Http\Controllers\LoginController@recuperarClaveMail');
+Route::post('/recuperarClave', 'App\Http\Controllers\LoginController@recuperarClave');
