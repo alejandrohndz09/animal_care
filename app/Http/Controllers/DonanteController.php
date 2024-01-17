@@ -95,6 +95,7 @@ class DonanteController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
+
             'dui' => 'required|unique:donante,dui,' . $id . ',idDonante',
             'nombres' => 'required|min:3',
             'apellidos' => 'required|min:3',

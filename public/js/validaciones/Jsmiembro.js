@@ -216,51 +216,9 @@ $(document).ready(function () {
     $('.miembro-row').on('click', function (event) {
         // Verifica si el clic fue en un botón dentro de la fila
         if ($(event.target).is('.btnUpdate, .btnDelete')) {
-            return; // Evita abrir el modal si se hizo clic en un botón
-        }
-
-        var miembroData = $(this).data('miembro');
-        var idMiembro = miembroData.idMiembro;
-        var dui = miembroData.dui;
-        var nombres = miembroData.nombres;
-        var apellidos = miembroData.apellidos;
-        var correo = miembroData.correo;
-
-
-        $.ajax({
-            url: 'miembro/telefonos/' + idMiembro, // La URL de la ruta definida en Laravel
-            type: 'GET',
-            dataType: 'json',
-            success: function (data) {
-                var isFirst = true; // Variable para rastrear si es el primer registro
-                $('#telefonos').empty();
-                for (var key in data) {
-                    if (data.hasOwnProperty(key)) {
-                        var text = data[key]; // Obtén el valor actual
-
-                        // Aplica el estilo CSS solo al primer registro
-                        if (isFirst) {
-                            $('#telefonos').append('<br>' + text);
-                            isFirst = false; // Cambia el valor de isFirst para que los siguientes registros no apliquen el estilo
-                        } else {
-                            // Inserta los registros restantes sin el estilo
-                            $('#telefonos').append('<br>' + text);
-                        }
-                    }
-                }
-            },
-            error: function (error) {
-                console.error('Error en la solicitud:', error);
-            }
-        });
-
-        // Llena el modal con los datos correspondientes
-        $('#modalDui').text(dui);
-        $('#modalNombres').text(nombres);
-        $('#modalApellidos').text(apellidos);
-        $('#modalCorreo').text(correo);
-
-        // Abre el modal
-        $('#ModalToggle').modal('show');
+            return; // No muestres el modal si se hizo clic en un botón
+        } else {
+            window.location.href ='/miembro/'+$(this).data('miembro').idMiembro;
+        }       
     });
 });

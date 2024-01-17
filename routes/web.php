@@ -127,11 +127,6 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/inventario/recursos/update/{id}', 'App\Http\Controllers\RecursoController@update');
     Route::get('/inventario/recursos/destroy/{id}', 'App\Http\Controllers\RecursoController@destroy');
 
-    Route::resource('/inventario/donantes', 'App\Http\Controllers\DonanteController@index');
-    Route::get('inventario/donantes/{id}/edit', 'App\Http\Controllers\DonanteController@edit');
-    Route::get('/destroyDonante/{id}', 'App\Http\Controllers\DonanteController@destroy');
-    Route::put('/inventario/donantes/update/{id}', 'App\Http\Controllers\DonanteController@update');
-
     Route::resource('/inventario/categorias', 'App\Http\Controllers\CategoriaController');
     Route::put('/inventario/categorias/update/{id}', 'App\Http\Controllers\CategoriaController@update');
     Route::get('/inventario/categorias/destroy/{id}', 'App\Http\Controllers\CategoriaController@destroy');
@@ -155,12 +150,17 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/obtener-unidad/{recurso}', 'App\Http\Controllers\MovimientoController@obtenerUnidad');
     Route::get('/inventario/historial', function () {
         return view('inventario.historial');
+
     });
 
     Route::resource('/inventario/historialMovimientos', 'App\Http\Controllers\HistorialMovimientoController');
     Route::get('/inventario/historialMovimientos/filtro', 'App\Http\Controllers\HistorialMovimientoController@show');
+    Route::get('/logout','App\Http\Controllers\LoginController@logout')->name('logout');
+
+    Route::resource('/usuario', 'App\Http\Controllers\UsuarioController');
+    Route::get('/habilitar-usuario/{id}', 'App\Http\Controllers\UsuarioController@habilitar');
+    Route::get('/deshabilitar-usuario/{id}', 'App\Http\Controllers\UsuarioController@deshabilitar');
 });
 
 Route::get('/login', 'App\Http\Controllers\LoginController@show')->name('login')->middleware('guest');
 Route::post('/login', 'App\Http\Controllers\LoginController@login');
-Route::post('/logout', 'App\Http\Controllers\LoginController@logout')->name('logout');

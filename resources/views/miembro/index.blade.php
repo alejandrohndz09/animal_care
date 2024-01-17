@@ -19,19 +19,33 @@
                     <div class="col-xl-7">
                         <div
                             style="width:100%; display: flex;  justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                            <h1>Miembros </h1>
-                            <input id="searchInput" class="inputField card" style="width: 50%; margin-left: 20% "
-                                autocomplete="off" placeholder="🔍︎ Buscar" type="search">
-
-                            <div class="dropdown">
+                            <div style=" width:100%;margin: 0; display: flex; gap: 5px; align-items: center; ">
                                 <button class="button btn-transparent" style="width: 30px;padding: 15px 5px" type="button"
-                                    id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <i class="svg-icon fas fa-ellipsis-vertical" style="color: #4c4c4c"></i>
+                                    id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"
+                                    data-bs-pp="tooltip" data-bs-placement="top" title="Volver"
+                                    onclick="window.location.href='/'">
+                                    <i class="svg-icon fas fa-chevron-left" style="color: #4c4c4c"></i>
                                 </button>
-                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                    <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#tabla">Miembro de
-                                            baja</a></li>
-                                </ul>
+                                <h1>Miembros </h1>
+                            </div>
+                            <div
+                                style=" width:100%;margin: 0; display: flex; gap: 5px; justify-content: end ;align-items: center; ">
+                                <input id="searchInput" class="inputField card" style="width: 50%;" autocomplete="off"
+                                    placeholder="🔍︎ Buscar" type="search">
+
+                                <div class="dropdown">
+                                    <button class="button btn-transparent" style="width: 30px;padding: 15px 5px"
+                                        type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown"
+                                        aria-expanded="false" data-bs-pp="tooltip" data-bs-placement="top" title="Opciones">
+                                        <i class="svg-icon fas fa-ellipsis-vertical" style="color: #4c4c4c"></i>
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                        <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#tabla">Miembro
+                                                de
+                                                baja</a></li>
+                                    </ul>
+                                </div>
+
                             </div>
                         </div>
                         <table id="table">
@@ -69,14 +83,15 @@
                                                         <i class="svg-icon fas fa-pencil"></i>
                                                     </button>
 
-
-                                                    <button type="button" class="button button-red btnDelete"
-                                                        data-bs-pp="tooltip" data-bs-toggle="modal"
-                                                        data-bs-target="#exampleModalToggle" style="width: 45%"
-                                                        data-miembro="{{ json_encode($item) }}" data-bs-placement="top"
-                                                        title="Dar de baja">
-                                                        <i class="svg-icon fas fa-trash"></i>
-                                                    </button>
+                                                    @if (Auth::user()->miembro->idMiembro != $item->idMiembro)
+                                                        <button type="button" class="button button-red btnDelete"
+                                                            data-bs-pp="tooltip" data-bs-toggle="modal"
+                                                            data-bs-target="#exampleModalToggle" style="width: 45%"
+                                                            data-miembro="{{ json_encode($item) }}" data-bs-placement="top"
+                                                            title="Dar de baja">
+                                                            <i class="svg-icon fas fa-trash"></i>
+                                                        </button>
+                                                    @endif
                                                 </div>
                                             </td>
                                         </tr>
@@ -268,6 +283,7 @@
                                             </div>
                                         @endforeach
                                     </div>
+
                                 @endif
 
                                 <p style="margin-top: -25px;">(*)Campos Obligatorios</p>

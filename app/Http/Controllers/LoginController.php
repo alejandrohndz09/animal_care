@@ -6,12 +6,11 @@ use App\Models\Miembro;
 use App\Models\Usuario;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
+use Illuminate\Support\Facades\Hash;
 class LoginController extends Controller
 {
-   // protected $guard = 'usuario';
+    // protected $guard = 'usuario';
 
-   
     public function show()
     {
         return view('login');
@@ -21,7 +20,7 @@ class LoginController extends Controller
     {
         $request->validate([
             'usuario' => 'required',
-            'clave' => 'required'
+            'clave' => 'required',
         ]);
         //primero intentara recuperar al usuario (si es que decidio ungresar con este dato)
         $user = Usuario::with('miembro')->where('usuario', $request->usuario)->first();
@@ -31,12 +30,13 @@ class LoginController extends Controller
             $miembro = Miembro::where('correo', $request->usuario)->first();
             if ($miembro && !$miembro->usuarios->isEmpty()) {
                 $user = $miembro->usuarios->first();
-                $user->miembro=$miembro;
+                $user->miembro = $miembro;
             }
         }
 
-        if ($user && $user->miembro->estado==1 && $request->clave == $user->clave) {
-            
+        if ($user && $user->miembro->estado !=0 && 
+        Hash::check($request->clave,$user->clave)) {
+
             Auth::login($user);
 
             $request->session()->regenerate();
@@ -56,5 +56,12 @@ class LoginController extends Controller
             session()->flash('alert', $alert);
             return redirect()->back();
         }
+    }
+
+    public function logout(Request $request)
+    {
+        Auth::logout();
+
+        return redirect('/');
     }
 }

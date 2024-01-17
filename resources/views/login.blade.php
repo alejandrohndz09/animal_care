@@ -65,31 +65,46 @@
         <p>©️Tejutepets-Todos los derechos reservados.</p>
     </div>
     <div class="modal fade" id="recuperar" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
-        <div class="modal-dialog modal-sm modal-dialog-centered">
+        <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content text-center">
-                <div class="modal-header">
-                    <h5 style="margin-left: auto; margin-right: auto;">Recuperacion de contraseña</h5>
-                </div>
-                <div class="modal-body text-center">
-                    <!-- Utiliza la clase text-center para centrar los elementos -->
-                    <p> <img src="{{ asset('img/recurso.png') }}" alt="user" class="picture"
-                            style="width: 35%; height: auto; margin-left: auto; margin-right: auto;"> </p>
-                    <p>Código: <span id="Codigo"></span></p>
-                    <p>Descripcion: <span id="Nombre"></span></p>
-                    <p>Categoría: <span id="Categoria"></span>
+                <form action="/usuario" method="post">
+                    @csrf
+                    <div class="modal-header">
+                        <h5 style="margin-left: auto; margin-right: auto;">Recuperar clave</h5>
+                    </div>
+                  
+                    <div class="modal-body text-center px-5">
+                        <div
+                            style="margin: 0; display: flex;flex-direction: column; align-items: center; justify-content: center ">
     
-                </div>
-                <div class="modal-footer text-center" style="margin-left: auto; margin-right: auto;">
-                    <button id="confirmar" type="submit" class="button button-pri" style="margin-right: 40px">
-                        <i class="svg-icon fas fa-check"></i>
-                        <span class="lable">Dar de baja</span></button>
-                    <button type="button" class="button button-red" data-bs-dismiss="modal"> <i
-                            class="svg-icon fas fa-xmark"></i>
-                        <span class="lable">Cancelar</span> </button>
-                </div>
+                            <div class="inputContainer mt-4 mb-2">
+                                <input type="email" id="correo" name="correo" placeholder="ejemplo@email.com"class="inputField">
+                                <label class="inputFieldLabel" for="raza">Ingrese un correo elecctónico asociado al miembro:</label>
+                                <i class="inputFieldIcon fas fa-user"></i>
+                           
+                            </div>
+                            <div
+                            style="margin: 0; display: flex; align-items: center;width:auto; color:#867596; font-size: 14px ">
+                            <i class="fas fa-circle-info" style="margin-right: 3px;"></i>
+                            Se enviará un código de seguridad al correo indicado.
+                        </div>
+                        </div>
+    
+                    </div>
+                    <div class="modal-footer" style="display:flex; justify-content: center; gap:40px">
+                        <button id="confirmar" type="submit" class="button button-pri">
+                            <i class="svg-icon fas fa-check"></i>
+                            <span class="lable">Confirmar</span></button>
+                        <button type="button" class="button button-red" data-bs-dismiss="modal"> <i
+                                class="svg-icon fas fa-xmark"></i>
+                            <span class="lable">Cancelar</span> </button>
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
+    
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="{{ url('https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js') }}"
