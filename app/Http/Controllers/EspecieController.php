@@ -46,7 +46,14 @@ class EspecieController extends Controller
 
         $especie->save();
 
-       
+
+        $alert = array(
+            'type' => 'success',
+            'message' => 'El registro se ha agregado exitosamente',
+        );
+
+        session()->flash('alert', $alert);
+
         return back()->with('success', 'Guardado con éxito');
     }
 
@@ -56,7 +63,7 @@ class EspecieController extends Controller
      * @param  \App\Models\EspecieModelo  $especieModelo
      * @return \Illuminate\Http\Response
      */
-    public function show(EspecieModelo $especieModelo)
+    public function show(Especie $especieModelo)
     {
         //
     }
@@ -69,10 +76,9 @@ class EspecieController extends Controller
      */
     public function edit($id)
     {
-       $especieEdit = Especie::find($id);
-       $especie= Especie::all();
-       return view('especie.especie')->with
-       (['especieEdit'=> $especieEdit,'especie'=>$especie ]);
+        $especieEdit = Especie::find($id);
+        $especie = Especie::all();
+        return view('especie.especie')->with(['especieEdit' => $especieEdit, 'especie' => $especie]);
     }
 
     /**
@@ -84,14 +90,24 @@ class EspecieController extends Controller
      */
     public function update(Request $request, $id)
     {
-    $especie = Especie::find($id);
-    $request->validate([
-        'especie'=> 'required|unique:especie,especie,'.$id.',idEspecie'
-    ]);
-    //actualizar datos en bd
-    $especie->especie=$request->post('especie');
-    $especie->save();
-    return $this->index();
+        $especie = Especie::find($id);
+        $request->validate([
+            'especie' => 'required|unique:especie,especie,' . $id . ',idEspecie'
+        ]);
+        //actualizar datos en bd
+        $especie->especie = $request->post('especie');
+        $especie->save();
+
+
+        $alert = array(
+            'type' => 'success',
+            'message' => 'El registro se ha modificado exitosamente',
+        );
+
+        session()->flash('alert', $alert);
+
+
+        return $this->index();
     }
 
     public function generarId()
@@ -124,11 +140,23 @@ class EspecieController extends Controller
      */
     public function destroy($id)
     {
-        $especie=Especie::find($id);
-        $especie->delete();
+        $especie = Especie::find($id);
 
-        
-        return back()->with('success', 'Eliminado con éxito');
-               
+        if ($especie->razas->isEmpty()) {
+            $especie->delete();
+            $alert = array(
+                'type' => 'success',
+                'message' => 'El registro se ha eliminado exitosamente'
+            );
+            session()->flash('alert', $alert);
+        } else {
+            $alert = array(
+                'type' => 'error',
+                'message' => 'No se puede eliminar el registro porque tiene datos asociados'
+            );
+
+            session()->flash('alert', $alert);
+        }
+        return $this->index();
     }
 }

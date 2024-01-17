@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Donante;
 use App\Models\Movimiento;
 use App\Models\Recurso;
-use App\Models\Unidadmedida;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -26,17 +25,39 @@ class MovimientoController extends Controller
     public function store(Request $request)
     {
 
+        $recursoId = $request->post('recurso');
+        $recurso = Recurso::find($recursoId);
+        
+        // Sumar las cantidades de ingresos
+        $totalIngresos = $recurso->movimientos()->where('tipoMovimiento', 'Ingreso')->sum('valor');
+
+        // Restar las cantidades de salidas
+        $totalSalidas = $recurso->movimientos()->where('tipoMovimiento', 'Salida')->sum('valor');
+
+        // Calcular el saldo total
+        $saldoTotal = $totalIngresos - $totalSalidas;
+
+        // Validar si la cantidad supera al saldo total
         $request->validate([
             'fecha' => 'required|date|after_or_equal:' . $this->fechaMinima(),
             'tipoMovimiento' => 'required|in:Ingreso,Salida',
             'isDonado' => 'required_if:tipoMovimiento,Ingreso|in:Sí,No',
-            'donanteE' => 'required_if:isDonado,Sí|exists:donante,idDonante',
+            'donanteE' => 'required_if:isDonado,Sí',
             'recurso' => 'required|exists:recurso,idRecurso',
-            'valorlabel' => 'required|numeric|min:1',
+            'valor' => [
+                'required',
+                'numeric',
+                'min:1',
+                function ($attribute, $value, $fail) use ($saldoTotal) {
+                    // Comprobar si el valor es mayor que el saldo total
+                    if ($value > $saldoTotal) {
+                        $fail("La cantidad ingresada supera el saldo total disponible.");
+                    }
+                },
+            ],
             'concepto' => 'required|min:10',
         ], [
-            //     // 'movimiento.unique' => 'Esta descripción ya ha sido utilizada.',
-            // 'unidad.required' => 'El campo unidad de medida es requerido.',
+            // Otras reglas de validación y mensajes personalizados
         ]);
 
 
@@ -122,24 +143,8 @@ class MovimientoController extends Controller
     public function destroy($id)
     {
         $movimiento = Movimiento::find($id);
-        $movimiento->estado = 0;
-
-        if ($movimiento->movimientos->isEmpty()) {
-            $movimiento->save();
-            $alert = array(
-                'type' => 'success',
-                'message' => 'El registro se ha dado de baja exitosamente',
-            );
-            session()->flash('alert', $alert);
-        } else {
-            $alert = array(
-                'type' => 'error',
-                'message' => 'No se puede dar de baja al registro porque tiene datos asociados',
-            );
-            session()->flash('alert', $alert);
-        }
-
-        return redirect()->route('movimientos.index')->with('Movimientos', Movimiento::where('estado', 1)->get());
+        $movimiento->delete();
+        return redirect()->route('movimientos.index')->with('Movimientos', Movimiento::all());
     }
 
     private function fechaMinima()

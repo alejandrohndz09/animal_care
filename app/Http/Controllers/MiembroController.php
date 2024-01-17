@@ -26,7 +26,7 @@ class MiembroController extends Controller
 
     public function show($id)
     {
-        return view('miembro.detalles')->with('miembro',Miembro::find($id));
+        return view('miembro.detalles')->with('miembro', Miembro::find($id));
     }
     public function create()
     {
@@ -53,7 +53,7 @@ class MiembroController extends Controller
                 'dui.unique' => 'Este DUI ya ha sido ingresado.',
             ]);
         }
-        
+
         // Obtén el último registro de la tabla para determinar el siguiente incremento
         $ultimoRegistro = Miembro::latest('idMiembro')->first();
 
@@ -73,7 +73,7 @@ class MiembroController extends Controller
         $miembros->estado = 1;
         $miembros->save();
 
-     
+
         $telefonosAd = $request->input('telefonosAd');
         $telefonosAAsociar = [];
 
@@ -84,6 +84,12 @@ class MiembroController extends Controller
         $miembros->telefono_miembros()->createMany($telefonosAAsociar);
 
 
+        $alert = array(
+            'type' => 'success',
+            'message' => 'El registro se ha agregado exitosamente',
+        );
+
+        session()->flash('alert', $alert);
 
         $datos = Miembro::all();
         return view('miembro.index')->with([
@@ -126,7 +132,7 @@ class MiembroController extends Controller
         $miembro->save();
 
 
-        
+
         // Actualiza o elimina los teléfonos existentes asociados al donante
         $telefonoIds = $request->input('telefonoIds', []);
         $telefonosAd = $request->input('telefonosAd', []);
@@ -153,12 +159,18 @@ class MiembroController extends Controller
                 $miembro->telefono_miembros()->save($telefonoMiembro);
             }
         }
-            //Pagina inicio
-            $datos = Miembro::all();
-            return  redirect()->route('miembro.index')->with([
-                'datos' => $datos
-            ]);
-        
+
+        $alert = array(
+            'type' => 'success',
+            'message' => 'El registro se ha modificado exitosamente',
+        );
+
+        session()->flash('alert', $alert);
+        //Pagina inicio
+        $datos = Miembro::all();
+        return  redirect()->route('miembro.index')->with([
+            'datos' => $datos
+        ]);
     }
 
     public function destroy($id)
@@ -166,6 +178,14 @@ class MiembroController extends Controller
         $miembros = Miembro::find($id);
         $miembros->delete();
         $datos = Miembro::all();
+
+        $alert = array(
+            'type' => 'success',
+            'message' => 'El registro se ha eliminado exitosamente',
+        );
+
+        session()->flash('alert', $alert);
+
         return view('miembro.index')->with([
             'datos' => $datos
         ]);
@@ -210,7 +230,16 @@ class MiembroController extends Controller
         $miembros = Miembro::find($id);
         $miembros->estado = '1';
         $miembros->save();
-        return redirect()->route('miembro.index');
+        $alert = array(
+            'type' => 'success',
+            'message' => 'El registro se ha dado de alta exitosamente',
+        );
+
+        session()->flash('alert', $alert);
+        $datos = Miembro::all();
+        return  redirect()->route('miembro.index')->with([
+            'datos' => $datos
+        ]);
     }
 
 
@@ -219,7 +248,17 @@ class MiembroController extends Controller
         $miembros = Miembro::find($id);
         $miembros->estado = '0';
         $miembros->save();
-        return redirect()->route('miembro.index');
-    }
 
+        $alert = array(
+            'type' => 'success',
+            'message' => 'El registro se ha dado de baja exitosamente',
+        );
+
+        session()->flash('alert', $alert);
+
+        $datos = Miembro::all();
+        return  redirect()->route('miembro.index')->with([
+            'datos' => $datos
+        ]);
+    }
 }

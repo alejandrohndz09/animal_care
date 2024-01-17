@@ -4,10 +4,7 @@
     <link rel="stylesheet" href="<?php echo asset('css/f3.css'); ?>" type="text/css">
     <link rel="stylesheet" href="<?php echo asset('css/cards.css'); ?>" type="text/css">
 @endsection
-{{-- 
-@section('scripts')
-    <script src="{{ asset('js/validaciones/JsAlbergue.js') }}"></script>
-@endsection --}}
+
 @section('content')
     <div id="layoutSidenav_content">
         <main>
@@ -16,50 +13,75 @@
                     <div class="card  mb-4" style="border:none; padding-bottom: 25px !important; width: 100%">
                         <div class="row">
                             <div class="col-xl-12">
-                                <h1 class="mb-4">Historial de movimientos</h1>
+                                <h3 class="mb-4">Filtrar</h3>
                                 <br>
+                                <form id="filtroForm" action="{{ url('/inventario/historialMovimientos/filtro') }}"
+                                    method="GET">
                                     <div class="row mt-1" style="justify-content: center;">
                                         <div class="col-xl-3">
                                             <div class="inputContainer">
-
                                                 <select class="inputField" name="tipoMovimiento" id="tipoMovimiento">
-                                                    <option value="entrada">Seleccione</option>
-                                                    <option value="entrada">Ingreso</option>
-                                                    <option value="salida">Salida</option>
+                                                    @if (isset($tipoMovimiento))
+                                                        <option value="Seleccione"
+                                                            @if ($tipoMovimiento == '') selected @endif>Seleccione
+                                                        </option>
+                                                        <option value="Ingreso"
+                                                            @if ($tipoMovimiento == 'Ingreso') selected @endif>
+                                                            Ingreso
+                                                        </option>
+                                                        <option value="Salida"
+                                                            @if ($tipoMovimiento == 'Salida') selected @endif>Salida
+                                                        </option>
+                                                    @else
+                                                        <option value="Seleccione" selected>Seleccione
+                                                        </option>
+                                                        <option value="Ingreso">Ingreso</option>
+                                                        <option value="Salida">Salida</option>
+                                                    @endif
                                                 </select>
                                                 <label class="inputFieldLabel" for="nombre">Tipo de movimiento:</label>
                                                 <i class="inputFieldIcon fas fa-house"></i>
+                                                @error('tipoMovimiento')
+                                                    <small style="color:red">{{ $message }}</small>
+                                                @enderror
                                             </div>
                                         </div>
                                         <div class="col-xl-3">
                                             <div class="inputContainer">
                                                 <input class="inputField" autocomplete="false" type="date"
-                                                    name="fechaInicio" id="fechaInicio" required>
-                                                <label class="inputFieldLabel"for="nombre">Fecha de inicio:</label>
+                                                    name="fechaInicio" id="fechaInicio"
+                                                    value="{{ isset($fechaInicio) ? $fechaInicio : '' }}">
+                                                <label class="inputFieldLabel" for="nombre">Fecha de inicio:</label>
                                                 <i class="inputFieldIcon fas fa-house"></i>
+                                                @error('fechaInicio')
+                                                    <small style="color:red">{{ $message }}</small>
+                                                @enderror
                                             </div>
                                         </div>
                                         <div class="col-xl-3">
                                             <div class="inputContainer">
                                                 <input class="inputField" autocomplete="false" type="date"
-                                                    name="fechaFin" id="fechaFin" required>
-                                                <label class="inputFieldLabel" for="nombre">Fecha fin:</label>
+                                                    name="fechaFin" id="fechaFin"
+                                                    value="{{ isset($fechaFin) ? $fechaFin : '' }}">
+                                                <label class="inputFieldLabel" for="nombre">Fecha fin:
+                                                    {{ isset($fechaFin) ? $fechaFin : '' }}</label>
                                                 <i class="inputFieldIcon fas fa-house"></i>
+                                                @error('fechaFin')
+                                                    <small style="color:red">{{ $message }}</small>
+                                                @enderror
                                             </div>
-
                                         </div>
 
                                         <div class="col-xl-2">
-                                            <button type="button" class="button button-primary btnDelete"
-                                            onclick="window.location.href = '{{ url('/inventario/historialMovimientos/filtro') }}';"
-                                                style="margin-top:2%;: 45%" data-bs-toggle="modal"
-                                                data-bs-target="#modaldeBaja" data-bs-pp="tooltip" data-bs-placement="top"
+                                            <button type="submit" class="button button-primary btnConfirmar"
+                                                style="margin-top:2%;: 45%" data-bs-pp="tooltip" data-bs-placement="top"
                                                 title="Buscar">
                                                 <i class="svg-icon fas fa-check"></i>
                                             </button>
-
                                         </div>
                                     </div>
+                                </form>
+
                             </div>
                         </div>
                         <div class="row mt-3">
@@ -67,10 +89,10 @@
                                 <h3 class="me-auto">Listado de movimientos</h3>
 
                                 <div class="d-flex" style="gap:8px">
-                                    <button type="button" class="button button-pri" data-bs-toggle="modal"
-                                        data-bs-target="#modalAlvergar" style="width: 40px;" data-bs-pp="tooltip"
-                                        data-bs-placement="top" title="Albergar nuevo animal">
-                                        <i class="svg-icon fas fa-plus"></i>
+                                    <button type="button" class="button button-pri" style="width: 40px;"
+                                        data-bs-pp="tooltip" data-bs-placement="top" title="Imprimir"
+                                        onclick="window.location.href = '{{ url('inventario/historialMovimientos/pdf') }}'">
+                                        <i class="svg-icon fas fa-print"></i>
                                     </button>
 
                                     <input id="searchInput" class="inputField card" style="width:80%" autocomplete="off"
@@ -78,8 +100,6 @@
                                 </div>
 
                             </div>
-
-
 
                             <table>
                                 <thead>
@@ -107,8 +127,9 @@
                                             <td>{{ $item->tipoMovimiento }}</td>
                                             <td>{{ $item->recurso->recurso }}</td>
                                             <td>
-                                                {{ $item->valor . ' (' . $item->recurso->unidadmedida->simbolo . ')' }}</td>
+                                                {{ $item->valor . ' (' . $item->recurso->unidadmedida->simbolo . ')' }}
                                             </td>
+
                                             <td>
                                                 {{ $item->donante->nombres . ' ' . $item->donante->apellidos }}</td>
                                             </td>
@@ -130,7 +151,8 @@
                             <div id="pagination"></div>
                         </div>
                     </div>
+                </div>
+            </div>
         </main>
     </div>
-    {{-- @include('albergue.modalDetalle') --}}
 @endsection

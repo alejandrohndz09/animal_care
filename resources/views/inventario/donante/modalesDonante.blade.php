@@ -69,12 +69,12 @@
                                                 <i class="svg-icon fas fa-up-long"></i>
                                             </button>
 
-                                            <button type="button" class="button button-primary btnDelete ver-button"
-                                                data-bs-pp="tooltip" data-bs-toggle="modal"
-                                                data-bs-target="#modalDonante" style="width: 45%"
+                                            <button type="button" class="button button-red btnDelete ver-button"
+                                                data-bs-pp="tooltip" style="width: 45%"
                                                 data-donante="{{ json_encode($item) }}" data-bs-placement="top"
-                                                title="Eliminar definitivamente">
-                                                <i class="svg-icon fas fa-eye"></i>
+                                                onclick="window.location.href = '{{ url('/destroyDonante/'. $item->idDonante) }}'"
+                                                title="Eliminar">
+                                                <i class="svg-icon fas fa-trash-can"></i>
                                             </button>
                                         </div>
                                     </td>

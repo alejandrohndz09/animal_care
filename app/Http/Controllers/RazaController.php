@@ -52,7 +52,15 @@ class RazaController extends Controller
         
         $raza->save();
 
-        return back()->with('success', 'Guardado con éxito');
+        
+        $alert = array(
+            'type' => 'success',
+            'message' => 'El registro se ha dado de baja exitosamente',
+        );
+
+        session()->flash('alert', $alert);
+
+        return back();
     }
 
     /**
@@ -103,6 +111,14 @@ class RazaController extends Controller
          $raza->raza = $request->post('raza');
          $raza->save();
  
+         
+        $alert = array(
+            'type' => 'success',
+            'message' => 'El registro se ha modificado exitosamente',
+        );
+
+        session()->flash('alert', $alert);
+
          return redirect()->route('raza.index')->with([
             'razas' => Raza::all(),
             'success' => 'Modificado con éxito'
@@ -129,7 +145,7 @@ class RazaController extends Controller
          session()->flash('alert',$alert);
          }else{
              $alert = array(
-                 'type' => 'errror',
+                 'type' => 'error',
                  'message' =>'No se puede eliminar el registro porque tiene datos asociados'
              );
              

@@ -111,7 +111,7 @@
                                             <label class="inputFieldLabel" autocomplete="off"
                                                 for="direccion">Dirección</label>
                                             <i class="inputFieldIcon fas fa-location-dot"></i>
-                                            <input placeholder="Ej. Calle Principal #123, Ciudad"
+                                            <input autocomplete="off" placeholder="Ej. Calle Principal #123, Ciudad"
                                                 value="{{ isset($AlbergueEdit) ? old('direccion', $AlbergueEdit->direccion) : old('direccion') }}"
                                                 class="inputField" name="direccion">
                                             @error('direccion')

@@ -43,6 +43,14 @@ class AlbergueController extends Controller
         $Albergue->estado = 1;
         $Albergue->save();
 
+
+        $alert = array(
+            'type' => 'success',
+            'message' => 'El registro se ha agregado exitosamente',
+        );
+
+        session()->flash('alert', $alert);
+
         $miembros = Miembro::all();
         $Albergues = Alvergue::all();
         return view('albergue.index')->with([
@@ -89,6 +97,13 @@ class AlbergueController extends Controller
         $albergue->idMiembro = $request->post('miembro');
         $albergue->save();
 
+        $alert = array(
+            'type' => 'success',
+            'message' => 'El registro se ha modificado exitosamente',
+        );
+
+        session()->flash('alert', $alert);
+
         return redirect()->route("albergue.index");
     }
 
@@ -119,6 +134,13 @@ class AlbergueController extends Controller
         $Albergue->estado = 0;
         $Albergue->save();
 
+        $alert = array(
+            'type' => 'success',
+            'message' => 'El registro se ha dado de baja exitosamente',
+        );
+
+        session()->flash('alert', $alert);
+
         return redirect()->route('albergue.index');
     }
 
@@ -127,6 +149,14 @@ class AlbergueController extends Controller
         $Albergue = Alvergue::find($id);
         $Albergue->estado = 1;
         $Albergue->save();
+
+        $alert = array(
+            'type' => 'success',
+            'message' => 'El registro se ha dado de alta exitosamente',
+        );
+
+        session()->flash('alert', $alert);
+        
         return redirect()->route('albergue.index');
     }
 

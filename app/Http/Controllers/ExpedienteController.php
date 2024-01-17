@@ -160,13 +160,24 @@ class ExpedienteController extends Controller
     {
         $animal = Animal::find($id);
 
-        $historialVacunas = $animal->expedientes->get(0)->historialVacunas->map(function ($historial) {
+        $expediente = $animal->expedientes->first(); // Obtener el primer expediente (si existe)
+
+        if (!$expediente) {
+            // Manejar el caso cuando no hay expediente
+            return redirect()->back()->with('error', 'El animal no tiene expediente.');
+        }
+
+        $historialVacunas = $expediente->historialVacunas->map(function ($historial) {
             return [
                 'nombreVacuna' => $historial->vacuna->vacuna,
                 'fechaAplicacion' => $historial->fechaAplicacion,
             ];
         });
 
+        if ($historialVacunas->isEmpty()) {
+            // Manejar el caso cuando no hay historial de vacunas
+            return redirect()->back()->with('error', 'El animal no tiene historial de vacunas.');
+        }
 
         // dd($historialVacunas);
         $pdf = PDF::loadView(
@@ -177,6 +188,7 @@ class ExpedienteController extends Controller
             ]
         );
 
+        //return $pdf->download('Expediente.pdf');
         return $pdf->stream();
     }
 }

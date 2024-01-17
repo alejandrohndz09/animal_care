@@ -13,7 +13,7 @@ class RecursoController extends Controller
     public function index()
     {
         $recursos = Recurso::all();
-        return view('inventario.recurso.index')->with('Recursos',$recursos);
+        return view('inventario.recurso.index')->with('Recursos', $recursos);
     }
     public function Create()
     {
@@ -50,11 +50,27 @@ class RecursoController extends Controller
         $Recurso->save();
 
         return back()->with('success', 'Guardado con éxito');
-
     }
 
     public function show($id)
     {
+        $recurso = Recurso::find($id);
+
+        // Sumar las cantidades de ingresos
+        $totalIngresos = $recurso->movimientos()->where('tipoMovimiento', 'Ingreso')->sum('valor');
+
+        // Restar las cantidades de salidas
+        $totalSalidas = $recurso->movimientos()->where('tipoMovimiento', 'Salida')->sum('valor');
+
+        // Calcular el saldo total
+        $saldoTotal = $totalIngresos - $totalSalidas;
+
+        $Recurso = null;
+        return view('inventario.recurso.detalle')->with([
+            'recurso' => Recurso::find($id),
+            'saldo' => $saldoTotal,
+            'Recursos' => $Recurso
+        ]);
     }
 
     public function edit($id)
@@ -107,8 +123,8 @@ class RecursoController extends Controller
     {
         $recurso = Recurso::find($id);
         $recurso->estado = 0;
-        
-        
+
+
 
         if ($recurso->movimientos->isEmpty()) {
             $recurso->save();
@@ -117,7 +133,6 @@ class RecursoController extends Controller
                 'message' => 'El registro se ha dado de baja exitosamente',
             );
             session()->flash('alert', $alert);
-            
         } else {
             $alert = array(
                 'type' => 'error',
@@ -127,7 +142,6 @@ class RecursoController extends Controller
         }
 
         return redirect()->route('recursos.index')->with('Recursos', Recurso::where('estado', 1)->get());
-        
     }
 
     public function alta($id)
