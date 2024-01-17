@@ -207,6 +207,9 @@
     </div>
 </div>
 
+
+
+
 <!-- Modal para ver ayuda de los Albergue-->
 <div class="modal fade" id="ayudaAlbergue" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
@@ -234,3 +237,4 @@
         </div>
     </div>
 </div>
+
