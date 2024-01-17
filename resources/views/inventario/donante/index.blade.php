@@ -48,35 +48,38 @@
                             <tbody id="tableBody">
 
                                 @foreach ($donantes as $item)
-                                    <tr class="miembro-row" data-donante="{{ json_encode($item) }}">
-                                        <td style="width: 10%">
-                                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/2048px-User-avatar.svg.png"
-                                                alt="user" class="picture" />
-                                        </td>
-                                        <td>{{ $item->nombres }}</td>
-                                        <td>{{ $item->apellidos }}</td>
-                                        <td>{{ $item->dui }} </td>
-                                        <td>
-                                            <div
-                                                style="display: flex; align-items: flex-end; gap: 5px; justify-content: center">
-                                                <button
-                                                    onclick="window.location.href = '{{ url('inventario/donantes/' . $item->idDonante . '/edit') }}';"
-                                                    type="button" class="button button-blue btnUpdate" style="width: 45%"
-                                                    data-bs-pp="tooltip" data-bs-placement="top" title="Editar">
-                                                    <i class="svg-icon fas fa-pencil"></i>
-                                                </button>
+                                    @if ($item->estado == 1)
+                                        <tr class="donante-row" data-donante="{{ json_encode($item) }}">
+                                            <td style="width: 10%">
+                                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/2048px-User-avatar.svg.png"
+                                                    alt="user" class="picture" />
+                                            </td>
+                                            <td>{{ $item->nombres }}</td>
+                                            <td>{{ $item->apellidos }}</td>
+                                            <td>{{ $item->dui }} </td>
+                                            <td>
+                                                <div
+                                                    style="display: flex; align-items: flex-end; gap: 5px; justify-content: center">
+                                                    <button
+                                                        onclick="window.location.href = '{{ url('inventario/donantes/' . $item->idDonante . '/edit') }}';"
+                                                        type="button" class="button button-blue btnUpdate"
+                                                        style="width: 45%" data-bs-pp="tooltip" data-bs-placement="top"
+                                                        title="Editar">
+                                                        <i class="svg-icon fas fa-pencil"></i>
+                                                    </button>
 
 
-                                                <button type="button" class="button button-red btnDelete"
-                                                    data-bs-pp="tooltip" data-bs-toggle="modal"
-                                                    data-bs-target="#exampleModalToggle" style="width: 45%"
-                                                    data-donante="{{ json_encode($item) }}" data-bs-placement="top"
-                                                    title="Dar de baja">
-                                                    <i class="svg-icon fas fa-trash"></i>
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
+                                                    <button type="button" class="button button-red btnDelete"
+                                                        data-bs-pp="tooltip" data-bs-toggle="modal"
+                                                        data-bs-target="#exampleModalToggle" style="width: 45%"
+                                                        data-donante="{{ json_encode($item) }}" data-bs-placement="top"
+                                                        title="Dar de baja">
+                                                        <i class="svg-icon fas fa-trash"></i>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endif
                                 @endforeach
                             </tbody>
                         </table>
@@ -184,7 +187,6 @@
                                             </div>
                                         @endfor
                                     </div>
-                                    
                                 @elseif(isset($donanteEdit))
                                     @php
                                         $leght = count($donanteEdit->telefono_donantes);

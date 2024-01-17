@@ -85,42 +85,40 @@
                             <tbody id="tableBody">
 
                                 @foreach ($Movimientos as $item)
-                                    @if ($item->estado == 1)
-                                        <tr class="movimiento-row" data-movimiento="{{ $item }}"
-                                            data-recurso="{{ $item->recurso }}">
-                                            <td style="width: 8%">
-                                                <img src="{{ asset('img/regurso.png') }}" alt="movimiento item"
-                                                    class="picture" />
-                                            </td>
-                                            <td>{{ $item->idMovimiento }}</td>
-                                            <td style="width: 20%">{{ explode(' ', $item->fechaMovimiento)[0] }} </td>
-                                            <td style="width: 15%">{{ $item->tipo }}</td>
-                                            <td style="width: 20%">{{ $item->recurso->recurso }}</td>
-                                            <td style="width: 20%">
-                                                {{ $item->valor . ' (' . $item->recurso->unidadmedida->simbolo . ')' }}</td>
+                                    <tr class="movimiento-row" data-movimiento="{{ $item }}"
+                                        data-recurso="{{ $item->recurso->recurso }}"
+                                        data-miembro="{{ $item->miembro->nombres . ' ' . $item->miembro->apellidos }}"
+                                        data-donante="{{ $item->donante->nombres . ' ' . $item->donante->apellidos }}">
+                                        <td style="width: 8%">
+                                            <img src="{{ asset('img/recurso.png') }}" alt="movimiento item"
+                                                class="picture" />
+                                        </td>
+                                        <td style="width: 20%">{{ explode(' ', $item->fechaMovimento)[0] }} </td>
+                                        <td style="width: 15%">{{ $item->tipoMovimiento }}</td>
+                                        <td style="width: 20%">{{ $item->recurso->recurso }}</td>
+                                        <td style="width: 20%">
+                                            {{ $item->valor . ' (' . $item->recurso->unidadmedida->simbolo . ')' }}</td>
 
-                                            <td>
-                                                <div
-                                                    style="display: flex; align-items: flex-end; gap: 5px; justify-content: center">
-                                                    <a href="{{ url('inventario/movimientos/' . $item->idMovimiento . '/edit') }}"
-                                                        type="button" class="button button-blue btnUpdate"
-                                                        data-id="{{ $item->idMovimiento }}" data-bs-pp="tooltip"
-                                                        data-bs-placement="top" title="Editar">
-                                                        <i class="svg-icon fas fa-pencil"></i>
-                                                    </a>
+                                        <td>
+                                            <div
+                                                style="display: flex; align-items: flex-end; gap: 5px; justify-content: center">
+                                                <a href="{{ url('inventario/movimientos/' . $item->idMovimiento . '/edit') }}"
+                                                    type="button" class="button button-blue btnUpdate"
+                                                    data-id="{{ $item->idMovimiento }}" data-bs-pp="tooltip"
+                                                    data-bs-placement="top" title="Editar">
+                                                    <i class="svg-icon fas fa-pencil"></i>
+                                                </a>
 
-                                                    <button type="button" id="btnDelete"
-                                                        class="button button-red btnDelete" data-bs-toggle="modal"
-                                                        data-bs-target="#exampleModalToggle"
-                                                        data-movimiento="{{ $item }}" data-bs-pp="tooltip"
-                                                        data-bs-placement="top" title="Eliminar">
-                                                        <i class="svg-icon fas fa-trash"></i>
-                                                    </button>
+                                                <button type="button" id="btnDelete" class="button button-red btnDelete"
+                                                    data-movimiento="{{ $item }}"
+                                                    onclick="{{ url('/inventario/movimientos/destroy/' . $item->idMovimiento) }}"
+                                                    data-bs-pp="tooltip" data-bs-placement="top" title="Eliminar">
+                                                    <i class="svg-icon fas fa-trash"></i>
+                                                </button>
 
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    @endif
+                                            </div>
+                                        </td>
+                                    </tr>
                                 @endforeach
                             </tbody>
                         </table>
@@ -153,11 +151,11 @@
                                                 @endphp
                                                 <div class="inputContainer">
                                                     <input id="fecha" name="fecha"
-                                                        value="{{ isset($MovimientoEdit) ? old('fecha', explode(' ', $MovimientoEdit->fechaMovimiento)[0]) : old('fecha') }}"
+                                                        value="{{ isset($MovimientoEdit) ? old('fecha', explode(' ', $MovimientoEdit->fechaMovimento)[0]) : old('fecha') }}"
                                                         max="{{ date('Y-m-d') }}"
-                                                        min="{{ $fechaResultado->format('Y-m-d') }}" class="inputField"
-                                                        autocomplete="false" placeholder="Fecha de movimiento"
-                                                        type="date">
+                                                        min="{{ !isset($MovimientoEdit) ? $fechaResultado->format('Y-m-d') : '' }}"
+                                                        class="inputField" autocomplete="false"
+                                                        placeholder="Fecha de movimiento" type="date">
                                                     <label class="inputFieldLabel" for="fecha">Fecha de
                                                         operación*</label>
                                                     <i class="inputFieldIcon fas fa-calendar"></i>
@@ -266,7 +264,7 @@
                                                                 @if (old('isDonado') == '' || old('isDonado') == 'No') visibility: hidden; @endif">
                                                                 <i
                                                                     class="svg-icon fas fa-{{ old('nombreDonante') == '' ? 'search' : 'user' }}"></i>
-                                                                <span
+                                                                <span id= "DonanteName"
                                                                     class="lable">{{ old('nombreDonante', 'Seleccionar donante') }}</span>
                                                             </button>
 
@@ -280,10 +278,11 @@
                                                                     data-bs-target="#buscarDonante"
                                                                     style="width: 100%;padding: 7px 7px; justify-items: end; visibility: hidden;">
                                                                     <i class="svg-icon fas fa-search"></i>
-                                                                    <span class="lable">Seleccionar donante</span>
+                                                                    <span id="DonanteName" class="lable">Seleccionar
+                                                                        donante</span>
                                                                 </button>
                                                                 <input placeholder="Seleccione" type="hidden"
-                                                                    value="" class="inputField"
+                                                                    value="" class="inputField" id="nombreDonante"
                                                                     name="nombreDonante">
                                                             @else
                                                                 @php $nombre=$MovimientoEdit->donante->nombres.' '.$MovimientoEdit->donante->apellidos;@endphp
@@ -291,16 +290,18 @@
                                                                     class="button button-pri" data-bs-toggle="modal"
                                                                     data-bs-target="#buscarDonante"
                                                                     style="width: 100%;padding: 7px 7px; justify-items: end;
-                                                                    @if (old('isDonado') == '' || old('isDonado') == 'No') visibility: hidden; @endif">
+                                                                    @if ($MovimientoEdit->idDonante == null || old('isDonado') == 'No') visibility: hidden; @endif">
                                                                     <i
                                                                         class="svg-icon fas fa-{{ old('nombreDonante') == '' ? 'search' : 'user' }}"></i>
-                                                                    <span
+                                                                    <span id= "DonanteName"
                                                                         class="lable">{{ old('nombreDonante', $nombre) }}</span>
+
                                                                 </button>
 
                                                                 <input placeholder="Seleccione" type="hidden"
                                                                     value="{{ old('nombreDonante', $nombre) }}"
-                                                                    class="inputField" name="nombreDonante">
+                                                                    id="nombreDonante" class="inputField"
+                                                                    name="nombreDonante">
                                                             @endif
                                                         @else
                                                             @php $nombre=$donanteElegido->nombres.' '.$donanteElegido->apellidos;@endphp
@@ -311,12 +312,13 @@
                                                                 @if (old('isDonado') == '' || old('isDonado') == 'No') visibility: hidden; @endif">
                                                                 <i
                                                                     class="svg-icon fas fa-{{ old('nombreDonante', $nombre) == '' ? 'search' : 'user' }}"></i>
-                                                                <span
+                                                                <span id= "DonanteName"
                                                                     class="lable">{{ old('nombreDonante', 'Buscar donante') }}</span>
                                                             </button>
                                                             <input type="hidden"
                                                                 value="{{ old('nombreDonante', $nombre) }}"
-                                                                class="inputField" name="nombreDonante">
+                                                                id="nombreDonante" class="inputField"
+                                                                name="nombreDonante">
                                                         @endif
 
                                                         @error('donanteE')
@@ -351,7 +353,7 @@
                                             </div>
                                             <div class="col-xl-5">
                                                 <div class="inputContainer">
-                                                    <label class="inputFieldLabel" id="valorlabel" autocomplete="off"
+                                                    <label class="inputFieldLabel" id="valor" autocomplete="off"
                                                         for="valor"
                                                         style="color: #{{ isset($MovimientoEdit) ? '6067eb' : (old('valor') == '' ? '878787' : '6067eb') }}">
                                                         Valor*</label>
@@ -373,7 +375,7 @@
                                             <label class="inputFieldLabel" autocomplete="off"
                                                 for="movimiento">Concepto*</label>
                                             <i class="inputFieldIcon fas fa-pencil"></i>
-                                            <textarea id="particularidad" name="concepto" class="inputField" placeholder="Ej. Gasto en 'x' asunto del mes 'y'."
+                                            <textarea id="concepto" name="concepto" class="inputField" placeholder="Ej. Gasto en 'x' asunto del mes 'y'."
                                                 rows="2" cols="50">{{ isset($MovimientoEdit) ? old('concepto', $MovimientoEdit->descripcion) : old('concepto') }}</textarea>
                                             @error('concepto')
                                                 <small style="color:red">{{ $message }}</small>

@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Donante;
 use App\Models\Movimiento;
 use App\Models\Recurso;
 use App\Models\Unidadmedida;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class MovimientoController extends Controller
 {
@@ -14,7 +16,8 @@ class MovimientoController extends Controller
     public function index()
     {
         $movimientos = Movimiento::orderByDesc('fechaMovimento')->get();
-        return view('inventario.movimiento.index')->with('Movimientos',$movimientos);
+        $donates = Donante::all();
+        return view('inventario.movimiento.index')->with('Movimientos', $movimientos)->with('donantes', $donates);
     }
     public function Create()
     {
@@ -24,26 +27,30 @@ class MovimientoController extends Controller
     {
 
         $request->validate([
-            'fecha' => 'required|date|after_or_equal' . $this->fechaMinima(),
+            'fecha' => 'required|date|after_or_equal:' . $this->fechaMinima(),
             'tipoMovimiento' => 'required|in:Ingreso,Salida',
             'isDonado' => 'required_if:tipoMovimiento,Ingreso|in:Sí,No',
             'donanteE' => 'required_if:isDonado,Sí|exists:donante,idDonante',
             'recurso' => 'required|exists:recurso,idRecurso',
-            'valor' => 'required|numeric|min:1',
+            'valorlabel' => 'required|numeric|min:1',
             'concepto' => 'required|min:10',
         ], [
-            'movimiento.unique' => 'Esta descripción ya ha sido utilizada.',
-            'unidad.required' => 'El campo unidad de medida es requerido.',
+            //     // 'movimiento.unique' => 'Esta descripción ya ha sido utilizada.',
+            // 'unidad.required' => 'El campo unidad de medida es requerido.',
         ]);
+
 
         //Guardar en BD
         $Movimiento = new Movimiento();
         $Movimiento->idMovimiento = $this->generarId();
-        $Movimiento->movimiento = $request->post('movimiento');
-        $Movimiento->idUnidadMedida = $request->post('unidad');
-        $Movimiento->idCategoria = $request->post('categoria');
-        $Movimiento->cantidad = 0;
-        $Movimiento->estado = 1;
+        $Movimiento->descripcion = $request->post('concepto');
+        $Movimiento->fechaMovimento = $request->post('fecha');
+        $Movimiento->tipoMovimiento = $request->post('tipoMovimiento');
+        $Movimiento->valor = $request->post('valor');
+        $Movimiento->idMiembro =  Auth::user()->idMiembro;
+        $Movimiento->idRecurso = $request->post('recurso');
+        $Movimiento->idDonante = $request->input('donanteE');
+
         $Movimiento->save();
 
         $alert = array(
@@ -55,7 +62,6 @@ class MovimientoController extends Controller
         $Movimiento->save();
 
         return back()->with('success', 'Guardado con éxito');
-
     }
 
     public function show($id)
@@ -65,47 +71,58 @@ class MovimientoController extends Controller
     public function edit($id)
     {
         $MovimientoEdit = Movimiento::find($id);
-        $Movimientos = Movimiento::where('estado', 1)->get();
+        $Movimientos = Movimiento::all();
+        $donantes = Donante::all();
 
         return view('inventario.movimiento.index')->with([
             'Movimientos' => $Movimientos,
             'MovimientoEdit' => $MovimientoEdit,
+            'donantes' => $donantes
         ]);
     }
 
     public function update(Request $request, $id)
     {
-        //Valida si estan en la BD excluyendo al registro modificado
-        $request->validate([
-            'movimiento' => 'required|unique:movimiento,movimiento,' . $id . ',idMovimiento',
-            'categoria' => 'required',
-            'unidad' => 'required',
-        ], [
-            'movimiento.unique' => 'Esta descripción ya ha sido utilizada.',
-            'unidad.required' => 'El campo unidad de medida es requerido.',
-        ]);
+        // $request->validate([
+        //     'fecha' => 'required|date|after_or_equal:' . $this->fechaMinima(),
+        //     'tipoMovimiento' => 'required|in:Ingreso,Salida',
+        //     'isDonado' => 'required_if:tipoMovimiento,Ingreso|in:Sí,No',
+        //     'donanteE' => 'required_if:isDonado,Sí|exists:donante,idDonante',
+        //     'recurso' => 'required|exists:recurso,idRecurso',
+        //     'valorlabel' => 'required|numeric|min:1',
+        //     'concepto' => 'required|min:10',
+        // ], [
+        //     // 'movimiento.unique' => 'Esta descripción ya ha sido utilizada.',
+        //     // 'unidad.required' => 'El campo unidad de medida es requerido.',
+        // ]);
 
         $movimiento = Movimiento::find($id);
-        $movimiento->movimiento = $request->post('movimiento');
-        $movimiento->idUnidadMedida = $request->post('unidad');
-        $movimiento->idCategoria = $request->post('categoria');
+        //Guardar en BD
+        $movimiento->descripcion = $request->post('concepto');
+        $movimiento->fechaMovimento = $request->post('fecha');
+        // dd($request->post('fecha'));
+        $movimiento->tipoMovimiento = $request->post('tipoMovimiento');
+        $movimiento->valor = $request->post('valor');
+        $movimiento->idMiembro =  Auth::user()->idMiembro;
+        $movimiento->idRecurso = $request->post('recurso');
+        $movimiento->idDonante = $request->post('donanteE');
+
         $movimiento->save();
+
         $alert = array(
             'type' => 'success',
             'message' => 'El registro se ha modificado exitosamente',
         );
 
         session()->flash('alert', $alert);
-
-        return redirect()->route('movimientos.index')->with('Movimientos', Movimiento::where('estado', 1)->get());
+        $donates = Donante::all();
+        return redirect()->route('movimientos.index')->with('Movimientos', Movimiento::all())->with('donantes', $donates);;
     }
 
     public function destroy($id)
     {
         $movimiento = Movimiento::find($id);
         $movimiento->estado = 0;
-        
-        
 
         if ($movimiento->movimientos->isEmpty()) {
             $movimiento->save();
@@ -114,7 +131,6 @@ class MovimientoController extends Controller
                 'message' => 'El registro se ha dado de baja exitosamente',
             );
             session()->flash('alert', $alert);
-            
         } else {
             $alert = array(
                 'type' => 'error',
@@ -124,8 +140,8 @@ class MovimientoController extends Controller
         }
 
         return redirect()->route('movimientos.index')->with('Movimientos', Movimiento::where('estado', 1)->get());
-        
     }
+
     private function fechaMinima()
     {
         $fechaActual = now(); // O Carbon::now() si no has usado now() antes

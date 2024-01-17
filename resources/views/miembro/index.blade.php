@@ -188,114 +188,104 @@
                                 </div>
 
                                 <!-- Condicional para verificar si esta modificando o agregando telefonos -->
-                                @if (empty($miembroEdit))
+                              
+                                @if (!isset($miembroEdit))
+                                    <input type="hidden" name="con" id="con" value="{{ old('con', 1) }}">
+                                    @php  $con = old('con',1); @endphp
+                                    <div class="row" id="telefono-container">
+                                        @for ($i = 0; $i < $con; $i++)
+                                            <div class="row">
+                                                <div class="col-xl-6">
+                                                    <div class="inputContainer">
+                                                        <input class="inputField telefono" id="tel"
+                                                            name="telefonosAd[]" type="text" autocomplete="off"
+                                                            oninput="validarInput(this)"
+                                                            value="{{ old('telefonosAd.' . $i, '+503 ') }}">
+                                                        <label class="inputFieldLabel"
+                                                            for="telefono">Teléfono(s):*</label>
+                                                        <i class="inputFieldIcon fas fa-phone"></i>
+                                                        <small style="color:red" class="error-message"></small>
+                                                        @error('telefonosAd.' . $i)
+                                                            <small style="color:red">{{ $message }}</small>
+                                                        @enderror
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-6">
+                                                    @if ($i == 0)
+                                                        <button type="button" class="button button-pri"
+                                                            id="add-telefono" data-bs-pp="tooltip"
+                                                            data-bs-placement="top" title="Añadir teléfono">
+                                                            <i class="svg-icon fas fa-plus"></i>
+                                                        </button>
+                                                    @else
+                                                        <button type="button" data-bs-pp="tooltip"
+                                                            data-bs-placement="top" title="Eliminar telefono"
+                                                            class=" button button-sec remove-telefono" data-telefono-id=""
+                                                            data-telefono-e="">
+                                                            <i class="svg-icon fas fa-minus"></i>
+                                                        </button>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        @endfor
+                                    </div>
 
-                                    <input type="hidden" name="con" id="con" value="1">
+                                @elseif(isset($miembroEdit))
+                                    @php
+                                        $leght = count($miembroEdit->telefono_miembros);
+                                    @endphp
+
+                                    <input type="hidden" name="con" id="con"
+                                        value="{{ old('con', $leght) }}">
+                                    @php $con = old('con', $leght); @endphp
 
                                     <div class="row" id="telefono-container">
-                                        <div class="col-xl-6">
-                                            <div class="inputContainer">
-                                                <input class="inputField form-control telefono" value="+503 "
-                                                    id="tel" name="telefono1" type="text" autocomplete="off"
-                                                    oninput="validarInput(this)">
-                                                <label class="inputFieldLabel" for="telefono">Teléfono</label>
-                                                <i class="inputFieldIcon fas fa-phone"></i>
-                                                <small style="color:red" class="error-message"></small>
+                                        @foreach ($miembroEdit->telefono_miembros as $tel)
+                                            <div class="row">
+                                                <div class="col-xl-6">
+                                                    <div class="inputContainer">
+                                                        <input class="inputField telefono" id="tel"
+                                                            name="telefonosAd[]" type="text" autocomplete="off"
+                                                            oninput="validarInput(this)"
+                                                            value="{{ old('telefonosAd.' . $loop->index, $tel->telefono) }}">
+
+                                                        <!-- Agrega un campo oculto para almacenar el ID del teléfono -->
+                                                        <input type="hidden" name="telefonoIds[]"
+                                                            value="{{ $tel->idTelefono }}">
+
+                                                        <label class="inputFieldLabel"
+                                                            for="telefono">Teléfono(s):*</label>
+                                                        <i class="inputFieldIcon fas fa-phone"></i>
+                                                        <small style="color:red" class="error-message"></small>
+                                                        @error('telefonosAd.' . $loop->index)
+                                                            <small style="color:red">{{ $message }}</small>
+                                                        @enderror
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-6">
+                                                    @if ($loop->index == 0)
+                                                        <button type="button" class="button button-pri"
+                                                            id="add-telefono" data-bs-pp="tooltip"
+                                                            data-bs-placement="top" title="Añadir teléfono">
+                                                            <i class="svg-icon fas fa-plus"></i>
+                                                        </button>
+                                                    @else
+                                                        <button type="button" data-bs-pp="tooltip"
+                                                            data-bs-placement="top" title="Eliminar telefono"
+                                                            class=" button button-sec remove-telefono"
+                                                            data-remove="remove{{ $loop->index }}"
+                                                            data-telefono-id="{{ $tel->idTelefono }}"
+                                                            data-telefono-e="{{ $tel->telefono }}">
+                                                            <i class="svg-icon fas fa-minus"></i>
+                                                        </button>
+                                                    @endif
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="col-xl-6">
-                                            <button type="button" class="button button-pri" id="add-telefono"
-                                                data-bs-pp="tooltip" data-bs-placement="top" title="Añadir teléfono">
-                                                <i class="svg-icon fas fa-plus"></i>
-                                            </button>
-                                        </div>
+                                        @endforeach
                                     </div>
-                                @else
-                                    <!-- Sirve para verificar si tiene o no telefonos el miembro -->
-                                    @if ($telefonos->count() > 0)
-                                        <!-- Contador para el total de telefonos que pueda tener el miembro -->
-                                        @php
-                                            $contador = 1;
-                                        @endphp
 
-                                        <!-- Guarda en un data los telefonos para eliminar verificar si el telefono son de la BD  -->
-                                        <div class="row" id="telefono-container">
-
-                                            <!-- Recorre los telefonos que pueda tener el miembro y los muestra-->
-                                            @foreach ($telefonos as $item)
-                                                <div class="row"
-                                                    @if ($contador > 1) id="remove{{ $contador }}" @endif>
-                                                    <div class="col-xl-6">
-                                                        <div class="inputContainer">
-                                                            <input class="inputField form-control telefono"
-                                                                id="tel{{ $contador }}"
-                                                                name="telefono{{ $contador }}" type="text"
-                                                                oninput="validarInput(this)"
-                                                                @if (old('telefono' . $contador) === null) value="{{ $item->telefono }}"
-                                                                @else
-                                                                    value="{{ old('telefono' . $contador) }}" @endif>
-                                                            @if ($contador == 1)
-                                                                <label class="inputFieldLabel"
-                                                                    for="telefono">Teléfono(s):</label>
-                                                                <i class="inputFieldIcon fas fa-phone"></i>
-                                                            @endif
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-xl-6" id="idTelefonos">
-                                                        <!-- Valida si es el primer input agrega el icono de agregar  -->
-                                                        @if ($contador === 1)
-                                                            <input type="hidden" name="boton{{ $contador }}"
-                                                                value="{{ $item->idTelefono }}">
-                                                            <button type="button" class="button button-pri"
-                                                                id="add-telefono" data-bs-pp="tooltip"
-                                                                data-bs-placement="top" title="Añadir telefono">
-                                                                <i class="svg-icon fas fa-plus"></i>
-                                                            </button>
-                                                        @else
-                                                            <input type="hidden" name="boton{{ $contador }}"
-                                                                value="{{ $item->idTelefono }}">
-                                                            <button type="button" data-bs-pp="tooltip"
-                                                                data-bs-placement="top" title="Eliminar telefono"
-                                                                class=" button button-sec remove-telefono"
-                                                                data-remove="remove{{ $contador }}"
-                                                                data-telefono-id="{{ $item->idTelefono }}"
-                                                                data-telefono-e="{{ $item->telefono }}">
-                                                                <i class="svg-icon fas fa-minus"></i>
-                                                            </button>
-                                                        @endif
-
-                                                    </div>
-                                                </div>
-                                                @php
-                                                    $contador++;
-                                                @endphp
-                                            @endforeach
-
-                                        </div>
-                                        <input type="hidden" name="con" id="con"
-                                            value="{{ $contador - 1 }}">
-                                    @else
-                                        <input type="hidden" name="con" id="con" value="1">
-                                        <div class="row" id="telefono-container">
-                                            <div class="col-xl-6">
-                                                <div class="inputContainer">
-                                                    <input class="inputField form-control telefono" value="+503 "
-                                                        id="tel1" name="telefono1" type="text"
-                                                        oninput="validarInput(this)">
-                                                    <label class="inputFieldLabel" for="telefono">Teléfono(s):</label>
-                                                    <i class="inputFieldIcon fas fa-phone"></i>
-                                                    <small style="color:red" class="error-message"></small>
-                                                </div>
-                                            </div>
-                                            <div class="col-xl-6">
-                                                <button type="button" style="width: 20px" class="button button-pri"
-                                                    id="add-telefono">
-                                                    <i class="svg-icon fas fa-plus"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    @endif
                                 @endif
+
                                 <p style="margin-top: -25px;">(*)Campos Obligatorios</p>
                                 <!-- Botones para la vista -->
                                 <div style="display: flex; align-items: flex-end; gap: 10px; justify-content: center">
