@@ -226,3 +226,6 @@ $('.movimiento-row').on('click', function (event) {
     // Abre el modal
     $('#modalDetalleMovimiento').modal('show');
 });
+document.querySelector('.floating-button').addEventListener('click', function () {
+    $('#ayudaMovimiento').modal('show');
+    });

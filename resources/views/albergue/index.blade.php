@@ -166,7 +166,9 @@
                     </div>
                 </div>
             </div>
-        </main>
+        </main>>
     </div>
+   
     @include('albergue.modalesAlbergue')
+    
 @endsection

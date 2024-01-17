@@ -76,3 +76,32 @@
         </div>
     </div>
 </div>
+<!-- Modal para ver ayuda en Animal-->
+<div class="modal fade" id="ayudaMovimiento" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content text-center">
+            <div class="modal-header">
+                <h3 style="margin-left: auto; margin-right: auto;">Ayuda</h5>
+            </div>
+            <div class="modal-body text-center">
+
+                <p> °Aca se registran todo tipo de movimiento que haya dentro de la asosiacion. </p>
+                <p></p>
+                <p>°Para registrar un movimiento nuevo, se toman en consideracion las funciones habilitadas y las que se habilitan, cuando el movimiento es una donación se habilita en boton para buscar el donante en nuestros registros. </p>
+                <img src="/img/m.png" alt="Descripción de la imagen" class="img-fluid">
+                <p></p>
+                <p>°Nos lleva a una ventana donde nos muestra los donantes ya registrados.</p>
+                <p></p>
+                <img src="/img/m2.png" alt="Descripción de la imagen" class="img-fluid">
+
+
+            </div>
+            <div class="modal-footer text-center" style="margin-left: auto; margin-right: auto;">
+
+                <button type="button" class="button button-red" data-bs-dismiss="modal"> <i
+                        class="svg-icon fas fa-xmark"></i>
+                    <span class="lable">cerrar</span> </button>
+            </div>
+        </div>
+    </div>
+</div>
