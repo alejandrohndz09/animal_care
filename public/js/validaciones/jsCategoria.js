@@ -52,5 +52,8 @@ $('.categoria-row').on('click', function (event) {
     $('#modalDetalle').modal('show');
 });
 
-
+// Agregar un evento de clic al botón flotante de ayuda para abrir el modal
+document.querySelector('.floating-button').addEventListener('click', function () {
+    $('#ayudaCategoria').modal('show');
+    });
 

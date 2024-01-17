@@ -309,4 +309,8 @@
         </main>
     </div>
     @include('miembro.modalesMiembro')
+
+    <div class="floating-button" data-toggle="modal" data-target="#ayudaMiembro" data-bs-pp="tooltip" data-bs-placement="top" title="Ayuda">
+        <span>?</span>
+    </div>
 @endsection

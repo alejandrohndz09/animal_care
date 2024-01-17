@@ -125,5 +125,6 @@
             </div>
         </main>
     </div>
+   
     @include('albergue.modalDetalle')
 @endsection

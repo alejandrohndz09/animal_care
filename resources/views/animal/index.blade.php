@@ -259,9 +259,12 @@
                 title: "{{ session()->get('alert')['message'] }}",
             });
 
-            @php
-                session()->keep('alert');
-            @endphp
-        </script>
-    @endif
+        @php
+            session()->keep('alert');
+        @endphp
+    </script>
+@endif
+<div class="floating-button" data-toggle="modal" data-target="#ayudaAnimal" data-bs-pp="tooltip" data-bs-placement="top" title="Ayuda">
+    <span>?</span>
+</div>
 @endsection

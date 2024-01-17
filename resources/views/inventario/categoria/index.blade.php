@@ -118,6 +118,9 @@
                 </div>
             </div>
         </main>
+        <div class="floating-button" data-toggle="modal" data-target="#ayudaCategoria" data-bs-pp="tooltip" data-bs-placement="top" title="Ayuda">
+            <span>?</span>
+        </div>
         @include('inventario.categoria.modalesCategoria')
     </div>
 @endsection

@@ -165,3 +165,6 @@ function dateFormat(fecha) {
   return fechaFormateada;
 }
 
+document.querySelector('.floating-button').addEventListener('click', function () {
+  $('#ayudaAdopcion').modal('show');
+ });

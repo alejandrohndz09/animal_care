@@ -91,3 +91,32 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="ayudaAlbergueD" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content text-center">
+            <div class="modal-header">
+                <h3 style="margin-left: auto; margin-right: auto;">Ayuda</h5>
+            </div>
+            <div class="modal-body text-center">
+                
+               
+                <p> °Para albergar un nuevo animal desde aca mismo seleccionamos el signo de mas.</p>
+                <p></p>
+                <p>°Selecionamos el animal que queremos albergar, presionando el icono de la casita.</p>
+                <p></p>
+                <img src="/img/Alb.png" alt="Descripción de la imagen" class="img-fluid">
+                <p></p>
+                <p>°Para poder guardar un registro nuevo no deben haber campos vacios.</p>
+                
+                
+            </div>
+            <div class="modal-footer text-center" style="margin-left: auto; margin-right: auto;">
+
+                <button type="button" class="button button-red" data-bs-dismiss="modal"> <i
+                        class="svg-icon fas fa-xmark"></i>
+                    <span class="lable">cerrar</span> </button>
+            </div>
+        </div>
+    </div>
+</div>

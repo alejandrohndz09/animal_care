@@ -167,6 +167,12 @@
                 </div>
             </div>
         </main>
+        <div class="floating-button" data-toggle="modal" data-target="#ayudaAlbergue" data-bs-pp="tooltip" data-bs-placement="top" title="Ayuda">
+            <span>?</span>
+        </div>   
     </div>
+   
     @include('albergue.modalesAlbergue')
+   
+   
 @endsection

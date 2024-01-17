@@ -49,3 +49,32 @@
         </div>
     </div>
 </div>
+
+<!-- Modal para ayuda-->
+<div class="modal fade" id="ayudaV" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content text-center">
+            <div class="modal-header">
+                <h3 style="margin-left: auto; margin-right: auto;">Ayuda</h5>
+            </div>
+            <div class="modal-body text-center">
+               
+                <p> °En Vacuna se despliega las Vacunas actualmente registradas y ofrece las opciones de editar y eliminar. </p>
+                <p></p>
+                <p>°Asimismo, presenta el módulo para registrar unas nuevas Vacunas.</p>
+                <p></p>
+                <p>°Para poder guardar un registro nuevo no deben haber campos vacios.</p>
+                
+                
+            </div>
+            <div class="modal-footer text-center" style="margin-left: auto; margin-right: auto;">
+
+                <button type="button" class="button button-red" data-bs-dismiss="modal"> <i
+                        class="svg-icon fas fa-xmark"></i>
+                    <span class="lable">cerrar</span> </button>
+            </div>
+        </div>
+    </div>
+
+</div>
+

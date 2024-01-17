@@ -51,3 +51,32 @@
         </div>
     </div>
 </div>
+
+<!-- Modal de ayuda -->
+<div class="modal fade" id="ayudaRaza" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content text-center">
+            <div class="modal-header">
+                <h3 style="margin-left: auto; margin-right: auto;">Ayuda</h5>
+            </div>
+            <div class="modal-body text-center">
+               
+                <p> °Razas despliega las razas actualmente registradas y ofrece las opciones de editar y eliminar. Asimismo, presenta el módulo para registrar una nueva raza. </p>
+                <p></p>
+                <p>°Para registrar una nueva raza se dispone de un menú desplegable para hacer la selección de especies ya registradas.</p>
+                <img src="img/razaa.png" alt="Descripción de la imagen" class="img-fluid">
+                <p></p>
+                <p>°Para poder guardar un registro nuevo no deben haber campos vacios.</p>
+                
+                
+            </div>
+            <div class="modal-footer text-center" style="margin-left: auto; margin-right: auto;">
+
+                <button type="button" class="button button-red" data-bs-dismiss="modal"> <i
+                        class="svg-icon fas fa-xmark"></i>
+                    <span class="lable">cerrar</span> </button>
+            </div>
+        </div>
+    </div>
+
+</div>

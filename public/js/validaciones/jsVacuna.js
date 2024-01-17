@@ -47,3 +47,7 @@ $('.vacuna-row').on('click', function (event) {
     // Abre el modal
     $('#ModalDetalle').modal('show');
 });
+
+document.querySelector('.floating-button').addEventListener('click', function () {
+    $('#ayudaV').modal('show');
+    });

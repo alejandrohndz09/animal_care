@@ -15,7 +15,6 @@ $('#modalEliminar').on('show.bs.modal', function (event) {
     });
     
     });
-
     
 $("#btnCancelar").click(function () {
     window.location.href = '/especie'
@@ -29,7 +28,6 @@ $(".btnUpdate").click(function (event) {
     // Evitar la propagación del evento al hacer clic en la fila
     event.stopPropagation();
 });
-
 $('.especie-row').on('click', function (event) {
     // Verifica si el clic fue en un botón dentro de la fila
     if ($(event.target).is('.btnUpdate, .btnDelete')) {
@@ -47,3 +45,7 @@ $('.especie-row').on('click', function (event) {
     // Abre el modal
     $('#ModalDetalle').modal('show');
 });
+ // Agregar un evento de clic al botón flotante de ayuda para abrir el modal
+ document.querySelector('.floating-button').addEventListener('click', function () {
+    $('#ayudaEspecie').modal('show');
+    });
