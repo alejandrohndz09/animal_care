@@ -71,6 +71,13 @@ class DonanteController extends Controller
         $donante->telefono_donantes()->createMany($telefonosAAsociar);
 
 
+        $alert = array(
+            'type' => 'success',
+            'message' => 'El registro se ha agregado exitosamente',
+        );
+
+        session()->flash('alert', $alert);
+
         $donantes = Donante::all();
         return view('inventario.donante.index')->with([
             'donantes' => $donantes
@@ -110,7 +117,7 @@ class DonanteController extends Controller
         $donante->dui = $request->input('dui');
         $donante->nombres = $request->input('nombres');
         $donante->apellidos = $request->input('apellidos');
-        
+
         $donante->save();
 
         // Actualiza o elimina los teléfonos existentes asociados al donante
@@ -139,6 +146,14 @@ class DonanteController extends Controller
                 $donante->telefono_donantes()->save($telefonoDonante);
             }
         }
+
+        $alert = array(
+            'type' => 'success',
+            'message' => 'El registro se ha modificado exitosamente',
+        );
+
+        session()->flash('alert', $alert);
+
         $donantes = Donante::all();
         return view('inventario.donante.index')->with([
             'donantes' => $donantes
@@ -147,8 +162,25 @@ class DonanteController extends Controller
 
     public function destroy($id)
     {
-        Donante::where('idDonante', $id)->delete();
+       $id= Donante::find($id);
         $donantes = Donante::all();
+
+        if($id->movimiento->isEmpty()){
+            $id->delete();
+            $alert = array(
+             'type' => 'success',
+             'message' =>'El registro se ha eliminado exitosamente'
+             );
+         session()->flash('alert',$alert);
+         }else{
+             $alert = array(
+                 'type' => 'error',
+                 'message' =>'No se puede eliminar el registro porque tiene datos asociados'
+             );
+             
+             session()->flash('alert',$alert);
+         }
+
         return view('inventario.donante.index')->with([
             'donantes' => $donantes
         ]);
@@ -160,6 +192,14 @@ class DonanteController extends Controller
         $donante->estado = '0';
         $donante->save();
         $donantes = Donante::all();
+
+        $alert = array(
+            'type' => 'success',
+            'message' => 'El registro se ha agregado exitosamente',
+        );
+
+        session()->flash('alert', $alert);
+
         return view('inventario.donante.index')->with([
             'donantes' => $donantes
         ]);
@@ -171,6 +211,13 @@ class DonanteController extends Controller
         $donante->estado = '1';
         $donante->save();
         $donantes = Donante::all();
+        $alert = array(
+            'type' => 'success',
+            'message' => 'El registro se ha agregado exitosamente',
+        );
+
+        session()->flash('alert', $alert);
+
         return view('inventario.donante.index')->with([
             'donantes' => $donantes
         ]);

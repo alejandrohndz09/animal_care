@@ -47,7 +47,7 @@
 
                                 @php use App\Http\Controllers\AnimalControlador; @endphp
                                 @foreach ($animales as $a)
-                                    @if ($a->estado == 0)
+                                    @if ($a->estado == 1)
                                         <tr class="animal-row" data-animal="{{ json_encode($a) }}">
                                             <td>
                                                 <img src="{{ isset($a->imagen) ? asset($a->imagen) : asset('img/especie.png') }}"
@@ -120,7 +120,7 @@
                                     </div>
                                     <div class="col-xl-8">
                                         <div class="inputContainer">
-                                            <input id="nombre" name="nombre" class="inputField" placeholder="Nombre"
+                                            <input id="nombre" name="nombre" autocomplete="off" class="inputField" placeholder="Nombre"
                                                 type="text"
                                                 value="{{ isset($animal) ? old('nombre', $animal->nombre) : old('nombre') }}"
                                                 autocomplete="off">

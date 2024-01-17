@@ -38,7 +38,7 @@
                             <tbody id="tableBody">
 
                                 @foreach ($vacuna as $v)
-                                    <tr class="vacuna-row"  data-vacuna="{{ json_encode($v) }}">
+                                    <tr class="vacuna-row" data-vacuna="{{ json_encode($v) }}">
                                         <td>
                                             <img src="{{ asset('img/vacuna.png') }}" alt="vacuna" class="picture" />
                                         </td>
@@ -49,14 +49,14 @@
                                             <div
                                                 style="display: flex; align-items: flex-end; gap: 5px; justify-content: center">
                                                 <a id="btnmodificar" href="{{ url('vacuna/' . $v->idVacuna . '/edit') }}"
-                                                    type="button" class="button button-blue btnUpdate" data-id="{{ $v->idVacuna }}"
-                                                    style="width: 45%" data-bs-pp="tooltip" data-bs-placement="top"
-                                                    title="Editar">
+                                                    type="button" class="button button-blue btnUpdate"
+                                                    data-id="{{ $v->idVacuna }}" style="width: 45%" data-bs-pp="tooltip"
+                                                    data-bs-placement="top" title="Editar">
                                                     <i class="svg-icon fas fa-pencil"></i>
                                                 </a>
-                                                <button type="button" class="button button-red btnDelete" style="width: 45%"
-                                                    data-bs-toggle="modal" data-bs-target="#modalEliminacion"
-                                                    data-vacuna="{{ json_encode($v) }}"
+                                                <button type="button" class="button button-red btnDelete"
+                                                    style="width: 45%" data-bs-toggle="modal"
+                                                    data-bs-target="#modalEliminacion" data-vacuna="{{ json_encode($v) }}"
                                                     data-bs-pp="tooltip" data-bs-placement="top" title="Eliminar">
                                                     <i class="svg-icon fas fa-trash"></i>
                                                 </button>
@@ -87,7 +87,7 @@
                                     <label class="inputFieldLabel" autocomplete="off" for="vacuna">Nombre de
                                         vacuna*</label>
                                     <i class="inputFieldIcon fas fa-syringe"></i>
-                                    <input placeholder="Ingrese acá"
+                                    <input autocomplete="off" placeholder="Ingrese acá"
                                         value="{{ isset($vacunaEdit) ? $vacunaEdit->vacuna : old('vacuna') }}"
                                         class="inputField" name="vacuna">
                                     @error('vacuna')

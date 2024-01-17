@@ -52,9 +52,14 @@ class VacunaController extends Controller
 
         $vacuna->save();
 
-       
+        $alert = array(
+            'type' => 'success',
+            'message' => 'El registro se ha agregado exitosamente',
+        );
+
+        session()->flash('alert', $alert);
+
         return back()->with('success', 'Guardado con éxito');
-   
     }
 
     /**
@@ -77,9 +82,8 @@ class VacunaController extends Controller
     public function edit($id)
     {
         $vacunaEdit = Vacuna::find($id);
-        $vacuna= Vacuna::all();
-        return view('vacuna.vacuna')->with
-        (['vacunaEdit'=> $vacunaEdit,'vacuna'=>$vacuna ]);
+        $vacuna = Vacuna::all();
+        return view('vacuna.vacuna')->with(['vacunaEdit' => $vacunaEdit, 'vacuna' => $vacuna]);
     }
 
     /**
@@ -92,13 +96,23 @@ class VacunaController extends Controller
     public function update(Request $request, $id)
     {
         $vacuna = Vacuna::find($id);
-    $request->validate([
-        'vacuna'=> 'required|unique:vacuna,vacuna,'.$id.',idVacuna'
-    ]);
-    //actualizar datos en bd
-    $vacuna->vacuna=$request->post('vacuna');
-    $vacuna->save();
-    return $this->index();
+        $request->validate([
+            'vacuna' => 'required|unique:vacuna,vacuna,' . $id . ',idVacuna'
+        ]);
+        //actualizar datos en bd
+        $vacuna->vacuna = $request->post('vacuna');
+        $vacuna->save();
+
+
+        $alert = array(
+            'type' => 'success',
+            'message' => 'El registro se ha modificado exitosamente',
+        );
+
+        session()->flash('alert', $alert);
+
+
+        return $this->index();
     }
 
     public function generarId()
@@ -131,11 +145,25 @@ class VacunaController extends Controller
      */
     public function destroy($id)
     {
-        $vacuna=Vacuna::find($id);
-        $vacuna->delete();
+        $vacuna = Vacuna::find($id);
 
-        
+        if($vacuna->historialvacunas->isEmpty()){
+            $vacuna->delete();
+            $alert = array(
+             'type' => 'success',
+             'message' =>'El registro se ha eliminado exitosamente'
+             );
+         session()->flash('alert',$alert);
+         }else{
+             $alert = array(
+                 'type' => 'error',
+                 'message' =>'No se puede eliminar el registro porque tiene datos asociados'
+             );
+             
+             session()->flash('alert',$alert);
+         }
+
+
         return back()->with('success', 'Eliminado con éxito');
-               
     }
 }

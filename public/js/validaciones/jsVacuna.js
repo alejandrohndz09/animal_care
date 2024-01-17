@@ -8,7 +8,7 @@ $('#modalEliminacion').on('show.bs.modal', function (event) {
       $('#vacuna').text(vacuna);
 
       $('body').on('click', '#confirmar', function () {
-        $.get('vacuna/destroy/'+ id, function () {
+        $.get('/vacuna/destroy/'+ id, function () {
             // location.reload();
             window.location.href = '/vacuna'
         });

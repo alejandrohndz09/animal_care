@@ -46,8 +46,8 @@
                                                 data-nombre="{{ $item->miembro->nombres }}"
                                                 data-apellido="{{ $item->miembro->apellidos }}"
                                                 data-direccion="{{ $item->direccion }}" data-bs-pp="tooltip"
-                                                data-bs-placement="top" title="Dar de baja">
-                                                <i class="svg-icon fas fa-trash"></i>
+                                                data-bs-placement="top" title="Eliminar">
+                                                <i class="svg-icon fas fa-trash-can"></i>
                                             </button>
 
                                         </div>

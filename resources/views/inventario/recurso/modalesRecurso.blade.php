@@ -40,7 +40,7 @@
                                                     type="button" class="button button-blue btnUpdate"
                                                     data-id="{{ $item->idRecurso }}" data-bs-pp="tooltip"
                                                     data-bs-placement="top" title="Editar">
-                                                    <i class="svg-icon fas fa-pencil"></i>
+                                                    <i class="svg-icon fas fa-up-long"></i>
                                                 </a>
 
                                                 <button type="button" id="btnDelete"
@@ -48,7 +48,7 @@
                                                     data-bs-target="#exampleModalToggle"
                                                     data-recurso="{{ $item }}" data-bs-pp="tooltip"
                                                     data-bs-placement="top" title="Eliminar">
-                                                    <i class="svg-icon fas fa-trash"></i>
+                                                    <i class="svg-icon fas fa-trash-can"></i>
                                                 </button>
 
                                             </div>
