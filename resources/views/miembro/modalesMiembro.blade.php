@@ -70,14 +70,11 @@
                                                 <i class="svg-icon fas fa-up-long"></i>
                                             </button>
 
-                                            <button type="button" class="button button-primary btnDelete ver-button"
-                                                data-bs-pp="tooltip" data-bs-toggle="modal"
-                                                data-bs-target="#ModalToggle" style="width: 45%"
-                                                data-id="{{ $item->idMiembro }}" data-nombre="{{ $item->nombres }}"
-                                                data-apellido="{{ $item->apellidos }}" data-dui="{{ $item->dui }}"
-                                                data-correo="{{ $item->correo }}" data-bs-placement="top"
-                                                title="Ver detalles">
-                                                <i class="svg-icon fas fa-eye"></i>
+                                            <button type="button" class="button button-red btnDelete ver-button"
+                                                data-bs-pp="tooltip" style="width: 45%"
+                                                onclick="window.location.href = '{{ url('miembro/destroy/' . $item->idMiembro) }}';"
+                                                data-bs-placement="top" title="Eliminar definitivamente">
+                                                <i class="svg-icon fas fa-trash-can"></i>
                                             </button>
 
                                         </div>

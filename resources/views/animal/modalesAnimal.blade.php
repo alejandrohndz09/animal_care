@@ -33,7 +33,7 @@
     <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-lg ">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" style="margin-left: auto; margin-right: auto;">Lista de miembros de baja</h5>
+                <h5 class="modal-title" style="margin-left: auto; margin-right: auto;">Animales de baja</h5>
             </div>
             <div class="modal-body">
 
@@ -53,35 +53,37 @@
                     <tbody id="tableBody">
                         @php use App\Http\Controllers\AnimalControlador; @endphp
                         @foreach ($animales as $a)
-                            <tr>
-                                <td>
-                                    <img src="{{ isset($a->imagen) ? asset($a->imagen) : asset('img/especie.png') }}"
-                                        alt="user" class="picture" />
-                                </td>
-                                <td>{{ $a->idAnimal }}</td>
-                                <td>{{ $a->nombre }}</td>
-                                <td>{{ $a->raza->especie->especie }}</td>
-                                <td>{{ $a->raza->raza }}</td>
-                                <td>{{ AnimalControlador::calcularEdad(explode(' ', $a->fechaNacimiento)[0]) }}
-                                </td>
-                                <td>
-                                    <div
-                                        style="display: flex; align-items: flex-end; gap: 3px; justify-content: center">
-                                        <a href="{{ url('animal/' . $a->idAnimal . '/edit') }}"
-                                            class="button button-blue" style="width: 45%;" data-bs-pp="tooltip"
-                                            data-bs-placement="top" title="Editar">
-                                            <i class="svg-icon fas fa-pencil"></i>
-                                        </a>
-                                        <button type="button" class="button button-red" style="width: 45%"
-                                            data-bs-toggle="modal" data-bs-target="#exampleModalToggle"
-                                            data-animal="{{ json_encode($a) }}" data-bs-pp="tooltip"
-                                            data-bs-placement="top" title="Dar de baja">
-                                            <i class="svg-icon fas fa-trash"></i>
-                                        </button>
+                            @if ($a->estado == 0)
+                                <tr>
+                                    <td>
+                                        <img src="{{ isset($a->imagen) ? asset($a->imagen) : asset('img/especie.png') }}"
+                                            alt="user" class="picture" />
+                                    </td>
+                                    <td>{{ $a->idAnimal }}</td>
+                                    <td>{{ $a->nombre }}</td>
+                                    <td>{{ $a->raza->especie->especie }}</td>
+                                    <td>{{ $a->raza->raza }}</td>
+                                    <td>{{ AnimalControlador::calcularEdad(explode(' ', $a->fechaNacimiento)[0]) }}
+                                    </td>
+                                    <td>
+                                        <div
+                                            style="display: flex; align-items: flex-end; gap: 3px; justify-content: center">
+                                            <a href="{{ url('/animal/DarAlta/' . $a->idAnimal) }}"
+                                                class="button button-blue" style="width: 45%;" data-bs-pp="tooltip"
+                                                data-bs-placement="top" title="Dar de alta">
+                                                <i class="svg-icon fas fa-up-long"></i>
+                                            </a>
+                                            <button type="button" class="button button-red" style="width: 45%"
+                                                data-bs-toggle="modal" data-bs-target="#exampleModalToggle"
+                                                data-animal="{{ json_encode($a) }}" data-bs-pp="tooltip"
+                                                data-bs-placement="top" title="Eliminar definitivamente">
+                                                <i class="svg-icon fas fa-trash-can"></i>
+                                            </button>
 
-                                    </div>
-                                </td>
-                            </tr>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endif
                         @endforeach
                     </tbody>
                 </table>
@@ -145,6 +147,3 @@
 </div>
 
 <!-- Modal para ver albergar desde el expediente que muestra los albergues disponibles-->
-
-
-

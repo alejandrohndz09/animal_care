@@ -140,6 +140,52 @@ $(document).ready(function () {
     });
 });
 
+// $(".btnDelete").click(function (event) {
+//     // Evitar la propagación del evento al hacer clic en la fila
+//     event.stopPropagation();
+// });
+// $(".btnUpdate").click(function (event) {
+//     // Evitar la propagación del evento al hacer clic en la fila
+//     event.stopPropagation();
+// });
+
+// $('#tableBody').on('click', '.movimiento-row', function (event) {
+
+//     // Verifica si el clic se realizó en un botón de editar o eliminar
+//     if ($(event.target).is('a#btnUpdate') || $(event.target).is('.btnDelete')) {
+
+//         return; // No muestres el modal si se hizo clic en un botón
+//     } else {
+//         var button = $(this); // Fila de la tabla que se hizo clic
+//         var id = button.data('movimiento').idAnimal; // Obtiene el valor del atributo data-id
+//         window.location.href = '/expediente/' + id;
+//     }
+// });
+
+// Agrega un evento de cambio al radio button
+$(document).on('change', 'input[name="isDonado"]', function () {
+    var btnDonante = $('#btnDonante')[0];
+    if ($(this).val() === 'No') {
+        // Si el valor es 'No', deshabilita el input y cambia el color del componente
+        btnDonante.style.visibility = 'hidden';
+    } else if ($(this).val() === 'Sí') {
+        // Si el valor es 'Sí', habilita el input y cambia el color del componente
+        btnDonante.style.visibility = 'visible';
+    }
+});
+
+$('.seleccion').on('click', function () {
+    var nombres = $(this).data('nombre');
+    var apellidos = $(this).data('apellido');
+    var idDonante = $(this).data('id');
+
+    console.log(nombres);
+
+    $('#idDonante').val(idDonante); // Guardar el ID en un campo oculto dentro del modal
+    $('#DonanteName').text(nombres + ' ' + apellidos); // Cambiar el texto del span
+});
+
+
 $(".btnDelete").click(function (event) {
     // Evitar la propagación del evento al hacer clic en la fila
     event.stopPropagation();
@@ -149,27 +195,34 @@ $(".btnUpdate").click(function (event) {
     event.stopPropagation();
 });
 
-$('#tableBody').on('click', '.movimiento-row', function (event) {
-
-    // Verifica si el clic se realizó en un botón de editar o eliminar
-    if ($(event.target).is('a#btnUpdate') || $(event.target).is('.btnDelete')) {
-
-        return; // No muestres el modal si se hizo clic en un botón
-    } else {
-        var button = $(this); // Fila de la tabla que se hizo clic
-        var id = button.data('movimiento').idAnimal; // Obtiene el valor del atributo data-id
-        window.location.href = '/expediente/' + id;
+$('.movimiento-row').on('click', function (event) {
+    // Verifica si el clic fue en un botón dentro de la fila
+    if ($(event.target).is('.btnUpdate, .btnDelete')) {
+        return; // Evita abrir el modal si se hizo clic en un botón
     }
-});
 
- // Agrega un evento de cambio al radio button
- $(document).on('change', 'input[name="isDonado"]', function () {
-     var btnDonante = $('#btnDonante')[0];
-    if ($(this).val() === 'No') {
-        // Si el valor es 'No', deshabilita el input y cambia el color del componente
-        btnDonante.style.visibility = 'hidden';
-    } else if ($(this).val() === 'Sí') {
-        // Si el valor es 'Sí', habilita el input y cambia el color del componente
-        btnDonante.style.visibility = 'visible';
-    }
+    var button = $(this); // Fila de la tabla que se hizo clic
+    var movimientoData = button.data('movimiento');
+    var id = movimientoData.idMovimiento;
+    var fecha = movimientoData.fechaMovimento.split(' ')[0]; // Obtiene la primera parte de la cadena
+    var tipoMovimiento = movimientoData.tipoMovimiento;
+    var valor = movimientoData.valor;
+    var recurso = button.data('recurso');
+    var donante = button.data('donante');
+    var miembro = button.data('miembro');
+
+    // Utiliza moment.js para formatear la fecha
+    var fechaFormateada = moment(fecha).format('DD-MM-YYYY');
+
+    // Actualiza el contenido del modal con los detalles del registro
+    $('#CodigoMovimiento').text(id);
+    $('#fechaMovimiento').text(fechaFormateada);
+    $('#TipoMovimiento').text(tipoMovimiento);
+    $('#ValorMovimiento').text(valor);
+    $('#RecursoMovimiento').text(recurso);
+    $('#DonanteMovimiento').text(donante);
+    $('#MiembroMovimiento').text(miembro);
+
+    // Abre el modal
+    $('#modalDetalleMovimiento').modal('show');
 });

@@ -58,6 +58,7 @@ class DonanteController extends Controller
         $donante->dui = $request->post('dui');
         $donante->nombres = $request->post('nombres');
         $donante->apellidos = $request->post('apellidos');
+        $donante->estado = 1;
         $donante->save();
 
         $telefonosAd = $request->input('telefonosAd');
@@ -94,7 +95,7 @@ class DonanteController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'dui' => 'required|unique:donante,dui,' . $id .',idDonante',
+            'dui' => 'required|unique:donante,dui,' . $id . ',idDonante',
             'nombres' => 'required|min:3',
             'apellidos' => 'required|min:3',
         ], [
@@ -105,48 +106,80 @@ class DonanteController extends Controller
 
         $donante = Donante::find($id);
 
-            $donante->dui = $request->input('dui');
-            $donante->nombres = $request->input('nombres');
-            $donante->apellidos = $request->input('apellidos');
+        $donante->dui = $request->input('dui');
+        $donante->nombres = $request->input('nombres');
+        $donante->apellidos = $request->input('apellidos');
+        
+        $donante->save();
 
-            $donante->save();
+        // Actualiza o elimina los teléfonos existentes asociados al donante
+        $telefonoIds = $request->input('telefonoIds', []);
+        $telefonosAd = $request->input('telefonosAd', []);
 
-            // Actualiza o elimina los teléfonos existentes asociados al donante
-            $telefonoIds = $request->input('telefonoIds', []);
-            $telefonosAd = $request->input('telefonosAd', []);
-
-            foreach ($donante->telefono_donantes as $telefono) {
-                if (!in_array($telefono->idTelefono, $telefonoIds)) {
-                    $telefono->delete();
-                }
+        foreach ($donante->telefono_donantes as $telefono) {
+            if (!in_array($telefono->idTelefono, $telefonoIds)) {
+                $telefono->delete();
             }
+        }
 
-            // Asocia o actualiza los nuevos teléfonos
-            foreach ($telefonosAd as $index => $telefono) {
-                $telefonoId = isset($telefonoIds[$index]) ? $telefonoIds[$index] : null;
+        // Asocia o actualiza los nuevos teléfonos
+        foreach ($telefonosAd as $index => $telefono) {
+            $telefonoId = isset($telefonoIds[$index]) ? $telefonoIds[$index] : null;
 
-                if ($telefonoId) {
-                    // Actualiza el teléfono existente
-                    $telefonoDonante = TelefonoDonante::find($telefonoId);
-                    $telefonoDonante->telefono = $telefono;
-                    $telefonoDonante->save();
-                } else {
-                    // Crea un nuevo teléfono
-                    $telefonoDonante = new TelefonoDonante();
-                    $telefonoDonante->telefono = $telefono;
-                    $donante->telefono_donantes()->save($telefonoDonante);
-                }
+            if ($telefonoId) {
+                // Actualiza el teléfono existente
+                $telefonoDonante = TelefonoDonante::find($telefonoId);
+                $telefonoDonante->telefono = $telefono;
+                $telefonoDonante->save();
+            } else {
+                // Crea un nuevo teléfono
+                $telefonoDonante = new TelefonoDonante();
+                $telefonoDonante->telefono = $telefono;
+                $donante->telefono_donantes()->save($telefonoDonante);
             }
-            $donantes = Donante::all();
-            return view('inventario.donante.index')->with([
-                'donantes' => $donantes
-            ]);
+        }
+        $donantes = Donante::all();
+        return view('inventario.donante.index')->with([
+            'donantes' => $donantes
+        ]);
     }
 
     public function destroy($id)
     {
-        // Suponiendo que 'idDonante' es la clave primaria en tu modelo Donante
         Donante::where('idDonante', $id)->delete();
-        // return redirect()->route('inventario.donante.index');
+        $donantes = Donante::all();
+        return view('inventario.donante.index')->with([
+            'donantes' => $donantes
+        ]);
+    }
+
+    public function DarBaja($id)
+    {
+        $donante = Donante::find($id);
+        $donante->estado = '0';
+        $donante->save();
+        $donantes = Donante::all();
+        return view('inventario.donante.index')->with([
+            'donantes' => $donantes
+        ]);
+    }
+
+    public function DarAlta($id)
+    {
+        $donante = Donante::find($id);
+        $donante->estado = '1';
+        $donante->save();
+        $donantes = Donante::all();
+        return view('inventario.donante.index')->with([
+            'donantes' => $donantes
+        ]);
+    }
+
+    public function ObtenerTelefonos($id)
+    {
+
+        $telefonos = TelefonoDonante::where('idDonante', $id)->pluck('telefono');
+
+        return response()->json($telefonos);
     }
 }

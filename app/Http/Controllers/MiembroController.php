@@ -69,17 +69,17 @@ class MiembroController extends Controller
         $miembros->estado = 1;
         $miembros->save();
 
-        $contador = $request->post('con');
+     
+        $telefonosAd = $request->input('telefonosAd');
+        $telefonosAAsociar = [];
 
-
-        for ($i = 0; $i < $contador; $i++) {
-            if (!$request->post('telefono' . $i + 1) == "503 ") {
-                $telefonos = new TelefonoMiembro();
-                $telefonos->telefono = $request->post('telefono' . $i + 1);
-                $telefonos->idMiembro = $idPersonalizado;
-                $telefonos->save();
-            }
+        foreach ($telefonosAd as $telefono) {
+            $telefonosAAsociar[] = ['telefono' => $telefono];
         }
+
+        $miembros->telefono_miembros()->createMany($telefonosAAsociar);
+
+
 
         $datos = Miembro::all();
         return view('miembro.index')->with([
@@ -91,13 +91,10 @@ class MiembroController extends Controller
     {
         $miembroEdit = Miembro::find($id);
         $datos = Miembro::all();
-        //Busca en la tabla Telefono_miembro el idMiembro para modificar
-        $telefonos = TelefonoMiembro::where('idMiembro', $miembroEdit->idMiembro)->get();
 
         return view('miembro.index')->with([
             'miembroEdit' => $miembroEdit,
-            'datos' => $datos,
-            'telefonos' => $telefonos
+            'datos' => $datos
         ]);
     }
 
@@ -125,52 +122,45 @@ class MiembroController extends Controller
         $miembro->save();
 
 
-        $contador = $request->post('con');
+        
+        // Actualiza o elimina los teléfonos existentes asociados al donante
+        $telefonoIds = $request->input('telefonoIds', []);
+        $telefonosAd = $request->input('telefonosAd', []);
 
-        for ($i = 1; $i <= $contador; $i++) {
-            $nuevoTelefono = $request->post('telefono' . $i);
-            $telefonoId = $request->input('boton' . $i);
-
-            // Valida si el número de teléfono es único en la tabla "telefono_miembro"
-            $request->validate([
-                'telefono' . $i => 'unique:telefono_miembro,telefono,' . $telefonoId . ',idTelefono'
-            ], [
-                'telefono' . $i . '.unique' => 'El número de teléfono ' . $nuevoTelefono . ' ya ha sido ingresado.'
-            ]);
-
-
-            // Busca el teléfono por su ID en la base de datos
-            $telefono = TelefonoMiembro::find($telefonoId);
-
-            if ($telefono) {
-                // El teléfono existe en la base de datos, actualiza su valor
-                $telefono->telefono = $nuevoTelefono;
-                $telefono->save();
-            } else {
-                // Sino, entonces crea un nuevo registro
-                $telefonos = new TelefonoMiembro();
-                $telefonos->telefono = $request->post('telefono' . $i);
-                $telefonos->idMiembro = $id;
-                $telefonos->save();
+        foreach ($miembro->telefono_miembros as $telefono) {
+            if (!in_array($telefono->idTelefono, $telefonoIds)) {
+                $telefono->delete();
             }
         }
-        if (!empty($errors)) {
-            return response()->json(['errors' => $errors]);
-        } else {
+
+        // Asocia o actualiza los nuevos teléfonos
+        foreach ($telefonosAd as $index => $telefono) {
+            $telefonoId = isset($telefonoIds[$index]) ? $telefonoIds[$index] : null;
+
+            if ($telefonoId) {
+                // Actualiza el teléfono existente
+                $telefonoMiembro = TelefonoMiembro::find($telefonoId);
+                $telefonoMiembro->telefono = $telefono;
+                $telefonoMiembro->save();
+            } else {
+                // Crea un nuevo teléfono
+                $telefonoMiembro = new TelefonoMiembro();
+                $telefonoMiembro->telefono = $telefono;
+                $miembro->telefono_miembros()->save($telefonoMiembro);
+            }
+        }
             //Pagina inicio
             $datos = Miembro::all();
             return  redirect()->route('miembro.index')->with([
                 'datos' => $datos
             ]);
-        }
+        
     }
-
 
     public function destroy($id)
     {
         $miembros = Miembro::find($id);
-        $miembros->estado = '0';
-        $miembros->save();
+        $miembros->delete();
         $datos = Miembro::all();
         return view('miembro.index')->with([
             'datos' => $datos
@@ -218,4 +208,14 @@ class MiembroController extends Controller
         $miembros->save();
         return redirect()->route('miembro.index');
     }
+
+
+    public function DarBaja($id)
+    {
+        $miembros = Miembro::find($id);
+        $miembros->estado = '0';
+        $miembros->save();
+        return redirect()->route('miembro.index');
+    }
+
 }
