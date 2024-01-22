@@ -168,3 +168,33 @@
         </div>
     </div>
 </div>
+
+
+                <!-- Modal para ver ayuda en Animal-->
+
+
+<div class="modal fade" id="ayudaD" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content text-center">
+            <div class="modal-header">
+                <h3 style="margin-left: auto; margin-right: auto;">Ayuda</h5>
+            </div>
+            <div class="modal-body text-center">
+
+                <p> °Aca se registran los donantes sus datos basicos y requeridos. </p>
+                <p></p>
+                <p>°Para tenes un mayor control se solicita su Dui. </p>
+                <p></p>
+                <p>°No deben de haber ningun campo vacio para tener un registro con exito.</p>
+                
+
+            </div>
+            <div class="modal-footer text-center" style="margin-left: auto; margin-right: auto;">
+
+                <button type="button" class="button button-red" data-bs-dismiss="modal"> <i
+                        class="svg-icon fas fa-xmark"></i>
+                    <span class="lable">cerrar</span> </button>
+            </div>
+        </div>
+    </div>
+</div>

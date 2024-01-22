@@ -77,7 +77,6 @@
     </div>
 </div>
 
-<!-- Modal de ayuda -->
 <div class="modal fade" id="ayudaMovimiento" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content text-center">
@@ -85,17 +84,18 @@
                 <h3 style="margin-left: auto; margin-right: auto;">Ayuda</h5>
             </div>
             <div class="modal-body text-center">
-                <!-- Utiliza la clase text-center para centrar los elementos -->
-               
-                <p> °En la tabla estan los animales registrados, al seleccionar cualquiera de los registros nos envia al expediente de dicho registro y su control. </p>
-                <img src="img/expe.png" alt="Descripción de la imagen" class="img-fluid">
+
+                <p> °Aca se registran todo tipo de movimiento que haya dentro de la asosiacion. </p>
                 <p></p>
-                <p>°Para poder subri la foto presionamos el icono de la fotografía.</p>
-                <img src="img/camar.png" alt="Descripción de la imagen" class="img-fluid">
+                <p>°Para registrar un movimiento nuevo, se toman en consideracion las funciones habilitadas y las que se habilitan, cuando el movimiento es una donación se habilita en boton para buscar el donante en nuestros registros. </p>
+                <img src="/img/m.png" alt="Descripción de la imagen" class="img-fluid">
                 <p></p>
-                <p>°Para poder guardar un registro nuevo no deben haber campos vacios.</p>
-                
-                
+                <p>°Nos lleva a una ventana donde nos muestra los donantes ya registrados.</p>
+                <p></p>
+                <img src="/img/m2.png" alt="Descripción de la imagen" class="img-fluid">
+
+
+
             </div>
             <div class="modal-footer text-center" style="margin-left: auto; margin-right: auto;">
 

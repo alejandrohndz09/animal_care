@@ -242,3 +242,6 @@ function tooltips() {
         return new bootstrap.Tooltip(tooltipTriggerEl)
     })
 }
+document.querySelector('.floating-button').addEventListener('click', function () {
+    $('#ayudaD').modal('show');
+    });

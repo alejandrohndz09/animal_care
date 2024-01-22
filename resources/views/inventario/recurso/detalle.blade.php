@@ -17,8 +17,17 @@
 
                         <div class="row">
                             <div class="col-xl-8">
-                                <h1 class="mb-4">Detalle de recurso</h1>
-                                <div class="row mt-1" style="justify-content: center;">
+                                <div class="mb-8" style=" width:100%;margin: 0; display: flex; gap: 5px; align-items: center; ">
+                                    <button class="button btn-transparent" style="width: 30px;padding: 15px 5px" type="button"
+                                        id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"
+                                        data-bs-pp="tooltip" data-bs-placement="top" title="Volver"
+                                        onclick="window.location.href='/inventario/recursos'">
+                                        <i class="svg-icon fas fa-chevron-left" style="color: #4c4c4c"></i>
+                                    </button>
+                                    <h1>Detalle de recurso </h1>
+                                </div>
+                                
+                                <div class="row mt-3" style="justify-content: center;">
                                     <div class="col-xl-5">
                                         <div class="inputContainer">
                                             <input name="nombres" id="nombres" class="inputField" type="text"

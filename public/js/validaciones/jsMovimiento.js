@@ -106,7 +106,7 @@ $(document).ready(function () {
         }
     });
     $("#btnCancelar").click(function () {
-        window.location.href = '/movimiento'
+        window.location.href = '/inventario/movimientos/'
     });
 
     //Si presiona eliminar abrira el modal con los datos que se daran de baja
@@ -233,3 +233,6 @@ $('.movimiento-row').on('click', function (event) {
     // Abre el modal
     $('#modalDetalleMovimiento').modal('show');
 });
+document.querySelector('.floating-button').addEventListener('click', function () {
+    $('#ayudaMovimiento').modal('show');
+    });

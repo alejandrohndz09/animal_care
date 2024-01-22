@@ -26,7 +26,7 @@
                                 onclick="window.location.href='/inventario'">
                                 <i class="svg-icon fas fa-chevron-left" style="color: #4c4c4c"></i>
                             </button>
-                            <h1>Recursos </h1>
+                            <h1>Donantes </h1>
                         </div>
                         <div
                             style=" width:100%;margin: 0; display: flex; gap: 5px; justify-content: end ;align-items: center; ">
@@ -283,6 +283,9 @@
                 </div>
             </div>
         </main>
+    </div>
+    <div class="floating-button" data-toggle="modal" data-target="#ayudaD" data-bs-pp="tooltip" data-bs-placement="top" title="Ayuda">
+        <span>?</span>
     </div>
     @include('inventario.donante.modalesDonante')
 @endsection
