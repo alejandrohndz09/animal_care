@@ -19,16 +19,19 @@
                             <div class="col-xl-8">
                                 <div
                                     style="width:100%; display: flex;  justify-content: space-between; align-items: center; margin-bottom: 5px;">
-                                    <div class="mb-8" style=" width:100%;margin: 0; display: flex; gap: 5px; align-items: center; ">
-                                        <button class="button btn-transparent" style="width: 30px;padding: 15px 5px" type="button"
-                                            id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"
-                                            data-bs-pp="tooltip" data-bs-placement="top" title="Volver"
-                                            onclick="window.location.href='{{$accion?'/animal':'/expediente'}}'">
+                                    <div class="mb-8"
+                                        style=" width:100%;margin: 0; display: flex; gap: 5px; align-items: center; ">
+                                        <button class="button btn-transparent" style="width: 30px;padding: 15px 5px"
+                                            type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown"
+                                            aria-expanded="false" data-bs-pp="tooltip" data-bs-placement="top"
+                                            title="Volver"
+                                            onclick="window.location.href='{{ isset($accion) ? '/animal' : '/expediente' }}'">
                                             <i class="svg-icon fas fa-chevron-left" style="color: #4c4c4c"></i>
                                         </button>
-                                        <h1>{{ $registrado->count() > 0 ? 'Expediente No. ' . $animal->expedientes->get(0)->idExpediente : 'Detalles de animal' }} </h1>
+                                        <h1>{{ $registrado->count() > 0 ? 'Expediente No. ' . $animal->expedientes->get(0)->idExpediente : 'Detalles de animal' }}
+                                        </h1>
                                     </div>
-                                   
+
                                     @if ($registrado->count() > 0)
                                         <div class="dropdown">
                                             <button class="button btn-transparent" style="width: 30px;padding: 15px 5px"
@@ -116,8 +119,8 @@
                                         @if ($registrado->count() > 0)
                                             <div class="col-xl-6">
                                                 <div class="inputContainer">
-                                                    <input name="nombres" id="nombres" class="inputField" type="text"
-                                                        value="{{ $estado }}" readonly>
+                                                    <input name="nombres" id="nombres" class="inputField"
+                                                        type="text" value="{{ $estado }}" readonly>
                                                     <label class="inputFieldLabel" for="nombre">Estado:</label>
                                                     <i class="inputFieldIcon fas fa-file-prescription"></i>
                                                 </div>
@@ -418,14 +421,16 @@
                         </div>
                     </div>
                 @endif
-                
+                @include('historialVacunas.index')
+                @include('historialPatologia.index')
         </main>
-        <div class="floating-button" data-toggle="modal" data-target="#ayudaExpedienteE" data-bs-pp="tooltip" data-bs-placement="top" title="Ayuda">
+        <div class="floating-button" data-toggle="modal" data-target="#ayudaExpedienteE" data-bs-pp="tooltip"
+            data-bs-placement="top" title="Ayuda">
             <span>?</span>
         </div>
     </div>
-   
-  
 
-    
+
+
+
 @endsection

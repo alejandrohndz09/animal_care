@@ -4,7 +4,7 @@
         <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-lg ">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" style="margin-left: auto; margin-right: auto;">Lista de albergues de baja</h5>
+                    <h5 class="modal-title" style="margin-left: auto; margin-right: auto;">Lista de recursos de baja</h5>
                 </div>
                 <div class="modal-body">
                     <table>

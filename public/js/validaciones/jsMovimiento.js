@@ -106,7 +106,7 @@ $(document).ready(function () {
         }
     });
     $("#btnCancelar").click(function () {
-        window.location.href = '/movimiento'
+        window.location.href = '/inventario/movimientos/'
     });
 
     //Si presiona eliminar abrira el modal con los datos que se daran de baja

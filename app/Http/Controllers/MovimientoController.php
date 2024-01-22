@@ -27,15 +27,18 @@ class MovimientoController extends Controller
 
         $recursoId = $request->post('recurso');
         $recurso = Recurso::find($recursoId);
-        
+
         // Sumar las cantidades de ingresos
-        $totalIngresos = $recurso->movimientos()->where('tipoMovimiento', 'Ingreso')->sum('valor');
 
-        // Restar las cantidades de salidas
-        $totalSalidas = $recurso->movimientos()->where('tipoMovimiento', 'Salida')->sum('valor');
-
-        // Calcular el saldo total
-        $saldoTotal = $totalIngresos - $totalSalidas;
+        if ($request->post('tipoMovimiento') == 'Ingreso') {
+            $totalSalidas = $recurso->movimientos()->where('tipoMovimiento', 'Salida')->sum('valor');
+            // Calcular el saldo total
+            $saldoTotal = $totalSalidas; 
+        } else if ($request->post('tipoMovimiento') == 'Salida') {
+            $totalIngresos = $recurso->movimientos()->where('tipoMovimiento', 'Ingreso')->sum('valor');
+            // Calcular el saldo total
+            $saldoTotal = $totalIngresos;
+        }
 
         // Validar si la cantidad supera al saldo total
         $request->validate([
@@ -48,9 +51,9 @@ class MovimientoController extends Controller
                 'required',
                 'numeric',
                 'min:1',
-                function ($attribute, $value, $fail) use ($saldoTotal) {
-                    // Comprobar si el valor es mayor que el saldo total
-                    if ($value > $saldoTotal) {
+                function ($attribute, $value, $fail) use ($request,$saldoTotal) {
+                    // Aplica la validación adicional solo si 'tipo_movimiento' es 'Salida'
+                    if ($request->tipoMovimiento === 'Salida' && $value > $saldoTotal) {
                         $fail("La cantidad ingresada supera el saldo total disponible.");
                     }
                 },
@@ -60,7 +63,6 @@ class MovimientoController extends Controller
             // Otras reglas de validación y mensajes personalizados
         ]);
 
-
         //Guardar en BD
         $Movimiento = new Movimiento();
         $Movimiento->idMovimiento = $this->generarId();
@@ -68,7 +70,7 @@ class MovimientoController extends Controller
         $Movimiento->fechaMovimento = $request->post('fecha');
         $Movimiento->tipoMovimiento = $request->post('tipoMovimiento');
         $Movimiento->valor = $request->post('valor');
-        $Movimiento->idMiembro =  Auth::user()->idMiembro;
+        $Movimiento->idMiembro = Auth::user()->idMiembro;
         $Movimiento->idRecurso = $request->post('recurso');
         $Movimiento->idDonante = $request->input('donanteE');
 
@@ -98,7 +100,7 @@ class MovimientoController extends Controller
         return view('inventario.movimiento.index')->with([
             'Movimientos' => $Movimientos,
             'MovimientoEdit' => $MovimientoEdit,
-            'donantes' => $donantes
+            'donantes' => $donantes,
         ]);
     }
 
@@ -124,7 +126,7 @@ class MovimientoController extends Controller
         // dd($request->post('fecha'));
         $movimiento->tipoMovimiento = $request->post('tipoMovimiento');
         $movimiento->valor = $request->post('valor');
-        $movimiento->idMiembro =  Auth::user()->idMiembro;
+        $movimiento->idMiembro = Auth::user()->idMiembro;
         $movimiento->idRecurso = $request->post('recurso');
         $movimiento->idDonante = $request->post('donanteE');
 
@@ -137,7 +139,7 @@ class MovimientoController extends Controller
 
         session()->flash('alert', $alert);
         $donates = Donante::all();
-        return redirect()->route('movimientos.index')->with('Movimientos', Movimiento::all())->with('donantes', $donates);;
+        return redirect()->route('movimientos.index')->with('Movimientos', Movimiento::all())->with('donantes', $donates);
     }
 
     public function destroy($id)

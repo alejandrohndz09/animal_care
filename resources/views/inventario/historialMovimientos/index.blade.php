@@ -10,6 +10,19 @@
         <main>
             <div class="container-fluid px-5 py-4">
                 <div class="row mt-3">
+                    <div
+                        style="width:100%; display: flex;  justify-content: space-between; align-items: center; margin-bottom: 25px; padding-bottom:5px; border-bottom: 2px solid rgba(0, 0, 0, 0.1);">
+                        <div style=" width:100%;margin: 0; display: flex; gap: 5px; align-items: center; ">
+                            <button class="button btn-transparent" style="width: 30px;padding: 15px 5px" type="button"
+                                id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"
+                                data-bs-pp="tooltip" data-bs-placement="top" title="Volver"
+                                onclick="window.location.href='/inventario'">
+                                <i class="svg-icon fas fa-chevron-left" style="color: #4c4c4c"></i>
+                            </button>
+                            <h1>Historial de Movimentos </h1>
+                        </div>
+
+                    </div>
                     <div class="card  mb-4" style="border:none; padding-bottom: 25px !important; width: 100%">
                         <div class="row">
                             <div class="col-xl-12">
@@ -91,7 +104,7 @@
                                 <div class="d-flex" style="gap:8px">
                                     <button type="button" class="button button-pri" style="width: 40px;"
                                         data-bs-pp="tooltip" data-bs-placement="top" title="Imprimir"
-                                        onclick="window.location.href = '{{ url('inventario/historialMovimientos/pdf') }}'">
+                                        onclick="window.location.href = '{{ url('/inventario/historialMovimientos/pdf') }}'">
                                         <i class="svg-icon fas fa-print"></i>
                                     </button>
 
@@ -106,10 +119,10 @@
                                     <tr class="head">
                                         <th style="width: 15%"></th>
                                         <th>Fecha</th>
-                                        <th>Tipo</th>
+                                        <th>Tipo
+                                        </th>
                                         <th>Recurso</th>
-                                        <th>Valor</th>
-                                        <th>Donante</th>
+                                        <th>Valor</th>s
                                         <th>
                                         </th>
                                     </tr>
@@ -120,25 +133,20 @@
                                     @foreach ($movimientos as $item)
                                         <tr>
                                             <td style="width: 15%">
-                                                <img src="{{ isset($a->animal->imagen) ? asset($a->animal->imagen) : 'https://static.vecteezy.com/system/resources/previews/017/783/245/original/pet-shop-silhouette-logo-template-free-vector.jpg' }}"
-                                                    alt="user" class="picture" />
+                                                <img src="{{ asset('img/recurso.png') }}" alt="recurso item"
+                                                    class="picture" />
                                             </td>
                                             <td>{{ explode(' ', $item->fechaMovimento)[0] }} </td>
                                             <td>{{ $item->tipoMovimiento }}</td>
                                             <td>{{ $item->recurso->recurso }}</td>
                                             <td>
                                                 {{ $item->valor . ' (' . $item->recurso->unidadmedida->simbolo . ')' }}
-                                            </td>
-
-                                            <td>
-                                                {{ $item->donante->nombres . ' ' . $item->donante->apellidos }}</td>
-                                            </td>
                                             <td>
 
                                                 <button type="button" class="button button-red btnDelete"
-                                                    style="width: 45%" data-bs-toggle="modal" data-bs-target="#modaldeBaja"
-                                                    data-bs-pp="tooltip" data-bs-placement="top"
-                                                    title="Dar de baja del albergue">
+                                                    style="width: 45%" data-bs-toggle="modal"
+                                                    data-bs-target="#modaldeBaja" data-bs-pp="tooltip"
+                                                    data-bs-placement="top" title="Dar de baja del albergue">
                                                     <i class="svg-icon fas fa-house-circle-xmark"></i>
                                                 </button>
 

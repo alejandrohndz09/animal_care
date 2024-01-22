@@ -339,7 +339,7 @@
                                                             Seleccione...
                                                         </option>
                                                         @php use App\Models\Recurso; @endphp
-                                                        @foreach (Recurso::all() as $recurso)
+                                                        @foreach (Recurso::where('estado',1)->get() as $recurso)
                                                             <option value="{{ $recurso->idRecurso }}"
                                                                 {{ isset($MovimientoEdit) ? ($MovimientoEdit->recurso->idRecurso == $recurso->idRecurso ? 'selected' : '') : (old('recurso') == $recurso->idRecurso ? 'selected' : '') }}>
                                                                 {{ $recurso->recurso }}
@@ -353,7 +353,7 @@
                                             </div>
                                             <div class="col-xl-5">
                                                 <div class="inputContainer">
-                                                    <label class="inputFieldLabel" id="valor" autocomplete="off"
+                                                    <label class="inputFieldLabel" id="valorlabel" autocomplete="off"
                                                         for="valor"
                                                         style="color: #{{ isset($MovimientoEdit) ? '6067eb' : (old('valor') == '' ? '878787' : '6067eb') }}">
                                                         Valor*</label>
@@ -394,7 +394,7 @@
                                                 @endif
                                             </span>
                                         </button>
-                                        <button onclick="{{ url('inventario/movimientos') }}" type="button"
+                                        <button onclick="{{ url('/inventario/movimientos') }}" type="button"
                                             id="btnCancelar" class="button button-red">
                                             <i class="svg-icon fas fa-rotate-right"></i>
                                             <span class="lable">Cancelar</span>
