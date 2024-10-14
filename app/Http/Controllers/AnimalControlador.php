@@ -21,7 +21,7 @@ class AnimalControlador extends Controller
      */
     public function index()
     {
-        $animales = Animal::all();
+        $animales = Animal::orderby('idAnimal','desc')->get();
         return view('animal.index')->with('animales', $animales);
     }
 
